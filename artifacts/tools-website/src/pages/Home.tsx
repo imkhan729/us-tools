@@ -2,401 +2,416 @@ import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  Calculator, 
-  KeyRound, 
-  Type, 
-  CalendarDays, 
-  Palette,
-  Search,
-  ArrowRight,
-  Zap,
-  ShieldCheck,
-  Smartphone,
-  Ban,
-  RefreshCw,
-  SearchCheck,
-  CheckCircle,
-  BarChart,
-  Code
+import {
+  Search, ArrowRight, Zap, ShieldCheck, Smartphone, Ban,
+  Calculator, KeyRound, Type, CalendarDays, Palette,
+  DollarSign, Ruler, Clock, Heart, HardHat, BookOpen, Gamepad2,
+  Wrench, Star, Users, ChevronRight
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { TOOL_CATEGORIES, ALL_TOOLS, type Tool } from "@/data/tools";
 
-const TOOLS = [
-  {
-    title: "Percentage Calculator",
-    description: "Easily calculate percentages, increases, and decreases.",
-    icon: <Calculator className="w-8 h-8" />,
-    path: "/tools/percentage-calculator",
-    color: "bg-[#00D4AA]",
-    category: "Calculators"
-  },
-  {
-    title: "Password Generator",
-    description: "Create strong, secure, and random passwords instantly.",
-    icon: <KeyRound className="w-8 h-8" />,
-    path: "/tools/password-generator",
-    color: "bg-[#FF6B35]",
-    category: "Generators"
-  },
-  {
-    title: "Word Counter",
-    description: "Count words, characters, and estimate reading time.",
-    icon: <Type className="w-8 h-8" />,
-    path: "/tools/word-counter",
-    color: "bg-[#FFD23F]",
-    category: "Text"
-  },
-  {
-    title: "Age Calculator",
-    description: "Calculate precise age and countdown to next birthday.",
-    icon: <CalendarDays className="w-8 h-8" />,
-    path: "/tools/age-calculator",
-    color: "bg-[#00D4AA]",
-    category: "Calculators"
-  },
-  {
-    title: "Color Converter",
-    description: "Convert colors between HEX, RGB, and HSL formats.",
-    icon: <Palette className="w-8 h-8" />,
-    path: "/tools/color-converter",
-    color: "bg-[#FFD23F]",
-    category: "Converters"
-  }
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  "math": <Calculator className="w-7 h-7" />,
+  "finance": <DollarSign className="w-7 h-7" />,
+  "conversion": <Ruler className="w-7 h-7" />,
+  "time-date": <Clock className="w-7 h-7" />,
+  "health": <Heart className="w-7 h-7" />,
+  "construction": <HardHat className="w-7 h-7" />,
+  "productivity": <Type className="w-7 h-7" />,
+  "education": <BookOpen className="w-7 h-7" />,
+  "gaming": <Gamepad2 className="w-7 h-7" />,
+};
+
+const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
+  "percentage-calculator": <Calculator className="w-5 h-5" />,
+  "password-generator": <KeyRound className="w-5 h-5" />,
+  "word-counter": <Type className="w-5 h-5" />,
+  "age-calculator": <CalendarDays className="w-5 h-5" />,
+  "color-converter": <Palette className="w-5 h-5" />,
+};
+
+const HERO_TILES = [
+  { label: "PASSWORDS", color: "bg-[#FF6B35]", icon: <KeyRound className="w-10 h-10 text-white" /> },
+  { label: "CALCULATORS", color: "bg-[#00D4AA]", icon: <Calculator className="w-10 h-10 text-foreground" /> },
+  { label: "TEXT TOOLS", color: "bg-[#FFD23F]", icon: <Type className="w-10 h-10 text-foreground" /> },
+  { label: "CONVERTERS", color: "bg-foreground", icon: <Ruler className="w-10 h-10 text-background" /> },
 ];
 
-const CATEGORIES = [
-  { name: "Calculators", icon: <Calculator />, count: "12 tools", color: "bg-[#FF6B35] text-white" },
-  { name: "Generators", icon: <Zap />, count: "8 tools", color: "bg-[#00D4AA] text-black" },
-  { name: "Converters", icon: <RefreshCw />, count: "15 tools", color: "bg-[#FFD23F] text-black" },
-  { name: "Text Tools", icon: <Type />, count: "10 tools", color: "bg-[#A742F5] text-white" },
-  { name: "Math Tools", icon: <BarChart />, count: "9 tools", color: "bg-[#FF3366] text-white" },
-  { name: "SEO Tools", icon: <SearchCheck />, count: "6 tools", color: "bg-[#3366FF] text-white" }
-];
+const CATEGORY_COLORS: Record<string, string> = {
+  "math": "bg-blue-500 text-white",
+  "finance": "bg-emerald-500 text-white",
+  "conversion": "bg-purple-500 text-white",
+  "time-date": "bg-orange-500 text-white",
+  "health": "bg-red-500 text-white",
+  "construction": "bg-yellow-500 text-foreground",
+  "productivity": "bg-teal-500 text-white",
+  "education": "bg-indigo-500 text-white",
+  "gaming": "bg-pink-500 text-white",
+};
+
+const CATEGORY_BG: Record<string, string> = {
+  "math": "border-blue-500",
+  "finance": "border-emerald-500",
+  "conversion": "border-purple-500",
+  "time-date": "border-orange-500",
+  "health": "border-red-500",
+  "construction": "border-yellow-500",
+  "productivity": "border-teal-500",
+  "education": "border-indigo-500",
+  "gaming": "border-pink-500",
+};
+
+function ToolCard({ tool }: { tool: Tool }) {
+  const icon = TOOL_ICON_MAP[tool.slug] || <Wrench className="w-5 h-5" />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3 }}
+    >
+      <Link
+        href={`/tools/${tool.slug}`}
+        className="group flex items-center gap-3 p-3 rounded-lg bg-card border-2 border-border hover:border-primary hover:-translate-y-0.5 transition-all duration-200 hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.15)]"
+      >
+        <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+          {icon}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-bold text-foreground truncate group-hover:text-primary transition-colors leading-tight">
+            {tool.title}
+          </p>
+          {tool.implemented && (
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Live ✓</span>
+          )}
+        </div>
+        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all flex-shrink-0" />
+      </Link>
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  const filteredTools = TOOLS.filter(t => 
-    t.title.toLowerCase().includes(search.toLowerCase()) || 
-    t.description.toLowerCase().includes(search.toLowerCase()) ||
-    t.category.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredTools = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    if (!q && activeCategory === "all") return null;
+    return ALL_TOOLS.filter(t => {
+      const matchesSearch = !q || t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.category.toLowerCase().includes(q);
+      const matchesCat = activeCategory === "all" || TOOL_CATEGORIES.find(c => c.id === activeCategory)?.name === t.category;
+      return matchesSearch && matchesCat;
+    });
+  }, [search, activeCategory]);
+
+  const totalTools = ALL_TOOLS.length;
+  const liveTools = ALL_TOOLS.filter(t => t.implemented).length;
 
   return (
     <Layout>
-      <SEO 
-        title="Your #1 Source for Free Online Tools" 
-        description="A bold, fast, and free collection of web utilities. Calculators, converters, generators and more." 
+      <SEO
+        title="Free Online Tools - US Online Tools"
+        description={`${totalTools}+ free online tools including calculators, converters, generators, and utilities. No signup required. 100% free at usonlinetools.com.`}
       />
-      
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden bg-background">
-        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-background to-background dark:from-background dark:to-background pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px]"></div>
-        </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left side text */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-left"
-            >
-              <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-black text-foreground tracking-tighter leading-[1.05] uppercase mb-8">
-                Your #1 Source <br />
-                For <span className="bg-primary text-primary-foreground px-2">Free</span> <br />
-                Online Tools
-              </h1>
-              
-              <p className="text-2xl font-medium text-muted-foreground mb-10 max-w-lg">
-                Stop bookmarking dozens of websites. US Online Tools brings you everything you need in one beautiful, ad-free interface.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <a href="#tools" className="px-8 py-5 rounded-xl bg-primary text-primary-foreground font-black text-xl uppercase tracking-wider hard-shadow border-2 border-foreground text-center transition-transform active:translate-y-1">
-                  Explore Tools
-                </a>
-                <a href="#categories" className="px-8 py-5 rounded-xl bg-transparent border-4 border-foreground text-foreground font-black text-xl uppercase tracking-wider text-center hover:bg-foreground hover:text-background transition-colors">
-                  Browse Categories
-                </a>
-              </div>
-
-              <div className="relative flex items-center p-2 rounded-xl bg-card border-4 border-foreground hard-shadow max-w-lg">
-                <Search className="w-8 h-8 text-muted-foreground ml-4" strokeWidth={3} />
-                <input 
-                  type="text" 
-                  placeholder="Search tools..."
-                  className="w-full bg-transparent border-none text-foreground px-4 py-4 focus:outline-none placeholder:text-muted-foreground/70 text-xl font-bold uppercase"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-            </motion.div>
-
-            {/* Right side abstract mosaic */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              className="hidden lg:grid grid-cols-2 gap-4 rotate-3"
-            >
-              <div className="bg-[#FF6B35] p-8 rounded-xl border-4 border-foreground hard-shadow flex flex-col items-center justify-center text-white aspect-square hover:-rotate-6 transition-transform">
-                <KeyRound className="w-16 h-16 mb-4" />
-                <span className="font-black text-xl uppercase tracking-wider">Passwords</span>
-              </div>
-              <div className="bg-[#00D4AA] p-8 rounded-xl border-4 border-foreground hard-shadow flex flex-col items-center justify-center text-black aspect-square translate-y-8 hover:rotate-6 transition-transform">
-                <Calculator className="w-16 h-16 mb-4" />
-                <span className="font-black text-xl uppercase tracking-wider">Calculators</span>
-              </div>
-              <div className="bg-[#FFD23F] p-8 rounded-xl border-4 border-foreground hard-shadow flex flex-col items-center justify-center text-black aspect-square hover:-rotate-3 transition-transform">
-                <Type className="w-16 h-16 mb-4" />
-                <span className="font-black text-xl uppercase tracking-wider">Text</span>
-              </div>
-              <div className="bg-foreground p-8 rounded-xl border-4 border-foreground hard-shadow flex flex-col items-center justify-center text-background aspect-square translate-y-8 hover:rotate-3 transition-transform">
-                <RefreshCw className="w-16 h-16 mb-4" />
-                <span className="font-black text-xl uppercase tracking-wider">Converters</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Strip */}
-      <section className="py-12 bg-[#111111] dark:bg-black text-white border-y-4 border-foreground">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-2 divide-gray-800">
-            <div>
-              <div className="text-5xl font-black mb-2 text-primary">200+</div>
-              <div className="text-gray-300 font-bold uppercase tracking-widest text-sm">Tools Available</div>
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden border-b-4 border-foreground">
+        <div className="absolute inset-0 hero-gradient opacity-60 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          {/* Left */}
+          <div>
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-2 border-primary font-bold uppercase text-sm px-4 py-2 rounded-full mb-6">
+              <Zap className="w-4 h-4" /> {totalTools}+ Free Tools — No Signup
             </div>
-            <div>
-              <div className="text-5xl font-black mb-2 text-[#00D4AA]">0</div>
-              <div className="text-gray-300 font-bold uppercase tracking-widest text-sm">Data Collected</div>
-            </div>
-            <div>
-              <div className="text-5xl font-black mb-2 text-[#FFD23F]">100%</div>
-              <div className="text-gray-300 font-bold uppercase tracking-widest text-sm">Free Forever</div>
-            </div>
-            <div>
-              <div className="text-5xl font-black mb-2 text-[#A742F5]">5★</div>
-              <div className="text-gray-300 font-bold uppercase tracking-widest text-sm">Rated by Users</div>
+            <h1 className="text-6xl md:text-7xl font-black text-foreground tracking-tighter leading-[0.9] uppercase mb-6">
+              YOUR #1 SOURCE FOR{" "}
+              <span className="inline-block bg-primary text-primary-foreground px-3 py-1 rotate-[-1deg] mt-2">FREE</span>{" "}
+              ONLINE TOOLS
+            </h1>
+            <p className="text-xl text-muted-foreground font-medium mb-8 max-w-lg">
+              Stop bookmarking dozens of sites. US Online Tools brings every calculator, converter, and generator you need — all in one place, always free.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a href="#all-tools" className="px-8 py-4 bg-primary text-primary-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
+                Explore Tools
+              </a>
+              <a href="#categories" className="px-8 py-4 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
+                Browse Categories
+              </a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Tools Grid Section */}
-      <section className="py-24 bg-background relative z-10" id="tools">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between">
-            <div className="border-l-8 border-primary pl-6">
-              <h2 className="text-4xl md:text-5xl font-black text-foreground mb-2 uppercase tracking-tight">Featured Tools</h2>
-              <p className="text-xl text-muted-foreground font-medium">Everything you need, instantly.</p>
-            </div>
-            <div className="mt-8 md:mt-0 flex flex-wrap gap-3">
-              {['All', 'Calculators', 'Generators', 'Converters', 'Text'].map((cat) => (
-                <button key={cat} className="px-6 py-3 rounded-full text-sm font-black uppercase tracking-wider bg-card border-2 border-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all text-foreground">
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {filteredTools.length === 0 ? (
-            <div className="text-center py-24 bg-card border-4 border-foreground rounded-xl border-dashed">
-              <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" strokeWidth={3} />
-              <h3 className="text-2xl font-black uppercase text-foreground mb-2">No tools found</h3>
-              <p className="text-lg font-medium text-muted-foreground">Try a different search term.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredTools.map((tool, idx) => (
-                <motion.div
-                  key={tool.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <Link 
-                    href={tool.path}
-                    className="block group h-full bg-card border-2 border-border hover:border-foreground p-8 rounded-xl hover:-rotate-1 transition-all duration-300 hard-shadow-primary"
-                  >
-                    <div className="flex justify-between items-start mb-8">
-                      <div className={`w-16 h-16 rounded-xl ${tool.color} border-2 border-foreground flex items-center justify-center text-foreground group-hover:scale-110 transition-transform duration-300`}>
-                        {tool.icon}
-                      </div>
-                      <span className="text-xs font-black uppercase tracking-wider px-4 py-2 rounded-full border-2 border-border text-muted-foreground group-hover:border-foreground group-hover:text-foreground transition-colors">
-                        {tool.category}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl font-black text-foreground mb-3 uppercase tracking-tight">
-                      {tool.title}
-                    </h3>
-                    <p className="text-muted-foreground font-medium mb-8 text-lg">
-                      {tool.description}
-                    </p>
-                    <div className="flex items-center text-sm font-black uppercase tracking-wider text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                      Open Tool <ArrowRight className="w-5 h-5 ml-2" strokeWidth={3} />
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-      
-      {/* Categories Section */}
-      <section className="py-24 bg-muted/50" id="categories">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-8 border-foreground pl-6 mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-2 uppercase tracking-tight">Tool Categories</h2>
-            <p className="text-xl text-muted-foreground font-medium">Explore by type.</p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CATEGORIES.map((cat, idx) => (
+          {/* Right — tile grid */}
+          <div className="hidden lg:grid grid-cols-2 gap-4">
+            {HERO_TILES.map((tile, i) => (
               <motion.div
-                key={cat.name}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className={`${cat.color} p-8 border-4 border-foreground hard-shadow rounded-xl flex items-center justify-between group cursor-pointer hover:-translate-y-2 transition-transform`}
+                key={tile.label}
+                initial={{ opacity: 0, y: 20, rotate: i % 2 === 0 ? -2 : 2 }}
+                animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className={`${tile.color} rounded-2xl border-4 border-foreground hard-shadow p-8 flex flex-col items-center justify-center aspect-square`}
               >
-                <div className="flex items-center space-x-6">
-                  <div className="w-16 h-16 bg-background/20 rounded-xl flex items-center justify-center border-2 border-transparent group-hover:scale-110 transition-transform">
-                    {cat.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-black text-2xl uppercase tracking-tight">{cat.name}</h3>
-                    <p className="text-lg font-bold opacity-80">{cat.count}</p>
-                  </div>
-                </div>
+                {tile.icon}
+                <span className="mt-4 font-black uppercase tracking-wider text-sm">{tile.label}</span>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-24 bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-8 border-primary pl-6 mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-2 uppercase tracking-tight">Why US Online Tools?</h2>
-            <p className="text-xl text-muted-foreground font-medium">No fluff, just tools.</p>
-          </div>
-          
-          <div className="space-y-8">
-            <div className="flex flex-col md:flex-row items-center gap-8 bg-card border-2 border-border p-8 rounded-xl hover:border-primary transition-colors">
-              <div className="w-24 h-24 shrink-0 rounded-xl bg-primary text-primary-foreground border-4 border-foreground flex items-center justify-center text-4xl font-black hard-shadow">
-                1
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-foreground mb-2 uppercase">100% Free Forever</h3>
-                <p className="text-lg text-muted-foreground font-medium">No paywalls, no premium subscriptions, no hidden limits. Everything is free to use.</p>
-              </div>
+      {/* ── STATS STRIP ── */}
+      <section className="bg-foreground text-background py-8 border-b-4 border-primary">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 divide-x divide-background/20">
+          {[
+            { number: `${totalTools}+`, label: "Tools Available" },
+            { number: "0", label: "Data Collected" },
+            { number: "100%", label: "Free Forever" },
+            { number: `${liveTools}`, label: "Live Tools" },
+          ].map(({ number, label }) => (
+            <div key={label} className="px-6 py-2 text-center">
+              <div className="text-4xl font-black text-primary">{number}</div>
+              <div className="text-sm font-bold uppercase tracking-wider text-background/70 mt-1">{label}</div>
             </div>
-
-            <div className="flex flex-col md:flex-row-reverse items-center gap-8 bg-card border-2 border-border p-8 rounded-xl hover:border-[#00D4AA] transition-colors">
-              <div className="w-24 h-24 shrink-0 rounded-xl bg-[#00D4AA] text-black border-4 border-foreground flex items-center justify-center text-4xl font-black hard-shadow">
-                2
-              </div>
-              <div className="text-left md:text-right">
-                <h3 className="text-2xl font-black text-foreground mb-2 uppercase">No Registration</h3>
-                <p className="text-lg text-muted-foreground font-medium">Don't want to create another account? Neither do we. Start using any tool instantly.</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row items-center gap-8 bg-card border-2 border-border p-8 rounded-xl hover:border-[#FFD23F] transition-colors">
-              <div className="w-24 h-24 shrink-0 rounded-xl bg-[#FFD23F] text-black border-4 border-foreground flex items-center justify-center text-4xl font-black hard-shadow">
-                3
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-foreground mb-2 uppercase">Privacy First</h3>
-                <p className="text-lg text-muted-foreground font-medium">Your data never leaves your device. All tools execute locally inside your browser.</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 bg-muted/50 border-y-4 border-foreground">
+      {/* ── SEARCH + FILTERS ── */}
+      <section id="all-tools" className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground mb-6 uppercase tracking-tighter">How It Works</h2>
+          <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+            <div className="relative flex-1 max-w-xl">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <input
+                type="search"
+                placeholder="Search tools (e.g. 'BMI', 'Roblox', 'Mortgage')..."
+                className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground font-medium focus:outline-none focus:border-primary transition-colors"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => { setActiveCategory("all"); setSearch(""); }}
+                className={`px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-colors ${activeCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary"}`}
+              >
+                All
+              </button>
+              {TOOL_CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
+                  className={`px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-colors ${activeCategory === cat.id ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary"}`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12 relative">
-            <div className="hidden md:block absolute top-16 left-[15%] right-[15%] h-2 border-t-4 border-dashed border-foreground z-0"></div>
-            
-            <div className="relative z-10 flex-1 text-center group">
-              <div className="text-8xl font-black text-primary mb-6 transition-transform group-hover:-translate-y-2">01</div>
-              <h3 className="text-3xl font-black text-foreground mb-4 uppercase">Find</h3>
-              <p className="text-lg text-muted-foreground font-medium">Search or browse our categories.</p>
+          {/* Search Results */}
+          {filteredTools !== null && (
+            <div>
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6">
+                {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
+              </p>
+              {filteredTools.length === 0 ? (
+                <div className="text-center py-20 bg-card border-2 border-dashed border-border rounded-xl">
+                  <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-xl font-black uppercase text-foreground">No tools found</h3>
+                  <p className="text-muted-foreground mt-2">Try a different search term.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {filteredTools.map(tool => <ToolCard key={tool.slug} tool={tool} />)}
+                </div>
+              )}
             </div>
-            
-            <div className="relative z-10 flex-1 text-center group">
-              <div className="text-8xl font-black text-[#00D4AA] mb-6 transition-transform group-hover:-translate-y-2">02</div>
-              <h3 className="text-3xl font-black text-foreground mb-4 uppercase">Input</h3>
-              <p className="text-lg text-muted-foreground font-medium">Enter your data securely on your device.</p>
+          )}
+
+          {/* All categories (default) */}
+          {filteredTools === null && (
+            <div className="space-y-16">
+              {TOOL_CATEGORIES.map(cat => (
+                <div key={cat.id} id={cat.id}>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground`}>
+                        {CATEGORY_ICONS[cat.id]}
+                      </div>
+                      <div>
+                        <h2 className={`text-2xl font-black uppercase tracking-tight text-foreground border-l-4 ${CATEGORY_BG[cat.id]} pl-3`}>
+                          {cat.name}
+                        </h2>
+                        <p className="text-sm text-muted-foreground font-medium">{cat.tools.length} tools</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setActiveCategory(cat.id)}
+                      className="hidden sm:flex items-center gap-2 text-sm font-bold text-primary hover:underline uppercase tracking-wider"
+                    >
+                      View All <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    {cat.tools.map(tool => <ToolCard key={tool.slug} tool={tool} />)}
+                  </div>
+                </div>
+              ))}
             </div>
-            
-            <div className="relative z-10 flex-1 text-center group">
-              <div className="text-8xl font-black text-[#FFD23F] mb-6 transition-transform group-hover:-translate-y-2">03</div>
-              <h3 className="text-3xl font-black text-foreground mb-4 uppercase">Result</h3>
-              <p className="text-lg text-muted-foreground font-medium">Get instant real-time results.</p>
-            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── CATEGORIES SHOWCASE ── */}
+      <section id="categories" className="py-20 bg-muted/30 border-t-4 border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12">
+            <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground border-l-8 border-primary pl-4">
+              Browse by Category
+            </h2>
+            <p className="text-muted-foreground font-medium mt-2 ml-5">
+              {TOOL_CATEGORIES.length} categories · {totalTools}+ tools total
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {TOOL_CATEGORIES.map((cat, i) => (
+              <motion.button
+                key={cat.id}
+                onClick={() => { setActiveCategory(cat.id); document.getElementById("all-tools")?.scrollIntoView({ behavior: "smooth" }); }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className="group text-left bg-card border-2 border-border hover:border-primary rounded-xl p-6 hard-shadow hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+              >
+                <div className={`w-12 h-12 rounded-xl ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground mb-4`}>
+                  {CATEGORY_ICONS[cat.id]}
+                </div>
+                <h3 className="text-lg font-black uppercase tracking-tight text-foreground mb-1 group-hover:text-primary transition-colors">
+                  {cat.name}
+                </h3>
+                <p className="text-sm text-muted-foreground font-medium mb-3">{cat.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground bg-muted px-3 py-1 rounded-full">
+                    {cat.tools.length} tools
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </motion.button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* SEO text block */}
-      <section className="py-24 bg-background">
+      {/* ── WHY CHOOSE US ── */}
+      <section className="py-20 bg-background border-t-4 border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground">
+              Why Choose US Online Tools?
+            </h2>
+            <p className="text-muted-foreground font-medium mt-3 max-w-2xl mx-auto">
+              Built for simplicity, speed, and privacy. Everything you need, nothing you don't.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: <Zap className="w-7 h-7" />, color: "bg-[#FFD23F] text-foreground", title: "100% Free Forever", desc: "No paywalls, no subscriptions, no credit cards. Every tool is free." },
+              { icon: <Users className="w-7 h-7" />, color: "bg-[#FF6B35] text-white", title: "No Registration", desc: "Start using any tool instantly. We never ask for your email or personal info." },
+              { icon: <ShieldCheck className="w-7 h-7" />, color: "bg-[#00D4AA] text-white", title: "Privacy First", desc: "All tools run in your browser. Your data never leaves your device." },
+              { icon: <Smartphone className="w-7 h-7" />, color: "bg-indigo-500 text-white", title: "Mobile Friendly", desc: "Fully responsive. Works perfectly on any phone, tablet, or desktop." },
+              { icon: <Ban className="w-7 h-7" />, color: "bg-red-500 text-white", title: "No Annoying Ads", desc: "Clean, distraction-free experience. No pop-ups or interruptions." },
+              { icon: <Star className="w-7 h-7" />, color: "bg-pink-500 text-white", title: "Always Growing", desc: "New tools added regularly. Bookmark usonlinetools.com and check back often." },
+            ].map(({ icon, color, title, desc }) => (
+              <div key={title} className="bg-card border-2 border-border rounded-xl p-6 hover:border-primary transition-colors hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
+                <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center border-2 border-foreground mb-4`}>
+                  {icon}
+                </div>
+                <h3 className="text-lg font-black uppercase tracking-tight text-foreground mb-2">{title}</h3>
+                <p className="text-muted-foreground font-medium text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section className="py-20 bg-foreground text-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-black uppercase tracking-tighter text-primary text-center mb-16">
+            How It Works
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            {[
+              { n: "01", title: "Find Your Tool", desc: "Search or browse by category to find the tool you need from our library of 120+ utilities." },
+              { n: "02", title: "Enter Your Data", desc: "Type in your values — no forms, no sign-ups, no loading screens. Just instant results." },
+              { n: "03", title: "Get Results", desc: "See your answer instantly. Copy, share, or bookmark the result with a single click." },
+            ].map(({ n, title, desc }, i) => (
+              <motion.div
+                key={n}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="text-center"
+              >
+                <div className="text-8xl font-black text-primary leading-none mb-4">{n}</div>
+                <h3 className="text-2xl font-black uppercase tracking-tight text-background mb-3">{title}</h3>
+                <p className="text-background/70 font-medium">{desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEO CONTENT ── */}
+      <section className="py-16 bg-background border-t-4 border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-card border-4 border-foreground p-10 md:p-12 rounded-xl border-l-[16px] border-l-primary hard-shadow">
-            <h2 className="text-3xl md:text-4xl font-black text-foreground mb-6 uppercase tracking-tight">Your Go-To Resource</h2>
-            <p className="text-lg font-medium text-muted-foreground leading-relaxed">
-              US Online Tools is your comprehensive platform for free online utilities designed to save you time. 
-              Whether you're a developer needing a <Link href="/tools/color-converter" className="text-foreground underline decoration-primary decoration-4 font-bold hover:text-primary">Color Converter</Link>, 
-              a student using our <Link href="/tools/percentage-calculator" className="text-foreground underline decoration-[#00D4AA] decoration-4 font-bold hover:text-[#00D4AA]">Percentage Calculator</Link>, 
-              a writer depending on our precise <Link href="/tools/word-counter" className="text-foreground underline decoration-[#FFD23F] decoration-4 font-bold hover:text-[#FFD23F]">Word Counter</Link>, 
-              or anyone looking for a secure <Link href="/tools/password-generator" className="text-foreground underline decoration-primary decoration-4 font-bold hover:text-primary">Password Generator</Link> and 
-              an easy-to-use <Link href="/tools/age-calculator" className="text-foreground underline decoration-[#00D4AA] decoration-4 font-bold hover:text-[#00D4AA]">Age Calculator</Link> — we have you covered. 
-              Our commitment is to provide fast, privacy-focused, and completely free web tools for everyone.
+          <div className="border-l-8 border-primary pl-6 bg-card border-2 border-border rounded-r-xl p-8">
+            <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-4">
+              About US Online Tools
+            </h2>
+            <p className="text-muted-foreground font-medium leading-relaxed mb-4">
+              <strong className="text-foreground">US Online Tools</strong> (usonlinetools.com) is your go-to source for free, fast, and private online utilities. Whether you need a{" "}
+              <Link href="/tools/percentage-calculator" className="text-primary font-bold hover:underline">Percentage Calculator</Link>,{" "}
+              <Link href="/tools/password-generator" className="text-primary font-bold hover:underline">Password Generator</Link>,{" "}
+              <Link href="/tools/bmi-calculator" className="text-primary font-bold hover:underline">BMI Calculator</Link>,{" "}
+              <Link href="/tools/loan-emi-calculator" className="text-primary font-bold hover:underline">Loan EMI Calculator</Link>,{" "}
+              <Link href="/tools/color-converter" className="text-primary font-bold hover:underline">Color Converter</Link>, or a{" "}
+              <Link href="/tools/gpa-calculator" className="text-primary font-bold hover:underline">GPA Calculator</Link>{" "}
+              — we have everything covered across {TOOL_CATEGORIES.length} categories.
+            </p>
+            <p className="text-muted-foreground font-medium leading-relaxed">
+              All tools run entirely in your browser with no data collection, no registration, and no hidden fees. From finance calculators like the{" "}
+              <Link href="/tools/compound-interest-calculator" className="text-primary font-bold hover:underline">Compound Interest Calculator</Link> to gaming tools like the{" "}
+              <Link href="/tools/roblox-tax-calculator" className="text-primary font-bold hover:underline">Roblox Tax Calculator</Link>,{" "}
+              usonlinetools.com is built for everyone.
             </p>
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-24 bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-primary p-12 md:p-20 text-center rounded-xl border-4 border-foreground hard-shadow relative overflow-hidden">
-            <div className="relative z-10">
-              <h2 className="text-4xl md:text-6xl font-black text-primary-foreground mb-6 tracking-tighter uppercase leading-[1.1]">
-                Stop Struggling with<br/>Online Tasks
-              </h2>
-              <p className="text-2xl text-primary-foreground/90 font-medium mb-12 max-w-2xl mx-auto">
-                Join over 1 million users who trust our suite of free online utilities every month.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a href="#tools" className="w-full sm:w-auto px-10 py-5 rounded-xl bg-foreground text-background font-black text-xl uppercase tracking-wider hard-shadow border-2 border-foreground hover:-translate-y-1 active:translate-y-1 transition-transform">
-                  Explore Tools
-                </a>
-                <button 
-                  onClick={() => navigator.clipboard.writeText(window.location.href)}
-                  className="w-full sm:w-auto px-10 py-5 rounded-xl bg-transparent border-4 border-foreground text-foreground font-black text-xl uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
-                >
-                  Share Site
-                </button>
-              </div>
-            </div>
+      {/* ── CTA BANNER ── */}
+      <section className="bg-primary border-t-4 border-foreground py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-primary-foreground mb-4">
+            Bookmark usonlinetools.com
+          </h2>
+          <p className="text-primary-foreground/80 font-medium text-xl mb-8">
+            Never struggle with online tasks again. {totalTools}+ tools, all free, all instant.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <a href="#all-tools" className="px-8 py-4 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
+              Explore All Tools
+            </a>
+            <button
+              onClick={() => navigator.clipboard.writeText("https://usonlinetools.com")}
+              className="px-8 py-4 bg-primary-foreground/10 text-primary-foreground font-black uppercase tracking-wider rounded-xl border-2 border-primary-foreground hover:-translate-y-1 transition-transform"
+            >
+              Copy Site URL
+            </button>
           </div>
         </div>
       </section>
