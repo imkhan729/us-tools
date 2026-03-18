@@ -63,30 +63,45 @@ const CATEGORY_BG: Record<string, string> = {
 };
 
 function ToolCard({ tool }: { tool: Tool }) {
-  const icon = TOOL_ICON_MAP[tool.slug] || <Wrench className="w-5 h-5" />;
+  const icon = TOOL_ICON_MAP[tool.slug] || <Wrench className="w-4 h-4" />;
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
+      whileHover={{ y: -3 }}
     >
       <Link
         href={`/tools/${tool.slug}`}
-        className="group flex items-center gap-3 p-3 rounded-lg bg-card border-2 border-border hover:border-primary hover:-translate-y-0.5 transition-all duration-200 hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.15)]"
+        className="group flex items-start gap-3 p-4 rounded-xl bg-card border border-border
+          shadow-[0_2px_8px_hsl(var(--foreground)/0.06)]
+          hover:shadow-[0_8px_24px_hsl(var(--foreground)/0.12),0_2px_6px_hsl(var(--foreground)/0.08)]
+          hover:border-primary/50
+          transition-all duration-200 relative overflow-hidden"
       >
-        <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+        {/* left accent stripe */}
+        <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+        <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0
+          group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200 mt-0.5">
           {icon}
         </div>
+
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-foreground truncate group-hover:text-primary transition-colors leading-tight">
+          <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug mb-0.5 truncate">
             {tool.title}
           </p>
+          <p className="text-xs text-muted-foreground leading-tight line-clamp-1">{tool.description}</p>
           {tool.implemented && (
-            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Live ✓</span>
+            <span className="inline-flex items-center gap-1 mt-1.5 text-[10px] font-bold uppercase tracking-wide bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+              Live
+            </span>
           )}
         </div>
-        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all flex-shrink-0" />
+
+        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1 -mr-1 group-hover:translate-x-0.5" />
       </Link>
     </motion.div>
   );
