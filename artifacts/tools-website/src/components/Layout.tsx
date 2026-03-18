@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { Globe, Menu, X, Github, Twitter, Sun, Moon } from "lucide-react";
+import { Bolt, Menu, X, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
@@ -18,16 +18,14 @@ export function Layout({ children }: { children: ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col relative bg-background text-foreground transition-colors duration-300">
-      
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl">
+    <div className="min-h-screen flex flex-col relative bg-background text-foreground">
+      <div className="noise-overlay"></div>
+      <header className="sticky top-0 z-50 w-full border-b-2 border-border bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center transition-transform group-hover:scale-105">
-                <Globe className="w-6 h-6" />
-              </div>
-              <span className="font-display font-bold text-2xl tracking-tight text-foreground">
+              <Bolt className="w-8 h-8 text-primary" strokeWidth={2.5} />
+              <span className="font-display font-black text-2xl tracking-tighter text-foreground uppercase">
                 US Online <span className="text-primary">Tools</span>
               </span>
             </Link>
@@ -38,9 +36,9 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Link 
                   key={link.name} 
                   href={link.path}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    location === link.path ? "text-primary" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-primary ${
+                    location === link.path ? "text-primary border-b-2 border-primary pb-1" : "text-foreground"
+                  } hover:underline decoration-primary decoration-2 underline-offset-4`}
                 >
                   {link.name}
                 </Link>
@@ -48,7 +46,7 @@ export function Layout({ children }: { children: ReactNode }) {
               
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                className="p-2 rounded-xl border-2 border-border bg-card text-foreground hover:border-primary hover:text-primary transition-colors"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -59,16 +57,16 @@ export function Layout({ children }: { children: ReactNode }) {
             <div className="flex items-center space-x-4 md:hidden">
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                className="p-2 rounded-xl border-2 border-border bg-card text-foreground hover:border-primary hover:text-primary transition-colors"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
               <button 
-                className="p-2 text-muted-foreground hover:text-foreground"
+                className="p-2 text-foreground border-2 border-border rounded-xl hover:border-primary hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                {isMobileMenuOpen ? <X /> : <Menu />}
+                {isMobileMenuOpen ? <X className="w-5 h-5"/> : <Menu className="w-5 h-5"/>}
               </button>
             </div>
           </div>
@@ -82,14 +80,14 @@ export function Layout({ children }: { children: ReactNode }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed top-20 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border shadow-lg shadow-black/5"
+            className="md:hidden fixed top-16 left-0 right-0 z-40 bg-background border-b-2 border-border shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.path}
-                  className="block text-lg font-medium text-muted-foreground hover:text-foreground"
+                  className="block text-xl font-bold uppercase tracking-wider text-foreground hover:text-primary"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
@@ -104,48 +102,52 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <footer className="w-full border-t border-border bg-muted/30 mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <Globe className="w-6 h-6 text-primary" />
-                <span className="font-display font-bold text-xl text-foreground">US Online Tools</span>
+      <footer className="w-full mt-24 bg-[#111111] text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div className="col-span-1 md:col-span-1">
+              <div className="flex items-center space-x-2 mb-6">
+                <Bolt className="w-8 h-8 text-primary" strokeWidth={2.5} />
+                <span className="font-display font-black text-2xl tracking-tighter uppercase">
+                  US Online <span className="text-primary">Tools</span>
+                </span>
               </div>
-              <p className="text-muted-foreground max-w-sm mb-6">
-                Your ultimate collection of free, beautiful, and blazing fast online tools. No tracking, no saving your data, purely client-side utilities.
+              <p className="text-gray-400 mb-6 font-medium">
+                Your ultimate collection of free, blazing fast online tools. No tracking, purely client-side.
               </p>
-              <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-                  <Twitter className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-                  <Github className="w-5 h-5" />
-                </a>
-              </div>
             </div>
             
             <div>
-              <h4 className="font-semibold text-foreground mb-4">Top Tools</h4>
-              <ul className="space-y-2">
-                <li><Link href="/tools/percentage-calculator" className="text-muted-foreground hover:text-primary transition-colors">Percentage Calculator</Link></li>
-                <li><Link href="/tools/password-generator" className="text-muted-foreground hover:text-primary transition-colors">Password Generator</Link></li>
-                <li><Link href="/tools/word-counter" className="text-muted-foreground hover:text-primary transition-colors">Word Counter</Link></li>
+              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Top Tools</h4>
+              <ul className="space-y-3 font-medium">
+                <li><Link href="/tools/percentage-calculator" className="text-gray-300 hover:text-primary transition-colors">Percentage Calculator</Link></li>
+                <li><Link href="/tools/password-generator" className="text-gray-300 hover:text-primary transition-colors">Password Generator</Link></li>
+                <li><Link href="/tools/word-counter" className="text-gray-300 hover:text-primary transition-colors">Word Counter</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-foreground mb-4">Legal</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a></li>
+              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Categories</h4>
+              <ul className="space-y-3 font-medium">
+                <li><Link href="/#calculators" className="text-gray-300 hover:text-primary transition-colors">Calculators</Link></li>
+                <li><Link href="/#generators" className="text-gray-300 hover:text-primary transition-colors">Generators</Link></li>
+                <li><Link href="/#converters" className="text-gray-300 hover:text-primary transition-colors">Converters</Link></li>
+                <li><Link href="/#text" className="text-gray-300 hover:text-primary transition-colors">Text Tools</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Legal</h4>
+              <ul className="space-y-3 font-medium">
+                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Contact Us</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground text-sm">
-            <p>&copy; 2025 usonlinetools.com. All rights reserved.</p>
-          </div>
+        </div>
+        <div className="bg-primary py-4 text-center text-primary-foreground font-bold">
+          <p>&copy; {new Date().getFullYear()} USOnlineTools.com. ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
     </div>
