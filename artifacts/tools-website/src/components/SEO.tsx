@@ -8,8 +8,9 @@ interface SEOProps {
 }
 
 export function SEO({ title, description, canonical, schema }: SEOProps) {
-  const siteName = "ToolsHub";
+  const siteName = "US Online Tools";
   const fullTitle = `${title} | ${siteName}`;
+  const canonicalUrl = canonical || "https://usonlinetools.com";
 
   return (
     <Helmet>
@@ -18,10 +19,11 @@ export function SEO({ title, description, canonical, schema }: SEOProps) {
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
+      <meta property="og:site_name" content={siteName} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      {canonical && <link rel="canonical" href={canonical} />}
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       {schema && (
         <script type="application/ld+json">
           {JSON.stringify(schema)}

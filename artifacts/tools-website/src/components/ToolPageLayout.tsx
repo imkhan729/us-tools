@@ -22,9 +22,9 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {/* Breadcrumbs */}
         <nav className="flex items-center text-sm text-muted-foreground mb-8">
-          <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
-          <span className="text-white">Tools</span>
+          <span className="text-foreground">Tools</span>
           <ChevronRight className="w-4 h-4 mx-2 opacity-50" />
           <span className="text-primary truncate">{title}</span>
         </nav>
@@ -37,7 +37,7 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
             >
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">{title}</h1>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">{title}</h1>
               <p className="text-lg text-muted-foreground">{description}</p>
             </motion.div>
 
@@ -56,8 +56,8 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
               viewport={{ once: true }}
               className="glass-card p-8 rounded-3xl"
             >
-              <h2 className="text-2xl font-bold text-white mb-6">How to use this tool</h2>
-              <div className="prose prose-invert max-w-none text-muted-foreground">
+              <h2 className="text-2xl font-bold text-foreground mb-6">How to use this tool</h2>
+              <div className="prose prose-invert dark:prose-invert prose-slate max-w-none text-muted-foreground">
                 {howToUse}
               </div>
             </motion.section>
@@ -68,11 +68,11 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-bold text-white">Frequently Asked Questions</h2>
+              <h2 className="text-2xl font-bold text-foreground">Frequently Asked Questions</h2>
               <div className="space-y-4">
                 {faq.map((item, index) => (
-                  <div key={index} className="glass-card p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors">
-                    <h3 className="text-lg font-semibold text-white mb-2">{item.q}</h3>
+                  <div key={index} className="glass-card p-6 rounded-2xl border border-border hover:border-primary/20 transition-colors">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{item.q}</h3>
                     <p className="text-muted-foreground">{item.a}</p>
                   </div>
                 ))}
@@ -84,19 +84,19 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
           <div className="space-y-8">
             <div className="sticky top-28">
               <div className="glass-card p-6 rounded-3xl relative overflow-hidden">
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
-                <h3 className="text-xl font-bold text-white mb-6">Related Tools</h3>
+                <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+                <h3 className="text-xl font-bold text-foreground mb-6">Related Tools</h3>
                 <div className="space-y-4">
                   {related.map((item, index) => (
                     <Link 
                       key={index} 
                       href={item.path}
-                      className="group flex items-center p-3 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/10"
+                      className="group flex items-center p-3 rounded-xl hover:bg-muted transition-all border border-transparent hover:border-border"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-background flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                      <div className="w-10 h-10 rounded-lg bg-background flex items-center justify-center text-primary group-hover:scale-110 transition-transform shadow-sm">
                         {item.icon}
                       </div>
-                      <span className="ml-4 font-medium text-muted-foreground group-hover:text-white transition-colors">
+                      <span className="ml-4 font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                         {item.title}
                       </span>
                     </Link>
@@ -104,12 +104,12 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
                 </div>
               </div>
               
-              <div className="mt-8 glass-card p-6 rounded-3xl bg-gradient-to-br from-secondary/10 to-accent/10 border-secondary/20">
-                <h3 className="text-lg font-bold text-white mb-2">Love this tool?</h3>
+              <div className="mt-8 glass-card p-6 rounded-3xl bg-primary/5 border-primary/10">
+                <h3 className="text-lg font-bold text-foreground mb-2">Love this tool?</h3>
                 <p className="text-sm text-muted-foreground mb-4">Share it with your friends and colleagues to help them save time!</p>
                 <button 
                   onClick={() => navigator.clipboard.writeText(window.location.href)}
-                  className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition-colors border border-white/10"
+                  className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-medium transition-colors shadow-sm"
                 >
                   Copy Link
                 </button>

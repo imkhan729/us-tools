@@ -37,30 +37,56 @@
 }
 
 :root {
-  /* Forced dark electric theme for maximum visual impact */
-  --background: 230 45% 5%;
-  --foreground: 210 40% 98%;
+  --background: 0 0% 100%; 
+  --foreground: 222 47% 11%; 
   
-  --border: 230 30% 20%;
-  --input: 230 30% 15%;
-  --ring: 190 90% 50%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 239 84% 67%;
   
-  --card: 230 40% 8%;
-  --card-foreground: 210 40% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
   
-  --primary: 190 90% 50%; /* Electric Cyan */
-  --primary-foreground: 230 50% 10%;
+  --primary: 239 84% 67%;
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 270 80% 60%; /* Neon Purple */
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 262 80% 50%;
+  --secondary-foreground: 0 0% 100%;
   
-  --accent: 320 80% 60%; /* Hot Pink */
-  --accent-foreground: 210 40% 98%;
+  --accent: 316 70% 50%;
+  --accent-foreground: 0 0% 100%;
   
-  --muted: 230 30% 15%;
-  --muted-foreground: 230 20% 65%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
   
   --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+}
+
+.dark {
+  --background: 226 71% 6%;
+  --foreground: 213 31% 91%;
+  
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  --ring: 239 84% 67%;
+  
+  --card: 226 57% 10%;
+  --card-foreground: 213 31% 91%;
+  
+  --primary: 239 84% 67%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 262 80% 60%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --accent: 316 70% 60%;
+  --accent-foreground: 0 0% 100%;
+  
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20% 65%;
+  
+  --destructive: 0 62% 30%;
   --destructive-foreground: 210 40% 98%;
 }
 
@@ -70,11 +96,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(190, 90%, 50%, 0.08), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(270, 80%, 60%, 0.08), transparent 25%);
-    background-attachment: fixed;
+    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden transition-colors duration-300;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -84,19 +106,27 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+    @apply bg-card text-card-foreground border border-border shadow-sm transition-all duration-300;
+  }
+  
+  .dark .glass-card {
+    @apply shadow-none shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)];
+  }
+
+  .glass-card:hover {
+    @apply shadow-md border-primary/20;
+  }
+
+  .dark .glass-card:hover {
+    @apply border-primary/30 shadow-[0_0_20px_-10px_rgba(103,99,235,0.3)];
   }
   
   .glass-input {
-    @apply bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 text-white rounded-xl transition-all duration-300;
+    @apply bg-background border border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20 text-foreground rounded-xl transition-all duration-300;
   }
   
   .neon-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent;
-  }
-
-  .neon-glow {
-    box-shadow: 0 0 20px rgba(190, 229, 255, 0.3), inset 0 0 20px rgba(190, 229, 255, 0.1);
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
   }
 }
 

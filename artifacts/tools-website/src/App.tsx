@@ -1,6 +1,7 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 // Pages
 import Home from "./pages/Home";
@@ -36,13 +37,15 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="light" storageKey="us-online-tools-theme">
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
