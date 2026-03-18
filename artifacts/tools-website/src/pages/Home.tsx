@@ -119,7 +119,7 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="relative overflow-hidden border-b-4 border-foreground">
         <div className="absolute inset-0 hero-gradient opacity-60 pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 md:pt-10 md:pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left */}
           <div>
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-2 border-primary font-bold uppercase text-sm px-4 py-2 rounded-full mb-6">
