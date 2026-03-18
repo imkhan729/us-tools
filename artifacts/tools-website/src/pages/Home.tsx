@@ -125,35 +125,38 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-2 border-primary font-bold uppercase text-sm px-4 py-2 rounded-full mb-6">
               <Zap className="w-4 h-4" /> {totalTools}+ Free Tools — No Signup
             </div>
-            <h1 className="text-6xl md:text-7xl font-black text-foreground tracking-tighter leading-[0.9] uppercase mb-6">
+            <h1 className="text-5xl md:text-6xl font-black text-foreground tracking-tighter leading-[0.9] uppercase mb-4">
               YOUR #1 SOURCE FOR{" "}
-              <span className="inline-block bg-primary text-primary-foreground px-3 py-1 rotate-[-1deg] mt-2">FREE</span>{" "}
+              <span className="inline-block bg-primary text-primary-foreground px-3 py-1 rotate-[-1deg] mt-1">FREE</span>{" "}
               ONLINE TOOLS
             </h1>
-            <p className="text-xl text-muted-foreground font-medium mb-8 max-w-lg">
+            <p className="text-lg text-muted-foreground font-medium mb-6 max-w-lg">
               Stop bookmarking dozens of sites. US Online Tools brings every calculator, converter, and generator you need — all in one place, always free.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="#all-tools" className="px-8 py-4 bg-primary text-primary-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
+            <div className="flex flex-wrap gap-3">
+              <a href="#all-tools" className="px-6 py-3 bg-primary text-primary-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
                 Explore Tools
               </a>
-              <a href="#categories" className="px-8 py-4 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
+              <a href="#categories" className="px-6 py-3 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">
                 Browse Categories
               </a>
             </div>
           </div>
           {/* Right — tile grid */}
-          <div className="hidden lg:grid grid-cols-2 gap-4">
+          <div className="hidden lg:grid grid-cols-2 gap-3">
             {HERO_TILES.map((tile, i) => (
               <motion.div
                 key={tile.label}
                 initial={{ opacity: 0, y: 20, rotate: i % 2 === 0 ? -2 : 2 }}
                 animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
+                whileHover={{ y: -8, scale: 1.04, rotate: 0, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.96 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className={`${tile.color} rounded-2xl border-4 border-foreground hard-shadow p-8 flex flex-col items-center justify-center aspect-square`}
+                className={`${tile.color} rounded-2xl border-4 border-foreground hard-shadow p-5 flex flex-col items-center justify-center cursor-pointer`}
+                style={{ height: "150px" }}
               >
                 {tile.icon}
-                <span className="mt-4 font-black uppercase tracking-wider text-sm">{tile.label}</span>
+                <span className="mt-2 font-black uppercase tracking-wider text-xs">{tile.label}</span>
               </motion.div>
             ))}
           </div>
