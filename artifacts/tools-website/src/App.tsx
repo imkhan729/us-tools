@@ -10,6 +10,11 @@ import PasswordGenerator from "./pages/PasswordGenerator";
 import WordCounter from "./pages/WordCounter";
 import AgeCalculator from "./pages/AgeCalculator";
 import ColorConverter from "./pages/ColorConverter";
+import BmiCalculator from "./pages/BmiCalculator";
+import TipCalculator from "./pages/TipCalculator";
+import DiscountCalculator from "./pages/DiscountCalculator";
+import RandomNumberGenerator from "./pages/RandomNumberGenerator";
+import TemperatureConverter from "./pages/TemperatureConverter";
 import ToolPlaceholder from "./pages/ToolPlaceholder";
 import NotFound from "./pages/not-found";
 
@@ -32,6 +37,11 @@ function Router() {
       <Route path="/tools/word-counter" component={WordCounter} />
       <Route path="/tools/age-calculator" component={AgeCalculator} />
       <Route path="/tools/color-converter" component={ColorConverter} />
+      <Route path="/tools/bmi-calculator" component={BmiCalculator} />
+      <Route path="/tools/tip-calculator" component={TipCalculator} />
+      <Route path="/tools/discount-calculator" component={DiscountCalculator} />
+      <Route path="/tools/random-number-generator" component={RandomNumberGenerator} />
+      <Route path="/tools/temperature-converter" component={TemperatureConverter} />
       {/* Catch-all for all other tool pages (placeholder) */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
       <Route component={NotFound} />
