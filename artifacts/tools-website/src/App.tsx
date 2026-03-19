@@ -15,6 +15,7 @@ import TipCalculator from "./pages/TipCalculator";
 import DiscountCalculator from "./pages/DiscountCalculator";
 import RandomNumberGenerator from "./pages/RandomNumberGenerator";
 import TemperatureConverter from "./pages/TemperatureConverter";
+import CategoryPage from "./pages/CategoryPage";
 import ToolPlaceholder from "./pages/ToolPlaceholder";
 import NotFound from "./pages/not-found";
 
@@ -42,6 +43,8 @@ function Router() {
       <Route path="/tools/discount-calculator" component={DiscountCalculator} />
       <Route path="/tools/random-number-generator" component={RandomNumberGenerator} />
       <Route path="/tools/temperature-converter" component={TemperatureConverter} />
+      {/* Category pages */}
+      <Route path="/category/:id" component={CategoryPage} />
       {/* Catch-all for all other tool pages (placeholder) */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
       <Route component={NotFound} />

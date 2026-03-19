@@ -41,6 +41,18 @@ const CATEGORY_ICON_SM: Record<string, React.ReactNode> = {
   "Gaming Calculators": <Gamepad2 className="w-4 h-4" />,
 };
 
+const CATEGORY_ICON_BY_ID: Record<string, React.ReactNode> = {
+  "math": <Calculator className="w-3.5 h-3.5" />,
+  "finance": <DollarSign className="w-3.5 h-3.5" />,
+  "conversion": <Ruler className="w-3.5 h-3.5" />,
+  "time-date": <Clock className="w-3.5 h-3.5" />,
+  "health": <Heart className="w-3.5 h-3.5" />,
+  "construction": <HardHat className="w-3.5 h-3.5" />,
+  "productivity": <Type className="w-3.5 h-3.5" />,
+  "education": <BookOpen className="w-3.5 h-3.5" />,
+  "gaming": <Gamepad2 className="w-3.5 h-3.5" />,
+};
+
 const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "percentage-calculator": <Percent className="w-4 h-4" />,
   "percentage-increase-calculator": <TrendingUp className="w-4 h-4" />,
@@ -343,36 +355,66 @@ export default function Home() {
       </section>
 
       {/* ── SEARCH + FILTERS ── */}
-      <section id="all-tools" className="py-16 bg-background">
+      <section id="all-tools" className="py-14 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
-            <div className="relative flex-1 max-w-xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          {/* Search heading */}
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground border-l-8 border-primary pl-4 inline-block">
+              Find Your Tool
+            </h2>
+            <p className="text-muted-foreground font-medium mt-2">{totalTools}+ free tools — search or browse by category</p>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative max-w-3xl mx-auto mb-8">
+            <div className="relative flex items-center bg-card border-2 border-border rounded-2xl shadow-[0_4px_20px_hsl(var(--foreground)/0.08)] focus-within:border-primary focus-within:shadow-[0_4px_24px_hsl(var(--primary)/0.18)] transition-all duration-200">
+              <div className="flex items-center justify-center w-14 h-14 flex-shrink-0">
+                <Search className="w-5 h-5 text-primary" />
+              </div>
               <input
                 type="search"
-                placeholder="Search tools (e.g. 'BMI', 'Roblox', 'Mortgage')..."
-                className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground font-medium focus:outline-none focus:border-primary transition-colors"
+                placeholder="Search 130+ tools — try 'BMI', 'Mortgage', 'Roblox'..."
+                className="flex-1 bg-transparent py-4 pr-4 text-foreground placeholder:text-muted-foreground font-medium focus:outline-none text-base"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setActiveCategory("all"); setSearch(""); }}
-                className={`px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-colors ${activeCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary"}`}
-              >
-                All
-              </button>
-              {TOOL_CATEGORIES.map(cat => (
+              {search && (
                 <button
-                  key={cat.id}
-                  onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
-                  className={`px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-colors ${activeCategory === cat.id ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary"}`}
+                  onClick={() => setSearch("")}
+                  className="mr-3 w-8 h-8 flex items-center justify-center rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground transition-colors text-lg font-black flex-shrink-0"
                 >
-                  {cat.name}
+                  ×
                 </button>
-              ))}
+              )}
+              <div className="hidden md:flex items-center gap-1 mr-4 text-[11px] text-muted-foreground font-bold border border-border rounded-lg px-2 py-1 flex-shrink-0 bg-muted/50">
+                <span>⌘</span><span>K</span>
+              </div>
             </div>
+
+            {/* Subtle bottom glow when typing */}
+            {search && (
+              <div className="absolute inset-x-4 -bottom-2 h-4 bg-primary/10 blur-xl rounded-full pointer-events-none" />
+            )}
+          </div>
+
+          {/* Category filter pills */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            <button
+              onClick={() => { setActiveCategory("all"); setSearch(""); }}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-all duration-150 ${activeCategory === "all" ? "bg-primary text-primary-foreground border-primary shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary hover:-translate-y-0.5"}`}
+            >
+              All Tools
+            </button>
+            {TOOL_CATEGORIES.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
+                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-all duration-150 ${activeCategory === cat.id ? "bg-primary text-primary-foreground border-primary shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary hover:-translate-y-0.5"}`}
+              >
+                {CATEGORY_ICON_BY_ID[cat.id]}
+                {cat.name}
+              </button>
+            ))}
           </div>
 
           {/* Search Results */}
@@ -412,12 +454,12 @@ export default function Home() {
                         <p className="text-sm text-muted-foreground font-medium">{cat.tools.length} tools</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => setActiveCategory(cat.id)}
+                    <Link
+                      href={`/category/${cat.id}`}
                       className="hidden sm:flex items-center gap-2 text-sm font-bold text-primary hover:underline uppercase tracking-wider"
                     >
                       View All <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </Link>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                     {cat.tools.map(tool => <ToolCard key={tool.slug} tool={tool} />)}

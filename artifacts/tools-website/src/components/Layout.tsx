@@ -12,9 +12,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Calculators", path: "/#calculators" },
-    { name: "Generators", path: "/#generators" },
-    { name: "Converters", path: "/#converters" },
+    { name: "Calculators", path: "/category/math" },
+    { name: "Generators", path: "/category/productivity" },
+    { name: "Converters", path: "/category/conversion" },
   ];
 
   return (
@@ -32,17 +32,20 @@ export function Layout({ children }: { children: ReactNode }) {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center space-x-8">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.path}
-                  className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-primary ${
-                    location === link.path ? "text-primary border-b-2 border-primary pb-1" : "text-foreground"
-                  } hover:underline decoration-primary decoration-2 underline-offset-4`}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = link.path === "/" ? location === "/" : location.startsWith(link.path);
+                return (
+                  <Link 
+                    key={link.name} 
+                    href={link.path}
+                    className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-primary ${
+                      isActive ? "text-primary border-b-2 border-primary pb-1" : "text-foreground"
+                    } hover:underline decoration-primary decoration-2 underline-offset-4`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
               
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -129,10 +132,12 @@ export function Layout({ children }: { children: ReactNode }) {
             <div>
               <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Categories</h4>
               <ul className="space-y-3 font-medium">
-                <li><Link href="/#calculators" className="text-gray-300 hover:text-primary transition-colors">Calculators</Link></li>
-                <li><Link href="/#generators" className="text-gray-300 hover:text-primary transition-colors">Generators</Link></li>
-                <li><Link href="/#converters" className="text-gray-300 hover:text-primary transition-colors">Converters</Link></li>
-                <li><Link href="/#text" className="text-gray-300 hover:text-primary transition-colors">Text Tools</Link></li>
+                <li><Link href="/category/math" className="text-gray-300 hover:text-primary transition-colors">Math & Calculators</Link></li>
+                <li><Link href="/category/finance" className="text-gray-300 hover:text-primary transition-colors">Finance & Cost</Link></li>
+                <li><Link href="/category/conversion" className="text-gray-300 hover:text-primary transition-colors">Conversion Tools</Link></li>
+                <li><Link href="/category/health" className="text-gray-300 hover:text-primary transition-colors">Health & Fitness</Link></li>
+                <li><Link href="/category/productivity" className="text-gray-300 hover:text-primary transition-colors">Productivity & Text</Link></li>
+                <li><Link href="/category/gaming" className="text-gray-300 hover:text-primary transition-colors">Gaming Calculators</Link></li>
               </ul>
             </div>
 

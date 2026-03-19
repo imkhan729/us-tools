@@ -91,6 +91,21 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `artifacts/tools-website` (`@workspace/tools-website`)
+
+React + Vite frontend — **US Online Tools** (usonlinetools.com). 130+ free online tools in 9 categories.
+
+- **Design**: Orange (#FF6B35) primary, teal (#00D4AA) secondary, yellow (#FFD23F) accent. Bold editorial style, dark/light mode via ThemeProvider.
+- **Routing**: Wouter. Routes: `/` (Home), `/tools/:slug` (individual tool pages), `/category/:id` (category pages).
+- **Tools registry**: `src/data/tools.ts` — single source of truth. Exports `TOOL_CATEGORIES`, `ALL_TOOLS`, `getToolBySlug()`, `getRelatedTools()`.
+- **10 fully implemented tools** (implemented: true in tools.ts):
+  - Percentage Calculator, Password Generator, Word Counter, Color Converter (older)
+  - BMI Calculator, Tip Calculator, Discount Calculator, Random Number Generator, Temperature Converter (added recently)
+- **Category pages**: `/category/:id` — each has its own color theme, stats bar, full tool grid, breadcrumb, "Browse Other Categories" section.
+- **Search**: Full-width pill-style search bar with orange search icon, ⌘K hint, clear button, animated glow on input. Category filter pills with icons below.
+- **SEO**: Each tool page has `<SEO>` component with title, meta description, structured data, breadcrumbs.
+- Key files: `src/pages/Home.tsx`, `src/pages/CategoryPage.tsx`, `src/components/Layout.tsx`, `src/components/ToolPageLayout.tsx`, `src/data/tools.ts`, `src/App.tsx`, `src/index.css`.
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
