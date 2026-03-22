@@ -33,6 +33,16 @@ const MetaTagGenerator = lazy(() => import("./pages/tools/MetaTagGenerator"));
 const CssGradientGenerator = lazy(() => import("./pages/tools/CssGradientGenerator"));
 const PasswordStrengthChecker = lazy(() => import("./pages/tools/PasswordStrengthChecker"));
 const TwitterCharacterCounter = lazy(() => import("./pages/tools/TwitterCharacterCounter"));
+const GpaCalculator = lazy(() => import("./pages/tools/GpaCalculator"));
+const BmrCalculator = lazy(() => import("./pages/tools/BmrCalculator"));
+const MortgagePaymentCalculator = lazy(() => import("./pages/tools/MortgagePaymentCalculator"));
+const LengthConverter = lazy(() => import("./pages/tools/LengthConverter"));
+const DateDifferenceCalculator = lazy(() => import("./pages/tools/DateDifferenceCalculator"));
+const ConcreteCalculator = lazy(() => import("./pages/tools/ConcreteCalculator"));
+const SalaryCalculator = lazy(() => import("./pages/tools/SalaryCalculator"));
+const BodyFatCalculator = lazy(() => import("./pages/tools/BodyFatCalculator"));
+const HexToRgbConverter = lazy(() => import("./pages/tools/HexToRgbConverter"));
+const RoiCalculator = lazy(() => import("./pages/tools/RoiCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -90,6 +100,16 @@ function Router() {
       <Route path="/css-design/css-gradient-generator">{() => <LazyWrap><CssGradientGenerator /></LazyWrap>}</Route>
       <Route path="/security/password-strength-checker">{() => <LazyWrap><PasswordStrengthChecker /></LazyWrap>}</Route>
       <Route path="/social-media/twitter-character-counter">{() => <LazyWrap><TwitterCharacterCounter /></LazyWrap>}</Route>
+      <Route path="/education/gpa-calculator">{() => <LazyWrap><GpaCalculator /></LazyWrap>}</Route>
+      <Route path="/health/bmr-calculator">{() => <LazyWrap><BmrCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/mortgage-payment-calculator">{() => <LazyWrap><MortgagePaymentCalculator /></LazyWrap>}</Route>
+      <Route path="/conversion/length-converter">{() => <LazyWrap><LengthConverter /></LazyWrap>}</Route>
+      <Route path="/time-date/date-difference-calculator">{() => <LazyWrap><DateDifferenceCalculator /></LazyWrap>}</Route>
+      <Route path="/construction/concrete-calculator">{() => <LazyWrap><ConcreteCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/salary-calculator">{() => <LazyWrap><SalaryCalculator /></LazyWrap>}</Route>
+      <Route path="/health/body-fat-calculator">{() => <LazyWrap><BodyFatCalculator /></LazyWrap>}</Route>
+      <Route path="/css-design/hex-to-rgb-converter">{() => <LazyWrap><HexToRgbConverter /></LazyWrap>}</Route>
+      <Route path="/finance/roi-calculator">{() => <LazyWrap><RoiCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
