@@ -13,9 +13,18 @@ import {
   BicepsFlexed, Apple, Droplets, Activity, Building2, PaintBucket,
   Grid3x3, SquareStack, Swords, Trophy, Zap as ZapIcon, Shuffle,
   ListOrdered, Binary, Link2, QrCode, Image, Film,
+  Car, Plug, Sun, Footprints, Wine, Smile, Code, Wrench,
+  ImageIcon, FileImage, Crop, Paintbrush, Pipette, RotateCw,
+  Layers, ScanLine, Sparkles, Download, FileUp, FileDown,
+  FileLock, FileKey, FileSignature, FileType, Stamp, GripVertical,
+  Scissors, Minimize2, Maximize2, MonitorPlay,
+  Braces, FileCode, TerminalSquare, Bug, RefreshCw,
+  PenTool, Hexagon, Eye, Share2, AtSign, MessageCircle,
+  Search as SearchIcon, Tag, MapPin, Landmark as LandmarkIcon,
+  ShieldAlert, KeySquare, Fingerprint, UnlockKeyhole, ScanText,
 } from "lucide-react";
 import { useState, useMemo } from "react";
-import { TOOL_CATEGORIES, ALL_TOOLS, type Tool } from "@/data/tools";
+import { TOOL_CATEGORIES, ALL_TOOLS, getToolPath, type Tool } from "@/data/tools";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "math": <Calculator className="w-7 h-7" />,
@@ -27,6 +36,13 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "productivity": <Type className="w-7 h-7" />,
   "education": <BookOpen className="w-7 h-7" />,
   "gaming": <Gamepad2 className="w-7 h-7" />,
+  "image": <ImageIcon className="w-7 h-7" />,
+  "pdf": <FileImage className="w-7 h-7" />,
+  "developer": <Braces className="w-7 h-7" />,
+  "css-design": <PenTool className="w-7 h-7" />,
+  "seo": <SearchIcon className="w-7 h-7" />,
+  "security": <ShieldAlert className="w-7 h-7" />,
+  "social-media": <Share2 className="w-7 h-7" />,
 };
 
 const CATEGORY_ICON_SM: Record<string, React.ReactNode> = {
@@ -39,6 +55,13 @@ const CATEGORY_ICON_SM: Record<string, React.ReactNode> = {
   "Productivity & Text": <Type className="w-4 h-4" />,
   "Student & Education": <BookOpen className="w-4 h-4" />,
   "Gaming Calculators": <Gamepad2 className="w-4 h-4" />,
+  "Image Tools": <ImageIcon className="w-4 h-4" />,
+  "PDF Tools": <FileImage className="w-4 h-4" />,
+  "Developer Tools": <Braces className="w-4 h-4" />,
+  "CSS & Design Tools": <PenTool className="w-4 h-4" />,
+  "SEO Tools": <SearchIcon className="w-4 h-4" />,
+  "Security & Encryption": <ShieldAlert className="w-4 h-4" />,
+  "Social Media Tools": <Share2 className="w-4 h-4" />,
 };
 
 const CATEGORY_ICON_BY_ID: Record<string, React.ReactNode> = {
@@ -51,6 +74,13 @@ const CATEGORY_ICON_BY_ID: Record<string, React.ReactNode> = {
   "productivity": <Type className="w-3.5 h-3.5" />,
   "education": <BookOpen className="w-3.5 h-3.5" />,
   "gaming": <Gamepad2 className="w-3.5 h-3.5" />,
+  "image": <ImageIcon className="w-3.5 h-3.5" />,
+  "pdf": <FileImage className="w-3.5 h-3.5" />,
+  "developer": <Braces className="w-3.5 h-3.5" />,
+  "css-design": <PenTool className="w-3.5 h-3.5" />,
+  "seo": <SearchIcon className="w-3.5 h-3.5" />,
+  "security": <ShieldAlert className="w-3.5 h-3.5" />,
+  "social-media": <Share2 className="w-3.5 h-3.5" />,
 };
 
 const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
@@ -185,13 +215,351 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "pokemon-damage-calculator": <Trophy className="w-4 h-4" />,
   "dnd-dice-roller": <Dices className="w-4 h-4" />,
   "esports-earnings-calculator": <Trophy className="w-4 h-4" />,
+  // New math tools
+  "rounding-numbers-calculator": <Calculator className="w-4 h-4" />,
+  "exponents-calculator": <ZapIcon className="w-4 h-4" />,
+  "variance-calculator": <BarChart3 className="w-4 h-4" />,
+  "number-sequence-generator": <ListOrdered className="w-4 h-4" />,
+  "divisibility-checker": <Hash className="w-4 h-4" />,
+  // New finance tools
+  "expense-calculator": <ReceiptText className="w-4 h-4" />,
+  "cost-per-unit-calculator": <DollarSign className="w-4 h-4" />,
+  "price-per-unit-calculator": <DollarSign className="w-4 h-4" />,
+  "payback-period-calculator": <TrendingUp className="w-4 h-4" />,
+  "loan-interest-calculator": <Landmark className="w-4 h-4" />,
+  "savings-goal-calculator": <PiggyBank className="w-4 h-4" />,
+  "revenue-calculator": <BarChart3 className="w-4 h-4" />,
+  "cost-split-calculator": <Scale className="w-4 h-4" />,
+  // New conversion tools
+  "frequency-converter": <Activity className="w-4 h-4" />,
+  "fuel-efficiency-converter": <ZapIcon className="w-4 h-4" />,
+  "number-to-words-converter": <FileText className="w-4 h-4" />,
+  "words-to-number-converter": <Hash className="w-4 h-4" />,
+  "base-converter": <Binary className="w-4 h-4" />,
+  "binary-to-hex-converter": <Binary className="w-4 h-4" />,
+  "hex-to-binary-converter": <Binary className="w-4 h-4" />,
+  "octal-converter": <Binary className="w-4 h-4" />,
+  "unit-price-converter": <DollarSign className="w-4 h-4" />,
+  "density-converter": <FlaskConical className="w-4 h-4" />,
+  "binary-to-decimal-converter": <Binary className="w-4 h-4" />,
+  "decimal-to-binary-converter": <Binary className="w-4 h-4" />,
+  "hex-to-decimal-converter": <Hash className="w-4 h-4" />,
+  // New time & date tools
+  "days-between-dates-calculator": <CalendarDays className="w-4 h-4" />,
+  "working-days-calculator": <CalendarDays className="w-4 h-4" />,
+  "time-subtraction-calculator": <Timer className="w-4 h-4" />,
+  "meeting-time-calculator": <Clock className="w-4 h-4" />,
+  "shift-schedule-calculator": <Clock className="w-4 h-4" />,
+  "deadline-calculator": <AlarmClock className="w-4 h-4" />,
+  "study-time-calculator": <Timer className="w-4 h-4" />,
+  "reading-time-calculator": <Timer className="w-4 h-4" />,
+  "event-countdown-timer": <AlarmClock className="w-4 h-4" />,
+  "hourly-time-calculator": <Clock className="w-4 h-4" />,
+  "shift-hours-calculator": <Clock className="w-4 h-4" />,
+  "time-tracking-calculator": <Timer className="w-4 h-4" />,
+  "time-duration-calculator": <Timer className="w-4 h-4" />,
+  "overtime-calculator": <Clock className="w-4 h-4" />,
+  "stopwatch": <Timer className="w-4 h-4" />,
+  "half-birthday-calculator": <CalendarDays className="w-4 h-4" />,
+  // New health tools
+  "lean-body-mass-calculator": <BicepsFlexed className="w-4 h-4" />,
+  "daily-calories-burn-calculator": <Activity className="w-4 h-4" />,
+  "one-rep-max-calculator": <BicepsFlexed className="w-4 h-4" />,
+  "body-type-calculator": <Activity className="w-4 h-4" />,
+  "fitness-age-calculator": <Heart className="w-4 h-4" />,
+  "walking-calories-calculator": <Activity className="w-4 h-4" />,
+  "cycling-calories-calculator": <Activity className="w-4 h-4" />,
+  "macro-nutrient-calculator": <Apple className="w-4 h-4" />,
+  "fat-intake-calculator": <Apple className="w-4 h-4" />,
+  "workout-duration-calculator": <Timer className="w-4 h-4" />,
+  "step-counter-estimator": <Activity className="w-4 h-4" />,
+  "pregnancy-due-date-calculator": <Heart className="w-4 h-4" />,
+  "calorie-deficit-calculator": <Apple className="w-4 h-4" />,
+  "cat-age-calculator": <Heart className="w-4 h-4" />,
+  "dog-age-calculator": <Heart className="w-4 h-4" />,
+  // New construction tools
+  "concrete-volume-calculator": <Building2 className="w-4 h-4" />,
+  "cement-calculator": <Building2 className="w-4 h-4" />,
+  "steel-weight-calculator": <Scale className="w-4 h-4" />,
+  "room-area-calculator": <Grid3x3 className="w-4 h-4" />,
+  "roof-area-calculator": <Building2 className="w-4 h-4" />,
+  "water-tank-calculator": <Droplets className="w-4 h-4" />,
+  "asphalt-calculator": <Building2 className="w-4 h-4" />,
+  "fence-length-calculator": <Ruler className="w-4 h-4" />,
+  "wall-area-calculator": <Grid3x3 className="w-4 h-4" />,
+  "pipe-volume-calculator": <FlaskConical className="w-4 h-4" />,
+  "sand-calculator": <Grid3x3 className="w-4 h-4" />,
+  "excavation-calculator": <Building2 className="w-4 h-4" />,
+  "material-cost-calculator": <DollarSign className="w-4 h-4" />,
+  "deck-area-calculator": <Grid3x3 className="w-4 h-4" />,
+  "plaster-calculator": <PaintBucket className="w-4 h-4" />,
+  "insulation-calculator": <Building2 className="w-4 h-4" />,
+  "concrete-block-calculator": <Building2 className="w-4 h-4" />,
+  "paver-calculator": <Grid3x3 className="w-4 h-4" />,
+  "bitumen-calculator": <Building2 className="w-4 h-4" />,
+  "pool-salt-calculator": <Droplets className="w-4 h-4" />,
+  // New productivity tools
+  "random-name-generator": <Dices className="w-4 h-4" />,
+  "password-strength-checker": <Lock className="w-4 h-4" />,
+  "dice-roller": <Dices className="w-4 h-4" />,
+  "coin-flip": <Dices className="w-4 h-4" />,
+  "random-color-generator": <Palette className="w-4 h-4" />,
+  "case-converter": <Type className="w-4 h-4" />,
+  "text-reverser": <Shuffle className="w-4 h-4" />,
+  "alphabetical-sort": <ListOrdered className="w-4 h-4" />,
+  "palindrome-checker": <Type className="w-4 h-4" />,
+  "slug-generator": <Link2 className="w-4 h-4" />,
+  "hashtag-generator": <Hash className="w-4 h-4" />,
+  "random-letter-generator": <Dices className="w-4 h-4" />,
+  "random-picker": <Dices className="w-4 h-4" />,
+  "spin-wheel-generator": <Dices className="w-4 h-4" />,
+  "character-counter": <AlignLeft className="w-4 h-4" />,
+  "line-counter": <ListOrdered className="w-4 h-4" />,
+  "remove-extra-spaces": <Type className="w-4 h-4" />,
+  "sort-text-lines": <ListOrdered className="w-4 h-4" />,
+  "list-randomizer": <Shuffle className="w-4 h-4" />,
+  "text-formatter": <Type className="w-4 h-4" />,
+  // New education tools
+  "percentage-grade-calculator": <BookOpen className="w-4 h-4" />,
+  "attendance-percentage-calculator": <BookOpen className="w-4 h-4" />,
+  "reading-speed-calculator": <Timer className="w-4 h-4" />,
+  "marks-percentage-calculator": <BookOpen className="w-4 h-4" />,
+  "marks-to-gpa-converter": <BookOpen className="w-4 h-4" />,
+  "class-average-calculator": <BarChart3 className="w-4 h-4" />,
+  "score-calculator": <BookOpen className="w-4 h-4" />,
+  "study-planner-calculator": <CalendarDays className="w-4 h-4" />,
+  "homework-time-calculator": <Timer className="w-4 h-4" />,
+  "exam-countdown-timer": <AlarmClock className="w-4 h-4" />,
+  "assignment-grade-calculator": <BookOpen className="w-4 h-4" />,
+  "semester-planner": <CalendarDays className="w-4 h-4" />,
+  "quiz-score-calculator": <BookOpen className="w-4 h-4" />,
+  "flashcard-timer": <Timer className="w-4 h-4" />,
+  "exam-score-predictor": <TrendingUp className="w-4 h-4" />,
+  "study-hours-tracker": <Clock className="w-4 h-4" />,
+  "grade-improvement-calculator": <TrendingUp className="w-4 h-4" />,
+  "test-score-analyzer": <BarChart3 className="w-4 h-4" />,
+  "learning-time-calculator": <Timer className="w-4 h-4" />,
+  "school-schedule-planner": <CalendarDays className="w-4 h-4" />,
+  "revision-planner": <CalendarDays className="w-4 h-4" />,
+  // Gaming tools
+  "xp-level-calculator": <Trophy className="w-4 h-4" />,
+  "clash-of-clans-upgrade-calculator": <Swords className="w-4 h-4" />,
+  "damage-calculator": <Swords className="w-4 h-4" />,
+  "game-currency-converter": <DollarSign className="w-4 h-4" />,
+  // New math tools (batch 2)
+  "matrix-calculator": <Grid3x3 className="w-4 h-4" />,
+  "quadratic-equation-solver": <Calculator className="w-4 h-4" />,
+  "permutation-calculator": <Shuffle className="w-4 h-4" />,
+  "combination-calculator": <Shuffle className="w-4 h-4" />,
+  "modulo-calculator": <Hash className="w-4 h-4" />,
+  "proportion-calculator": <Scale className="w-4 h-4" />,
+  // New finance tools (batch 2)
+  "depreciation-calculator": <TrendingUp className="w-4 h-4 rotate-180" />,
+  "net-worth-calculator": <DollarSign className="w-4 h-4" />,
+  "retirement-calculator": <PiggyBank className="w-4 h-4" />,
+  "car-loan-calculator": <Car className="w-4 h-4" />,
+  "credit-card-payoff-calculator": <CreditCard className="w-4 h-4" />,
+  "down-payment-calculator": <Landmark className="w-4 h-4" />,
+  "amortization-calculator": <BarChart3 className="w-4 h-4" />,
+  "stock-profit-calculator": <TrendingUp className="w-4 h-4" />,
+  "dividend-calculator": <DollarSign className="w-4 h-4" />,
+  "currency-exchange-calculator": <DollarSign className="w-4 h-4" />,
+  "hourly-to-salary-calculator": <CreditCard className="w-4 h-4" />,
+  // New conversion tools (batch 2)
+  "power-converter": <Plug className="w-4 h-4" />,
+  "torque-converter": <Wrench className="w-4 h-4" />,
+  "force-converter": <Activity className="w-4 h-4" />,
+  "electric-current-converter": <Plug className="w-4 h-4" />,
+  "shoe-size-converter": <Footprints className="w-4 h-4" />,
+  "cooking-converter": <Apple className="w-4 h-4" />,
+  // New time tools (batch 2)
+  "era-calculator": <CalendarDays className="w-4 h-4" />,
+  "unix-timestamp-converter": <Timer className="w-4 h-4" />,
+  "zodiac-sign-calculator": <Star className="w-4 h-4" />,
+  "chinese-zodiac-calculator": <Star className="w-4 h-4" />,
+  "age-in-days-calculator": <CalendarDays className="w-4 h-4" />,
+  "retirement-age-calculator": <Clock className="w-4 h-4" />,
+  // New health tools (batch 2)
+  "calorie-calculator": <Apple className="w-4 h-4" />,
+  "bac-calculator": <Wine className="w-4 h-4" />,
+  "waist-to-hip-ratio-calculator": <Activity className="w-4 h-4" />,
+  "keto-calculator": <Apple className="w-4 h-4" />,
+  "intermittent-fasting-calculator": <Timer className="w-4 h-4" />,
+  "vo2-max-calculator": <Activity className="w-4 h-4" />,
+  // New construction tools (batch 2)
+  "rebar-calculator": <Building2 className="w-4 h-4" />,
+  "drywall-calculator": <Building2 className="w-4 h-4" />,
+  "wallpaper-calculator": <SquareStack className="w-4 h-4" />,
+  "mulch-calculator": <Grid3x3 className="w-4 h-4" />,
+  "soil-calculator": <Grid3x3 className="w-4 h-4" />,
+  "solar-panel-calculator": <Sun className="w-4 h-4" />,
+  "electrical-load-calculator": <Plug className="w-4 h-4" />,
+  // New productivity tools (batch 2)
+  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
+  "qr-code-generator": <QrCode className="w-4 h-4" />,
+  "uuid-generator": <Hash className="w-4 h-4" />,
+  "json-formatter": <Code className="w-4 h-4" />,
+  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
+  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
+  "color-picker": <Palette className="w-4 h-4" />,
+  "emoji-picker": <Smile className="w-4 h-4" />,
+  "markdown-previewer": <FileText className="w-4 h-4" />,
+  // New education tools (batch 2)
+  "cgpa-calculator": <BookOpen className="w-4 h-4" />,
+  "sat-score-calculator": <BookOpen className="w-4 h-4" />,
+  "typing-speed-test": <Type className="w-4 h-4" />,
+  "scholarship-calculator": <DollarSign className="w-4 h-4" />,
+  "college-gpa-calculator": <BookOpen className="w-4 h-4" />,
+  // New gaming tools (batch 2)
+  "genshin-impact-calculator": <Swords className="w-4 h-4" />,
+  "cs2-sensitivity-calculator": <Swords className="w-4 h-4" />,
+  "pokemon-iv-calculator": <Trophy className="w-4 h-4" />,
+  "dnd-dice-roller": <Dices className="w-4 h-4" />,
+  "gaming-fps-calculator": <Gamepad2 className="w-4 h-4" />,
+  "esports-earnings-calculator": <Trophy className="w-4 h-4" />,
+  // Image Tools
+  "image-resizer": <Maximize2 className="w-4 h-4" />,
+  "image-compressor": <Minimize2 className="w-4 h-4" />,
+  "image-cropper": <Crop className="w-4 h-4" />,
+  "image-format-converter": <FileImage className="w-4 h-4" />,
+  "image-to-base64": <Code className="w-4 h-4" />,
+  "base64-to-image": <ImageIcon className="w-4 h-4" />,
+  "image-rotate-flip": <RotateCw className="w-4 h-4" />,
+  "image-color-picker": <Pipette className="w-4 h-4" />,
+  "image-watermark": <Stamp className="w-4 h-4" />,
+  "image-filter-editor": <Paintbrush className="w-4 h-4" />,
+  "image-to-png": <FileImage className="w-4 h-4" />,
+  "image-to-jpg": <FileImage className="w-4 h-4" />,
+  "png-to-webp": <FileImage className="w-4 h-4" />,
+  "svg-to-png": <FileImage className="w-4 h-4" />,
+  "image-background-remover": <Sparkles className="w-4 h-4" />,
+  "image-collage-maker": <Layers className="w-4 h-4" />,
+  "qr-code-generator": <QrCode className="w-4 h-4" />,
+  "meme-generator": <Smile className="w-4 h-4" />,
+  "favicon-generator": <ImageIcon className="w-4 h-4" />,
+  "image-pixel-counter": <ScanLine className="w-4 h-4" />,
+  // PDF Tools
+  "pdf-merge": <Layers className="w-4 h-4" />,
+  "pdf-split": <Scissors className="w-4 h-4" />,
+  "pdf-compress": <Minimize2 className="w-4 h-4" />,
+  "image-to-pdf": <FileUp className="w-4 h-4" />,
+  "pdf-to-image": <FileDown className="w-4 h-4" />,
+  "pdf-rotate": <RotateCw className="w-4 h-4" />,
+  "pdf-page-remover": <FileImage className="w-4 h-4" />,
+  "pdf-page-reorder": <GripVertical className="w-4 h-4" />,
+  "pdf-watermark": <Stamp className="w-4 h-4" />,
+  "pdf-password-protect": <FileLock className="w-4 h-4" />,
+  "pdf-unlock": <FileKey className="w-4 h-4" />,
+  "pdf-to-text": <FileType className="w-4 h-4" />,
+  "pdf-page-number": <Hash className="w-4 h-4" />,
+  "pdf-header-footer": <FileImage className="w-4 h-4" />,
+  "jpg-to-pdf": <FileUp className="w-4 h-4" />,
+  "pdf-sign": <FileSignature className="w-4 h-4" />,
+  // Developer Tools
+  "json-formatter": <Braces className="w-4 h-4" />,
+  "json-validator": <Braces className="w-4 h-4" />,
+  "json-to-csv": <FileCode className="w-4 h-4" />,
+  "csv-to-json": <FileCode className="w-4 h-4" />,
+  "json-minifier": <Braces className="w-4 h-4" />,
+  "html-formatter": <FileCode className="w-4 h-4" />,
+  "html-minifier": <FileCode className="w-4 h-4" />,
+  "css-minifier": <FileCode className="w-4 h-4" />,
+  "css-formatter": <FileCode className="w-4 h-4" />,
+  "javascript-minifier": <FileCode className="w-4 h-4" />,
+  "javascript-formatter": <FileCode className="w-4 h-4" />,
+  "regex-tester": <Bug className="w-4 h-4" />,
+  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
+  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
+  "html-entity-encoder": <FileCode className="w-4 h-4" />,
+  "jwt-decoder": <KeyRound className="w-4 h-4" />,
+  "uuid-generator": <Hash className="w-4 h-4" />,
+  "xml-formatter": <FileCode className="w-4 h-4" />,
+  "sql-formatter": <TerminalSquare className="w-4 h-4" />,
+  "markdown-previewer": <FileText className="w-4 h-4" />,
+  "diff-checker": <FileCode className="w-4 h-4" />,
+  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
+  "slug-generator": <Link2 className="w-4 h-4" />,
+  "cron-expression-generator": <Timer className="w-4 h-4" />,
+  "unix-timestamp-converter": <Clock className="w-4 h-4" />,
+  "color-code-converter": <Palette className="w-4 h-4" />,
+  "hash-generator": <Hash className="w-4 h-4" />,
+  "html-to-markdown": <FileCode className="w-4 h-4" />,
+  "markdown-to-html": <FileCode className="w-4 h-4" />,
+  "json-to-xml": <FileCode className="w-4 h-4" />,
+  "yaml-to-json": <FileCode className="w-4 h-4" />,
+  "string-escape-unescape": <Code className="w-4 h-4" />,
+  "json-path-tester": <Braces className="w-4 h-4" />,
+  // CSS & Design Tools
+  "css-gradient-generator": <PenTool className="w-4 h-4" />,
+  "css-box-shadow-generator": <PenTool className="w-4 h-4" />,
+  "css-text-shadow-generator": <PenTool className="w-4 h-4" />,
+  "css-border-radius-generator": <PenTool className="w-4 h-4" />,
+  "css-flexbox-generator": <Grid3x3 className="w-4 h-4" />,
+  "css-grid-generator": <Grid3x3 className="w-4 h-4" />,
+  "css-animation-generator": <RefreshCw className="w-4 h-4" />,
+  "css-clip-path-generator": <PenTool className="w-4 h-4" />,
+  "css-filter-generator": <Paintbrush className="w-4 h-4" />,
+  "color-palette-generator": <Palette className="w-4 h-4" />,
+  "color-contrast-checker": <Eye className="w-4 h-4" />,
+  "color-picker": <Pipette className="w-4 h-4" />,
+  "hex-to-rgb-converter": <Hexagon className="w-4 h-4" />,
+  "rgb-to-hex-converter": <Hexagon className="w-4 h-4" />,
+  "tailwind-color-generator": <Palette className="w-4 h-4" />,
+  "glassmorphism-generator": <PenTool className="w-4 h-4" />,
+  "neumorphism-generator": <PenTool className="w-4 h-4" />,
+  "css-triangle-generator": <PenTool className="w-4 h-4" />,
+  // SEO Tools
+  "meta-tag-generator": <Tag className="w-4 h-4" />,
+  "open-graph-generator": <Share2 className="w-4 h-4" />,
+  "twitter-card-generator": <Share2 className="w-4 h-4" />,
+  "robots-txt-generator": <FileText className="w-4 h-4" />,
+  "sitemap-generator": <MapPin className="w-4 h-4" />,
+  "keyword-density-checker": <SearchIcon className="w-4 h-4" />,
+  "serp-preview-tool": <SearchIcon className="w-4 h-4" />,
+  "schema-markup-generator": <Braces className="w-4 h-4" />,
+  "canonical-tag-generator": <Tag className="w-4 h-4" />,
+  "htaccess-redirect-generator": <FileCode className="w-4 h-4" />,
+  "readability-checker": <Eye className="w-4 h-4" />,
+  "word-frequency-counter": <BarChart3 className="w-4 h-4" />,
+  "heading-tag-checker": <FileCode className="w-4 h-4" />,
+  "favicon-checker": <ImageIcon className="w-4 h-4" />,
+  // Security & Encryption
+  "password-strength-checker": <ShieldAlert className="w-4 h-4" />,
+  "md5-hash-generator": <Fingerprint className="w-4 h-4" />,
+  "sha256-hash-generator": <Fingerprint className="w-4 h-4" />,
+  "sha1-hash-generator": <Fingerprint className="w-4 h-4" />,
+  "sha512-hash-generator": <Fingerprint className="w-4 h-4" />,
+  "bcrypt-hash-generator": <Fingerprint className="w-4 h-4" />,
+  "aes-encrypt-decrypt": <Lock className="w-4 h-4" />,
+  "rsa-key-generator": <KeySquare className="w-4 h-4" />,
+  "hmac-generator": <Fingerprint className="w-4 h-4" />,
+  "random-string-generator": <Shuffle className="w-4 h-4" />,
+  "encryption-decoder": <UnlockKeyhole className="w-4 h-4" />,
+  "binary-to-text": <Binary className="w-4 h-4" />,
+  "hex-to-text": <Hash className="w-4 h-4" />,
+  "morse-code-translator": <ScanText className="w-4 h-4" />,
+  // Social Media Tools
+  "twitter-character-counter": <MessageCircle className="w-4 h-4" />,
+  "instagram-caption-counter": <MessageCircle className="w-4 h-4" />,
+  "hashtag-generator": <Hash className="w-4 h-4" />,
+  "social-media-image-resizer": <ImageIcon className="w-4 h-4" />,
+  "youtube-thumbnail-checker": <Film className="w-4 h-4" />,
+  "emoji-picker": <Smile className="w-4 h-4" />,
+  "text-to-emoji": <Smile className="w-4 h-4" />,
+  "linkedin-post-formatter": <FileText className="w-4 h-4" />,
+  "bio-generator": <AtSign className="w-4 h-4" />,
+  "unicode-text-converter": <Type className="w-4 h-4" />,
+  "tiktok-character-counter": <MessageCircle className="w-4 h-4" />,
+  "social-post-scheduler-planner": <CalendarDays className="w-4 h-4" />,
 };
 
 const HERO_TILES = [
-  { label: "PASSWORDS", color: "bg-[#FF6B35]", icon: <KeyRound className="w-10 h-10 text-white" /> },
-  { label: "CALCULATORS", color: "bg-[#00D4AA]", icon: <Calculator className="w-10 h-10 text-foreground" /> },
-  { label: "TEXT TOOLS", color: "bg-[#FFD23F]", icon: <Type className="w-10 h-10 text-foreground" /> },
-  { label: "CONVERTERS", color: "bg-foreground", icon: <Ruler className="w-10 h-10 text-background" /> },
+  { label: "CALCULATORS", hue: 217, icon: <Calculator className="w-8 h-8" /> },
+  { label: "CONVERTERS", hue: 152, icon: <Ruler className="w-8 h-8" /> },
+  { label: "FINANCE", hue: 25, icon: <DollarSign className="w-8 h-8" /> },
+  { label: "HEALTH", hue: 340, icon: <Heart className="w-8 h-8" /> },
+  { label: "PASSWORDS", hue: 265, icon: <KeyRound className="w-8 h-8" /> },
+  { label: "TEXT TOOLS", hue: 175, icon: <Type className="w-8 h-8" /> },
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -204,6 +572,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   "productivity": "bg-teal-500 text-white",
   "education": "bg-indigo-500 text-white",
   "gaming": "bg-pink-500 text-white",
+  "image": "bg-cyan-500 text-white",
+  "pdf": "bg-rose-500 text-white",
+  "developer": "bg-slate-500 text-white",
+  "css-design": "bg-fuchsia-500 text-white",
+  "seo": "bg-lime-500 text-foreground",
+  "security": "bg-amber-500 text-foreground",
+  "social-media": "bg-violet-500 text-white",
 };
 
 const CATEGORY_BG: Record<string, string> = {
@@ -216,20 +591,48 @@ const CATEGORY_BG: Record<string, string> = {
   "productivity": "border-teal-500",
   "education": "border-indigo-500",
   "gaming": "border-pink-500",
+  "image": "border-cyan-500",
+  "pdf": "border-rose-500",
+  "developer": "border-slate-500",
+  "css-design": "border-fuchsia-500",
+  "seo": "border-lime-500",
+  "security": "border-amber-500",
+  "social-media": "border-violet-500",
 };
 
-// Color hues for card themes (cycle through 9 colors)
-const CARD_HUES = [217, 265, 152, 25, 145, 330, 12, 192, 280];
+// 18 unique color hues for card themes
+const CARD_HUES = [
+  217,  // blue
+  265,  // purple
+  152,  // emerald
+  25,   // orange
+  340,  // rose
+  175,  // teal
+  45,   // amber
+  290,  // violet
+  120,  // green
+  355,  // red
+  195,  // cyan
+  310,  // fuchsia
+  60,   // yellow-green
+  230,  // royal blue
+  15,   // vermillion
+  165,  // mint
+  275,  // lavender
+  85,   // lime
+];
 
 // Badge labels (cycle through)
 const CARD_BADGES = [
   "FREE", "\u26A1 POPULAR", "\u2713 VERIFIED", "FREE",
   "\uD83D\uDD25 HOT", "NEW", "PRO", "\u2605 4.9", "\uD83D\uDEE1 SECURE",
+  "\u2728 TOP", "FAST", "\u2764 LOVED", "EASY", "\u26A1 QUICK",
+  "TRUSTED", "\u2B50 5.0", "BEST", "SMART",
 ];
 
 // Extract subtitle from title (e.g., "Simple Interest Calculator" → ["Simple Interest", "Calculator"])
 function splitToolTitle(title: string): [string, string] {
-  const subtitleWords = ["Calculator", "Converter", "Generator", "Checker", "Planner", "Counter", "Timer"];
+  const subtitleWords = ["Calculator", "Converter", "Generator", "Checker", "Planner", "Counter", "Timer", "Tool", "Tracker", "Analyzer", "Estimator", "Remover", "Roller"];
   const lastSpace = title.lastIndexOf(" ");
   if (lastSpace === -1) return [title, ""];
   const lastWord = title.slice(lastSpace + 1);
@@ -252,7 +655,7 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
       className="h-full"
     >
       <Link
-        href={`/tools/${tool.slug}`}
+        href={getToolPath(tool.slug)}
         className="tool-card-active group"
         style={{ "--card-hue": hue } as React.CSSProperties}
       >
@@ -278,29 +681,6 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
   );
 }
 
-function ComingSoonCard({ tool }: { tool: Tool }) {
-  const icon = TOOL_ICON_MAP[tool.slug] ?? CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-5 h-5" />;
-  const [mainTitle] = splitToolTitle(tool.title);
-
-  return (
-    <div className="tool-card-coming">
-      <div className="flex items-start gap-3.5 flex-1">
-        <div className="tool-coming-icon">
-          {icon}
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-bold text-[15px] text-foreground leading-tight">{mainTitle}</p>
-          <p className="text-xs text-muted-foreground mt-1">{tool.description}</p>
-        </div>
-      </div>
-      <div className="mt-auto pt-3">
-        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-          <Lock className="w-3.5 h-3.5" /> Coming Soon
-        </span>
-      </div>
-    </div>
-  );
-}
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -352,21 +732,23 @@ export default function Home() {
               </a>
             </div>
           </div>
-          {/* Right — tile grid */}
-          <div className="hidden lg:grid grid-cols-2 gap-3">
+          {/* Right — 3D glossy square tile grid */}
+          <div className="hidden lg:grid grid-cols-3 gap-5 max-w-md ml-auto">
             {HERO_TILES.map((tile, i) => (
               <motion.div
                 key={tile.label}
-                initial={{ opacity: 0, y: 20, rotate: i % 2 === 0 ? -2 : 2 }}
-                animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
-                whileHover={{ y: -8, scale: 1.04, rotate: 0, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.96 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className={`${tile.color} rounded-2xl border-4 border-foreground hard-shadow p-5 flex flex-col items-center justify-center cursor-pointer`}
-                style={{ height: "150px" }}
+                initial={{ opacity: 0, y: 24, scale: 0.85 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                whileHover={{ y: -8, scale: 1.08, rotateX: 0, rotateY: 0, transition: { duration: 0.25 } }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 180 }}
+                className="hero-tile cursor-pointer"
+                style={{ "--tile-hue": tile.hue } as React.CSSProperties}
               >
-                {tile.icon}
-                <span className="mt-2 font-black uppercase tracking-wider text-xs">{tile.label}</span>
+                <div className="hero-tile-icon">
+                  {tile.icon}
+                </div>
+                <span className="hero-tile-label">{tile.label}</span>
               </motion.div>
             ))}
           </div>
@@ -391,25 +773,38 @@ export default function Home() {
       </section>
 
       {/* ── SEARCH + FILTERS ── */}
-      <section id="all-tools" className="py-14 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Search heading */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground border-l-8 border-primary pl-4 inline-block">
-              Find Your Tool
+      <section id="all-tools" className="relative py-16 bg-background overflow-hidden">
+        {/* Decorative background blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Search heading with animated accent */}
+          <div className="text-center mb-10">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4"
+            >
+              <Search className="w-3.5 h-3.5" />
+              Instant Search
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">
+              Find the <span className="text-primary">Perfect Tool</span>
             </h2>
-            <p className="text-muted-foreground font-medium mt-2">{totalTools}+ free tools — search or browse by category</p>
+            <p className="text-muted-foreground font-medium mt-3 text-lg">{totalTools}+ free tools at your fingertips</p>
           </div>
 
-          {/* Search bar */}
-          <div className="relative max-w-3xl mx-auto mb-8">
-            <div className="relative flex items-center bg-card border-2 border-border rounded-2xl shadow-[0_4px_20px_hsl(var(--foreground)/0.08)] focus-within:border-primary focus-within:shadow-[0_4px_24px_hsl(var(--primary)/0.18)] transition-all duration-200">
+          {/* Search bar — elevated glass card */}
+          <div className="relative max-w-3xl mx-auto mb-10">
+            <div className="search-bar-container">
               <div className="flex items-center justify-center w-14 h-14 flex-shrink-0">
                 <Search className="w-5 h-5 text-primary" />
               </div>
               <input
                 type="search"
-                placeholder="Search 130+ tools — try 'BMI', 'Mortgage', 'Roblox'..."
+                placeholder={`Search ${totalTools}+ tools — try 'JSON', 'PDF', 'gradient'...`}
                 className="flex-1 bg-transparent py-4 pr-4 text-foreground placeholder:text-muted-foreground font-medium focus:outline-none text-base"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
@@ -417,7 +812,7 @@ export default function Home() {
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="mr-3 w-8 h-8 flex items-center justify-center rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground transition-colors text-lg font-black flex-shrink-0"
+                  className="mr-3 w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground transition-all text-lg font-black flex-shrink-0"
                 >
                   ×
                 </button>
@@ -427,64 +822,75 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Subtle bottom glow when typing */}
+            {/* Animated bottom glow when typing */}
             {search && (
-              <div className="absolute inset-x-4 -bottom-2 h-4 bg-primary/10 blur-xl rounded-full pointer-events-none" />
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0.8 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                className="absolute inset-x-8 -bottom-3 h-6 bg-primary/15 blur-xl rounded-full pointer-events-none"
+              />
             )}
           </div>
 
-          {/* Category filter pills */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            <button
-              onClick={() => { setActiveCategory("all"); setSearch(""); }}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-all duration-150 ${activeCategory === "all" ? "bg-primary text-primary-foreground border-primary shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary hover:-translate-y-0.5"}`}
-            >
-              All Tools
-            </button>
-            {TOOL_CATEGORIES.map(cat => (
+          {/* Category cards — scrollable row with 3D pill style */}
+          <div className="category-filter-scroll mb-12">
+            <div className="flex gap-2 pb-2 justify-center flex-wrap">
               <button
-                key={cat.id}
-                onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
-                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold uppercase text-xs tracking-wider border-2 transition-all duration-150 ${activeCategory === cat.id ? "bg-primary text-primary-foreground border-primary shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary hover:-translate-y-0.5"}`}
+                onClick={() => { setActiveCategory("all"); setSearch(""); }}
+                className={`category-pill ${activeCategory === "all" ? "category-pill-active" : ""}`}
               >
-                {CATEGORY_ICON_BY_ID[cat.id]}
-                {cat.name}
+                <Zap className="w-3.5 h-3.5" />
+                All Tools
+                <span className="category-pill-count">{totalTools}</span>
               </button>
-            ))}
+              {TOOL_CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
+                  className={`category-pill ${activeCategory === cat.id ? "category-pill-active" : ""}`}
+                >
+                  {CATEGORY_ICON_BY_ID[cat.id]}
+                  {cat.name}
+                  <span className="category-pill-count">{cat.tools.length}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Search Results */}
           {filteredTools !== null && (
-            <div>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6">
-                {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
-              </p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px flex-1 bg-border" />
+                <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex-shrink-0">
+                  {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
+                </p>
+                <div className="h-px flex-1 bg-border" />
+              </div>
               {filteredTools.length === 0 ? (
-                <div className="text-center py-20 bg-card border-2 border-dashed border-border rounded-xl">
-                  <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-black uppercase text-foreground">No tools found</h3>
-                  <p className="text-muted-foreground mt-2">Try a different search term.</p>
+                <div className="text-center py-20 glass-card rounded-2xl">
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-7 h-7 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-black text-foreground">No tools found</h3>
+                  <p className="text-muted-foreground mt-2">Try a different search term or browse categories above.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {filteredTools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
                 </div>
               )}
-            </div>
+            </motion.div>
           )}
 
           {/* All categories (default) */}
           {filteredTools === null && (
             <div className="space-y-16">
-              {TOOL_CATEGORIES.map(cat => {
-                const SHOW_LIMIT = 12;
-                const COMING_SOON_COUNT = 3;
-                const displayTools = cat.tools.slice(0, SHOW_LIMIT);
-                const hasComingSoon = displayTools.length >= SHOW_LIMIT;
-                const activeTools = hasComingSoon ? displayTools.slice(0, -COMING_SOON_COUNT) : displayTools;
-                const comingSoonTools = hasComingSoon ? displayTools.slice(-COMING_SOON_COUNT) : [];
-
-                return (
+              {TOOL_CATEGORIES.map(cat => (
                   <div key={cat.id} id={cat.id}>
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
@@ -507,14 +913,8 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {activeTools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
+                      {cat.tools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
                     </div>
-
-                    {comingSoonTools.length > 0 && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                        {comingSoonTools.map(tool => <ComingSoonCard key={tool.slug} tool={tool} />)}
-                      </div>
-                    )}
 
                     <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-6 py-3 text-sm text-muted-foreground font-medium">
                       <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-500" /> 100% Free Tools</span>
@@ -523,8 +923,7 @@ export default function Home() {
                       <span className="inline-flex items-center gap-1.5"><Smartphone className="w-4 h-4 text-purple-500" /> Mobile Friendly</span>
                     </div>
                   </div>
-                );
-              })}
+              ))}
             </div>
           )}
         </div>
