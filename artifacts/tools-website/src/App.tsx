@@ -57,6 +57,8 @@ const VolumeConverter = lazy(() => import("./pages/tools/VolumeConverter"));
 const SpeedConverter = lazy(() => import("./pages/tools/SpeedConverter"));
 const PercentageChangeCalculator = lazy(() => import("./pages/tools/PercentageChangeCalculator"));
 const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToDecimalCalculator"));
+const ScientificCalculator = lazy(() => import("./pages/tools/ScientificCalculator"));
+const CalorieCalculator = lazy(() => import("./pages/tools/CalorieCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -142,6 +144,8 @@ function Router() {
       <Route path="/math/percentage-difference-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
       <Route path="/math/fraction-to-decimal-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
       <Route path="/math/decimal-to-fraction-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
+      <Route path="/math/scientific-calculator">{() => <LazyWrap><ScientificCalculator /></LazyWrap>}</Route>
+      <Route path="/health/calorie-calculator">{() => <LazyWrap><CalorieCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
