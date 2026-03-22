@@ -218,51 +218,87 @@ const CATEGORY_BG: Record<string, string> = {
   "gaming": "border-pink-500",
 };
 
-function ToolCard({ tool }: { tool: Tool }) {
-  const icon = TOOL_ICON_MAP[tool.slug] ?? CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-4 h-4" />;
+// Color hues for card themes (cycle through 9 colors)
+const CARD_HUES = [217, 265, 152, 25, 145, 330, 12, 192, 280];
+
+// Badge labels (cycle through)
+const CARD_BADGES = [
+  "FREE", "\u26A1 POPULAR", "\u2713 VERIFIED", "FREE",
+  "\uD83D\uDD25 HOT", "NEW", "PRO", "\u2605 4.9", "\uD83D\uDEE1 SECURE",
+];
+
+// Extract subtitle from title (e.g., "Simple Interest Calculator" → ["Simple Interest", "Calculator"])
+function splitToolTitle(title: string): [string, string] {
+  const subtitleWords = ["Calculator", "Converter", "Generator", "Checker", "Planner", "Counter", "Timer"];
+  const lastSpace = title.lastIndexOf(" ");
+  if (lastSpace === -1) return [title, ""];
+  const lastWord = title.slice(lastSpace + 1);
+  if (subtitleWords.includes(lastWord)) return [title.slice(0, lastSpace), lastWord];
+  return [title, ""];
+}
+
+function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
+  const hue = CARD_HUES[colorIndex % CARD_HUES.length];
+  const badge = CARD_BADGES[colorIndex % CARD_BADGES.length];
+  const icon = TOOL_ICON_MAP[tool.slug] ?? CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-5 h-5" />;
+  const [mainTitle, subtitle] = splitToolTitle(tool.title);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -3 }}
       className="h-full"
     >
       <Link
         href={`/tools/${tool.slug}`}
-        className="group flex flex-col h-full min-h-[88px] p-4 rounded-xl bg-card border border-border
-          shadow-[0_2px_8px_hsl(var(--foreground)/0.06)]
-          hover:shadow-[0_8px_24px_hsl(var(--foreground)/0.12),0_2px_6px_hsl(var(--foreground)/0.08)]
-          hover:border-primary/50
-          transition-all duration-200 relative overflow-hidden"
+        className="tool-card-active group"
+        style={{ "--card-hue": hue } as React.CSSProperties}
       >
-        <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0
-            group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
+        <div className="flex items-start gap-3.5 flex-1">
+          <div className="tool-icon-circle">
             {icon}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-              {tool.title}
-            </p>
-            <p className="text-xs text-muted-foreground leading-tight mt-0.5 line-clamp-2">{tool.description}</p>
+            <p className="font-bold text-[15px] text-foreground leading-tight">{mainTitle}</p>
+            {subtitle && <p className="text-sm font-semibold text-muted-foreground">{subtitle}</p>}
+            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{tool.description}</p>
           </div>
-          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 group-hover:translate-x-0.5" />
         </div>
 
-        {tool.implemented && (
-          <div className="mt-2 pl-12">
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-              Live
-            </span>
-          </div>
-        )}
+        <div className="flex items-center justify-between mt-auto pt-3">
+          <span className="tool-badge">{badge}</span>
+          <span className="tool-open-btn">
+            Open Tool <ArrowRight className="w-3 h-3" />
+          </span>
+        </div>
       </Link>
     </motion.div>
+  );
+}
+
+function ComingSoonCard({ tool }: { tool: Tool }) {
+  const icon = TOOL_ICON_MAP[tool.slug] ?? CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-5 h-5" />;
+  const [mainTitle] = splitToolTitle(tool.title);
+
+  return (
+    <div className="tool-card-coming">
+      <div className="flex items-start gap-3.5 flex-1">
+        <div className="tool-coming-icon">
+          {icon}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-bold text-[15px] text-foreground leading-tight">{mainTitle}</p>
+          <p className="text-xs text-muted-foreground mt-1">{tool.description}</p>
+        </div>
+      </div>
+      <div className="mt-auto pt-3">
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+          <Lock className="w-3.5 h-3.5" /> Coming Soon
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -430,8 +466,8 @@ export default function Home() {
                   <p className="text-muted-foreground mt-2">Try a different search term.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {filteredTools.map(tool => <ToolCard key={tool.slug} tool={tool} />)}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredTools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
                 </div>
               )}
             </div>
@@ -440,32 +476,55 @@ export default function Home() {
           {/* All categories (default) */}
           {filteredTools === null && (
             <div className="space-y-16">
-              {TOOL_CATEGORIES.map(cat => (
-                <div key={cat.id} id={cat.id}>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground`}>
-                        {CATEGORY_ICONS[cat.id]}
+              {TOOL_CATEGORIES.map(cat => {
+                const SHOW_LIMIT = 12;
+                const COMING_SOON_COUNT = 3;
+                const displayTools = cat.tools.slice(0, SHOW_LIMIT);
+                const hasComingSoon = displayTools.length >= SHOW_LIMIT;
+                const activeTools = hasComingSoon ? displayTools.slice(0, -COMING_SOON_COUNT) : displayTools;
+                const comingSoonTools = hasComingSoon ? displayTools.slice(-COMING_SOON_COUNT) : [];
+
+                return (
+                  <div key={cat.id} id={cat.id}>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground`}>
+                          {CATEGORY_ICONS[cat.id]}
+                        </div>
+                        <div>
+                          <h2 className={`text-2xl font-black uppercase tracking-tight text-foreground border-l-4 ${CATEGORY_BG[cat.id]} pl-3`}>
+                            {cat.name}
+                          </h2>
+                          <p className="text-sm text-muted-foreground font-medium">{cat.tools.length} Powerful Tools</p>
+                        </div>
                       </div>
-                      <div>
-                        <h2 className={`text-2xl font-black uppercase tracking-tight text-foreground border-l-4 ${CATEGORY_BG[cat.id]} pl-3`}>
-                          {cat.name}
-                        </h2>
-                        <p className="text-sm text-muted-foreground font-medium">{cat.tools.length} tools</p>
-                      </div>
+                      <Link
+                        href={`/category/${cat.id}`}
+                        className="hidden sm:flex items-center gap-2 text-sm font-bold text-primary hover:underline uppercase tracking-wider"
+                      >
+                        VIEW ALL <ArrowRight className="w-4 h-4" />
+                      </Link>
                     </div>
-                    <Link
-                      href={`/category/${cat.id}`}
-                      className="hidden sm:flex items-center gap-2 text-sm font-bold text-primary hover:underline uppercase tracking-wider"
-                    >
-                      View All <ArrowRight className="w-4 h-4" />
-                    </Link>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {activeTools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
+                    </div>
+
+                    {comingSoonTools.length > 0 && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                        {comingSoonTools.map(tool => <ComingSoonCard key={tool.slug} tool={tool} />)}
+                      </div>
+                    )}
+
+                    <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-6 py-3 text-sm text-muted-foreground font-medium">
+                      <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-500" /> 100% Free Tools</span>
+                      <span className="inline-flex items-center gap-1.5"><Zap className="w-4 h-4 text-amber-500" /> Instant Results</span>
+                      <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-blue-500" /> No Signup Required</span>
+                      <span className="inline-flex items-center gap-1.5"><Smartphone className="w-4 h-4 text-purple-500" /> Mobile Friendly</span>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                    {cat.tools.map(tool => <ToolCard key={tool.slug} tool={tool} />)}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
