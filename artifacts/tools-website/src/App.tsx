@@ -48,6 +48,7 @@ const WeightConverter = lazy(() => import("./pages/tools/WeightConverter"));
 const TaxCalculator = lazy(() => import("./pages/tools/TaxCalculator"));
 const BinaryToDecimalConverter = lazy(() => import("./pages/tools/BinaryToDecimalConverter"));
 const StandardDeviationCalculator = lazy(() => import("./pages/tools/StandardDeviationCalculator"));
+const CarLoanCalculator = lazy(() => import("./pages/tools/CarLoanCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -120,6 +121,7 @@ function Router() {
       <Route path="/finance/tax-calculator">{() => <LazyWrap><TaxCalculator /></LazyWrap>}</Route>
       <Route path="/conversion/binary-to-decimal-converter">{() => <LazyWrap><BinaryToDecimalConverter /></LazyWrap>}</Route>
       <Route path="/math/standard-deviation-calculator">{() => <LazyWrap><StandardDeviationCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/car-loan-calculator">{() => <LazyWrap><CarLoanCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
