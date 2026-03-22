@@ -732,23 +732,23 @@ export default function Home() {
               </a>
             </div>
           </div>
-          {/* Right — 3D shiny tile grid */}
-          <div className="hidden lg:grid grid-cols-3 gap-4">
+          {/* Right — 3D glossy square tile grid */}
+          <div className="hidden lg:grid grid-cols-3 gap-5 max-w-md ml-auto">
             {HERO_TILES.map((tile, i) => (
               <motion.div
                 key={tile.label}
-                initial={{ opacity: 0, y: 24, scale: 0.9 }}
+                initial={{ opacity: 0, y: 24, scale: 0.85 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                whileHover={{ y: -6, scale: 1.05, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ delay: i * 0.08, duration: 0.5, type: "spring", stiffness: 200 }}
+                whileHover={{ y: -8, scale: 1.08, rotateX: 0, rotateY: 0, transition: { duration: 0.25 } }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 180 }}
                 className="hero-tile cursor-pointer"
                 style={{ "--tile-hue": tile.hue } as React.CSSProperties}
               >
                 <div className="hero-tile-icon">
                   {tile.icon}
                 </div>
-                <span className="mt-2.5 font-extrabold uppercase tracking-wider text-[11px] text-center leading-tight">{tile.label}</span>
+                <span className="hero-tile-label">{tile.label}</span>
               </motion.div>
             ))}
           </div>

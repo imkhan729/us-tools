@@ -587,120 +587,139 @@
       inset 0 1px 0 hsl(0 0% 100% / 0.1);
   }
 
-  /* ── Hero Tile 3D Shiny Cards ── */
+  /* ── Hero Tile 3D Glossy Box (rounded 3D app-icon style) ── */
   .hero-tile {
     position: relative;
     overflow: hidden;
-    border-radius: 1.25rem;
-    padding: 1.5rem 1rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 1.75rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 130px;
-    background: hsl(var(--card));
-    border: 1.5px solid hsl(var(--tile-hue, 0) 50% 75% / 0.4);
+    gap: 0.5rem;
+    background: linear-gradient(
+      160deg,
+      hsl(var(--tile-hue, 0) 75% 62%) 0%,
+      hsl(var(--tile-hue, 0) 80% 48%) 50%,
+      hsl(var(--tile-hue, 0) 85% 38%) 100%
+    );
+    border: 2px solid hsl(var(--tile-hue, 0) 60% 75% / 0.5);
     box-shadow:
-      0 4px 20px hsl(var(--tile-hue, 0) 50% 50% / 0.1),
-      0 1px 4px hsl(var(--tile-hue, 0) 50% 50% / 0.06);
+      0 8px 32px hsl(var(--tile-hue, 0) 70% 40% / 0.35),
+      0 2px 8px hsl(var(--tile-hue, 0) 70% 40% / 0.15),
+      inset 0 2px 6px hsl(var(--tile-hue, 0) 60% 85% / 0.45),
+      inset 0 -3px 8px hsl(var(--tile-hue, 0) 80% 20% / 0.3);
+    color: white;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    color: hsl(var(--foreground));
+    transform: perspective(600px) rotateX(2deg) rotateY(-1deg);
   }
 
+  /* Top glossy reflection — the key shine effect */
   .hero-tile::before {
     content: '';
     position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
+    top: 0; left: 0; right: 0;
+    height: 50%;
     background: linear-gradient(
-      to bottom,
-      hsl(var(--tile-hue, 0) 80% 55%),
-      hsl(var(--tile-hue, 0) 80% 75% / 0.2)
+      180deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 40%,
+      rgba(255, 255, 255, 0.0) 100%
     );
+    border-radius: 1.75rem 1.75rem 50% 50%;
+    pointer-events: none;
+    z-index: 1;
   }
 
+  /* Subtle bottom edge darkening */
   .hero-tile::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 55%;
+    bottom: 0; left: 10%; right: 10%;
+    height: 18%;
     background: linear-gradient(
-      180deg,
-      hsl(var(--tile-hue, 0) 60% 95% / 0.6) 0%,
+      0deg,
+      rgba(0, 0, 0, 0.12) 0%,
       transparent 100%
     );
+    border-radius: 0 0 1.75rem 1.75rem;
     pointer-events: none;
-    border-radius: 1.25rem 1.25rem 0 0;
   }
 
   .hero-tile:hover {
-    border-color: hsl(var(--tile-hue, 0) 65% 60% / 0.7);
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg) scale(1.08);
     box-shadow:
-      0 12px 40px hsl(var(--tile-hue, 0) 60% 50% / 0.18),
-      0 4px 12px hsl(var(--tile-hue, 0) 60% 50% / 0.08);
+      0 16px 48px hsl(var(--tile-hue, 0) 70% 40% / 0.5),
+      0 4px 16px hsl(var(--tile-hue, 0) 70% 40% / 0.2),
+      inset 0 2px 6px hsl(var(--tile-hue, 0) 60% 85% / 0.55),
+      inset 0 -3px 8px hsl(var(--tile-hue, 0) 80% 20% / 0.35);
   }
 
+  /* DARK MODE */
   .dark .hero-tile {
     background: linear-gradient(
-      145deg,
-      hsl(var(--tile-hue, 0) 18% 14%) 0%,
-      hsl(0 0% 9%) 100%
+      160deg,
+      hsl(var(--tile-hue, 0) 60% 52%) 0%,
+      hsl(var(--tile-hue, 0) 70% 38%) 50%,
+      hsl(var(--tile-hue, 0) 80% 25%) 100%
     );
-    border: 1.5px solid hsl(var(--tile-hue, 0) 70% 50% / 0.35);
+    border: 2px solid hsl(var(--tile-hue, 0) 55% 60% / 0.4);
     box-shadow:
-      0 0 24px hsl(var(--tile-hue, 0) 70% 50% / 0.1),
-      0 4px 20px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 hsl(var(--tile-hue, 0) 50% 60% / 0.1);
+      0 8px 36px hsl(var(--tile-hue, 0) 70% 40% / 0.4),
+      0 0 50px hsl(var(--tile-hue, 0) 70% 50% / 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      inset 0 2px 6px hsl(var(--tile-hue, 0) 50% 70% / 0.3),
+      inset 0 -3px 8px hsl(var(--tile-hue, 0) 80% 15% / 0.4);
   }
 
-  .dark .hero-tile::before { width: 0; }
-
-  .dark .hero-tile::after {
+  .dark .hero-tile::before {
     background: linear-gradient(
       180deg,
-      hsl(var(--tile-hue, 0) 50% 60% / 0.08) 0%,
-      transparent 60%
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.06) 40%,
+      transparent 100%
     );
   }
 
   .dark .hero-tile:hover {
-    border-color: hsl(var(--tile-hue, 0) 75% 55% / 0.6);
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg) scale(1.08);
     box-shadow:
-      0 0 40px hsl(var(--tile-hue, 0) 75% 50% / 0.25),
-      0 0 80px hsl(var(--tile-hue, 0) 75% 50% / 0.08),
-      0 8px 36px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 hsl(var(--tile-hue, 0) 50% 60% / 0.15);
+      0 16px 56px hsl(var(--tile-hue, 0) 70% 45% / 0.55),
+      0 0 80px hsl(var(--tile-hue, 0) 70% 50% / 0.15),
+      0 4px 16px rgba(0, 0, 0, 0.5),
+      inset 0 2px 6px hsl(var(--tile-hue, 0) 50% 70% / 0.35),
+      inset 0 -3px 8px hsl(var(--tile-hue, 0) 80% 15% / 0.45);
   }
 
+  /* Icon — frosted glass circle inside the glossy tile */
   .hero-tile-icon {
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 9999px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    background: linear-gradient(
-      145deg,
-      hsl(var(--tile-hue, 0) 75% 65%) 0%,
-      hsl(var(--tile-hue, 0) 80% 45%) 60%,
-      hsl(var(--tile-hue, 0) 85% 35%) 100%
-    );
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
     box-shadow:
-      0 4px 14px hsl(var(--tile-hue, 0) 70% 50% / 0.4),
-      inset 0 2px 4px hsl(var(--tile-hue, 0) 60% 80% / 0.4),
-      inset 0 -2px 4px hsl(var(--tile-hue, 0) 80% 25% / 0.3);
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      inset 0 1px 3px rgba(255, 255, 255, 0.3);
     position: relative;
+    z-index: 2;
   }
 
   .hero-tile-icon::after {
     content: '';
     position: absolute;
     top: 3px; left: 7px; right: 7px;
-    height: 40%;
+    height: 38%;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.5) 0%,
       rgba(255, 255, 255, 0.05) 100%
     );
     border-radius: 9999px;
@@ -710,15 +729,27 @@
   .hero-tile-icon svg {
     position: relative;
     z-index: 1;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+  }
+
+  .hero-tile-label {
+    position: relative;
+    z-index: 2;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .dark .hero-tile-icon {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
     box-shadow:
-      0 4px 18px hsl(var(--tile-hue, 0) 70% 50% / 0.5),
-      0 0 30px hsl(var(--tile-hue, 0) 70% 50% / 0.15),
-      inset 0 2px 4px hsl(var(--tile-hue, 0) 60% 80% / 0.3),
-      inset 0 -2px 4px hsl(var(--tile-hue, 0) 80% 25% / 0.4);
+      0 4px 14px rgba(0, 0, 0, 0.25),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2);
   }
 
   .noise-overlay {
