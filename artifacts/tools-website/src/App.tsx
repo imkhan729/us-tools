@@ -43,6 +43,7 @@ const SalaryCalculator = lazy(() => import("./pages/tools/SalaryCalculator"));
 const BodyFatCalculator = lazy(() => import("./pages/tools/BodyFatCalculator"));
 const HexToRgbConverter = lazy(() => import("./pages/tools/HexToRgbConverter"));
 const RoiCalculator = lazy(() => import("./pages/tools/RoiCalculator"));
+const AverageCalculator = lazy(() => import("./pages/tools/AverageCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -110,6 +111,7 @@ function Router() {
       <Route path="/health/body-fat-calculator">{() => <LazyWrap><BodyFatCalculator /></LazyWrap>}</Route>
       <Route path="/css-design/hex-to-rgb-converter">{() => <LazyWrap><HexToRgbConverter /></LazyWrap>}</Route>
       <Route path="/finance/roi-calculator">{() => <LazyWrap><RoiCalculator /></LazyWrap>}</Route>
+      <Route path="/math/average-calculator">{() => <LazyWrap><AverageCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
