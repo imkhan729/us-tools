@@ -53,6 +53,10 @@ const SavingsCalculator = lazy(() => import("./pages/tools/SavingsCalculator"));
 const ProfitMarginCalculator = lazy(() => import("./pages/tools/ProfitMarginCalculator"));
 const InflationCalculator = lazy(() => import("./pages/tools/InflationCalculator"));
 const AreaConverter = lazy(() => import("./pages/tools/AreaConverter"));
+const VolumeConverter = lazy(() => import("./pages/tools/VolumeConverter"));
+const SpeedConverter = lazy(() => import("./pages/tools/SpeedConverter"));
+const PercentageChangeCalculator = lazy(() => import("./pages/tools/PercentageChangeCalculator"));
+const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToDecimalCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -130,6 +134,14 @@ function Router() {
       <Route path="/finance/profit-margin-calculator">{() => <LazyWrap><ProfitMarginCalculator /></LazyWrap>}</Route>
       <Route path="/finance/inflation-calculator">{() => <LazyWrap><InflationCalculator /></LazyWrap>}</Route>
       <Route path="/conversion/area-converter">{() => <LazyWrap><AreaConverter /></LazyWrap>}</Route>
+      <Route path="/conversion/volume-converter">{() => <LazyWrap><VolumeConverter /></LazyWrap>}</Route>
+      <Route path="/conversion/speed-converter">{() => <LazyWrap><SpeedConverter /></LazyWrap>}</Route>
+      <Route path="/math/percentage-change-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-increase-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-decrease-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-difference-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
+      <Route path="/math/fraction-to-decimal-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
+      <Route path="/math/decimal-to-fraction-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
