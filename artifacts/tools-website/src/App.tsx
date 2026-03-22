@@ -46,6 +46,7 @@ const RoiCalculator = lazy(() => import("./pages/tools/RoiCalculator"));
 const AverageCalculator = lazy(() => import("./pages/tools/AverageCalculator"));
 const WeightConverter = lazy(() => import("./pages/tools/WeightConverter"));
 const TaxCalculator = lazy(() => import("./pages/tools/TaxCalculator"));
+const BinaryToDecimalConverter = lazy(() => import("./pages/tools/BinaryToDecimalConverter"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -116,6 +117,7 @@ function Router() {
       <Route path="/math/average-calculator">{() => <LazyWrap><AverageCalculator /></LazyWrap>}</Route>
       <Route path="/conversion/weight-converter">{() => <LazyWrap><WeightConverter /></LazyWrap>}</Route>
       <Route path="/finance/tax-calculator">{() => <LazyWrap><TaxCalculator /></LazyWrap>}</Route>
+      <Route path="/conversion/binary-to-decimal-converter">{() => <LazyWrap><BinaryToDecimalConverter /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
