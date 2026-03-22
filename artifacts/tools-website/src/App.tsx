@@ -50,6 +50,9 @@ const BinaryToDecimalConverter = lazy(() => import("./pages/tools/BinaryToDecima
 const StandardDeviationCalculator = lazy(() => import("./pages/tools/StandardDeviationCalculator"));
 const CarLoanCalculator = lazy(() => import("./pages/tools/CarLoanCalculator"));
 const SavingsCalculator = lazy(() => import("./pages/tools/SavingsCalculator"));
+const ProfitMarginCalculator = lazy(() => import("./pages/tools/ProfitMarginCalculator"));
+const InflationCalculator = lazy(() => import("./pages/tools/InflationCalculator"));
+const AreaConverter = lazy(() => import("./pages/tools/AreaConverter"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -124,6 +127,9 @@ function Router() {
       <Route path="/math/standard-deviation-calculator">{() => <LazyWrap><StandardDeviationCalculator /></LazyWrap>}</Route>
       <Route path="/finance/car-loan-calculator">{() => <LazyWrap><CarLoanCalculator /></LazyWrap>}</Route>
       <Route path="/finance/savings-calculator">{() => <LazyWrap><SavingsCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/profit-margin-calculator">{() => <LazyWrap><ProfitMarginCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/inflation-calculator">{() => <LazyWrap><InflationCalculator /></LazyWrap>}</Route>
+      <Route path="/conversion/area-converter">{() => <LazyWrap><AreaConverter /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
