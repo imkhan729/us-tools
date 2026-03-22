@@ -1,7 +1,7 @@
 import { useParams, Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { getToolBySlug, getRelatedTools, TOOL_CATEGORIES } from "@/data/tools";
+import { getToolBySlug, getRelatedTools, getToolPath, TOOL_CATEGORIES } from "@/data/tools";
 import { ChevronRight, Wrench, Clock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -171,7 +171,7 @@ export default function ToolPlaceholder() {
                     {related.map((item, index) => (
                       <Link
                         key={index}
-                        href={`/tools/${item.slug}`}
+                        href={getToolPath(item.slug)}
                         className="group flex items-center p-3 rounded-xl hover:bg-muted transition-all border-2 border-transparent hover:border-foreground"
                       >
                         <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border-2 border-primary/20 group-hover:border-primary flex-shrink-0">
