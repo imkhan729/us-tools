@@ -59,6 +59,7 @@ const PercentageChangeCalculator = lazy(() => import("./pages/tools/PercentageCh
 const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToDecimalCalculator"));
 const ScientificCalculator = lazy(() => import("./pages/tools/ScientificCalculator"));
 const CalorieCalculator = lazy(() => import("./pages/tools/CalorieCalculator"));
+const RatioCalculator = lazy(() => import("./pages/tools/RatioCalculator"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -146,6 +147,7 @@ function Router() {
       <Route path="/math/decimal-to-fraction-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
       <Route path="/math/scientific-calculator">{() => <LazyWrap><ScientificCalculator /></LazyWrap>}</Route>
       <Route path="/health/calorie-calculator">{() => <LazyWrap><CalorieCalculator /></LazyWrap>}</Route>
+      <Route path="/math/ratio-calculator">{() => <LazyWrap><RatioCalculator /></LazyWrap>}</Route>
 
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/tools/:slug" component={ToolPlaceholder} />
