@@ -4,24 +4,24 @@ import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronRight, ChevronDown, ArrowRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock,
-  Lock, Lightbulb, Copy, Check, Eye, EyeOff,
-  Key, ShieldCheck, AlertTriangle, Hash,
+  ChevronRight, ChevronDown, KeyRound, ArrowRight,
+  Zap, Smartphone, Shield, Lightbulb, Copy, Check,
+  BadgeCheck, Lock, Eye, EyeOff, ShieldAlert, ShieldCheck, AlertTriangle
 } from "lucide-react";
-import { getToolPath } from "@/data/tools";
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-teal-500/40 transition-colors">
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary"><ChevronDown className="w-5 h-5" /></motion.span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-teal-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div key="answer" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+          <motion.div key="a" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
             <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
@@ -30,329 +30,314 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-type Strength = "very-weak" | "weak" | "fair" | "strong" | "very-strong";
-
-function analyzePassword(pw: string): { strength: Strength; score: number; feedback: string[]; crackTime: string } {
-  if (!pw) return { strength: "very-weak", score: 0, feedback: [], crackTime: "instant" };
-
+const checkPasswordStrength = (pwd: string) => {
   let score = 0;
+  const metrics = { length: false, upper: false, lower: false, num: false, special: false };
   const feedback: string[] = [];
 
-  // Length scoring
-  if (pw.length >= 8) score += 1;
-  if (pw.length >= 12) score += 1;
-  if (pw.length >= 16) score += 1;
-  if (pw.length < 8) feedback.push("Use at least 8 characters");
+  if (pwd.length === 0) return { score: 0, label: "Empty", color: "slate", metrics, feedback, maxScore: 6 };
 
-  // Character diversity
-  const hasLower = /[a-z]/.test(pw);
-  const hasUpper = /[A-Z]/.test(pw);
-  const hasDigit = /[0-9]/.test(pw);
-  const hasSpecial = /[^a-zA-Z0-9]/.test(pw);
+  if (pwd.length >= 8) { score += 1; metrics.length = true; } else { feedback.push("Add more characters (at least 8)"); }
+  if (pwd.length >= 12) score += 1;
 
-  if (hasLower) score += 1;
-  if (hasUpper) score += 1;
-  if (hasDigit) score += 1;
-  if (hasSpecial) score += 1;
+  if (/[A-Z]/.test(pwd)) { score += 1; metrics.upper = true; } else { feedback.push("Add uppercase letters"); }
+  if (/[a-z]/.test(pwd)) { score += 1; metrics.lower = true; } else { feedback.push("Add lowercase letters"); }
+  if (/\d/.test(pwd)) { score += 1; metrics.num = true; } else { feedback.push("Add numbers"); }
+  if (/[^A-Za-z0-9]/.test(pwd)) { score += 1; metrics.special = true; } else { feedback.push("Add special characters (!@#$)"); }
 
-  if (!hasUpper) feedback.push("Add uppercase letters (A-Z)");
-  if (!hasLower) feedback.push("Add lowercase letters (a-z)");
-  if (!hasDigit) feedback.push("Add numbers (0-9)");
-  if (!hasSpecial) feedback.push("Add special characters (!@#$%)");
+  // Penalties
+  if (/^[a-zA-Z]+$/.test(pwd) || /^[0-9]+$/.test(pwd)) score = Math.max(1, score - 1); // Only letters or only numbers
+  const repeatRegex = /(.)\1{2,}/g;
+  if (repeatRegex.test(pwd)) { score = Math.max(1, score - 1); feedback.push("Avoid repeating characters"); }
 
-  // Common patterns
-  if (/^[a-zA-Z]+$/.test(pw)) { score -= 1; feedback.push("Don't use only letters"); }
-  if (/^[0-9]+$/.test(pw)) { score -= 1; feedback.push("Don't use only numbers"); }
-  if (/(.)\1{2,}/.test(pw)) { score -= 1; feedback.push("Avoid repeated characters (aaa, 111)"); }
-  if (/^(123|abc|qwerty|password|admin)/i.test(pw)) { score -= 2; feedback.push("Avoid common patterns like '123', 'abc', 'password'"); }
+  let label = "Very Weak";
+  let color = "red";
+  if (score >= 2 && score < 4) { label = "Weak"; color = "amber"; }
+  if (score >= 4 && score < 5) { label = "Good"; color = "blue"; }
+  if (score >= 5) { label = "Strong"; color = "emerald"; }
 
-  const clampedScore = Math.max(0, Math.min(score, 7));
-  let strength: Strength;
-  if (clampedScore <= 1) strength = "very-weak";
-  else if (clampedScore <= 2) strength = "weak";
-  else if (clampedScore <= 4) strength = "fair";
-  else if (clampedScore <= 5) strength = "strong";
-  else strength = "very-strong";
+  const timeToCrack =
+    score < 2 ? "Instantly" :
+    score < 4 ? "A few hours to days" :
+    score < 5 ? "Several months" : "Centuries";
 
-  // Estimated crack time
-  const charsetSize = (hasLower ? 26 : 0) + (hasUpper ? 26 : 0) + (hasDigit ? 10 : 0) + (hasSpecial ? 33 : 0) || 26;
-  const combinations = Math.pow(charsetSize, pw.length);
-  const guessesPerSecond = 1e10; // 10 billion guesses/sec
-  const seconds = combinations / guessesPerSecond / 2;
-  let crackTime: string;
-  if (seconds < 1) crackTime = "instant";
-  else if (seconds < 60) crackTime = `${Math.round(seconds)} seconds`;
-  else if (seconds < 3600) crackTime = `${Math.round(seconds / 60)} minutes`;
-  else if (seconds < 86400) crackTime = `${Math.round(seconds / 3600)} hours`;
-  else if (seconds < 31536000) crackTime = `${Math.round(seconds / 86400)} days`;
-  else if (seconds < 31536000 * 1000) crackTime = `${Math.round(seconds / 31536000)} years`;
-  else if (seconds < 31536000 * 1e6) crackTime = `${Math.round(seconds / 31536000 / 1000)}K years`;
-  else crackTime = "centuries+";
-
-  return { strength, score: clampedScore, feedback, crackTime };
-}
-
-const STRENGTH_CONFIG: Record<Strength, { label: string; color: string; bg: string; percent: number }> = {
-  "very-weak": { label: "Very Weak", color: "text-red-500", bg: "bg-red-500", percent: 10 },
-  "weak": { label: "Weak", color: "text-orange-500", bg: "bg-orange-500", percent: 30 },
-  "fair": { label: "Fair", color: "text-yellow-500", bg: "bg-yellow-500", percent: 55 },
-  "strong": { label: "Strong", color: "text-emerald-500", bg: "bg-emerald-500", percent: 80 },
-  "very-strong": { label: "Very Strong", color: "text-green-500", bg: "bg-green-500", percent: 100 },
+  return { score, label, color, metrics, feedback, timeToCrack, maxScore: 6 };
 };
 
-const RELATED_TOOLS = [
-  { title: "Password Generator", slug: "password-generator", icon: <Key className="w-5 h-5" />, color: 340 },
-  { title: "Base64 Encoder/Decoder", slug: "base64-encoder-decoder", icon: <Hash className="w-5 h-5" />, color: 265 },
-  { title: "Word Counter", slug: "word-counter", icon: <CheckCircle2 className="w-5 h-5" />, color: 217 },
-  { title: "JSON Formatter", slug: "json-formatter", icon: <Lock className="w-5 h-5" />, color: 152 },
-  { title: "Random Number Generator", slug: "random-number-generator", icon: <ShieldCheck className="w-5 h-5" />, color: 25 },
-  { title: "Meta Tag Generator", slug: "meta-tag-generator", icon: <AlertTriangle className="w-5 h-5" />, color: 45 },
+const RELATED = [
+  { title: "Password Generator",slug: "password-generator", cat: "productivity", icon: <KeyRound className="w-5 h-5" />,   color: 20, benefit: "Create secure random passwords quickly" },
+  { title: "Username Generator",slug: "username-generator", cat: "productivity", icon: <Lock className="w-5 h-5" />,       color: 160, benefit: "Generate catchy, unique usernames" },
+  { title: "Base64 Encoder",    slug: "base64-encoder-decoder",cat: "developer", icon: <Shield className="w-5 h-5" />,     color: 217, benefit: "Safely encode data formats" },
 ];
 
 export default function PasswordStrengthChecker() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const copyLink = () => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-  const analysis = useMemo(() => analyzePassword(password), [password]);
-  const config = STRENGTH_CONFIG[analysis.strength];
+  const analysis = useMemo(() => checkPasswordStrength(password), [password]);
 
   return (
     <Layout>
       <SEO
-        title="Password Strength Checker - Free Online Tool | Test Password Security"
-        description="Free online password strength checker. Test how strong your password is instantly. Get feedback on improving security. 100% private — nothing is sent to any server."
+        title="Password Strength Checker – Test Your Password Security | US Online Tools"
+        description="Free password strength checker. Test how secure your password is against cracking, check for common vulnerabilities, and learn how to improve password security offline."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <Link href="/category/security" className="text-muted-foreground hover:text-foreground transition-colors">Security & Encryption</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-teal-500" strokeWidth={3} />
+          <Link href="/category/productivity" className="text-muted-foreground hover:text-foreground transition-colors">Productivity &amp; Text</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-teal-500" strokeWidth={3} />
           <span className="text-foreground">Password Strength Checker</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        {/* HERO */}
+        <section className="rounded-2xl overflow-hidden border border-teal-500/15 bg-gradient-to-br from-teal-500/5 via-card to-cyan-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Lock className="w-3.5 h-3.5" /> Security Tools
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">Password Strength Checker</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Test how secure your password is. Our client-side algorithm estimates the time it takes to crack your password and provides instant feedback on vulnerabilities. All processing happens locally in your browser — nothing is sent to a server.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20"><ShieldCheck className="w-3.5 h-3.5" /> Client-Side Only</span>
+            <span className="inline-flex items-center gap-1.5 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs px-3 py-1.5 rounded-full border border-teal-500/20"><Zap className="w-3.5 h-3.5" /> Instant Feedback</span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20"><Lock className="w-3.5 h-3.5" /> No Network Let</span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20"><Smartphone className="w-3.5 h-3.5" /> Mobile Ready</span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">Category: Productivity &amp; Security &nbsp;·&nbsp; Last updated: March 2026</p>
+        </section>
 
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+
+            {/* TOOL WIDGET */}
             <section>
-              <div className="inline-flex items-center gap-1.5 bg-red-500/10 text-red-600 dark:text-red-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <Shield className="w-3.5 h-3.5" /> Security & Encryption
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">Password Strength Checker</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Test how strong your password is instantly. Get real-time feedback, estimated crack time, and improvement suggestions — 100% private, runs entirely in your browser.
-              </p>
-            </section>
-
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><Zap className="w-5 h-5 text-primary" /></div>
-              <div>
-                <p className="font-bold text-foreground text-sm">100% private</p>
-                <p className="text-muted-foreground text-sm">Your password never leaves your device. All analysis happens locally in your browser.</p>
-              </div>
-            </section>
-
-            <section className="space-y-5">
-              <div className="tool-calc-card" style={{ "--calc-hue": 340 } as React.CSSProperties}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="tool-calc-number">1</div>
-                  <h3 className="text-lg font-bold text-foreground">Password Strength Checker</h3>
-                </div>
-
-                <div className="mb-5">
-                  <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Enter Password</label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Type your password here..."
-                      className="tool-calc-input w-full pr-12 font-mono"
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
-                    />
-                    <button onClick={() => setShowPassword(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                {password && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                    {/* Strength bar */}
+              <div className="rounded-2xl overflow-hidden border border-teal-500/20 shadow-lg shadow-teal-500/5">
+                <div className="h-1.5 w-full bg-gradient-to-r from-teal-500 to-cyan-400" />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-400 flex items-center justify-center flex-shrink-0">
+                      <KeyRound className="w-4 h-4 text-white" />
+                    </div>
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className={`text-sm font-bold ${config.color}`}>{config.label}</span>
-                        <span className="text-xs text-muted-foreground font-semibold">Crack time: {analysis.crackTime}</span>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Security Tester</p>
+                      <p className="text-sm text-muted-foreground">Type a password below to analyze its strength.</p>
+                    </div>
+                  </div>
+
+                  <div className="tool-calc-card" style={{ "--calc-hue": 180 } as React.CSSProperties}>
+                    <div className="relative mb-6">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Lock className="w-5 h-5 text-muted-foreground" />
                       </div>
-                      <div className="w-full h-3 rounded-full bg-muted overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${config.percent}%` }}
-                          transition={{ duration: 0.5, ease: "easeOut" }}
-                          className={`h-full rounded-full ${config.bg}`}
-                        />
-                      </div>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Type a password to test..."
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={`w-full pl-12 pr-12 py-4 rounded-xl font-mono text-lg bg-background border-2 transition-all outline-none 
+                          ${password.length > 0 ? `border-${analysis.color}-500/50 focus:border-${analysis.color}-500` : 'border-border focus:border-teal-500'}`}
+                        autoComplete="off"
+                        spellCheck="false"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
                     </div>
 
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      <div className="tool-calc-result text-center">
-                        <div className="text-xs font-semibold text-muted-foreground mb-1">Length</div>
-                        <div className="text-lg font-black text-foreground">{password.length}</div>
-                      </div>
-                      <div className="tool-calc-result text-center">
-                        <div className="text-xs font-semibold text-muted-foreground mb-1">Uppercase</div>
-                        <div className="text-lg font-black text-foreground">{(password.match(/[A-Z]/g) || []).length}</div>
-                      </div>
-                      <div className="tool-calc-result text-center">
-                        <div className="text-xs font-semibold text-muted-foreground mb-1">Numbers</div>
-                        <div className="text-lg font-black text-foreground">{(password.match(/[0-9]/g) || []).length}</div>
-                      </div>
-                      <div className="tool-calc-result text-center">
-                        <div className="text-xs font-semibold text-muted-foreground mb-1">Symbols</div>
-                        <div className="text-lg font-black text-foreground">{(password.match(/[^a-zA-Z0-9]/g) || []).length}</div>
-                      </div>
+                    {/* Progress Bar */}
+                    <div className="relative h-3 w-full bg-muted rounded-full overflow-hidden mb-8">
+                      <motion.div
+                        className={`absolute top-0 left-0 h-full bg-${analysis.color}-500`}
+                        initial={{ width: 0 }}
+                        animate={{ width: password.length > 0 ? `${(analysis.score / analysis.maxScore) * 100}%` : "0%" }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      />
                     </div>
 
-                    {/* Feedback */}
-                    {analysis.feedback.length > 0 && (
-                      <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                        <h4 className="font-bold text-foreground text-sm mb-2 flex items-center gap-2">
-                          <AlertTriangle className="w-4 h-4 text-amber-500" /> Improvement Suggestions
-                        </h4>
-                        <ul className="space-y-1.5">
-                          {analysis.feedback.map((f, i) => (
-                            <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                              <span className="text-amber-500 mt-0.5">•</span> {f}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    <AnimatePresence mode="wait">
+                      {password.length > 0 ? (
+                        <motion.div key="results" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                          <div className={`p-6 rounded-xl border-2 bg-${analysis.color}-500/5 border-${analysis.color}-500/20 mb-6 text-center`}>
+                            <p className="text-sm font-bold tracking-widest uppercase text-muted-foreground mb-1">Overall Strength</p>
+                            <h2 className={`text-3xl font-black mb-2 text-${analysis.color}-600 dark:text-${analysis.color}-400`}>
+                              {analysis.label}
+                            </h2>
+                            <div className="flex items-center justify-center gap-2 text-sm text-foreground/80">
+                              <ShieldAlert className="w-4 h-4 opacity-70" />
+                              <span>Est. Crack Time: <strong>{analysis.timeToCrack}</strong></span>
+                            </div>
+                          </div>
 
-                    {analysis.strength === "very-strong" && (
-                      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                        <div className="flex gap-2 items-start">
-                          <ShieldCheck className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm text-foreground/80 leading-relaxed">Excellent! Your password is very strong with {password.length} characters, mixed case, numbers, and special characters. Estimated crack time: {analysis.crackTime}.</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Checklist */}
+                            <div>
+                              <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Password Requirements</h3>
+                              <ul className="space-y-3">
+                                {[
+                                  { label: "At least 8 characters", valid: analysis.metrics.length },
+                                  { label: "Uppercase Letters (A-Z)", valid: analysis.metrics.upper },
+                                  { label: "Lowercase Letters (a-z)", valid: analysis.metrics.lower },
+                                  { label: "Numbers (0-9)", valid: analysis.metrics.num },
+                                  { label: "Special Characters (!@#$)", valid: analysis.metrics.special },
+                                ].map((req, i) => (
+                                  <li key={i} className={`flex items-center gap-3 text-sm font-medium ${req.valid ? "text-foreground" : "text-muted-foreground"}`}>
+                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${req.valid ? "bg-emerald-500 text-white" : "bg-muted text-muted-foreground/50"}`}>
+                                      {req.valid ? <Check className="w-3 h-3" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
+                                    </div>
+                                    {req.label}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Recommendations */}
+                            {analysis.feedback.length > 0 && (
+                              <div>
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">How to Improve</h3>
+                                <ul className="space-y-2">
+                                  {analysis.feedback.map((f, i) => (
+                                    <li key={i} className="flex items-start gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-2 rounded-lg">
+                                      <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" /> {f}
+                                    </li>
+                                  ))}
+                                </ul>
+                                <div className="mt-4 p-3 bg-card border border-border rounded-lg flex items-center gap-3 hover:border-teal-500/40 transition-colors cursor-pointer" onClick={() => (window as any).location.href = '/productivity/password-generator'}>
+                                  <div className="w-8 h-8 rounded bg-teal-500/10 flex items-center justify-center flex-shrink-0"><KeyRound className="w-4 h-4 text-teal-600" /></div>
+                                  <div className="flex-1"><p className="text-sm font-bold text-foreground">Need a strong password?</p><p className="text-xs text-muted-foreground">Use our secure generator</p></div>
+                                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <div className="text-center py-8 opacity-50">
+                          <Shield className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+                          <p className="font-bold text-lg text-foreground">Awaiting Input</p>
+                          <p className="text-sm text-muted-foreground">Enter a password above to begin analysis safely.</p>
                         </div>
-                      </motion.div>
-                    )}
-                  </motion.div>
-                )}
-              </div>
-            </section>
-
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How Password Strength Is Measured</h2>
-              <div className="space-y-5">
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">1</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Length</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Longer passwords are exponentially harder to crack. Each additional character multiplies the number of possible combinations. Aim for 12+ characters minimum.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">2</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Character Diversity</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Using uppercase, lowercase, numbers, and symbols increases the character set size. A 10-character password with all 4 types has 95^10 (≈6 × 10^19) possible combinations.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">3</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Pattern Avoidance</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Avoiding common patterns (dictionary words, keyboard sequences, repeated characters) prevents attackers from using optimized cracking dictionaries.</p>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Tool?</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: <Zap className="w-4 h-4" />, text: "Real-time strength analysis as you type" },
-                  { icon: <Shield className="w-4 h-4" />, text: "100% client-side — zero data transmission" },
-                  { icon: <CheckCircle2 className="w-4 h-4" />, text: "Estimated crack time calculation" },
-                  { icon: <Smartphone className="w-4 h-4" />, text: "Works on all devices and browsers" },
-                  { icon: <Clock className="w-4 h-4" />, text: "No signup, no downloads required" },
-                  { icon: <Lock className="w-4 h-4" />, text: "Actionable improvement suggestions" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
-                    <span className="text-sm font-medium text-foreground">{item.text}</span>
+            {/* HOW IT WORKS */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="how-to-use">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Assess Password Strength</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Password strength refers to how resilient a password is to guessing or brute-force attacks by malicious actors. Our tool runs algorithmic checks locally entirely within your browser to verify structural integrity without exposing your secret.
+              </p>
+              <ol className="space-y-5 mb-8">
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Type your intended password safely</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Enter the password you wish to evaluate. As you type, the strength meter updates automatically. You can test variations to see how adding specific characters dramatically increases complexity.</p>
                   </div>
-                ))}
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Review the complexity checklist</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">The tool checks for five fundamental traits: minimum length (8+ chars), presence of uppercase letters, lowercase letters, numerals, and special symbols. Green checkmarks appear as you meet each condition.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Apply algorithmic feedback</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">If there are specific weaknesses—like repeating the same character or omitting numbers—the algorithm generates "How to Improve" recommendations. Address these alerts to push the progress bar into the "Strong" (green) zone.</p>
+                  </div>
+                </li>
+              </ol>
+              <div className="p-5 rounded-xl bg-orange-500/5 border border-orange-500/20">
+                <div className="flex items-start gap-3">
+                  <ShieldAlert className="w-5 h-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1 text-sm">A Note on Real Passwords</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">While this tool is 100% client-side and transmits zero data, cybersecurity best practice dictates that you should <strong className="text-foreground">never enter an active, in-use password</strong> into third-party web forms. Use this tool to test the <em>pattern</em> or structure you intend to use (e.g., test "Tigr@!!2024" but actually use "Puma#$!2025" elsewhere).</p>
+                  </div>
+                </div>
               </div>
             </section>
 
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">Password Security Best Practices</h2>
+            {/* QUICK EXAMPLES */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="quick-examples">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Password Brute Force Times</h2>
+              <div className="overflow-x-auto rounded-xl border border-border mb-6">
+                <table className="w-full text-sm">
+                  <thead><tr className="bg-muted/60"><th className="text-left px-4 py-3 font-bold text-foreground">Password Structure</th><th className="text-left px-4 py-3 font-bold text-foreground">Example Pattern</th><th className="text-left px-4 py-3 font-bold text-foreground">Est. Crack Time (Modern GPUs)</th></tr></thead>
+                  <tbody className="divide-y divide-border">
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">8 Lowercase Letters</td><td className="px-4 py-3 font-mono text-muted-foreground">password</td><td className="px-4 py-3 font-bold text-red-500">Instant</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">8 Mixed Chars (A-Z, 0-9)</td><td className="px-4 py-3 font-mono text-muted-foreground">Apples22</td><td className="px-4 py-3 font-bold text-amber-500">1 Hour</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">10 Mixed Chars</td><td className="px-4 py-3 font-mono text-muted-foreground">Oranges246</td><td className="px-4 py-3 font-bold text-amber-600">7 Months</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">12 Full Mix (+ Symbols)</td><td className="px-4 py-3 font-mono text-muted-foreground">B^n@n@s!9876</td><td className="px-4 py-3 font-bold text-emerald-500">34,000 Years</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">16 Lowercase (Passphrase)</td><td className="px-4 py-3 font-mono text-muted-foreground">correcthorsebattery</td><td className="px-4 py-3 font-bold text-emerald-600">Millions of Years</td></tr>
+                  </tbody>
+                </table>
+              </div>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>Password security is your first line of defense against unauthorized access. Weak passwords are responsible for over 80% of data breaches according to Verizon's Data Breach Investigations Report. This free password strength checker helps you evaluate and improve your passwords before using them.</p>
-                <h3 className="text-xl font-bold text-foreground pt-2">Tips for Creating Strong Passwords</h3>
-                <ul className="space-y-2 ml-1">
-                  {[
-                    "Use at least 12 characters — longer is always better",
-                    "Mix uppercase, lowercase, numbers, and special characters",
-                    "Never reuse passwords across different accounts",
-                    "Avoid personal information (names, birthdays, addresses)",
-                    "Consider using a passphrase — a memorable sentence with substitutions",
-                    "Use a password manager to generate and store unique passwords",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /><span>{item}</span></li>
-                  ))}
-                </ul>
+                <p><strong className="text-foreground">Length Trumps Complexity:</strong> Notice how a 16-character phrase using only lowercase letters is mathematically safer than a complex 8-character string with symbols. Passphrases are highly recommended by security experts as they are easy to memorize but extremely difficult for computers to brute-force due to sheer character count.</p>
               </div>
             </section>
 
-            <section>
+            {/* WHY CHOOSE THIS */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="why-choose-this">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Why Use Our Strength Checker?</h2>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p><strong className="text-foreground">100% Private, Zero Network Requests.</strong> Server-side password checkers log what you type. Our application transfers the entire evaluation algorithm to your local browser upon page load. Once loaded, you can even disconnect your internet router, and the tool will continue functioning perfectly, ensuring your input never traverses the internet.</p>
+                <p><strong className="text-foreground">Actionable Heuristics.</strong> We don't just output an arbitrary score. We tell you exactly why the score is low—whether you missed uppercase letters, relied purely on an unbroken string of numbers, or repeated the same letter sequentially too many times.</p>
+                <p><strong className="text-foreground">Real-Time Fluid Updates.</strong> The progress bar and checkmarks map seamlessly to your keystrokes. This instantaneous feedback loop allows you to rapidly iterate on your structure until you achieve a 'Strong' rating.</p>
+              </div>
+            </section>
+
+            {/* FAQ */}
+            <section id="faq">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
-                <FaqItem q="Is my password sent to any server?" a="Absolutely not. This password strength checker runs 100% in your browser. Your password never leaves your device — no network requests, no data storage, no tracking." />
-                <FaqItem q="What makes a password strong?" a="A strong password has 12+ characters, uses uppercase and lowercase letters, numbers, and special characters, avoids dictionary words and common patterns, and is unique to each account." />
-                <FaqItem q="How is crack time estimated?" a="We estimate based on a brute-force attack at 10 billion guesses per second (modern GPU capability). The calculation considers password length and character set size to determine total possible combinations." />
-                <FaqItem q="Should I use a password manager?" a="Yes. Password managers generate, store, and auto-fill unique strong passwords for every account. This eliminates password reuse — the most common security vulnerability. Popular options include 1Password, Bitwarden, and LastPass." />
-                <FaqItem q="Is this tool free?" a="100% free with no ads, no signup, and complete privacy. Your passwords are never stored or transmitted anywhere." />
-              </div>
-            </section>
-
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <h2 className="text-2xl font-black tracking-tight mb-2">Need to Generate a Strong Password?</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">Try our password generator, hash tools, and 400+ more free security and utility tools.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
-                </Link>
+                <FaqItem q="Are the passwords I test here recorded or stored?" a="Absolutely not. There is no backend database connected to this tool, and no analytics software logs the contents of the password input field. The logic runs entirely via client-side JavaScript within your web browser." />
+                <FaqItem q="What makes a password 'Strong'?" a="A strong password is generally at least 12 characters long and uses a mix of uppercase and lowercase letters, numbers, and special symbols. Alternatively, an exceptionally long 'passphrase' consisting of 4 or 5 completely unrelated words (e.g., 'table-orchestra-sunset-rocket') provides immense brute-force resistance while remaining memorable." />
+                <FaqItem q="Why does my password say 'Instantly' cracked when it has 8 letters?" a="Modern GPU hardware arrays can guess offline password hashes billions of times per second. An 8-character lowercase password has roughly 208 billion combinations, a space size that a single modern graphics card can brute-force in less than one minute." />
+                <FaqItem q="Is it better to change passwords frequently or keep one strong one?" a="Recent National Institute of Standards and Technology (NIST) guidelines advise against mandatory frequent password rotations (e.g., every 90 days), as it inevitably leads users to pick weaker, predictable passwords (changing 'Pass1!' to 'Pass2!'). It is better to choose a highly complex, unique password and only change it if a breach occurs." />
+                <FaqItem q="Can I use replacing letters with numbers like 'p@ssw0rd'?" a="While better than 'password', replacing letters with common visual equivalents ('l33tspeak') is a known pattern. Hackers build this exact substitution logic into their cracking dictionaries. It is mathematically much safer to just add more characters rather than relying entirely on common substitutions." />
               </div>
             </section>
           </div>
 
+          {/* SIDEBAR */}
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
-                  {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED.map(t => (
+                    <Link key={t.slug} href={`/${t.cat}/${t.slug}`} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5" style={{ background: `linear-gradient(135deg, hsl(${t.color} 70% 55%), hsl(${t.color} 75% 42%))` }}>{t.icon}</div>
+                      <div className="flex-1 min-w-0"><p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{t.title}</p><p className="text-[10px] text-muted-foreground/60 truncate">{t.benefit}</p></div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-teal-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others check their password strength.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
-                </button>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {["Calculator","How to Use","Quick Examples","Why Choose This","FAQ"].map(label => (
+                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g,"-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-teal-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-teal-500/40 flex-shrink-0" />{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

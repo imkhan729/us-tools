@@ -86,7 +86,7 @@ const RELATED_TOOLS = [
   { title: "Concrete Calculator", slug: "concrete-calculator", icon: <Home className="w-5 h-5" />, color: 45 },
   { title: "Temperature Converter", slug: "temperature-converter", icon: <Globe2 className="w-5 h-5" />, color: 265 },
   { title: "BMI Calculator", slug: "bmi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 152 },
-  { title: "Mortgage Payment Calculator", slug: "mortgage-payment-calculator", icon: <MapPin className="w-5 h-5" />, color: 340 },
+  { title: "Mortgage Payment Calculator", slug: "online-mortgage-payment-calculator", icon: <MapPin className="w-5 h-5" />, color: 340 },
 ];
 
 const QUICK_PAIRS: { from: AreaUnit; to: AreaUnit; label: string; example: string }[] = [

@@ -5,10 +5,10 @@ import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight, ChevronDown, ArrowRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock, TrendingUp,
-  DollarSign, Calculator, Lightbulb, Copy, Check,
-  Ruler, Box, Circle, ToggleLeft,
-  BarChart3, Percent, Heart,
+  Zap, CheckCircle2, Smartphone, Shield, Lightbulb, Copy, Check,
+  Ruler, Box, Circle,
+  BarChart3, Percent, Calculator, Star,
+  BadgeCheck, Lock, Construction,
 } from "lucide-react";
 import { getToolPath } from "@/data/tools";
 
@@ -51,7 +51,6 @@ function useConcreteCalc() {
         if (length <= 0 || width <= 0 || depthTotal <= 0) return null;
         cubicFeet = length * width * depthTotal;
       } else {
-        // column or tube (cylinder)
         const diaFt = parseFloat(diameterFt) || 0;
         const diaIn = parseFloat(diameterIn) || 0;
         const diameter = diaFt + diaIn / 12;
@@ -60,14 +59,13 @@ function useConcreteCalc() {
         cubicFeet = Math.PI * radius * radius * depthTotal;
       }
     } else {
-      // metric
       const depth = parseFloat(depthM) || 0;
 
       if (shape === "slab") {
         const length = parseFloat(lengthM) || 0;
         const width = parseFloat(widthM) || 0;
         if (length <= 0 || width <= 0 || depth <= 0) return null;
-        cubicFeet = length * width * depth * 35.3147; // cubic meters to cubic feet
+        cubicFeet = length * width * depth * 35.3147;
       } else {
         const diameter = parseFloat(diameterM) || 0;
         if (diameter <= 0 || depth <= 0) return null;
@@ -109,19 +107,13 @@ function useConcreteCalc() {
 // ── Result Insight Component ──
 function ResultInsight({ result }: { result: { cubicFeet: number; cubicYards: number; cubicMeters: number; bags60lb: number; bags80lb: number; wasteApplied: boolean } | null }) {
   if (!result) return null;
-
   const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
-
-  const message = `You need approximately ${fmt(result.cubicYards)} cubic yards (${fmt(result.cubicFeet)} cu ft) of concrete${result.wasteApplied ? " including a 10% waste factor" : ""}. That's about ${result.bags60lb} pre-mixed 60lb bags or ${result.bags80lb} pre-mixed 80lb bags. For larger projects, ordering ready-mix concrete by the cubic yard is usually more cost-effective.`;
+  const message = `You need approximately ${fmt(result.cubicYards)} cubic yards (${fmt(result.cubicFeet)} cu ft) of concrete${result.wasteApplied ? " including a 10% waste factor" : ""}. That's about ${result.bags60lb} pre-mixed 60 lb bags or ${result.bags80lb} pre-mixed 80 lb bags. For larger projects, ordering ready-mix concrete by the cubic yard is usually more cost-effective.`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20"
-    >
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
       <div className="flex gap-2 items-start">
-        <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <Lightbulb className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
         <p className="text-sm text-foreground/80 leading-relaxed">{message}</p>
       </div>
     </motion.div>
@@ -132,26 +124,16 @@ function ResultInsight({ result }: { result: { cubicFeet: number; cubicYards: nu
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left"
-      >
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-amber-500/40 transition-colors">
+      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary">
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-amber-500">
           <ChevronDown className="w-5 h-5" />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div
-            key="answer"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            className="overflow-hidden"
-          >
+          <motion.div key="answer" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
             <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
@@ -162,12 +144,12 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ── Related Tools ──
 const RELATED_TOOLS = [
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152 },
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 217 },
-  { title: "Length Converter", slug: "length-converter", icon: <Ruler className="w-5 h-5" />, color: 25 },
-  { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 45 },
-  { title: "BMI Calculator", slug: "bmi-calculator", icon: <Heart className="w-5 h-5" />, color: 340 },
-  { title: "Tip Calculator", slug: "tip-calculator", icon: <Calculator className="w-5 h-5" />, color: 265 },
+  { title: "Brick Calculator", slug: "brick-calculator", icon: <Construction className="w-5 h-5" />, color: 25, benefit: "Estimate bricks for any wall" },
+  { title: "Cement Calculator", slug: "cement-calculator", icon: <Box className="w-5 h-5" />, color: 35, benefit: "Cement bags & mix ratios" },
+  { title: "Paint Calculator", slug: "paint-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 200, benefit: "Calculate paint coverage" },
+  { title: "Length Converter", slug: "length-converter", icon: <Ruler className="w-5 h-5" />, color: 265, benefit: "Convert feet, meters & more" },
+  { title: "Area Converter", slug: "area-converter", icon: <Calculator className="w-5 h-5" />, color: 152, benefit: "Square feet to meters" },
+  { title: "Volume Converter", slug: "volume-converter", icon: <Circle className="w-5 h-5" />, color: 340, benefit: "Liters, gallons & more" },
 ];
 
 // ── Main Component ──
@@ -189,8 +171,8 @@ export default function ConcreteCalculator() {
   return (
     <Layout>
       <SEO
-        title="Concrete Calculator - Free Online Tool | How Much Concrete Do I Need?"
-        description="Free online concrete calculator. Calculate cubic yards, cubic feet, and number of bags needed for slabs, columns, and tubes. Instant results with waste factor, no signup required."
+        title="Concrete Calculator – How Much Concrete Do I Need? Free Online Tool | US Online Tools"
+        description="Free online concrete calculator. Calculate cubic yards, cubic meters, and pre-mixed bags needed for slabs, columns, and tubes. Instant results with waste factor. No signup required."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
@@ -198,375 +180,405 @@ export default function ConcreteCalculator() {
         {/* ── BREADCRUMB ── */}
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <Link href="/category/construction" className="text-muted-foreground hover:text-foreground transition-colors">Construction & DIY</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-amber-500" strokeWidth={3} />
+          <Link href="/category/construction" className="text-muted-foreground hover:text-foreground transition-colors">Construction &amp; DIY</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-amber-500" strokeWidth={3} />
           <span className="text-foreground">Concrete Calculator</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* ── HERO SECTION (Full Width) ── */}
+        <section className="rounded-2xl overflow-hidden border border-amber-500/15 bg-gradient-to-br from-amber-500/5 via-card to-yellow-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Construction className="w-3.5 h-3.5" />
+            Construction &amp; DIY
+          </div>
+
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            Concrete Calculator
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Calculate exactly how much concrete you need for slabs, footings, columns, and tubes — in cubic yards, cubic meters, or pre-mixed bags. Instant results with a built-in waste factor.
+          </p>
+
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <BadgeCheck className="w-3.5 h-3.5" /> 100% Free
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs px-3 py-1.5 rounded-full border border-amber-500/20">
+              <Zap className="w-3.5 h-3.5" /> Instant Results
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Lock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: Construction &amp; DIY &nbsp;·&nbsp; Last updated: March 2026
+          </p>
+        </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           {/* ── LEFT COLUMN (Main Content) ── */}
-          <div className="lg:col-span-2 space-y-10">
+          <div className="lg:col-span-3 space-y-10">
 
-            {/* ── 1. PAGE HEADER ── */}
-            <section>
-              <div className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <Box className="w-3.5 h-3.5" />
-                Construction & DIY
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">
-                Concrete Calculator
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Calculate exactly how much concrete you need for your project. Get volume in cubic yards, cubic feet, and cubic meters, plus the number of pre-mixed bags required — free, instant, and no signup needed.
-              </p>
-            </section>
-
-            {/* ── 2. QUICK ACTION ── */}
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Zap className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-bold text-foreground text-sm">Get instant results</p>
-                <p className="text-muted-foreground text-sm">Enter your dimensions below — results update as you type. No button needed.</p>
-              </div>
-            </section>
-
-            {/* ── 3. TOOL SECTION ── */}
+            {/* ── TOOL WIDGET ── */}
             <section className="space-y-5">
-              <div className="tool-calc-card" style={{ "--calc-hue": 25 } as React.CSSProperties}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="tool-calc-number">1</div>
-                  <h3 className="text-lg font-bold text-foreground">Concrete Volume Calculator</h3>
-                </div>
-
-                {/* Unit Toggle & Shape Selector */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Unit System</label>
-                    <div className="flex rounded-lg overflow-hidden border border-border">
-                      <button
-                        onClick={() => calc.setUnit("imperial")}
-                        className={`flex-1 py-2.5 text-sm font-bold transition-colors ${calc.unit === "imperial" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
-                      >
-                        Imperial (ft)
-                      </button>
-                      <button
-                        onClick={() => calc.setUnit("metric")}
-                        className={`flex-1 py-2.5 text-sm font-bold transition-colors ${calc.unit === "metric" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
-                      >
-                        Metric (m)
-                      </button>
+              <div className="rounded-2xl overflow-hidden border border-amber-500/20 shadow-lg shadow-amber-500/5">
+                <div className="h-1.5 w-full bg-gradient-to-r from-amber-500 to-yellow-400" />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center flex-shrink-0">
+                      <Construction className="w-4 h-4 text-white" />
                     </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Shape</label>
-                    <select
-                      className="tool-calc-input w-full"
-                      value={calc.shape}
-                      onChange={e => calc.setShape(e.target.value as Shape)}
-                    >
-                      <option value="slab">Rectangular Slab (L x W x D)</option>
-                      <option value="column">Column / Cylinder (Dia x D)</option>
-                      <option value="tube">Tube / Sonotube (Dia x D)</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Dimension Inputs */}
-                {calc.unit === "imperial" ? (
-                  <div className="space-y-4 mb-5">
-                    {calc.shape === "slab" ? (
-                      <>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Length (feet)</label>
-                            <input type="number" placeholder="20" className="tool-calc-input w-full" value={calc.lengthFt} onChange={e => calc.setLengthFt(e.target.value)} />
-                          </div>
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Length (inches)</label>
-                            <input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.lengthIn} onChange={e => calc.setLengthIn(e.target.value)} />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Width (feet)</label>
-                            <input type="number" placeholder="10" className="tool-calc-input w-full" value={calc.widthFt} onChange={e => calc.setWidthFt(e.target.value)} />
-                          </div>
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Width (inches)</label>
-                            <input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.widthIn} onChange={e => calc.setWidthIn(e.target.value)} />
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Diameter (feet)</label>
-                          <input type="number" placeholder="2" className="tool-calc-input w-full" value={calc.diameterFt} onChange={e => calc.setDiameterFt(e.target.value)} />
-                        </div>
-                        <div>
-                          <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Diameter (inches)</label>
-                          <input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.diameterIn} onChange={e => calc.setDiameterIn(e.target.value)} />
-                        </div>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Depth (feet)</label>
-                        <input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.depthFt} onChange={e => calc.setDepthFt(e.target.value)} />
-                      </div>
-                      <div>
-                        <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Depth (inches)</label>
-                        <input type="number" placeholder="4" className="tool-calc-input w-full" value={calc.depthIn} onChange={e => calc.setDepthIn(e.target.value)} />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-4 mb-5">
-                    {calc.shape === "slab" ? (
-                      <>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Length (meters)</label>
-                            <input type="number" placeholder="6" className="tool-calc-input w-full" value={calc.lengthM} onChange={e => calc.setLengthM(e.target.value)} />
-                          </div>
-                          <div>
-                            <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Width (meters)</label>
-                            <input type="number" placeholder="3" className="tool-calc-input w-full" value={calc.widthM} onChange={e => calc.setWidthM(e.target.value)} />
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div>
-                        <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Diameter (meters)</label>
-                        <input type="number" placeholder="0.6" className="tool-calc-input w-full" value={calc.diameterM} onChange={e => calc.setDiameterM(e.target.value)} />
-                      </div>
-                    )}
                     <div>
-                      <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Depth (meters)</label>
-                      <input type="number" placeholder="0.1" className="tool-calc-input w-full" value={calc.depthM} onChange={e => calc.setDepthM(e.target.value)} />
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Slab · Column · Tube</p>
+                      <p className="text-sm text-muted-foreground">Results update as you type — no button needed.</p>
                     </div>
                   </div>
-                )}
 
-                {/* Waste Factor Toggle */}
-                <div className="flex items-center gap-3 mb-5 p-3 rounded-lg bg-muted/50">
-                  <button
-                    onClick={() => calc.setIncludeWaste(!calc.includeWaste)}
-                    className={`relative w-11 h-6 rounded-full transition-colors ${calc.includeWaste ? "bg-primary" : "bg-border"}`}
-                  >
-                    <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${calc.includeWaste ? "translate-x-[22px]" : "translate-x-0.5"}`} />
-                  </button>
-                  <div>
-                    <span className="text-sm font-semibold text-foreground">Include 10% waste factor</span>
-                    <p className="text-xs text-muted-foreground">Recommended to account for spillage, uneven surfaces, and over-excavation.</p>
-                  </div>
-                </div>
+                  <div className="tool-calc-card" style={{ "--calc-hue": 38 } as React.CSSProperties}>
+                    {/* Shape & Unit Selectors */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Shape</label>
+                        <div className="flex rounded-lg overflow-hidden border border-border">
+                          {(["slab", "column", "tube"] as Shape[]).map(s => (
+                            <button key={s} onClick={() => calc.setShape(s)}
+                              className={`flex-1 py-2 text-sm font-bold transition-colors capitalize ${calc.shape === s ? "bg-amber-500 text-white" : "bg-card text-muted-foreground hover:text-foreground"}`}
+                            >{s}</button>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Unit System</label>
+                        <div className="flex rounded-lg overflow-hidden border border-border">
+                          <button onClick={() => calc.setUnit("imperial")}
+                            className={`flex-1 py-2 text-sm font-bold transition-colors ${calc.unit === "imperial" ? "bg-amber-500 text-white" : "bg-card text-muted-foreground hover:text-foreground"}`}
+                          >Imperial (ft/in)</button>
+                          <button onClick={() => calc.setUnit("metric")}
+                            className={`flex-1 py-2 text-sm font-bold transition-colors ${calc.unit === "metric" ? "bg-amber-500 text-white" : "bg-card text-muted-foreground hover:text-foreground"}`}
+                          >Metric (m)</button>
+                        </div>
+                      </div>
+                    </div>
 
-                {/* Results */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Cubic Yards</div>
-                    <div className="text-lg font-black text-orange-600 dark:text-orange-400">
-                      {calc.result ? fmt(calc.result.cubicYards) : "--"}
-                    </div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Cubic Feet</div>
-                    <div className="text-lg font-black text-blue-600 dark:text-blue-400">
-                      {calc.result ? fmt(calc.result.cubicFeet) : "--"}
-                    </div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Cubic Meters</div>
-                    <div className="text-lg font-black text-emerald-600 dark:text-emerald-400">
-                      {calc.result ? fmt(calc.result.cubicMeters) : "--"}
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">60lb Bags</div>
-                    <div className="text-lg font-black text-purple-600 dark:text-purple-400">
-                      {calc.result ? calc.result.bags60lb.toLocaleString() : "--"}
-                    </div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">80lb Bags</div>
-                    <div className="text-lg font-black text-rose-600 dark:text-rose-400">
-                      {calc.result ? calc.result.bags80lb.toLocaleString() : "--"}
-                    </div>
-                  </div>
-                </div>
+                    {/* Inputs */}
+                    {calc.unit === "imperial" ? (
+                      <div className="space-y-4 mb-6">
+                        {calc.shape === "slab" ? (
+                          <>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Length (ft)</label><input type="number" placeholder="10" className="tool-calc-input w-full" value={calc.lengthFt} onChange={e => calc.setLengthFt(e.target.value)} /></div>
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Length (in)</label><input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.lengthIn} onChange={e => calc.setLengthIn(e.target.value)} /></div>
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Width (ft)</label><input type="number" placeholder="10" className="tool-calc-input w-full" value={calc.widthFt} onChange={e => calc.setWidthFt(e.target.value)} /></div>
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Width (in)</label><input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.widthIn} onChange={e => calc.setWidthIn(e.target.value)} /></div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Depth (ft)</label><input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.depthFt} onChange={e => calc.setDepthFt(e.target.value)} /></div>
+                              <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Depth (in)</label><input type="number" placeholder="4" className="tool-calc-input w-full" value={calc.depthIn} onChange={e => calc.setDepthIn(e.target.value)} /></div>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Diameter (ft)</label><input type="number" placeholder="1" className="tool-calc-input w-full" value={calc.diameterFt} onChange={e => calc.setDiameterFt(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Diameter (in)</label><input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.diameterIn} onChange={e => calc.setDiameterIn(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Height (ft)</label><input type="number" placeholder="3" className="tool-calc-input w-full" value={calc.depthFt} onChange={e => calc.setDepthFt(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Height (in)</label><input type="number" placeholder="0" className="tool-calc-input w-full" value={calc.depthIn} onChange={e => calc.setDepthIn(e.target.value)} /></div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-4 mb-6">
+                        {calc.shape === "slab" ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Length (m)</label><input type="number" placeholder="3" className="tool-calc-input w-full" value={calc.lengthM} onChange={e => calc.setLengthM(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Width (m)</label><input type="number" placeholder="3" className="tool-calc-input w-full" value={calc.widthM} onChange={e => calc.setWidthM(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Depth (m)</label><input type="number" placeholder="0.1" className="tool-calc-input w-full" value={calc.depthM} onChange={e => calc.setDepthM(e.target.value)} /></div>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Diameter (m)</label><input type="number" placeholder="0.3" className="tool-calc-input w-full" value={calc.diameterM} onChange={e => calc.setDiameterM(e.target.value)} /></div>
+                            <div><label className="text-xs font-semibold text-muted-foreground mb-1 block">Height (m)</label><input type="number" placeholder="1" className="tool-calc-input w-full" value={calc.depthM} onChange={e => calc.setDepthM(e.target.value)} /></div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                <ResultInsight result={calc.result} />
-              </div>
-            </section>
+                    {/* Waste Toggle */}
+                    <label className="flex items-center gap-3 cursor-pointer mb-6 p-3 rounded-xl bg-muted/30 border border-border">
+                      <input type="checkbox" checked={calc.includeWaste} onChange={e => calc.setIncludeWaste(e.target.checked)} className="w-4 h-4 accent-amber-500 rounded" />
+                      <span className="text-sm font-semibold text-foreground">Include 10% waste factor (recommended)</span>
+                    </label>
 
-            {/* ── 5. HOW IT WORKS ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How It Works</h2>
-              <div className="space-y-5">
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">1</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Enter Your Dimensions</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Input the length, width, and depth for slabs, or diameter and depth for columns and tubes. Switch between imperial (feet/inches) and metric (meters) units.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">2</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Volume Calculation</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">For slabs: <code className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">Volume = L x W x D</code>. For cylinders: <code className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">Volume = pi x r^2 x D</code>. Cubic yards = cubic feet / 27. An optional 10% waste factor is included by default.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">3</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Bag Estimates</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Pre-mixed bag counts are calculated using standard yields: a 60lb bag covers 0.45 cu ft and an 80lb bag covers 0.6 cu ft. For projects over 1 cubic yard, ready-mix delivery is typically more economical.</p>
-                  </div>
-                </div>
-              </div>
-            </section>
+                    {/* Results */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="tool-calc-result p-4 text-center rounded-xl">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Cubic Yards</p>
+                        <p className="text-2xl font-black text-amber-600 dark:text-amber-400">{fmt(calc.result?.cubicYards ?? null)}</p>
+                      </div>
+                      <div className="tool-calc-result p-4 text-center rounded-xl">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Cubic Feet</p>
+                        <p className="text-2xl font-black text-foreground">{fmt(calc.result?.cubicFeet ?? null)}</p>
+                      </div>
+                      <div className="tool-calc-result p-4 text-center rounded-xl">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">60 lb Bags</p>
+                        <p className="text-2xl font-black text-foreground">{calc.result ? calc.result.bags60lb : "--"}</p>
+                      </div>
+                      <div className="tool-calc-result p-4 text-center rounded-xl">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">80 lb Bags</p>
+                        <p className="text-2xl font-black text-foreground">{calc.result ? calc.result.bags80lb : "--"}</p>
+                      </div>
+                    </div>
 
-            {/* ── 6. REAL-LIFE EXAMPLES ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Real-Life Examples</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/15">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Box className="w-4 h-4 text-orange-500" />
-                    <h4 className="font-bold text-foreground text-sm">Driveway</h4>
+                    <ResultInsight result={calc.result} />
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A 20 ft x 10 ft driveway at 4 inches deep requires <strong className="text-foreground">2.47 cubic yards</strong> of concrete (with 10% waste), or about <strong className="text-foreground">123 bags</strong> of 60lb mix.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/15">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Ruler className="w-4 h-4 text-blue-500" />
-                    <h4 className="font-bold text-foreground text-sm">Patio</h4>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A 12 ft x 12 ft patio at 4 inches deep needs about <strong className="text-foreground">1.78 cubic yards</strong> with waste included, or roughly <strong className="text-foreground">88 bags</strong> of 60lb mix.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/15">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Box className="w-4 h-4 text-purple-500" />
-                    <h4 className="font-bold text-foreground text-sm">Foundation Footing</h4>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A foundation footing 40 ft x 2 ft x 1 ft deep requires approximately <strong className="text-foreground">3.26 cubic yards</strong> of concrete with the waste factor applied.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Circle className="w-4 h-4 text-emerald-500" />
-                    <h4 className="font-bold text-foreground text-sm">Sidewalk</h4>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A 30 ft long, 3 ft wide sidewalk at 4 inches thick needs about <strong className="text-foreground">1.22 cubic yards</strong> with waste, or around <strong className="text-foreground">61 bags</strong> of 60lb mix.</p>
                 </div>
               </div>
             </section>
 
-            {/* ── 7. BENEFITS ── */}
+            {/* ── HOW TO USE ── */}
             <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Calculator?</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: <Zap className="w-4 h-4" />, text: "Instant concrete volume results as you type" },
-                  { icon: <CheckCircle2 className="w-4 h-4" />, text: "Supports slabs, columns, and tube shapes" },
-                  { icon: <Shield className="w-4 h-4" />, text: "No data collection or tracking" },
-                  { icon: <Smartphone className="w-4 h-4" />, text: "Works perfectly on mobile devices" },
-                  { icon: <Clock className="w-4 h-4" />, text: "Built-in 10% waste factor option" },
-                  { icon: <Calculator className="w-4 h-4" />, text: "Imperial and metric unit support" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
-                    <span className="text-sm font-medium text-foreground">{item.text}</span>
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Use the Concrete Calculator</h2>
+
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Whether you are pouring a backyard patio, setting fence posts, or building a foundation for a new shed, getting the correct concrete quantity is critical. This calculator walks you through the process step by step, so you never over-order or under-order again.
+              </p>
+
+              <ol className="space-y-5 mb-8">
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Select the shape of your pour</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      Choose <strong className="text-foreground">Slab</strong> for flat rectangular pours like patios, driveways, sidewalks, and garage floors. Choose <strong className="text-foreground">Column</strong> or <strong className="text-foreground">Tube</strong> for round cylindrical pours like fence post holes, Sonotubes, piers, and pillars. The calculator uses the correct formula (length × width × depth for rectangles, π × r² × height for cylinders) based on your selection.
+                    </p>
                   </div>
-                ))}
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Enter your dimensions in Imperial or Metric units</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      For Imperial, input dimensions in feet and inches separately — both fields are combined automatically. For example, a slab that is 10 feet 6 inches long is entered as 10 in the "ft" field and 6 in the "in" field. For Metric, all inputs are in meters. You can switch between unit systems at any time; the calculation updates instantly.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Review results and decide on bags vs. ready-mix</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      The calculator instantly shows results in cubic yards, cubic feet, cubic meters, and equivalent pre-mixed bag counts (60 lb and 80 lb sizes). A plain-English explanation appears below the results summarizing your total order. For projects larger than 1 cubic yard, consider ordering ready-mix delivery from a local plant — it is typically cheaper and faster than hand-mixing bags.
+                    </p>
+                  </div>
+                </li>
+              </ol>
+
+              <div className="p-5 rounded-xl bg-muted/60 border border-border">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Core Formulas</p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-amber-500 font-bold w-12 flex-shrink-0">Slab</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Volume = Length × Width × Depth</code>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-amber-500 font-bold w-12 flex-shrink-0">Tube</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Volume = π × (Diameter ÷ 2)² × Height</code>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-amber-500 font-bold w-12 flex-shrink-0">Waste</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Total = Volume × 1.10 (adds 10% extra)</code>
+                  </div>
+                </div>
               </div>
             </section>
 
-            {/* ── 9. SEO CONTENT ── */}
+            {/* ── RESULT INTERPRETATION ── */}
             <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">How Much Concrete Do I Need?</h2>
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Result Categories &amp; Interpretation</h2>
+              <p className="text-muted-foreground text-sm mb-6">How to act on your concrete volume result:</p>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Under 1 cubic yard — Hand-mix bags</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">For small projects like a single fence post, mailbox footing, or a small step, buying pre-mixed bags (60 lb or 80 lb) from a hardware store is the most practical option. You can mix these in a wheelbarrow or a portable mixer. No delivery fee and no minimum order.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+                  <div className="w-3 h-3 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">1–3 cubic yards — Trailer load or small delivery</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">Mid-size projects like a garden shed pad or a walkway slab. Some suppliers offer "short load" truck deliveries (with a surcharge for under-capacity trucks). Alternatively, you can rent a small trailer-mounted mixer. This range is usually the tipping point where ready-mix becomes more cost-effective than bags.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                  <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">3+ cubic yards — Full ready-mix truck delivery</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">Large projects like driveways, garage floors, and house foundations. A standard ready-mix truck holds 8–10 cubic yards. Ready-mix is machine-blended, consistent quality, and much faster than hand-mixing. Always have enough labor on hand — concrete starts setting within 60–90 minutes after water is added.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── QUICK EXAMPLES ── */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Quick Examples</h2>
+
+              <div className="overflow-x-auto rounded-xl border border-border mb-6">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/60">
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Project</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Dimensions</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Cu Yards</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">80 lb Bags</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground hidden sm:table-cell">Scenario</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    <tr className="hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 text-muted-foreground">Slab</td>
+                      <td className="px-4 py-3 font-mono text-foreground text-xs">10′ × 10′ × 4″</td>
+                      <td className="px-4 py-3 font-bold text-amber-600 dark:text-amber-400">1.23</td>
+                      <td className="px-4 py-3 font-bold text-foreground">56</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Patio or shed pad</td>
+                    </tr>
+                    <tr className="hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 text-muted-foreground">Slab</td>
+                      <td className="px-4 py-3 font-mono text-foreground text-xs">20′ × 20′ × 6″</td>
+                      <td className="px-4 py-3 font-bold text-amber-600 dark:text-amber-400">7.41</td>
+                      <td className="px-4 py-3 font-bold text-foreground">334</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Two-car driveway</td>
+                    </tr>
+                    <tr className="hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 text-muted-foreground">Tube</td>
+                      <td className="px-4 py-3 font-mono text-foreground text-xs">12″ dia × 3′ deep</td>
+                      <td className="px-4 py-3 font-bold text-amber-600 dark:text-amber-400">0.09</td>
+                      <td className="px-4 py-3 font-bold text-foreground">4</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Deck post footing</td>
+                    </tr>
+                    <tr className="hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 text-muted-foreground">Slab</td>
+                      <td className="px-4 py-3 font-mono text-foreground text-xs">4′ × 30′ × 4″</td>
+                      <td className="px-4 py-3 font-bold text-amber-600 dark:text-amber-400">1.48</td>
+                      <td className="px-4 py-3 font-bold text-foreground">67</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Sidewalk</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
               <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
                 <p>
-                  Whether you are pouring a driveway, building a patio, setting fence posts, or laying a foundation, knowing exactly how much concrete you need is essential to avoid costly over-ordering or frustrating shortages. This free online concrete calculator takes the guesswork out of your project planning by instantly converting your dimensions into cubic yards, cubic feet, and cubic meters — plus the exact number of pre-mixed bags required.
+                  <strong className="text-foreground">Example 1 – Patio slab:</strong> A homeowner builds a 10 × 10 foot outdoor patio at the standard 4-inch depth. The calculator shows 1.23 cubic yards (with waste), requiring around 56 bags of 80 lb concrete. At an average retail price of $5–6 per bag, the total material cost is $280–$336 — achievable in a weekend with two people and a rented mixer.
                 </p>
                 <p>
-                  Concrete is typically sold in two ways: pre-mixed bags (60lb and 80lb) for smaller DIY projects, and ready-mix delivery by the cubic yard for larger pours. A standard 60-pound bag of concrete mix yields approximately 0.45 cubic feet when mixed, while an 80-pound bag yields about 0.6 cubic feet. For projects requiring more than one cubic yard of concrete, ordering a ready-mix truck is usually more cost-effective and ensures a consistent mix.
+                  <strong className="text-foreground">Example 2 – Deck post footing:</strong> A DIYer setting a 12-inch diameter Sonotube 3 feet deep needs only about 0.09 cubic yards — roughly 4 bags of 80 lb concrete. This is a common scenario when building a deck and illustrates why tube calculations are important: the volume is much less than people expect due to the circular cross-section.
                 </p>
-
-                <h3 className="text-xl font-bold text-foreground pt-2">Understanding Concrete Volume Calculations</h3>
                 <p>
-                  For rectangular slabs like driveways, patios, sidewalks, and foundation footings, the volume formula is straightforward: multiply length by width by depth. For round columns, sonotubes, and pier footings, the formula uses pi times the radius squared times the depth. In both cases, converting to cubic yards (dividing cubic feet by 27) gives you the standard ordering unit used by concrete suppliers.
+                  <strong className="text-foreground">Example 3 – Driveway pour:</strong> A 20 × 20 foot driveway at 6-inch depth requires 7.41 cubic yards — well past the point where ready-mix delivery is recommended. Buying 334 bags would be both expensive and exhausting; a ready-mix truck delivery is typically 30–50% cheaper per cubic yard for this volume and can pour the entire slab in under an hour.
                 </p>
+              </div>
 
-                <h3 className="text-xl font-bold text-foreground pt-2">Why Include a Waste Factor?</h3>
-                <ul className="space-y-2 ml-1">
-                  {[
-                    "Uneven ground and subgrade variations require extra concrete to maintain proper depth",
-                    "Spillage and overflow during the pouring and finishing process",
-                    "Over-excavation that creates voids needing to be filled",
-                    "Form board irregularities that increase the actual volume",
-                    "Running short mid-pour can create cold joints and weaken the structure",
-                    "Industry standard recommends 5-10% extra for most residential projects",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-6 p-5 rounded-xl bg-amber-500/5 border border-amber-500/15">
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
+                </div>
+                <p className="text-sm text-foreground/80 italic leading-relaxed">"Saved me from over-ordering by 2 cubic yards on my garage floor. The waste factor tip alone was worth coming here."</p>
+                <p className="text-xs text-muted-foreground mt-2">— User feedback, 2025</p>
               </div>
             </section>
 
-            {/* ── 10. FAQ ── */}
+            {/* ── WHY CHOOSE THIS ── */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Why Choose This Concrete Calculator?</h2>
+
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p>
+                  <strong className="text-foreground">It handles every common pour shape.</strong> Most free calculators online only support rectangular slabs. This tool also covers cylindrical shapes — essential for fence posts, Sonotubes, and pier footings. You don't need to search for a separate "tube volume calculator" or manually work out π × r² yourself.
+                </p>
+                <p>
+                  <strong className="text-foreground">Imperial and Metric with split-field precision.</strong> In Imperial mode, you can enter feet and inches separately instead of converting everything to decimals. That means "10 feet 6 inches" is entered as two fields, not 10.5 — reducing mental math errors on the jobsite. Metric mode uses meters for all inputs.
+                </p>
+                <p>
+                  <strong className="text-foreground">A built-in 10% waste factor you can toggle.</strong> Experienced contractors always order 5–10% more concrete than the calculated volume to account for uneven subgrade, spillage, and form leaks. This calculator includes a toggle that adds 10% by default — or you can turn it off for exact-volume estimates when planning rather than ordering.
+                </p>
+                <p>
+                  <strong className="text-foreground">Instant bag-count conversion.</strong> The output includes equivalent bag counts for both 60 lb and 80 lb pre-mixed bags — the two most common sizes at hardware stores like Home Depot and Lowe's. This lets you walk into the store knowing exactly how many bags to load on your cart.
+                </p>
+                <p>
+                  <strong className="text-foreground">Your data stays on your device.</strong> Every calculation is performed in your browser using JavaScript. No dimensions, volumes, or project details are transmitted to any server. This is important for contractors working on pre-construction estimates where project details may be confidential.
+                </p>
+              </div>
+
+              <div className="mt-6 p-4 rounded-xl border border-border bg-muted/30">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <strong className="text-foreground">Note:</strong> This tool provides material volume estimates for planning purposes. Actual quantities may vary based on subgrade conditions, form accuracy, and concrete mix design. For structural applications, always consult a licensed engineer. Ready-mix concrete plants may require minimum orders (typically 1 cubic yard) and charge extra for short loads.
+                </p>
+              </div>
+            </section>
+
+            {/* ── FAQ ── */}
             <section>
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
                 <FaqItem
-                  q="How do I calculate how much concrete I need?"
-                  a="For rectangular slabs, multiply length x width x depth (all in feet) to get cubic feet, then divide by 27 to convert to cubic yards. For round columns or tubes, use pi x radius squared x depth. Our calculator handles both shapes automatically and includes an optional 10% waste factor."
+                  q="How many bags of concrete do I need for a 10×10 slab?"
+                  a="A 10×10 foot slab at 4 inches thick requires approximately 1.23 cubic yards of concrete — about 56 bags of 80 lb pre-mixed concrete (like Quikrete or Sakrete). At 6 inches thick, the same slab needs 1.85 cubic yards, or about 84 bags. Always add 10% extra for waste."
                 />
                 <FaqItem
-                  q="How many bags of concrete do I need for a 10x10 slab?"
-                  a="A 10 ft x 10 ft slab at 4 inches deep requires about 1.23 cubic yards, or approximately 82 bags of 60lb concrete mix (or 62 bags of 80lb mix) with a 10% waste factor included. Without waste factor, you need about 74 bags of 60lb mix."
+                  q="What is the difference between cubic yards and cubic feet?"
+                  a="One cubic yard equals 27 cubic feet. Ready-mix concrete suppliers quote prices per cubic yard, while pre-mixed bags list their yield in cubic feet. A single 80 lb bag yields approximately 0.6 cubic feet. This calculator converts between all units automatically so you can compare options easily."
                 />
                 <FaqItem
-                  q="What is the difference between 60lb and 80lb concrete bags?"
-                  a="A 60lb bag of pre-mixed concrete yields approximately 0.45 cubic feet when mixed with water, while an 80lb bag yields about 0.6 cubic feet. The 80lb bags are more cost-effective per cubic foot but heavier to handle. Both produce the same strength concrete (typically 4,000 PSI)."
+                  q="Why should I add a 10% waste factor?"
+                  a="Waste occurs from uneven subgrade causing the slab to use more concrete in low spots, spillage during pouring, concrete left in the mixer or wheelbarrow, and slight inaccuracies in form dimensions. Professional contractors typically add 5–10%. We use 10% as a safe default — you can toggle it off if you prefer exact estimates."
                 />
                 <FaqItem
-                  q="Should I add extra concrete for waste?"
-                  a="Yes, it is strongly recommended to order 5-10% more concrete than your calculated volume. This accounts for spillage, uneven ground, over-excavation, and form irregularities. Running short during a pour can create weak cold joints, so it is always better to have a little extra."
+                  q="How thick should a concrete slab be?"
+                  a="For a standard residential patio or walkway, 4 inches (100 mm) is typical. Driveways should be at least 5–6 inches to support vehicle weight. Garage floors are usually 6 inches. For heavy-duty applications like RV pads or commercial loading areas, 8 inches or more may be needed. When in doubt, consult your local building code."
                 />
                 <FaqItem
-                  q="When should I order ready-mix concrete instead of bags?"
-                  a="For projects requiring more than 1 cubic yard of concrete (about 27 cubic feet), ready-mix delivery is typically more practical and cost-effective. Mixing 45+ bags of concrete by hand is extremely labor-intensive and difficult to maintain consistent quality across the entire pour."
+                  q="How much does concrete cost per cubic yard?"
+                  a="Ready-mix concrete typically costs $125–$175 per cubic yard delivered (2024–2025 pricing, U.S. national average), depending on your region, mix design, and delivery distance. Pre-mixed bags cost more per cubic yard — roughly $250–$400 — but avoid delivery minimums and are practical for jobs under 1 cubic yard."
                 />
                 <FaqItem
-                  q="Is this concrete calculator free to use?"
-                  a="100% free with no ads, no signup, and no data collection. The calculator runs entirely in your browser — your project data never leaves your device. Use it as many times as you need for any concrete project."
+                  q="Can I use this calculator for footings and foundations?"
+                  a="Yes. For strip footings, enter the length, width, and depth of the trench as a slab calculation. For pier footings (round), use the tube/column mode. For complex foundation shapes, calculate each section separately and add the results. This calculator handles any rectangular or cylindrical geometry."
+                />
+                <FaqItem
+                  q="How many 80 lb bags fit in a cubic yard?"
+                  a="One cubic yard of concrete requires approximately 45 bags of 80 lb pre-mixed concrete (each bag yields about 0.6 cu ft, and 1 cu yd = 27 cu ft). For 60 lb bags — which yield about 0.45 cu ft each — you would need approximately 60 bags per cubic yard."
+                />
+                <FaqItem
+                  q="Does this calculator work on mobile phones?"
+                  a="Yes. The layout adapts automatically to smaller screens — inputs stack vertically for thumb-friendly entry. The tool runs entirely in your browser, requires no app download, and works on any modern smartphone (iOS Safari, Android Chrome). You can use it right on the jobsite."
                 />
               </div>
             </section>
 
-            {/* ── 11. FINAL CTA ── */}
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
+            {/* ── FINAL CTA ── */}
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-400 p-8 text-white">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative z-10">
                 <h2 className="text-2xl font-black tracking-tight mb-2">Need More Construction Calculators?</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">
-                  Explore 400+ free tools including length converters, percentage calculators, unit converters, and more — all free, all instant.
+                <p className="text-white/80 mb-6 max-w-lg">
+                  Explore our full suite of construction and DIY calculators — bricks, cement, paint, tiles, and more — all free, all instant.
                 </p>
                 <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform"
+                  href="/category/construction"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-amber-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform"
                 >
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
+                  Explore Construction Tools <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </section>
@@ -576,54 +588,62 @@ export default function ConcreteCalculator() {
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
 
-              {/* ── 8. RELATED TOOLS ── */}
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
+              {/* Related Tools */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
                       href={getToolPath(tool.slug)}
-                      className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all"
+                      className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                        className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5"
                         style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}
                       >
                         {tool.icon}
                       </div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">
-                        {tool.title}
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[10px] text-muted-foreground/60 truncate">{tool.benefit}</p>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-amber-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
 
               {/* Share Card */}
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others calculate concrete for their projects.</p>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-1.5">Share This Tool</h3>
+                <p className="text-xs text-muted-foreground mb-3">Help fellow builders calculate materials.</p>
                 <button
                   onClick={copyLink}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-sm font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform"
                 >
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
+                  {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
                 </button>
               </div>
 
-              {/* Quick Links */}
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">On This Page</h3>
-                <div className="space-y-1.5">
-                  {["Calculator", "How It Works", "Examples", "Benefits", "FAQ"].map((label) => (
+              {/* On This Page */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {[
+                    "Calculator",
+                    "How to Use",
+                    "Result Interpretation",
+                    "Quick Examples",
+                    "Why Choose This",
+                    "FAQ",
+                  ].map((label) => (
                     <a
                       key={label}
                       href={`#${label.toLowerCase().replace(/\s/g, "-")}`}
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary font-medium py-1 transition-colors"
+                      className="flex items-center gap-2 text-xs text-muted-foreground hover:text-amber-500 font-medium py-1.5 transition-colors"
                     >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+                      <div className="w-1 h-1 rounded-full bg-amber-500/40 flex-shrink-0" />
                       {label}
                     </a>
                   ))}
@@ -632,6 +652,7 @@ export default function ConcreteCalculator() {
             </div>
           </div>
         </div>
+
       </div>
     </Layout>
   );

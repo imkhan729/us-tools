@@ -4,24 +4,24 @@ import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronRight, ChevronDown, ArrowRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock,
-  MessageCircle, Lightbulb, Copy, Check, Type,
-  AlignLeft, Hash, FileText, AtSign,
+  ChevronRight, ChevronDown, Check, ArrowRight,
+  Zap, Smartphone, Shield, Copy, Twitter, Info,
+  BadgeCheck, MessageSquare, AlertTriangle, RefreshCcw, Eraser
 } from "lucide-react";
-import { getToolPath } from "@/data/tools";
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-sky-500/40 transition-colors">
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary"><ChevronDown className="w-5 h-5" /></motion.span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-sky-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div key="answer" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+          <motion.div key="a" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
             <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
@@ -30,275 +30,244 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const PLATFORM_LIMITS = [
-  { name: "Twitter/X Post", limit: 280, icon: "𝕏" },
-  { name: "Twitter/X DM", limit: 10000, icon: "✉️" },
-  { name: "Instagram Caption", limit: 2200, icon: "📸" },
-  { name: "LinkedIn Post", limit: 3000, icon: "💼" },
-  { name: "Facebook Post", limit: 63206, icon: "📘" },
-  { name: "YouTube Title", limit: 100, icon: "▶️" },
-  { name: "TikTok Caption", limit: 2200, icon: "🎵" },
-  { name: "Pinterest Pin", limit: 500, icon: "📌" },
-];
-
-const RELATED_TOOLS = [
-  { title: "Word Counter", slug: "word-counter", icon: <AlignLeft className="w-5 h-5" />, color: 217 },
-  { title: "Lorem Ipsum Generator", slug: "lorem-ipsum-generator", icon: <FileText className="w-5 h-5" />, color: 152 },
-  { title: "Meta Tag Generator", slug: "meta-tag-generator", icon: <Hash className="w-5 h-5" />, color: 340 },
-  { title: "Password Generator", slug: "password-generator", icon: <Type className="w-5 h-5" />, color: 25 },
-  { title: "Base64 Encoder/Decoder", slug: "base64-encoder-decoder", icon: <AtSign className="w-5 h-5" />, color: 265 },
-  { title: "JSON Formatter", slug: "json-formatter", icon: <MessageCircle className="w-5 h-5" />, color: 45 },
+const RELATED = [
+  { title: "Word Counter",       slug: "word-counter",             cat: "productivity", icon: <MessageSquare className="w-5 h-5" />, color: 200, benefit: "Count specific words and reading time" },
+  { title: "Hashtag Generator",  slug: "hashtag-generator",        cat: "productivity", icon: <BadgeCheck className="w-5 h-5" />,    color: 25,  benefit: "Generate trending hashtags instantly" },
+  { title: "Duplicate Remover",  slug: "duplicate-line-remover",   cat: "productivity", icon: <Info className="w-5 h-5" />,          color: 20,  benefit: "Remove text duplicates automatically" },
 ];
 
 export default function TwitterCharacterCounter() {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
-  const copyLink = () => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-  const stats = useMemo(() => {
-    const chars = text.length;
+  // X (Twitter) logic:
+  // Standard limits: 280 characters for normal users, 10,000 for Twitter Blue / X Premium
+  const MAX_LIMIT = 280;
+  const PREMIUM_LIMIT = 10000;
+
+  const count = useMemo(() => {
+    // Basic counting. Twitter counts URLs as 23 characters regardless of length.
+    // For a simple browser tool, we'll do raw character count with a note, 
+    // or a simple regex to replace http://... with 23 spaces for counting.
+    let countText = text;
+
+    // Advanced URL substitution (approx): replace any generic http/https block with 23 chars
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    countText = countText.replace(urlRegex, '12345678901234567890123');
+    
+    // Emojis count as 2 chars in JS by default due to surrogate pairs, Twitter counts them differently 
+    // in V2 API but for standard visual counting, raw string split or Array.from is closer to Twitter's visual count.
+    const chars = Array.from(countText).length;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    const sentences = text.trim() ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0;
-    const hashtags = (text.match(/#\w+/g) || []).length;
-    const mentions = (text.match(/@\w+/g) || []).length;
-    const urls = (text.match(/https?:\/\/\S+/g) || []).length;
-    const emojis = (text.match(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu) || []).length;
-    const remaining = 280 - chars;
-    return { chars, words, sentences, hashtags, mentions, urls, emojis, remaining };
+    
+    return {
+      chars,
+      words,
+      remainingStandard: MAX_LIMIT - chars,
+      remainingPremium: PREMIUM_LIMIT - chars,
+      percentStandard: Math.min(100, (chars / MAX_LIMIT) * 100),
+      percentPremium: Math.min(100, (chars / PREMIUM_LIMIT) * 100)
+    };
   }, [text]);
 
-  const isOverLimit = stats.remaining < 0;
-  const percent = Math.min((stats.chars / 280) * 100, 100);
+  const copyResult = () => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    setCopied(true); setTimeout(() => setCopied(false), 2000);
+  };
+  
+  const clearText = () => setText("");
 
   return (
     <Layout>
       <SEO
-        title="Twitter Character Counter - Free Online Tool | Count Characters for X Posts"
-        description="Free Twitter/X character counter. Check your post length against the 280-character limit. Count words, hashtags, mentions, and more. Track all social media limits."
+        title="Twitter/X Character Counter – Check 280 Limit | US Online Tools"
+        description="Free online Twitter/X character counter. Check your tweet length, calculate remaining characters for the 280 limit, and optimize your tweets with built-in URL logic."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <Link href="/category/social-media" className="text-muted-foreground hover:text-foreground transition-colors">Social Media</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <span className="text-foreground">Twitter Character Counter</span>
+          <ChevronRight className="w-4 h-4 mx-2 text-sky-500" strokeWidth={3} />
+          <Link href="/category/social-media" className="text-muted-foreground hover:text-foreground transition-colors">Social Media Tools</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-sky-500" strokeWidth={3} />
+          <span className="text-foreground">Twitter/X Character Counter</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        {/* HERO */}
+        <section className="rounded-2xl overflow-hidden border border-sky-500/15 bg-gradient-to-br from-sky-500/5 via-card to-blue-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Twitter className="w-3.5 h-3.5" /> Social Media Tools
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">Twitter Character Counter</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Never hit the tweet length error again. Paste your draft to see exactly how many characters you're using. We accurately track X's specific character limits.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20"><BadgeCheck className="w-3.5 h-3.5" /> 100% Free</span>
+            <span className="inline-flex items-center gap-1.5 bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold text-xs px-3 py-1.5 rounded-full border border-sky-500/20"><Zap className="w-3.5 h-3.5" /> Live Updates</span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20"><Shield className="w-3.5 h-3.5" /> Client-Side Privacy</span>
+          </div>
+        </section>
 
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+
+            {/* TOOL WIDGET */}
             <section>
-              <div className="inline-flex items-center gap-1.5 bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <MessageCircle className="w-3.5 h-3.5" /> Social Media Tools
+              <div className="rounded-2xl overflow-hidden border border-sky-500/20 shadow-lg shadow-sky-500/5">
+                <div className="h-1.5 w-full bg-gradient-to-r from-sky-500 to-blue-400" />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-blue-400 flex items-center justify-center flex-shrink-0">
+                        <MessageSquare className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Tweet Length Evaluator</p>
+                      </div>
+                    </div>
+                    
+                    <button onClick={clearText} className="text-xs font-bold text-muted-foreground hover:text-rose-500 transition-colors bg-muted px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                      <Eraser className="w-3.5 h-3.5" /> Clear Input
+                    </button>
+                  </div>
+
+                  <div className="tool-calc-card" style={{ "--calc-hue": 200 } as React.CSSProperties}>
+                    <div className="relative mb-6">
+                      <textarea
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        placeholder="What is happening?!"
+                        className={`w-full h-40 md:h-56 p-5 rounded-2xl font-sans text-lg bg-background border-2 border-border focus:border-sky-500 outline-none resize-none transition-all ${count.remainingStandard < 0 ? 'focus:border-rose-500 border-rose-500/50' : ''}`}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                       {/* Standard X limit panel */}
+                       <div className={`p-5 rounded-xl border-2 transition-colors ${count.remainingStandard < 0 ? 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400' : 'bg-card border-border hover:border-sky-500/40 text-foreground'}`}>
+                         <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">Standard Tweet Limit</p>
+                         <p className="text-5xl font-black tracking-tight mb-2">
+                            {count.remainingStandard}
+                         </p>
+                         <p className="text-sm font-medium opacity-80">
+                           {count.chars} / 280 used
+                         </p>
+                         <div className="w-full h-1.5 bg-muted rounded-full mt-4 overflow-hidden">
+                           <div className={`h-full transition-all ${count.remainingStandard < 0 ? 'bg-rose-500' : count.remainingStandard < 20 ? 'bg-amber-500' : 'bg-sky-500'}`} style={{ width: `${Math.min(100, count.percentStandard)}%` }} />
+                         </div>
+                       </div>
+                       
+                       {/* X Premium limit panel */}
+                       <div className="p-5 rounded-xl border-2 border-border bg-card text-foreground opacity-90">
+                         <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2 flex items-center justify-center gap-1.5"><BadgeCheck className="w-3 h-3 text-sky-500"/> X Premium (Blue)</p>
+                         <p className="text-5xl font-black tracking-tight mb-2">
+                            {count.remainingPremium.toLocaleString()}
+                         </p>
+                         <p className="text-sm font-medium opacity-80">
+                           {count.chars.toLocaleString()} / 10,000 used
+                         </p>
+                         <div className="w-full h-1.5 bg-muted rounded-full mt-4 overflow-hidden">
+                           <div className="h-full bg-sky-500 transition-all" style={{ width: `${count.percentPremium}%` }} />
+                         </div>
+                       </div>
+                    </div>
+                    
+                    <button onClick={copyResult} className="w-full mt-6 py-4 bg-sky-500 text-white font-bold text-sm rounded-xl hover:bg-sky-600 transition-colors flex items-center justify-center gap-2">
+                       {copied ? <><Check className="w-4 h-4" /> Copied Text!</> : <><Copy className="w-4 h-4" /> Copy Tweet to Clipboard</>}
+                    </button>
+                    
+                    <div className="mt-4 flex items-center gap-2 bg-amber-500/5 p-3 rounded-lg border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs">
+                      <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                      <p><strong>Note:</strong> We automatically account for URLs (weighing 23 characters globally on X), but advanced nested Emoji combinations may slightly vary from X's internal counter.</p>
+                    </div>
+
+                  </div>
+                </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">Twitter Character Counter</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Count characters for Twitter/X posts, track the 280-character limit, and check compatibility with all major social media platforms — free, instant, and private.
+            </section>
+
+            {/* HOW IT WORKS */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="how-to-use">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How Twitter Character Counting Works</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Twitter/X uses a highly specific backend algorithm to count characters, preventing users from overwhelming the feed while still allowing for rich media sharing.
               </p>
-            </section>
-
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><Zap className="w-5 h-5 text-primary" /></div>
-              <div>
-                <p className="font-bold text-foreground text-sm">Real-time counting</p>
-                <p className="text-muted-foreground text-sm">Start typing below — character count updates instantly as you type.</p>
-              </div>
-            </section>
-
-            <section className="space-y-5">
-              <div className="tool-calc-card" style={{ "--calc-hue": 195 } as React.CSSProperties}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="tool-calc-number">1</div>
-                  <h3 className="text-lg font-bold text-foreground">Twitter/X Character Counter</h3>
-                </div>
-
-                <div className="mb-4">
-                  <textarea
-                    rows={6}
-                    placeholder="Type or paste your tweet here..."
-                    className="tool-calc-input w-full resize-y text-base"
-                    value={text}
-                    onChange={e => setText(e.target.value)}
-                  />
-                </div>
-
-                {/* Progress bar */}
-                <div className="mb-5">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className={`text-sm font-bold ${isOverLimit ? "text-red-500" : stats.remaining <= 20 ? "text-amber-500" : "text-emerald-500"}`}>
-                      {isOverLimit ? `${Math.abs(stats.remaining)} over limit` : `${stats.remaining} characters remaining`}
-                    </span>
-                    <span className="text-xs text-muted-foreground font-semibold">{stats.chars}/280</span>
-                  </div>
-                  <div className="w-full h-3 rounded-full bg-muted overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${percent}%` }}
-                      className={`h-full rounded-full transition-colors ${isOverLimit ? "bg-red-500" : stats.remaining <= 20 ? "bg-amber-500" : "bg-emerald-500"}`}
-                    />
-                  </div>
-                </div>
-
-                {/* Stats grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1">Characters</div>
-                    <div className="text-lg font-black text-foreground">{stats.chars}</div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1">Words</div>
-                    <div className="text-lg font-black text-foreground">{stats.words}</div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1">Hashtags</div>
-                    <div className="text-lg font-black text-foreground">{stats.hashtags}</div>
-                  </div>
-                  <div className="tool-calc-result text-center">
-                    <div className="text-xs font-semibold text-muted-foreground mb-1">Mentions</div>
-                    <div className="text-lg font-black text-foreground">{stats.mentions}</div>
-                  </div>
-                </div>
-
-                {/* Platform compatibility */}
-                {text && (
+              <ol className="space-y-5 mb-8">
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
                   <div>
-                    <h4 className="text-sm font-bold text-foreground mb-3">Platform Compatibility</h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {PLATFORM_LIMITS.map(p => {
-                        const fits = stats.chars <= p.limit;
-                        return (
-                          <div key={p.name} className={`p-2.5 rounded-lg text-center text-xs font-semibold border ${fits ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400" : "bg-red-500/5 border-red-500/20 text-red-600 dark:text-red-400"}`}>
-                            <div className="text-base mb-0.5">{p.icon}</div>
-                            <div className="truncate">{p.name}</div>
-                            <div className="text-[10px] opacity-70">{fits ? "✓" : "✗"} {p.limit}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <p className="font-bold text-foreground mb-1">Standard vs Premium Lengths</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Free X accounts are restricted to exactly 280 characters. However, users subscribed to X Premium (formerly Twitter Blue) can write monolithic long-form posts spanning up to 10,000 characters.</p>
                   </div>
-                )}
-
-                {text && (
-                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
-                    <div className="flex gap-2 items-start">
-                      <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-foreground/80 leading-relaxed">
-                        Your text has {stats.chars} characters, {stats.words} words{stats.hashtags > 0 ? `, ${stats.hashtags} hashtag${stats.hashtags !== 1 ? "s" : ""}` : ""}{stats.mentions > 0 ? `, ${stats.mentions} mention${stats.mentions !== 1 ? "s" : ""}` : ""}. {isOverLimit ? `It exceeds the Twitter/X limit by ${Math.abs(stats.remaining)} characters.` : `It fits within the Twitter/X 280-character limit with ${stats.remaining} characters to spare.`}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">URLs and Links (The 23-Character Rule)</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Regardless of how long a hyperlink is (even if it's 150 characters long), Twitter's `t.co` link shortener automatically truncates its weight. In our tool and on the platform, any URL uniformly takes up exactly 23 characters of your limit.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Media and Images</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Historically, attaching an image or GIF would deduct 24 characters from your total. Twitter permanently reversed this policy. Media attachments no longer consume character counts.</p>
+                  </div>
+                </li>
+              </ol>
             </section>
 
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Social Media Character Limits (2024)</h2>
-              <div className="overflow-x-auto">
+            {/* QUICK EXAMPLES */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="quick-examples">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Tweet Strategy Reference Guide</h2>
+              <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-bold text-foreground">Platform</th>
-                      <th className="text-left py-3 px-4 font-bold text-foreground">Post Type</th>
-                      <th className="text-right py-3 px-4 font-bold text-foreground">Character Limit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {PLATFORM_LIMITS.map(p => (
-                      <tr key={p.name} className="border-b border-border/50">
-                        <td className="py-3 px-4 text-foreground font-medium">{p.icon} {p.name}</td>
-                        <td className="py-3 px-4 text-muted-foreground">Standard post</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-foreground">{p.limit.toLocaleString()}</td>
-                      </tr>
-                    ))}
+                  <thead><tr className="bg-muted/60"><th className="text-left px-4 py-3 font-bold text-foreground">Content Type</th><th className="text-left px-4 py-3 font-bold text-foreground">Ideal Length</th><th className="text-left px-4 py-3 font-bold text-foreground">Why It Matters</th></tr></thead>
+                  <tbody className="divide-y divide-border">
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">Promotional Link Tweet</td><td className="px-4 py-3 text-emerald-500 font-bold">100 - 120 Characters</td><td className="px-4 py-3 text-muted-foreground">Short text draws the eyes immediately to the link attachment. High CTR.</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">Thread Hook (1/x)</td><td className="px-4 py-3 text-emerald-500 font-bold">200 - 250 Characters</td><td className="px-4 py-3 text-muted-foreground">Allows maximal screen real-estate to sell the "click to read more" premise.</td></tr>
+                    <tr className="hover:bg-muted/30"><td className="px-4 py-3 font-medium text-foreground">X Premium Long Form</td><td className="px-4 py-3 text-emerald-500 font-bold">1,000+ Characters</td><td className="px-4 py-3 text-muted-foreground">Bypasses the thread UX, increasing read-times directly on a single post.</td></tr>
                   </tbody>
                 </table>
               </div>
             </section>
 
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Tool?</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: <Zap className="w-4 h-4" />, text: "Real-time character counting as you type" },
-                  { icon: <CheckCircle2 className="w-4 h-4" />, text: "Multi-platform compatibility check" },
-                  { icon: <Shield className="w-4 h-4" />, text: "Counts hashtags, mentions, and URLs" },
-                  { icon: <Smartphone className="w-4 h-4" />, text: "Works on all devices and browsers" },
-                  { icon: <Clock className="w-4 h-4" />, text: "No signup or downloads needed" },
-                  { icon: <MessageCircle className="w-4 h-4" />, text: "Visual progress bar for limits" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
-                    <span className="text-sm font-medium text-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">Twitter/X Character Limit Guide</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>Twitter (now X) imposes a 280-character limit on standard posts. This limit was doubled from the original 140 characters in November 2017. Understanding and optimizing your character usage is essential for effective social media communication and engagement.</p>
-                <p>This free Twitter character counter helps social media managers, content creators, and marketers craft the perfect post. It tracks characters, words, hashtags, mentions, and checks compatibility with 8 major social media platforms simultaneously.</p>
-                <h3 className="text-xl font-bold text-foreground pt-2">Tips for Writing Effective Tweets</h3>
-                <ul className="space-y-2 ml-1">
-                  {[
-                    "Keep tweets under 280 characters — shorter tweets (under 100 chars) get 17% more engagement",
-                    "Use 1-2 relevant hashtags for discoverability without cluttering",
-                    "Include a clear call-to-action to drive engagement",
-                    "Use thread format for longer content that exceeds the limit",
-                    "Emojis count as 2 characters each in Twitter's system",
-                    "URLs are automatically shortened to 23 characters by Twitter",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /><span>{item}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
+            {/* FAQ */}
+            <section id="faq">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">FAQ</h2>
               <div className="space-y-3">
-                <FaqItem q="What is the Twitter/X character limit?" a="Twitter/X allows 280 characters per standard post. X Premium subscribers can post up to 25,000 characters. Direct messages support up to 10,000 characters." />
-                <FaqItem q="Do URLs count toward the character limit?" a="Yes, but Twitter automatically shortens all URLs to 23 characters regardless of the original length. This applies to both http and https URLs." />
-                <FaqItem q="Do emojis count as one character?" a="On Twitter, most emojis count as 2 characters because they use Unicode surrogate pairs. Some complex emojis (like flags or skin-toned emojis) can count as even more." />
-                <FaqItem q="How many hashtags should I use?" a="Twitter recommends 1-2 relevant hashtags per tweet. Research shows that tweets with 1-2 hashtags get 21% more engagement than those with 3 or more." />
-                <FaqItem q="Is this tool free?" a="100% free with no ads, no signup, and no data tracking. Type your post and see the character count instantly." />
-              </div>
-            </section>
-
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <h2 className="text-2xl font-black tracking-tight mb-2">More Social Media & Content Tools</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">Try our word counter, meta tag generator, and 400+ more free tools for content creators.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
-                </Link>
+                <FaqItem q="How many characters in a Tweet?" a="Standard free-tier users have exactly 280 characters to utilize per tweet. Threads can circumvent this, but each node in a thread is capped at 280. Verified X Premium accounts have a cap of 10,000." />
+                <FaqItem q="Do hashtags count towards my tweet limit?" a="Yes, hashtags count identically to regular alphabetical letters. A `#` takes up 1 character, and the word following it takes up standard characters." />
+                <FaqItem q="Why are my Japanese or Chinese characters reducing the count faster?" a="Asian linguistic characters (CJK scripts) structurally take up '2 characters' of space internally in Twitter's backend due to encoding complexities. Standard tweets using CJK are restricted roughly to 140 CJK characters." />
               </div>
             </section>
           </div>
 
+          {/* SIDEBAR */}
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
-                  {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED.map(t => (
+                    <Link key={t.slug} href={`/${t.cat}/${t.slug}`} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5" style={{ background: `linear-gradient(135deg, hsl(${t.color} 70% 55%), hsl(${t.color} 75% 42%))` }}>{t.icon}</div>
+                      <div className="flex-1 min-w-0"><p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{t.title}</p><p className="text-[10px] text-muted-foreground/60 truncate">{t.benefit}</p></div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-sky-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others count characters for social media.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
-                </button>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {["Evaluator","How to Use", "Quick Examples", "FAQ"].map(label => (
+                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g,"-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-sky-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-sky-500/40 flex-shrink-0" />{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

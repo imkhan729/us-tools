@@ -1,0 +1,169 @@
+import { useMemo, useState } from "react";
+import { Copy, Download, FileCode2, Image as ImageIcon } from "lucide-react";
+import ImageToolPageShell from "./ImageToolPageShell";
+import { estimateBase64Bytes, formatBytes, parseBase64ImageInput } from "./imageToolUtils";
+
+export default function Base64ToImage() {
+  const [input, setInput] = useState("");
+  const [fallbackMimeType, setFallbackMimeType] = useState("image/png");
+  const [copied, setCopied] = useState(false);
+
+  const parsed = useMemo(() => parseBase64ImageInput(input, fallbackMimeType), [fallbackMimeType, input]);
+  const estimatedSize = parsed ? estimateBase64Bytes(parsed.rawBase64) : 0;
+
+  const downloadImage = () => {
+    if (!parsed) return;
+    const extension =
+      parsed.mimeType === "image/jpeg" ? "jpg" : parsed.mimeType === "image/webp" ? "webp" : parsed.mimeType === "image/gif" ? "gif" : "png";
+    const link = document.createElement("a");
+    link.href = parsed.dataUrl;
+    link.download = `decoded-image.${extension}`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  const copyDataUrl = async () => {
+    if (!parsed) return;
+    await navigator.clipboard.writeText(parsed.dataUrl);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <ImageToolPageShell
+      title="Base64 to Image Converter"
+      seoTitle="Base64 To Image Converter - Decode Base64 Strings To Images"
+      seoDescription="Decode Base64 strings into previewable and downloadable images in your browser. Free Base64 to image converter with Data URL support."
+      canonical="https://usonlinetools.com/image/base64-to-image"
+      heroDescription="Convert Base64 text back into a previewable, downloadable image when your data arrives as a string instead of a normal file. This page is built for developer, API, debugging, and content-migration workflows where you need to inspect, validate, or recover an image from encoded text."
+      heroIcon={<ImageIcon className="w-3.5 h-3.5" />}
+      calculatorLabel="Image Decoder"
+      calculatorDescription="Paste a Data URL or raw Base64 string, preview the decoded image, and download the restored file locally."
+      calculator={
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-cyan-500/15 bg-cyan-500/5 p-5">
+            <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Base64 Input</label>
+            <textarea value={input} onChange={(event) => setInput(event.target.value)} className="tool-calc-input w-full min-h-[160px] font-mono text-xs" placeholder="Paste a full data:image/...;base64,... string or raw Base64 text" />
+          </div>
+
+          <div className="rounded-2xl border border-cyan-500/15 bg-cyan-500/5 p-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Fallback Mime Type</label>
+                <select value={fallbackMimeType} onChange={(event) => setFallbackMimeType(event.target.value)} className="tool-calc-input w-full">
+                  <option value="image/png">PNG</option>
+                  <option value="image/jpeg">JPG</option>
+                  <option value="image/webp">WebP</option>
+                  <option value="image/gif">GIF</option>
+                </select>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 text-center">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Status</p>
+                <p className="text-2xl font-black text-foreground">{parsed ? "Valid Image Data" : "Waiting For Valid Base64"}</p>
+              </div>
+            </div>
+          </div>
+
+          {parsed ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="rounded-xl border border-border bg-card p-4 text-center">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Detected Type</p>
+                  <p className="text-lg font-black text-foreground">{parsed.mimeType}</p>
+                </div>
+                <div className="rounded-xl border border-border bg-card p-4 text-center">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Approx. Size</p>
+                  <p className="text-lg font-black text-foreground">{formatBytes(estimatedSize)}</p>
+                </div>
+                <div className="rounded-xl border border-border bg-card p-4 text-center">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Base64 Length</p>
+                  <p className="text-lg font-black text-foreground">{parsed.rawBase64.length.toLocaleString("en-US")}</p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-cyan-500/20 bg-card p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <FileCode2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <h3 className="text-lg font-bold text-foreground">Decoded Preview</h3>
+                </div>
+                <img src={parsed.dataUrl} alt="Decoded Base64 preview" className="w-full rounded-xl border border-border bg-muted/30 object-contain max-h-80" />
+                <div className="flex flex-wrap gap-3 mt-4">
+                  <button onClick={downloadImage} className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 text-white font-bold text-sm px-4 py-3 hover:bg-cyan-700 transition-colors">
+                    <Download className="w-4 h-4" /> Download Image
+                  </button>
+                  <button onClick={() => void copyDataUrl()} className="inline-flex items-center gap-2 rounded-xl border border-border bg-card font-bold text-sm px-4 py-3 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-colors">
+                    <Copy className="w-4 h-4" /> {copied ? "Copied Data URL" : "Copy Data URL"}
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : input.trim() ? (
+            <p className="text-sm text-rose-500">Enter a valid Data URL or raw Base64 image string to preview and download the decoded image.</p>
+          ) : null}
+        </div>
+      }
+      howToTitle="How to Use the Base64 to Image Converter"
+      howToIntro="This decoder is designed for the common situations where image data is received as text instead of as a file. It accepts both full Data URLs and raw Base64 strings, and it lets you specify a fallback mime type when the original prefix is missing so the browser can render the decoded result correctly."
+      howSteps={[
+        { title: "Paste the encoded image text into the input", description: "You can paste a full data:image/...;base64,... string or only the raw Base64 payload. The parser will detect the structure and prepare the image for preview when the input is valid." },
+        { title: "Set a fallback mime type if the prefix is missing", description: "Raw Base64 strings do not include image-type information. Choosing PNG, JPG, WebP, or GIF tells the browser how to interpret the decoded bytes when no mime type is embedded in the text." },
+        { title: "Preview, validate, and download the restored image", description: "When the Base64 is valid, the page shows the decoded image immediately. From there you can verify that the content is correct and download it as a normal file." },
+      ]}
+      formulaTitle="Base64 Decoding Concepts"
+      formulaIntro="Base64 decoding turns encoded text back into binary image data so the browser can render it as a normal image file. These two concepts explain the parts that matter most during decoding."
+      formulaCards={[
+        { label: "Input Types", formula: "Data URL or Raw Base64", detail: "A full Data URL already includes mime information, while raw Base64 may require you to choose the expected image type manually." },
+        { label: "Decoded Size", formula: "Approx. Bytes = (Length x 3 / 4) - Padding", detail: "The tool estimates the output size from the Base64 string length so you can understand roughly how large the decoded image will be." },
+      ]}
+      examplesTitle="Base64 to Image Examples"
+      examplesIntro="Decoding usually happens when an image is trapped inside a string and you need to inspect it, save it, or prove that the encoded data is valid. These are the most common examples."
+      examples={[
+        { title: "API Output", value: "Preview It", detail: "Some APIs return image data as Base64 text rather than a direct file download, and a quick preview confirms whether the response is valid." },
+        { title: "Embedded Asset", value: "Extract It", detail: "You may need to recover an image from HTML, JSON, template content, or another exported payload where the file is stored as a string." },
+        { title: "Debugging", value: "Check Validity", detail: "A direct preview helps confirm that a Base64 string is complete, correctly typed, and not corrupted." },
+      ]}
+      contentTitle="Why Decode Base64 Back Into An Image"
+      contentIntro="Base64 is useful for transport and embedding, but once you actually need to inspect or save the underlying file, decoding it back into an image is the practical next step. A decoder makes that inspection immediate instead of forcing you to script the conversion manually."
+      contentSections={[
+        {
+          title: "When decoding is helpful",
+          paragraphs: [
+            "Developers, content teams, and migration workflows often encounter image data as Base64 text inside APIs, templates, CMS exports, or debug payloads rather than as straightforward files.",
+            "A decoder helps confirm that the image is valid and lets you recover a normal file immediately without building a separate conversion script for a one-off task.",
+          ],
+        },
+        {
+          title: "Why mime type matters",
+          paragraphs: [
+            "A full Data URL tells the browser what kind of image the Base64 string represents. Raw Base64 does not include that information, so a fallback type may be necessary to render the decoded bytes correctly.",
+            "If the wrong type is chosen for a raw Base64 string, the preview may fail even when the encoded data itself is technically intact.",
+          ],
+        },
+        {
+          title: "What this tool is best for",
+          paragraphs: [
+            "This converter is ideal for inspection, quick downloading, and recovering images from text-based payloads. It is especially helpful during debugging, development, data exports, and migration work.",
+            "It is not intended to replace a full asset pipeline, but it is extremely useful when you already have the encoded string and simply need to validate or extract the image in the browser.",
+          ],
+        },
+      ]}
+      faqs={[
+        { q: "Can I paste a full Data URL here?", a: "Yes. The tool supports full Data URLs such as data:image/png;base64,... as well as raw Base64 strings." },
+        { q: "Why do I need a fallback mime type?", a: "Raw Base64 does not tell the browser which image type it represents, so the fallback mime type supplies that missing information." },
+        { q: "Does this work without uploading a file?", a: "Yes. This page starts from text input, so you do not need to upload a separate image file when you already have the Base64 string." },
+        { q: "Is the decoded image processed locally?", a: "Yes. The preview and download happen in your browser using the Base64 data you paste into the page." },
+      ]}
+      relatedTools={[
+        { title: "Image to Base64 Converter", href: "/image/image-to-base64", benefit: "Encode normal image files back into Base64 text." },
+        { title: "Image Format Converter", href: "/image/image-format-converter", benefit: "Convert the decoded image into another file format." },
+        { title: "Image Resizer", href: "/image/image-resizer", benefit: "Resize the decoded image after you download it." },
+      ]}
+      quickFacts={[
+        { label: "Best For", value: "Base64 Recovery", detail: "Useful when an image arrives as text and you need to inspect or save the real file." },
+        { label: "Core Output", value: "Preview + Download", detail: "Validate the string visually, then download the decoded image immediately." },
+        { label: "Privacy", value: "No Upload Needed", detail: "The pasted Base64 string is decoded in your browser without a server round-trip." },
+      ]}
+    />
+  );
+}

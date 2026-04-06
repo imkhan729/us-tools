@@ -1,84 +1,107 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Flame,
+  Gauge,
+  Lightbulb,
+  Lock,
+  Scale,
+  Shield,
+  Smartphone,
+} from "lucide-react";
+import { Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ChevronRight, ChevronDown, ArrowRight, ArrowLeftRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock, TrendingUp,
-  Calculator, Lightbulb, Copy, Check, Ruler,
-  Scale, Globe2, Dumbbell, ShoppingCart,
-} from "lucide-react";
-import { getToolPath } from "@/data/tools";
 
-// ── Weight Units ──
-type WeightUnit = "kg" | "g" | "mg" | "lb" | "oz" | "st" | "t" | "ton";
-const UNITS: { value: WeightUnit; label: string; toKg: number }[] = [
-  { value: "kg",  label: "Kilogram (kg)",      toKg: 1 },
-  { value: "g",   label: "Gram (g)",            toKg: 0.001 },
-  { value: "mg",  label: "Milligram (mg)",      toKg: 0.000001 },
-  { value: "lb",  label: "Pound (lb)",          toKg: 0.453592 },
-  { value: "oz",  label: "Ounce (oz)",          toKg: 0.0283495 },
-  { value: "st",  label: "Stone (st)",          toKg: 6.35029 },
-  { value: "t",   label: "Metric Ton (t)",      toKg: 1000 },
-  { value: "ton", label: "US Short Ton (ton)",  toKg: 907.185 },
+const UNITS = [
+  { id: "kg", label: "Kilogram", short: "kg", toKg: 1, note: "Base metric mass unit" },
+  { id: "g", label: "Gram", short: "g", toKg: 0.001, note: "Everyday small metric mass values" },
+  { id: "mg", label: "Milligram", short: "mg", toKg: 0.000001, note: "Medicine and tiny quantities" },
+  { id: "lb", label: "Pound", short: "lb", toKg: 0.453592, note: "Common US everyday and body-weight unit" },
+  { id: "oz", label: "Ounce", short: "oz", toKg: 0.0283495, note: "Food and small imperial mass values" },
+  { id: "st", label: "Stone", short: "st", toKg: 6.35029, note: "Body-weight use in the UK and Ireland" },
+  { id: "t", label: "Metric ton", short: "t", toKg: 1000, note: "Large metric shipment and industrial loads" },
+  { id: "ton", label: "US short ton", short: "ton", toKg: 907.185, note: "US freight and industrial notation" },
+] as const;
+
+const PRESETS = [
+  { label: "Body weight", value: "70", unit: "kg" },
+  { label: "Gym plate", value: "45", unit: "lb" },
+  { label: "Bag of rice", value: "5", unit: "kg" },
+  { label: "Package label", value: "16", unit: "oz" },
+  { label: "Vehicle cargo", value: "2", unit: "t" },
 ];
 
-function useWeightConverter() {
-  const [value, setValue] = useState("");
-  const [fromUnit, setFromUnit] = useState<WeightUnit>("kg");
-  const [toUnit, setToUnit] = useState<WeightUnit>("lb");
+const RELATED = [
+  { title: "Volume Converter", href: "/conversion/volume-converter", benefit: "Pair mass and volume in practical workflows" },
+  { title: "Length Converter", href: "/conversion/length-converter", benefit: "Useful for dimensions and shipping specs" },
+  { title: "Area Converter", href: "/conversion/area-converter", benefit: "Helpful in materials and planning work" },
+  { title: "BMI Calculator", href: "/health/bmi-calculator", benefit: "Apply body-weight values in health contexts" },
+  { title: "Calorie Calculator", href: "/health/calorie-calculator", benefit: "Combine body weight with nutrition planning" },
+];
 
-  const result = useMemo(() => {
-    const v = parseFloat(value);
-    if (isNaN(v) || v < 0) return null;
-    const fromKg = UNITS.find(u => u.value === fromUnit)!.toKg;
-    const toKgFactor = UNITS.find(u => u.value === toUnit)!.toKg;
-    const converted = (v * fromKg) / toKgFactor;
-    // All conversions
-    const inKg = v * fromKg;
-    return { converted, inKg, input: v, fromUnit, toUnit };
-  }, [value, fromUnit, toUnit]);
+const FAQS = [
+  {
+    q: "What is the difference between mass and weight?",
+    a: "In strict physics, mass is the amount of matter in an object, while weight is the force caused by gravity acting on that mass. In everyday usage, people often say weight when they really mean mass. This converter follows everyday convention and converts the common units people use for body weight, food, shipping, and materials.",
+  },
+  {
+    q: "How many pounds are in 1 kilogram?",
+    a: "One kilogram equals about 2.20462 pounds. That is one of the most common conversions for body weight, gym equipment, and shipping labels. This page also converts the same source value into grams, ounces, stones, tons, and the other supported units at the same time.",
+  },
+  {
+    q: "How many grams are in a pound?",
+    a: "One pound is about 453.592 grams. That conversion is useful for recipes, food packaging, and comparing metric and imperial product labels.",
+  },
+  {
+    q: "What is a stone?",
+    a: "A stone is an imperial unit equal to 14 pounds. It is still commonly used in the UK and Ireland for body weight. For example, 11 stone equals 154 pounds, or about 69.85 kilograms.",
+  },
+  {
+    q: "What is the difference between a metric ton and a US ton?",
+    a: "A metric ton is 1,000 kilograms. A US short ton is 2,000 pounds, which is about 907.185 kilograms. They are close in scale but not the same, so it is important to convert carefully in freight, construction, and industrial contexts.",
+  },
+  {
+    q: "Why do recipes and product labels mix grams, ounces, and pounds?",
+    a: "Because metric and imperial systems are both still widely used. Many international products publish grams, while US packaging may emphasize ounces or pounds. A converter is useful because real-world labels often mix those conventions.",
+  },
+  {
+    q: "Can I use this for body weight, shipping, and industrial loads?",
+    a: "Yes. It is useful for everyday body-weight conversions, cooking and nutrition labels, shipping packages, gym equipment, raw materials, and large industrial or freight values.",
+  },
+  {
+    q: "Who is this weight converter useful for?",
+    a: "It is useful for shoppers, cooks, fitness users, shipping teams, students, travelers, warehouse staff, and anyone translating between metric and imperial mass units.",
+  },
+];
 
-  const swap = () => { setFromUnit(toUnit); setToUnit(fromUnit); };
-
-  return { value, setValue, fromUnit, setFromUnit, toUnit, setToUnit, result, swap };
+function fmtWeight(value: number) {
+  if (value === 0) return "0";
+  if (Math.abs(value) >= 1e9 || Math.abs(value) < 0.0001) return value.toExponential(4);
+  return parseFloat(value.toPrecision(8)).toLocaleString("en-US");
 }
 
-// ── Insight ──
-function ResultInsight({ result }: { result: ReturnType<typeof useWeightConverter>["result"] }) {
-  if (!result) return null;
-  const fmt = (n: number) => n < 0.001 ? n.toExponential(4) : parseFloat(n.toFixed(6)).toString();
-  const fromLabel = UNITS.find(u => u.value === result.fromUnit)!.label;
-  const toLabel = UNITS.find(u => u.value === result.toUnit)!.label;
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
-      <div className="flex gap-2 items-start">
-        <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-        <p className="text-sm text-foreground/80 leading-relaxed">
-          <strong>{result.input} {fromLabel}</strong> = <strong>{fmt(result.converted)} {toLabel}</strong>.
-          The base weight is <strong>{fmt(result.inKg)} kg</strong> ({fmt(result.inKg * 1000)} g).
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-// ── FAQ Item ──
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
-      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-orange-500/40 transition-colors">
+      <button onClick={() => setOpen((v) => !v)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary">
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="text-orange-500">
           <ChevronDown className="w-5 h-5" />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div key="a" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
-            <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+            <p className="px-5 pb-5 pt-4 border-t border-border text-muted-foreground leading-relaxed">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -86,356 +109,275 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ── Related Tools ──
-const RELATED_TOOLS = [
-  { title: "Length Converter", slug: "length-converter", icon: <Ruler className="w-5 h-5" />, color: 217 },
-  { title: "BMI Calculator", slug: "bmi-calculator", icon: <Scale className="w-5 h-5" />, color: 152 },
-  { title: "Body Fat Calculator", slug: "body-fat-calculator", icon: <Dumbbell className="w-5 h-5" />, color: 340 },
-  { title: "BMR Calculator", slug: "bmr-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 25 },
-  { title: "Temperature Converter", slug: "temperature-converter", icon: <Globe2 className="w-5 h-5" />, color: 45 },
-  { title: "Area Converter", slug: "area-converter", icon: <Calculator className="w-5 h-5" />, color: 265 },
-];
-
-// ── Quick Pairs ──
-const QUICK_PAIRS: { from: WeightUnit; to: WeightUnit; label: string; example: string }[] = [
-  { from: "kg", to: "lb", label: "kg → lb", example: "1 kg = 2.205 lb" },
-  { from: "lb", to: "kg", label: "lb → kg", example: "1 lb = 0.454 kg" },
-  { from: "g", to: "oz", label: "g → oz", example: "100 g = 3.527 oz" },
-  { from: "oz", to: "g", label: "oz → g", example: "1 oz = 28.35 g" },
-  { from: "st", to: "kg", label: "st → kg", example: "1 st = 6.350 kg" },
-  { from: "t", to: "ton", label: "Metric → US ton", example: "1 t = 1.102 ton" },
-];
-
-// ── Main Component ──
 export default function WeightConverter() {
-  const conv = useWeightConverter();
-  const [copied, setCopied] = useState(false);
-  const copyLink = () => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const [value, setValue] = useState("70");
+  const [fromUnit, setFromUnit] = useState("kg");
+  const [copied, setCopied] = useState("");
 
-  const fmt = (n: number) => n < 0.001 ? n.toExponential(4) : parseFloat(n.toFixed(6)).toString();
-  const converted = conv.result ? fmt(conv.result.converted) : "--";
+  const results = useMemo(() => {
+    const parsed = parseFloat(value);
+    if (Number.isNaN(parsed) || value.trim() === "") return null;
+    const from = UNITS.find((unit) => unit.id === fromUnit);
+    if (!from) return null;
+
+    const kilograms = parsed * from.toKg;
+
+    return {
+      kilograms,
+      from,
+      rows: UNITS.map((unit) => ({
+        ...unit,
+        converted: kilograms / unit.toKg,
+      })),
+    };
+  }, [fromUnit, value]);
+
+  const copyText = async (key: string, text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(key);
+    window.setTimeout(() => setCopied(""), 1800);
+  };
 
   return (
     <Layout>
       <SEO
-        title="Weight Converter - kg to lbs, Grams to Ounces | Free Online Weight Unit Converter"
-        description="Free online weight converter. Convert kg to lbs, grams to ounces, stones to kg, and more. Supports 8 units. Instant results — no signup required."
+        title="Weight Converter - Convert kg, lb, oz, g, stone, tons"
+        description="Free online weight converter. Convert kilograms, pounds, ounces, grams, stone, metric tons, and US tons with live results and practical reference examples."
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@graph": [
-          { "@type": "WebApplication", "name": "Weight Converter", "url": "https://usonlinetools.com/conversion/weight-converter", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
-          { "@type": "FAQPage", "mainEntity": [
-            { "@type": "Question", "name": "How many pounds is 1 kg?", "acceptedAnswer": { "@type": "Answer", "text": "1 kilogram equals 2.20462 pounds. To convert kg to lbs, multiply the kilogram value by 2.20462." } },
-            { "@type": "Question", "name": "How many grams are in a pound?", "acceptedAnswer": { "@type": "Answer", "text": "There are 453.592 grams in 1 pound." } },
-          ]}
-        ]
-      })}} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
           <Link href="/category/conversion" className="text-muted-foreground hover:text-foreground transition-colors">Conversion Tools</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
           <span className="text-foreground">Weight Converter</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        <section className="rounded-2xl overflow-hidden border border-orange-500/15 bg-gradient-to-br from-orange-500/5 via-card to-amber-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-700 dark:text-orange-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Scale className="w-3.5 h-3.5" /> Conversion Tools
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-4xl">Weight Converter</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-3xl">
+            Convert kilograms, pounds, ounces, grams, stone, and ton-based units instantly. This redesign keeps the same weight-unit coverage while making the page easier to scan, more consistent with the newer converters, and more useful for everyday, fitness, shipping, and industrial comparisons.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20"><BadgeCheck className="w-3.5 h-3.5" /> 100% Free</span>
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-700 dark:text-orange-400 font-bold text-xs px-3 py-1.5 rounded-full border border-orange-500/20"><Scale className="w-3.5 h-3.5" /> 8 Units</span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20"><Lock className="w-3.5 h-3.5" /> No Signup</span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20"><Shield className="w-3.5 h-3.5" /> Privacy First</span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20"><Smartphone className="w-3.5 h-3.5" /> Mobile Ready</span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">Category: Conversion Tools | Covers metric, imperial, and large-load mass units</p>
+        </section>
 
-            {/* 1. PAGE HEADER */}
-            <section>
-              <div className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <Scale className="w-3.5 h-3.5" />
-                Conversion Tools
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">
-                Weight Converter
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Convert weight between kilograms, pounds, ounces, grams, stones, metric tons, and more. Supports 8 units with instant bidirectional conversion — free, accurate, and no signup needed.
-              </p>
-            </section>
-
-            {/* QUICK ANSWER BOX */}
-            <section className="p-5 rounded-xl bg-orange-500/5 border-2 border-orange-500/20">
-              <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="w-5 h-5 text-orange-500" />
-                <h2 className="font-black text-foreground text-base">Quick Reference: Common Weight Conversions</h2>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
-                {[
-                  "1 kg = 2.2046 lb", "1 lb = 0.4536 kg", "1 oz = 28.35 g",
-                  "1 g = 0.0353 oz", "1 st = 6.350 kg", "1 ton = 907.18 kg",
-                ].map((item, i) => (
-                  <div key={i} className="font-mono text-xs bg-background rounded px-2 py-1 text-foreground border border-border">{item}</div>
-                ))}
-              </div>
-            </section>
-
-            {/* 2. QUICK ACTION */}
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Zap className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-bold text-foreground text-sm">Instant weight conversion</p>
-                <p className="text-muted-foreground text-sm">Enter a value, select your units, and see the result immediately. Swap direction with one click.</p>
-              </div>
-            </section>
-
-            {/* 3. TOOL SECTION */}
-            <section className="space-y-5">
-              <div className="tool-calc-card" style={{ "--calc-hue": 30 } as React.CSSProperties}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="tool-calc-number">1</div>
-                  <h3 className="text-lg font-bold text-foreground">Weight Converter</h3>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-3 items-end mb-5">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+            <section id="converter" className="rounded-2xl overflow-hidden border border-orange-500/20 shadow-lg shadow-orange-500/5">
+              <div className="h-1.5 w-full bg-gradient-to-r from-orange-500 to-amber-500" />
+              <div className="bg-card p-6 md:p-8 space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center"><Scale className="w-4 h-4 text-white" /></div>
                   <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Value</label>
-                    <input
-                      type="number"
-                      placeholder="Enter weight"
-                      className="tool-calc-input w-full"
-                      value={conv.value}
-                      onChange={e => conv.setValue(e.target.value)}
-                      min="0"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center justify-end pb-1">
-                    <button
-                      onClick={conv.swap}
-                      className="p-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                      title="Swap units"
-                    >
-                      <ArrowLeftRight className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Result</label>
-                    <div className="tool-calc-input w-full font-bold text-primary bg-muted/30 cursor-default">
-                      {converted}
-                    </div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live Weight Conversion</p>
+                    <p className="text-sm text-muted-foreground">Translate body weight, food, package, and bulk-load values instantly.</p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">From Unit</label>
-                    <select className="tool-calc-input w-full" value={conv.fromUnit} onChange={e => conv.setFromUnit(e.target.value as WeightUnit)}>
-                      {UNITS.map(u => <option key={u.value} value={u.value}>{u.label}</option>)}
-                    </select>
+                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">Value</label>
+                    <input type="number" value={value} onChange={(e) => setValue(e.target.value)} className="tool-calc-input w-full font-mono text-lg" placeholder="70" />
                   </div>
                   <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">To Unit</label>
-                    <select className="tool-calc-input w-full" value={conv.toUnit} onChange={e => conv.setToUnit(e.target.value as WeightUnit)}>
-                      {UNITS.map(u => <option key={u.value} value={u.value}>{u.label}</option>)}
+                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">From Unit</label>
+                    <select value={fromUnit} onChange={(e) => setFromUnit(e.target.value)} className="tool-calc-input w-full">
+                      {UNITS.map((unit) => <option key={unit.id} value={unit.id}>{unit.label} ({unit.short})</option>)}
                     </select>
                   </div>
                 </div>
 
-                {/* Quick Pairs */}
                 <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Quick Conversions</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {QUICK_PAIRS.map(pair => (
-                      <button
-                        key={pair.label}
-                        onClick={() => { conv.setFromUnit(pair.from); conv.setToUnit(pair.to); }}
-                        className="text-left p-2.5 rounded-lg bg-muted/50 hover:bg-muted border border-border transition-colors"
-                      >
-                        <div className="text-xs font-bold text-foreground">{pair.label}</div>
-                        <div className="text-xs text-muted-foreground">{pair.example}</div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Quick Presets</p>
+                  <div className="flex flex-wrap gap-3">
+                    {PRESETS.map((preset) => (
+                      <button key={preset.label} onClick={() => { setValue(preset.value); setFromUnit(preset.unit); }} className="rounded-xl border border-border bg-card px-4 py-3 text-sm font-bold text-foreground hover:bg-muted">
+                        {preset.label}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <ResultInsight result={conv.result} />
+                {results && (
+                  <>
+                    <div className="rounded-2xl border border-border bg-muted/30 p-4">
+                      <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Source Summary</p>
+                      <p className="text-lg font-black text-foreground">{fmtWeight(parseFloat(value))} {results.from.short} = {fmtWeight(results.kilograms)} kg</p>
+                      <p className="text-sm text-muted-foreground mt-1">{results.from.note}</p>
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      <motion.div key={`${value}-${fromUnit}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                        {results.rows.map((row) => (
+                          <div key={row.id} className={`rounded-2xl border p-4 ${row.id === fromUnit ? "border-orange-500/40 bg-orange-500/5" : "border-border bg-card"}`}>
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              <div>
+                                <p className="text-xs text-muted-foreground mb-1">{row.label}</p>
+                                <p className="text-2xl font-black text-foreground font-mono break-all">{fmtWeight(row.converted)}</p>
+                                <p className="text-xs text-muted-foreground mt-1">{row.short}</p>
+                              </div>
+                              <button onClick={() => copyText(row.id, `${fmtWeight(row.converted)} ${row.short}`)} className="p-2 rounded-lg hover:bg-muted transition-colors" title={`Copy ${row.label}`}>
+                                {copied === row.id ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
+                              </button>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{row.note}</p>
+                          </div>
+                        ))}
+                      </motion.div>
+                    </AnimatePresence>
+                  </>
+                )}
               </div>
             </section>
 
-            {/* CONVERSION TABLE */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Weight Conversion Table</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
+            <section id="reference" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Real-World Weight Reference</h2>
+              <div className="overflow-x-auto rounded-xl border border-border mb-6">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left p-3 font-bold text-foreground">kg</th>
-                      <th className="text-left p-3 font-bold text-foreground">lb</th>
-                      <th className="text-left p-3 font-bold text-foreground">oz</th>
-                      <th className="text-left p-3 font-bold text-foreground">g</th>
-                      <th className="text-left p-3 font-bold text-foreground">stone</th>
+                    <tr className="bg-muted/60">
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Example</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Typical Weight</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Approx. Alternate</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground hidden sm:table-cell">Context</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {[1, 5, 10, 25, 50, 100].map((kg, i) => (
-                      <tr key={kg} className={`border-b border-border/50 ${i % 2 === 0 ? "bg-muted/20" : ""}`}>
-                        <td className="p-3 font-mono font-bold text-primary">{kg} kg</td>
-                        <td className="p-3 font-mono text-foreground">{(kg * 2.20462).toFixed(2)} lb</td>
-                        <td className="p-3 font-mono text-foreground">{(kg * 35.274).toFixed(1)} oz</td>
-                        <td className="p-3 font-mono text-foreground">{(kg * 1000).toLocaleString()} g</td>
-                        <td className="p-3 font-mono text-foreground">{(kg / 6.35029).toFixed(3)} st</td>
+                  <tbody className="divide-y divide-border">
+                    {[
+                      ["Smartphone", "180-240 g", "6-8.5 oz", "Pocket electronics scale"],
+                      ["Bag of flour", "1 kg", "2.2 lb", "Common grocery benchmark"],
+                      ["Adult body weight", "70 kg", "154 lb", "Everyday person-scale reference"],
+                      ["Gym plate", "20 kg", "44.1 lb", "Fitness equipment standard"],
+                      ["Large dog", "30 kg", "66 lb", "Useful household comparison"],
+                      ["Motorcycle", "180-250 kg", "397-551 lb", "Vehicle-scale mass"],
+                      ["Small car", "1.3-1.8 t", "1.4-2.0 US tons", "Passenger vehicle class"],
+                      ["Shipping container load", "10-25 t", "11-27.5 US tons", "Freight-scale benchmark"],
+                    ].map((row) => (
+                      <tr key={row[0]}>
+                        <td className="px-4 py-3 font-medium text-foreground">{row[0]}</td>
+                        <td className="px-4 py-3 font-mono text-orange-700 dark:text-orange-400">{row[1]}</td>
+                        <td className="px-4 py-3 font-mono text-foreground">{row[2]}</td>
+                        <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{row[3]}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </section>
-
-            {/* 5. HOW IT WORKS */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How It Works</h2>
-              <div className="space-y-5">
-                {[
-                  { color: "orange", title: "Enter Your Value", desc: "Type the weight you want to convert. Supports decimals and large numbers." },
-                  { color: "blue", title: "Select Units", desc: "Choose your source unit (From) and target unit (To) from 8 supported weight units. Use the swap button to reverse the direction instantly." },
-                  { color: "emerald", title: "Read the Result", desc: "The converted value appears immediately. All conversions use kilogram as the base unit for maximum accuracy with no rounding errors." },
-                ].map((step, i) => (
-                  <div key={i} className="flex gap-4">
-                    <div className={`w-8 h-8 rounded-lg bg-${step.color}-500/10 text-${step.color}-600 dark:text-${step.color}-400 flex items-center justify-center flex-shrink-0 font-bold text-sm`}>{i + 1}</div>
-                    <div>
-                      <h4 className="font-bold text-foreground mb-1">{step.title}</h4>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 6. REAL-LIFE EXAMPLES */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Real-Life Examples</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/15">
-                  <div className="flex items-center gap-2 mb-2"><Scale className="w-4 h-4 text-orange-500" /><h4 className="font-bold text-foreground text-sm">Body Weight (Fitness)</h4></div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A person weighing 70 kg = <strong className="text-foreground">154.3 lbs</strong> or <strong className="text-foreground">11 stone 0.2 lbs</strong>. Useful when tracking weight across US and international fitness apps.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/15">
-                  <div className="flex items-center gap-2 mb-2"><ShoppingCart className="w-4 h-4 text-blue-500" /><h4 className="font-bold text-foreground text-sm">Cooking & Recipes</h4></div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A recipe calling for 250 g of flour = <strong className="text-foreground">8.82 oz</strong> or about <strong className="text-foreground">0.55 lbs</strong>. Essential for converting between metric and imperial cooking measurements.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                  <div className="flex items-center gap-2 mb-2"><Dumbbell className="w-4 h-4 text-emerald-500" /><h4 className="font-bold text-foreground text-sm">Gym & Weightlifting</h4></div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A 45 lb barbell plate = <strong className="text-foreground">20.4 kg</strong>. International gym equipment is often labeled in kg, while US gyms use lbs.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/15">
-                  <div className="flex items-center gap-2 mb-2"><Globe2 className="w-4 h-4 text-purple-500" /><h4 className="font-bold text-foreground text-sm">Shipping & Logistics</h4></div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">A parcel weighing 2.5 kg = <strong className="text-foreground">5.51 lbs</strong>. International shipping often requires weight in both kg and lbs for customs forms.</p>
-                </div>
-              </div>
-            </section>
-
-            {/* 7. BENEFITS */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Weight Converter?</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: <Scale className="w-4 h-4" />, text: "Supports 8 weight units including stone" },
-                  { icon: <ArrowLeftRight className="w-4 h-4" />, text: "One-click unit swap for reverse conversion" },
-                  { icon: <Shield className="w-4 h-4" />, text: "No data stored — runs entirely in browser" },
-                  { icon: <Smartphone className="w-4 h-4" />, text: "Mobile-optimized for use at the gym or store" },
-                  { icon: <Clock className="w-4 h-4" />, text: "Instant results as you type" },
-                  { icon: <CheckCircle2 className="w-4 h-4" />, text: "Conversion table included for quick reference" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
-                    <span className="text-sm font-medium text-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 9. SEO CONTENT */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">Weight Unit Conversion Guide</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>A <strong className="text-foreground">weight converter</strong> is an essential tool for anyone working across metric and imperial systems. The world is split between countries using kilograms (most of the world) and those using pounds and ounces (primarily the US, UK, and a few others). This free kg to lbs converter handles all common weight units accurately.</p>
-                <h3 className="text-xl font-bold text-foreground pt-2">How to Convert kg to lbs</h3>
-                <p>To convert kilograms to pounds, multiply the kilogram value by <code className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">2.20462</code>. For example, 10 kg × 2.20462 = 22.046 lbs. To go from pounds to kilograms, divide by 2.20462 (or multiply by 0.45359).</p>
-                <h3 className="text-xl font-bold text-foreground pt-2">Common Use Cases for Weight Conversion</h3>
-                <ul className="space-y-2 ml-1">
-                  {[
-                    "Tracking body weight between US (lbs) and international (kg) fitness apps",
-                    "Converting recipe ingredients between grams and ounces",
-                    "Calculating shipping weight for international packages",
-                    "Converting gym equipment weights between US and metric plates",
-                    "Reading nutrition labels that list weights in grams",
-                    "UK stone-to-kg conversion for NHS medical forms",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p><strong className="text-foreground">Weight values are easier to interpret when tied to familiar objects.</strong> A phone, grocery item, person, vehicle, or cargo load can all be described in different mass units depending on the country and context, even though they are measuring the same physical quantity.</p>
+                <p><strong className="text-foreground">That is why mixed-unit labels remain common.</strong> Food packaging may use grams and ounces, body weight may be tracked in kilograms or pounds, and industrial shipping values may switch between metric tons and US tons. A converter keeps those scales aligned.</p>
+                <p><strong className="text-foreground">It also prevents very ordinary mistakes.</strong> Small unit mismatches on food, medicine, freight, or fitness targets can create confusion quickly. Converting once to a shared unit is usually the safest way to compare numbers accurately.</p>
               </div>
             </section>
 
-            {/* 10. FAQ */}
-            <section>
+            <section id="guide" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Understanding Weight Units</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="rounded-xl border border-orange-500/20 bg-orange-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Kilograms and Grams</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These are the dominant metric mass units for body weight, food, science, and international product labeling. Kilograms handle larger everyday values, while grams and milligrams cover smaller amounts.</p>
+                </div>
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Pounds and Ounces</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">Pounds and ounces remain common in US consumer use, retail packaging, cooking, and body-weight discussions. They are still widely used enough that most people need to convert between them and metric values regularly.</p>
+                </div>
+                <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Stone</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">Stone is a legacy imperial unit equal to 14 pounds. It persists mostly in body-weight use in the UK and Ireland, so support for it is useful when comparing health and fitness figures across regions.</p>
+                </div>
+                <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Metric Ton and US Ton</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These larger units matter in freight, raw materials, and industrial reporting. They are close in scale but not identical, which makes careful conversion important in logistics and cost planning.</p>
+                </div>
+              </div>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p><strong className="text-foreground">This converter uses kilograms as the internal bridge.</strong> Every source unit is translated into kg first, then converted into every other supported unit. That keeps the math stable whether the input starts in pounds, ounces, stone, or tons.</p>
+                <p><strong className="text-foreground">The practical advantage is consistency.</strong> Once you normalize values into one shared unit, shopping labels, gym targets, health tracking, and shipping specs become much easier to compare without mental shortcuts or approximate guesses.</p>
+                <p><strong className="text-foreground">The best habit is to choose one unit family for comparison and stick with it.</strong> Use kilograms for international and technical contexts, pounds for US everyday use, and larger ton-based units only when the scale truly calls for them.</p>
+              </div>
+              <div className="mt-6 rounded-xl border border-border bg-muted/30 p-4">
+                <div className="flex gap-3 items-start">
+                  <Lightbulb className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground leading-relaxed"><strong className="text-foreground">Practical shortcut:</strong> use kilograms for technical and international comparisons, pounds for US everyday body weight and retail use, grams and ounces for smaller items, and ton-based units only for freight and industrial loads.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="faq" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
-                <FaqItem q="How many pounds is 1 kilogram?" a="1 kilogram equals 2.20462 pounds. To convert any kg value to pounds, multiply by 2.20462. For example, 5 kg = 11.023 lbs." />
-                <FaqItem q="How many grams are in a pound?" a="There are 453.592 grams in 1 pound. To convert pounds to grams, multiply by 453.592. To go grams to pounds, divide by 453.592." />
-                <FaqItem q="What is a stone in kg and lbs?" a="1 stone = 6.35029 kg = 14 pounds. Stones are commonly used in the UK and Ireland for body weight. For example, 10 stone = 63.5 kg = 140 lbs." />
-                <FaqItem q="How do I convert ounces to grams?" a="Multiply ounces by 28.3495 to get grams. For example, 8 oz = 226.8 g. To go the other direction, divide grams by 28.3495." />
-                <FaqItem q="What is the difference between metric ton and short ton?" a="A metric ton (tonne) = 1,000 kg = 2,204.62 lbs. A US short ton = 2,000 lbs = 907.185 kg. A metric ton is about 10% heavier than a US short ton." />
-                <FaqItem q="Is this weight converter accurate?" a="Yes, all conversion factors are based on internationally agreed-upon definitions. Kilograms are used as the base unit, and conversions are computed to full floating-point precision." />
+                {FAQS.map((faq) => (
+                  <FaqItem key={faq.q} q={faq.q} a={faq.a} />
+                ))}
               </div>
             </section>
 
-            {/* 11. FINAL CTA */}
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 p-8 text-white">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative z-10">
-                <h2 className="text-2xl font-black tracking-tight mb-2">Need More Conversion Tools?</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">Explore 400+ free tools including length, temperature, area, and data storage converters — all free and instant.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
+                <h2 className="text-2xl font-black tracking-tight mb-2">Need More Everyday Converters?</h2>
+                <p className="text-white/85 mb-6 max-w-lg">Move from weight into volume, length, area, and more with the rest of the conversion suite.</p>
+                <Link href="/category/conversion" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-700 font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
+                  Explore Conversion Tools <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </section>
           </div>
 
-          {/* RIGHT SIDEBAR */}
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
-                  {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>
-                        {tool.icon}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED.map((tool) => (
+                    <Link key={tool.href} href={tool.href} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 bg-gradient-to-br from-orange-500 to-amber-500"><Gauge className="w-3.5 h-3.5" /></div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[11px] text-muted-foreground/80 truncate">{tool.benefit}</p>
                       </div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-orange-500 opacity-0 group-hover:opacity-100" />
                     </Link>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others convert weight units quickly.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
-                </button>
-              </div>
-
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">On This Page</h3>
-                <div className="space-y-1.5">
-                  {["Converter", "Quick Reference", "Conversion Table", "How It Works", "Examples", "FAQ"].map((label) => (
-                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g, "-")}`} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary font-medium py-1 transition-colors">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {[["#converter", "Converter"], ["#reference", "Weight Reference"], ["#guide", "Unit Guide"], ["#faq", "FAQ"]].map(([href, label]) => (
+                    <a key={href} href={href} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-orange-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-orange-500/40" />
                       {label}
                     </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">Quick Notes</h3>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  {[
+                    "8 live-converted weight units",
+                    "Covers metric, imperial, and ton-based values",
+                    "Useful for body weight, retail, and shipping",
+                    "Includes real-world benchmark table",
+                  ].map((note) => (
+                    <div key={note} className="flex items-start gap-2">
+                      <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0 mt-0.5" />
+                      <span>{note}</span>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -77,11 +77,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 const RELATED_TOOLS = [
-  { title: "Loan EMI Calculator", slug: "loan-emi-calculator", icon: <Landmark className="w-5 h-5" />, color: 217 },
-  { title: "Mortgage Payment Calculator", slug: "mortgage-payment-calculator", icon: <Building2 className="w-5 h-5" />, color: 152 },
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 45 },
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <Percent className="w-5 h-5" />, color: 340 },
+  { title: "Loan EMI Calculator", slug: "online-loan-emi-calculator", icon: <Landmark className="w-5 h-5" />, color: 217 },
+  { title: "Mortgage Payment Calculator", slug: "online-mortgage-payment-calculator", icon: <Building2 className="w-5 h-5" />, color: 152 },
+  { title: "Compound Interest Calculator", slug: "online-compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
+  { title: "Salary Calculator", slug: "online-salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 45 },
+  { title: "ROI Calculator", slug: "online-roi-calculator", icon: <Percent className="w-5 h-5" />, color: 340 },
   { title: "Savings Calculator", slug: "savings-calculator", icon: <Wallet className="w-5 h-5" />, color: 25 },
 ];
 
@@ -100,7 +100,7 @@ export default function CarLoanCalculator() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "WebApplication", "name": "Car Loan Calculator", "url": "https://usonlinetools.com/finance/car-loan-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
+          { "@type": "WebApplication", "name": "Car Loan Calculator", "url": "https://usonlinetools.com/finance/online-car-loan-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
           { "@type": "FAQPage", "mainEntity": [{ "@type": "Question", "name": "How is a car loan payment calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Monthly payment = P × [r(1+r)^n] / [(1+r)^n - 1], where P = loan amount, r = monthly interest rate, n = number of payments." } }] }
         ]
       })}} />

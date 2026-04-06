@@ -24,7 +24,7 @@ import {
   ShieldAlert, KeySquare, Fingerprint, UnlockKeyhole, ScanText,
 } from "lucide-react";
 import { useState, useMemo } from "react";
-import { TOOL_CATEGORIES, ALL_TOOLS, getToolPath, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, SITE_TOOL_COUNT, getToolPath, type Tool } from "@/data/tools";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "math": <Calculator className="w-7 h-7" />,
@@ -181,6 +181,7 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "brick-calculator": <Building2 className="w-4 h-4" />,
   "word-counter": <FileText className="w-4 h-4" />,
   "character-counter": <AlignLeft className="w-4 h-4" />,
+  "character-counter-tool": <AlignLeft className="w-4 h-4" />,
   "password-generator": <KeyRound className="w-4 h-4" />,
   "text-case-converter": <Type className="w-4 h-4" />,
   "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
@@ -188,6 +189,7 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "base64-encoder-decoder": <Binary className="w-4 h-4" />,
   "json-formatter": <FileText className="w-4 h-4" />,
   "markdown-previewer": <FileText className="w-4 h-4" />,
+  "online-markdown-previewer": <FileText className="w-4 h-4" />,
   "text-reverser": <Shuffle className="w-4 h-4" />,
   "duplicate-line-remover": <AlignLeft className="w-4 h-4" />,
   "word-frequency-counter": <BarChart3 className="w-4 h-4" />,
@@ -252,7 +254,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "shift-schedule-calculator": <Clock className="w-4 h-4" />,
   "deadline-calculator": <AlarmClock className="w-4 h-4" />,
   "study-time-calculator": <Timer className="w-4 h-4" />,
-  "reading-time-calculator": <Timer className="w-4 h-4" />,
   "event-countdown-timer": <AlarmClock className="w-4 h-4" />,
   "hourly-time-calculator": <Clock className="w-4 h-4" />,
   "shift-hours-calculator": <Clock className="w-4 h-4" />,
@@ -305,7 +306,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "coin-flip": <Dices className="w-4 h-4" />,
   "random-color-generator": <Palette className="w-4 h-4" />,
   "case-converter": <Type className="w-4 h-4" />,
-  "text-reverser": <Shuffle className="w-4 h-4" />,
   "alphabetical-sort": <ListOrdered className="w-4 h-4" />,
   "palindrome-checker": <Type className="w-4 h-4" />,
   "slug-generator": <Link2 className="w-4 h-4" />,
@@ -313,7 +313,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "random-letter-generator": <Dices className="w-4 h-4" />,
   "random-picker": <Dices className="w-4 h-4" />,
   "spin-wheel-generator": <Dices className="w-4 h-4" />,
-  "character-counter": <AlignLeft className="w-4 h-4" />,
   "line-counter": <ListOrdered className="w-4 h-4" />,
   "remove-extra-spaces": <Type className="w-4 h-4" />,
   "sort-text-lines": <ListOrdered className="w-4 h-4" />,
@@ -374,7 +373,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "cooking-converter": <Apple className="w-4 h-4" />,
   // New time tools (batch 2)
   "era-calculator": <CalendarDays className="w-4 h-4" />,
-  "unix-timestamp-converter": <Timer className="w-4 h-4" />,
   "zodiac-sign-calculator": <Star className="w-4 h-4" />,
   "chinese-zodiac-calculator": <Star className="w-4 h-4" />,
   "age-in-days-calculator": <CalendarDays className="w-4 h-4" />,
@@ -385,25 +383,13 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "waist-to-hip-ratio-calculator": <Activity className="w-4 h-4" />,
   "keto-calculator": <Apple className="w-4 h-4" />,
   "intermittent-fasting-calculator": <Timer className="w-4 h-4" />,
-  "vo2-max-calculator": <Activity className="w-4 h-4" />,
   // New construction tools (batch 2)
   "rebar-calculator": <Building2 className="w-4 h-4" />,
-  "drywall-calculator": <Building2 className="w-4 h-4" />,
-  "wallpaper-calculator": <SquareStack className="w-4 h-4" />,
-  "mulch-calculator": <Grid3x3 className="w-4 h-4" />,
-  "soil-calculator": <Grid3x3 className="w-4 h-4" />,
   "solar-panel-calculator": <Sun className="w-4 h-4" />,
   "electrical-load-calculator": <Plug className="w-4 h-4" />,
   // New productivity tools (batch 2)
-  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
-  "qr-code-generator": <QrCode className="w-4 h-4" />,
-  "uuid-generator": <Hash className="w-4 h-4" />,
-  "json-formatter": <Code className="w-4 h-4" />,
-  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
-  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
   "color-picker": <Palette className="w-4 h-4" />,
   "emoji-picker": <Smile className="w-4 h-4" />,
-  "markdown-previewer": <FileText className="w-4 h-4" />,
   // New education tools (batch 2)
   "cgpa-calculator": <BookOpen className="w-4 h-4" />,
   "sat-score-calculator": <BookOpen className="w-4 h-4" />,
@@ -414,9 +400,7 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "genshin-impact-calculator": <Swords className="w-4 h-4" />,
   "cs2-sensitivity-calculator": <Swords className="w-4 h-4" />,
   "pokemon-iv-calculator": <Trophy className="w-4 h-4" />,
-  "dnd-dice-roller": <Dices className="w-4 h-4" />,
   "gaming-fps-calculator": <Gamepad2 className="w-4 h-4" />,
-  "esports-earnings-calculator": <Trophy className="w-4 h-4" />,
   // Image Tools
   "image-resizer": <Maximize2 className="w-4 h-4" />,
   "image-compressor": <Minimize2 className="w-4 h-4" />,
@@ -434,7 +418,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "svg-to-png": <FileImage className="w-4 h-4" />,
   "image-background-remover": <Sparkles className="w-4 h-4" />,
   "image-collage-maker": <Layers className="w-4 h-4" />,
-  "qr-code-generator": <QrCode className="w-4 h-4" />,
   "meme-generator": <Smile className="w-4 h-4" />,
   "favicon-generator": <ImageIcon className="w-4 h-4" />,
   "image-pixel-counter": <ScanLine className="w-4 h-4" />,
@@ -456,10 +439,10 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "jpg-to-pdf": <FileUp className="w-4 h-4" />,
   "pdf-sign": <FileSignature className="w-4 h-4" />,
   // Developer Tools
-  "json-formatter": <Braces className="w-4 h-4" />,
   "json-validator": <Braces className="w-4 h-4" />,
   "json-to-csv": <FileCode className="w-4 h-4" />,
   "csv-to-json": <FileCode className="w-4 h-4" />,
+  "csv-to-json-converter": <FileCode className="w-4 h-4" />,
   "json-minifier": <Braces className="w-4 h-4" />,
   "html-formatter": <FileCode className="w-4 h-4" />,
   "html-minifier": <FileCode className="w-4 h-4" />,
@@ -468,19 +451,12 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "javascript-minifier": <FileCode className="w-4 h-4" />,
   "javascript-formatter": <FileCode className="w-4 h-4" />,
   "regex-tester": <Bug className="w-4 h-4" />,
-  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
-  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
   "html-entity-encoder": <FileCode className="w-4 h-4" />,
   "jwt-decoder": <KeyRound className="w-4 h-4" />,
-  "uuid-generator": <Hash className="w-4 h-4" />,
   "xml-formatter": <FileCode className="w-4 h-4" />,
   "sql-formatter": <TerminalSquare className="w-4 h-4" />,
-  "markdown-previewer": <FileText className="w-4 h-4" />,
   "diff-checker": <FileCode className="w-4 h-4" />,
-  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
-  "slug-generator": <Link2 className="w-4 h-4" />,
   "cron-expression-generator": <Timer className="w-4 h-4" />,
-  "unix-timestamp-converter": <Clock className="w-4 h-4" />,
   "color-code-converter": <Palette className="w-4 h-4" />,
   "hash-generator": <Hash className="w-4 h-4" />,
   "html-to-markdown": <FileCode className="w-4 h-4" />,
@@ -501,7 +477,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "css-filter-generator": <Paintbrush className="w-4 h-4" />,
   "color-palette-generator": <Palette className="w-4 h-4" />,
   "color-contrast-checker": <Eye className="w-4 h-4" />,
-  "color-picker": <Pipette className="w-4 h-4" />,
   "hex-to-rgb-converter": <Hexagon className="w-4 h-4" />,
   "rgb-to-hex-converter": <Hexagon className="w-4 h-4" />,
   "tailwind-color-generator": <Palette className="w-4 h-4" />,
@@ -520,11 +495,9 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "canonical-tag-generator": <Tag className="w-4 h-4" />,
   "htaccess-redirect-generator": <FileCode className="w-4 h-4" />,
   "readability-checker": <Eye className="w-4 h-4" />,
-  "word-frequency-counter": <BarChart3 className="w-4 h-4" />,
   "heading-tag-checker": <FileCode className="w-4 h-4" />,
   "favicon-checker": <ImageIcon className="w-4 h-4" />,
   // Security & Encryption
-  "password-strength-checker": <ShieldAlert className="w-4 h-4" />,
   "md5-hash-generator": <Fingerprint className="w-4 h-4" />,
   "sha256-hash-generator": <Fingerprint className="w-4 h-4" />,
   "sha1-hash-generator": <Fingerprint className="w-4 h-4" />,
@@ -541,10 +514,8 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   // Social Media Tools
   "twitter-character-counter": <MessageCircle className="w-4 h-4" />,
   "instagram-caption-counter": <MessageCircle className="w-4 h-4" />,
-  "hashtag-generator": <Hash className="w-4 h-4" />,
   "social-media-image-resizer": <ImageIcon className="w-4 h-4" />,
   "youtube-thumbnail-checker": <Film className="w-4 h-4" />,
-  "emoji-picker": <Smile className="w-4 h-4" />,
   "text-to-emoji": <Smile className="w-4 h-4" />,
   "linkedin-post-formatter": <FileText className="w-4 h-4" />,
   "bio-generator": <AtSign className="w-4 h-4" />,
@@ -686,24 +657,53 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const filteredTools = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    if (!q && activeCategory === "all") return null;
-    return ALL_TOOLS.filter(t => {
-      const matchesSearch = !q || t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.category.toLowerCase().includes(q);
-      const matchesCat = activeCategory === "all" || TOOL_CATEGORIES.find(c => c.id === activeCategory)?.name === t.category;
-      return matchesSearch && matchesCat;
-    });
-  }, [search, activeCategory]);
+  const homepageCategories = useMemo(() => DISPLAY_TOOL_CATEGORIES, []);
 
-  const totalTools = ALL_TOOLS.length;
-  const liveTools = ALL_TOOLS.filter(t => t.implemented).length;
+  const homepageTools = useMemo(
+    () => homepageCategories.flatMap((category) => category.tools),
+    [homepageCategories],
+  );
+
+  const filteredTools = useMemo(() => {
+    const raw = search.trim();
+    const q = raw.toLowerCase();
+    if (!q && activeCategory === "all") return null;
+
+    const scoreTool = (t: Tool): number => {
+      if (!q) return 1;
+      const title = t.title.toLowerCase();
+      // Only match against the title — never description or category
+      if (!title.includes(q)) return 0;
+      // Rank by match quality
+      if (title === q) return 100;
+      if (title.startsWith(q)) return 90;
+      const titleWords = title.split(/\s+/);
+      if (titleWords.some(w => w === q)) return 85;       // exact word in title
+      if (titleWords.some(w => w.startsWith(q))) return 80; // word starts with query
+      return 70; // query appears somewhere inside the title
+    };
+
+    const catName = activeCategory !== "all" ? homepageCategories.find(c => c.id === activeCategory)?.name : null;
+    return homepageTools
+      .map(t => ({ tool: t, score: scoreTool(t) }))
+      .filter(({ tool, score }) => {
+        const matchesSearch = !q || score > 0;
+        const matchesCat = !catName || tool.category === catName;
+        return matchesSearch && matchesCat;
+      })
+      .sort((a, b) => b.score - a.score)
+      .map(({ tool }) => tool);
+  }, [search, activeCategory, homepageCategories, homepageTools]);
+
+  const totalTools = homepageTools.length;
+  const displayCount = SITE_TOOL_COUNT;
+  const liveTools = homepageTools.filter(t => t.implemented).length;
 
   return (
     <Layout>
       <SEO
         title="Free Online Tools - US Online Tools"
-        description={`${totalTools}+ free online tools including calculators, converters, generators, and utilities. No signup required. 100% free at usonlinetools.com.`}
+        description={`${displayCount} free online tools including calculators, converters, generators, and utilities. No signup required. 100% free at usonlinetools.com.`}
       />
 
       {/* ── HERO ── */}
@@ -713,7 +713,7 @@ export default function Home() {
           {/* Left */}
           <div>
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border-2 border-primary font-bold uppercase text-sm px-4 py-2 rounded-full mb-6">
-              <Zap className="w-4 h-4" /> {totalTools}+ Free Tools — No Signup
+              <Zap className="w-4 h-4" /> {displayCount} Free Tools — No Signup
             </div>
             <h1 className="text-5xl md:text-6xl font-black text-foreground tracking-tighter leading-[0.9] uppercase mb-4">
               YOUR #1 SOURCE FOR{" "}
@@ -759,7 +759,7 @@ export default function Home() {
       <section className="bg-foreground text-background py-8 border-b-4 border-primary">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 divide-x divide-background/20">
           {[
-            { number: `${totalTools}+`, label: "Tools Available" },
+            { number: `${displayCount}`, label: "Tools Available" },
             { number: "0", label: "Data Collected" },
             { number: "100%", label: "Free Forever" },
             { number: `${liveTools}`, label: "Live Tools" },
@@ -774,88 +774,140 @@ export default function Home() {
 
       {/* ── SEARCH + FILTERS ── */}
       <section id="all-tools" className="relative py-16 bg-background overflow-hidden">
-        {/* Decorative background blobs */}
+        {/* Subtle dot grid background */}
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px)", backgroundSize: "28px 28px", opacity: 0.4 }} />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Search heading with animated accent */}
+          {/* Search heading */}
           <div className="text-center mb-10">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4"
+              className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-5"
             >
               <Search className="w-3.5 h-3.5" />
               Instant Search
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">
-              Find the <span className="text-primary">Perfect Tool</span>
-            </h2>
-            <p className="text-muted-foreground font-medium mt-3 text-lg">{totalTools}+ free tools at your fingertips</p>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.05 }}
+              className="text-4xl md:text-[3.25rem] font-black tracking-tighter text-foreground leading-tight"
+            >
+              Find the{" "}
+              <span className="relative inline-block">
+                <span className="text-primary">Perfect Tool</span>
+                <svg className="absolute -bottom-1 left-0 w-full" height="6" viewBox="0 0 200 6" fill="none" preserveAspectRatio="none">
+                  <path d="M0 5 Q50 0 100 5 Q150 10 200 5" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.5" />
+                </svg>
+              </span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-muted-foreground font-medium mt-4 text-lg"
+            >
+              {displayCount} free tools at your fingertips
+            </motion.p>
           </div>
 
-          {/* Search bar — elevated glass card */}
-          <div className="relative max-w-3xl mx-auto mb-10">
-            <div className="search-bar-container">
+          {/* Search bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.12 }}
+            className="relative max-w-2xl mx-auto mb-10"
+          >
+            <div className={`flex items-center bg-card border-2 rounded-2xl transition-all duration-200 shadow-sm ${search ? "border-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]" : "border-border hover:border-primary/50"}`}>
               <div className="flex items-center justify-center w-14 h-14 flex-shrink-0">
-                <Search className="w-5 h-5 text-primary" />
+                <Search className={`w-5 h-5 transition-colors ${search ? "text-primary" : "text-muted-foreground"}`} />
               </div>
               <input
-                type="search"
-                placeholder={`Search ${totalTools}+ tools — try 'JSON', 'PDF', 'gradient'...`}
-                className="flex-1 bg-transparent py-4 pr-4 text-foreground placeholder:text-muted-foreground font-medium focus:outline-none text-base"
+                type="text"
+                placeholder={`Search tools — try 'ROI', 'BMI', 'gradient'...`}
+                className="flex-1 bg-transparent py-4 pr-2 text-foreground placeholder:text-muted-foreground font-medium focus:outline-none text-base"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
+                autoComplete="off"
+                spellCheck={false}
               />
-              {search && (
+              {search ? (
                 <button
                   onClick={() => setSearch("")}
-                  className="mr-3 w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground transition-all text-lg font-black flex-shrink-0"
+                  className="mr-3 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground text-primary transition-all flex-shrink-0 font-black text-base"
+                  aria-label="Clear search"
                 >
                   ×
                 </button>
+              ) : (
+                <div className="hidden md:flex items-center gap-0.5 mr-4 text-[11px] text-muted-foreground font-bold border border-border rounded-md px-2 py-1 flex-shrink-0 bg-muted/60 select-none">
+                  <span>⌘</span><span>K</span>
+                </div>
               )}
-              <div className="hidden md:flex items-center gap-1 mr-4 text-[11px] text-muted-foreground font-bold border border-border rounded-lg px-2 py-1 flex-shrink-0 bg-muted/50">
-                <span>⌘</span><span>K</span>
-              </div>
             </div>
 
-            {/* Animated bottom glow when typing */}
-            {search && (
+            {/* Live result count badge */}
+            {search && filteredTools !== null && (
               <motion.div
-                initial={{ opacity: 0, scaleX: 0.8 }}
-                animate={{ opacity: 1, scaleX: 1 }}
-                className="absolute inset-x-8 -bottom-3 h-6 bg-primary/15 blur-xl rounded-full pointer-events-none"
-              />
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm whitespace-nowrap"
+              >
+                {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
+              </motion.div>
             )}
-          </div>
+          </motion.div>
 
-          {/* Category cards — scrollable row with 3D pill style */}
-          <div className="category-filter-scroll mb-12">
-            <div className="flex gap-2 pb-2 justify-center flex-wrap">
+          {/* Category pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="mb-14 mt-8"
+          >
+            {/* 17 items: ALL TOOLS col-span-2 → 3 perfect rows of 6 on desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
               <button
                 onClick={() => { setActiveCategory("all"); setSearch(""); }}
-                className={`category-pill ${activeCategory === "all" ? "category-pill-active" : ""}`}
+                className={`col-span-2 md:col-span-2 lg:col-span-2 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full text-[13px] font-bold border-2 transition-all duration-150 ${
+                  activeCategory === "all"
+                    ? "bg-primary text-primary-foreground border-primary shadow-[0_3px_0_0_hsl(var(--primary)/0.5)]"
+                    : "bg-card text-foreground border-border hover:border-primary/60 hover:text-primary"
+                }`}
               >
                 <Zap className="w-3.5 h-3.5" />
-                All Tools
-                <span className="category-pill-count">{totalTools}</span>
+                ALL TOOLS
+                <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-full ${activeCategory === "all" ? "bg-primary-foreground/20" : "bg-muted"}`}>
+                  {totalTools}
+                </span>
               </button>
-              {TOOL_CATEGORIES.map(cat => (
+              {homepageCategories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => { setActiveCategory(cat.id); setSearch(""); }}
-                  className={`category-pill ${activeCategory === cat.id ? "category-pill-active" : ""}`}
+                  className={`inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full text-[13px] font-bold border-2 transition-all duration-150 ${
+                    activeCategory === cat.id
+                      ? "bg-primary text-primary-foreground border-primary shadow-[0_3px_0_0_hsl(var(--primary)/0.5)]"
+                      : "bg-card text-foreground border-border hover:border-primary/60 hover:text-primary"
+                  }`}
                 >
                   {CATEGORY_ICON_BY_ID[cat.id]}
-                  {cat.name}
-                  <span className="category-pill-count">{cat.tools.length}</span>
+                  <span className="truncate">{cat.name.toUpperCase()}</span>
+                  <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0 ${activeCategory === cat.id ? "bg-primary-foreground/20" : "bg-muted"}`}>
+                    {cat.tools.length}
+                  </span>
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Search Results */}
           {filteredTools !== null && (
@@ -864,13 +916,6 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-px flex-1 bg-border" />
-                <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex-shrink-0">
-                  {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
-                </p>
-                <div className="h-px flex-1 bg-border" />
-              </div>
               {filteredTools.length === 0 ? (
                 <div className="text-center py-20 glass-card rounded-2xl">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
@@ -890,7 +935,7 @@ export default function Home() {
           {/* All categories (default) */}
           {filteredTools === null && (
             <div className="space-y-16">
-              {TOOL_CATEGORIES.map(cat => (
+              {homepageCategories.map(cat => (
                   <div key={cat.id} id={cat.id}>
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
@@ -937,11 +982,11 @@ export default function Home() {
               Browse by Category
             </h2>
             <p className="text-muted-foreground font-medium mt-2 ml-5">
-              {TOOL_CATEGORIES.length} categories · {totalTools}+ tools total
+              {homepageCategories.length} categories · {displayCount} tools total
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {TOOL_CATEGORIES.map((cat, i) => (
+            {homepageCategories.map((cat, i) => (
               <motion.button
                 key={cat.id}
                 onClick={() => { setActiveCategory(cat.id); document.getElementById("all-tools")?.scrollIntoView({ behavior: "smooth" }); }}
@@ -1046,7 +1091,7 @@ export default function Home() {
               <Link href="/tools/loan-emi-calculator" className="text-primary font-bold hover:underline">Loan EMI Calculator</Link>,{" "}
               <Link href="/tools/color-converter" className="text-primary font-bold hover:underline">Color Converter</Link>, or a{" "}
               <Link href="/tools/gpa-calculator" className="text-primary font-bold hover:underline">GPA Calculator</Link>{" "}
-              — we have everything covered across {TOOL_CATEGORIES.length} categories.
+              — we have everything covered across {homepageCategories.length} categories.
             </p>
             <p className="text-muted-foreground font-medium leading-relaxed">
               All tools run entirely in your browser with no data collection, no registration, and no hidden fees. From finance calculators like the{" "}
@@ -1065,7 +1110,7 @@ export default function Home() {
             Bookmark usonlinetools.com
           </h2>
           <p className="text-primary-foreground/80 font-medium text-xl mb-8">
-            Never struggle with online tasks again. {totalTools}+ tools, all free, all instant.
+            Never struggle with online tasks again. {displayCount} tools, all free, all instant.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a href="#all-tools" className="px-8 py-4 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform">

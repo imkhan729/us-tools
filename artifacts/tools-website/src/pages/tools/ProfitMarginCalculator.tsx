@@ -52,9 +52,9 @@ function ResultInsight({ result }: { result: ReturnType<typeof useProfitCalc>["r
   const fmt = (n: number) => "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const health = result.grossMargin >= 40 ? "healthy" : result.grossMargin >= 20 ? "moderate" : "low";
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-green-500/5 border border-green-500/20">
       <div className="flex gap-2 items-start">
-        <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <Lightbulb className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
         <p className="text-sm text-foreground/80 leading-relaxed">
           Revenue {fmt(result.revenue)} − Cost {fmt(result.cost)} = <strong>Profit {fmt(result.profit)}</strong>.
           Gross margin of <strong>{result.grossMargin.toFixed(2)}%</strong> is considered <strong>{health}</strong> for most industries.
@@ -68,10 +68,10 @@ function ResultInsight({ result }: { result: ReturnType<typeof useProfitCalc>["r
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-green-500/40 transition-colors">
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary"><ChevronDown className="w-5 h-5" /></motion.span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-green-500"><ChevronDown className="w-5 h-5" /></motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -85,12 +85,12 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 const RELATED_TOOLS = [
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
-  { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 45 },
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152 },
-  { title: "Tax Calculator", slug: "tax-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 340 },
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <Building2 className="w-5 h-5" />, color: 217 },
-  { title: "Discount Calculator", slug: "discount-calculator", icon: <ShoppingBag className="w-5 h-5" />, color: 25 },
+  { title: "ROI Calculator", slug: "roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265, benefit: "Measure return on any investment" },
+  { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 45, benefit: "Find any percentage instantly" },
+  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152, benefit: "Convert hourly to annual salary" },
+  { title: "Tax Calculator", slug: "tax-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 340, benefit: "Estimate your tax liability" },
+  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <Building2 className="w-5 h-5" />, color: 217, benefit: "See how interest compounds over time" },
+  { title: "Discount Calculator", slug: "discount-calculator", icon: <ShoppingBag className="w-5 h-5" />, color: 25, benefit: "See final price after any % off" },
 ];
 
 export default function ProfitMarginCalculator() {
@@ -117,52 +117,47 @@ export default function ProfitMarginCalculator() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-green-500" strokeWidth={3} />
           <Link href="/category/finance" className="text-muted-foreground hover:text-foreground transition-colors">Finance & Cost</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-green-500" strokeWidth={3} />
           <span className="text-foreground">Profit Margin Calculator</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        {/* ── HERO SECTION (Full Width) ── */}
+        <section className="rounded-2xl overflow-hidden border border-green-500/15 bg-gradient-to-br from-green-500/5 via-card to-emerald-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-green-500/10 text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <BarChart3 className="w-3.5 h-3.5" /> Business Finance
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            Online Profit Margin Calculator
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Calculate gross profit margin, markup percentage, and selling price from cost. Works in three modes: margin from revenue, markup from cost, or revenue from desired margin — free, instant, no signup.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <CheckCircle2 className="w-3.5 h-3.5" /> 100% Free
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-green-500/10 text-green-600 dark:text-green-400 font-bold text-xs px-3 py-1.5 rounded-full border border-green-500/20">
+              <Zap className="w-3.5 h-3.5" /> Instant Results
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Clock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: Finance &amp; Cost &nbsp;·&nbsp; Last updated: March 2026
+          </p>
+        </section>
 
-            <section>
-              <div className="inline-flex items-center gap-1.5 bg-green-500/10 text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <BarChart3 className="w-3.5 h-3.5" />
-                Business Finance
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">Profit Margin Calculator</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Calculate gross profit margin, markup percentage, and selling price from cost. Works in three modes: margin from revenue, markup from cost, or revenue from desired margin — free, instant, no signup.
-              </p>
-            </section>
-
-            {/* QUICK ANSWER */}
-            <section className="p-5 rounded-xl bg-green-500/5 border-2 border-green-500/20">
-              <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="w-5 h-5 text-green-500" />
-                <h2 className="font-black text-foreground text-base">Margin vs. Markup Formulas</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-sm">
-                <div className="bg-background rounded-lg p-3 border border-border">
-                  <div className="text-xs font-sans text-muted-foreground mb-1">Gross Profit Margin</div>
-                  <div className="text-foreground">= (Revenue − Cost) / Revenue × 100</div>
-                </div>
-                <div className="bg-background rounded-lg p-3 border border-border">
-                  <div className="text-xs font-sans text-muted-foreground mb-1">Markup</div>
-                  <div className="text-foreground">= (Revenue − Cost) / Cost × 100</div>
-                </div>
-              </div>
-            </section>
-
-            {/* QUICK ACTION */}
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><Zap className="w-5 h-5 text-primary" /></div>
-              <div>
-                <p className="font-bold text-foreground text-sm">Three calculation modes</p>
-                <p className="text-muted-foreground text-sm">Calculate margin from cost+revenue, find price from markup, or find cost from desired margin.</p>
-              </div>
-            </section>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
 
             {/* TOOL */}
             <section className="space-y-5">
@@ -180,7 +175,7 @@ export default function ProfitMarginCalculator() {
                       { value: "markup", label: "From Markup" },
                       { value: "revenue", label: "From Margin %" },
                     ] as { value: CalcMode; label: string }[]).map(m => (
-                      <button key={m.value} onClick={() => calc.setMode(m.value)} className={`py-2.5 rounded-xl border font-bold text-sm transition-all ${calc.mode === m.value ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary/40 text-muted-foreground"}`}>{m.label}</button>
+                      <button key={m.value} onClick={() => calc.setMode(m.value)} className={`py-2.5 rounded-xl border font-bold text-sm transition-all ${calc.mode === m.value ? "bg-green-500 text-white border-green-500" : "border-border hover:border-green-500/40 text-muted-foreground"}`}>{m.label}</button>
                     ))}
                   </div>
                 </div>
@@ -322,7 +317,7 @@ export default function ProfitMarginCalculator() {
                   { icon: <Calculator className="w-4 h-4" />, text: "Shows both margin % and markup %" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
+                    <div className="text-green-500">{item.icon}</div>
                     <span className="text-sm font-medium text-foreground">{item.text}</span>
                   </div>
                 ))}
@@ -344,7 +339,7 @@ export default function ProfitMarginCalculator() {
                     "SaaS companies often have 70–80% gross margins but lower net margins due to R&D and sales costs",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -365,12 +360,12 @@ export default function ProfitMarginCalculator() {
               </div>
             </section>
 
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-600 to-emerald-500 p-8 text-white">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative z-10">
                 <h2 className="text-2xl font-black tracking-tight mb-2">More Business Finance Tools</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">ROI, savings, salary, discount, and 400+ more business calculators — all free, all instant.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
+                <p className="text-white/80 mb-6 max-w-lg">ROI, savings, salary, discount, and 400+ more business calculators — all free, all instant.</p>
+                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-green-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
                   Explore All Tools <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -379,24 +374,37 @@ export default function ProfitMarginCalculator() {
 
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
                   {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[10px] text-muted-foreground/60 truncate">{tool.benefit}</p>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-green-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help business owners calculate profit margins.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-1.5">Share This Tool</h3>
+                <p className="text-xs text-muted-foreground mb-3">Help business owners calculate profit margins.</p>
+                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-green-500 to-emerald-400 text-white text-sm font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
+                  {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
                 </button>
+              </div>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {["Calculator", "How It Works", "Examples", "Benefits", "FAQ"].map((label) => (
+                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g, "-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-green-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-green-500/40 flex-shrink-0" />{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

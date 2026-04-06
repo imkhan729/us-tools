@@ -4,24 +4,24 @@ import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronRight, ChevronDown, ArrowRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock,
-  Palette, Lightbulb, Copy, Check, Code,
-  Pipette, Eye, Paintbrush, Layers,
+  ChevronRight, ChevronDown, Check,
+  Zap, Shield, Copy, Wand2, PaintBucket,
+  Palette, RefreshCw, Code2, Move
 } from "lucide-react";
-import { getToolPath } from "@/data/tools";
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-fuchsia-500/40 transition-colors">
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary"><ChevronDown className="w-5 h-5" /></motion.span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-fuchsia-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div key="answer" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+          <motion.div key="a" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
             <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
@@ -30,261 +30,205 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const PRESETS = [
-  { name: "Ocean Blue", color1: "#667eea", color2: "#764ba2" },
-  { name: "Sunset", color1: "#f093fb", color2: "#f5576c" },
-  { name: "Mint", color1: "#4facfe", color2: "#00f2fe" },
-  { name: "Fire", color1: "#fa709a", color2: "#fee140" },
-  { name: "Forest", color1: "#0ba360", color2: "#3cba92" },
-  { name: "Purple Haze", color1: "#a18cd1", color2: "#fbc2eb" },
-  { name: "Dark Night", color1: "#0c3483", color2: "#a2b6df" },
-  { name: "Warm Flame", color1: "#ff9a9e", color2: "#fecfef" },
+const RELATED = [
+  { title: "Border Radius", slug: "css-border-radius-generator", cat: "css-design", icon: <Move className="w-5 h-5"/>, color: 250, benefit: "Generate corner radii" },
+  { title: "Box Shadow", slug: "css-box-shadow-generator", cat: "css-design", icon: <Wand2 className="w-5 h-5"/>, color: 200, benefit: "Create box-shadow CSS" },
+  { title: "Color Picker", slug: "color-picker", cat: "css-design", icon: <Palette className="w-5 h-5"/>, color: 150, benefit: "Extract HEX / RGB codes" },
 ];
-
-const RELATED_TOOLS = [
-  { title: "Color Converter", slug: "color-converter", icon: <Pipette className="w-5 h-5" />, color: 340 },
-  { title: "Meta Tag Generator", slug: "meta-tag-generator", icon: <Code className="w-5 h-5" />, color: 217 },
-  { title: "Password Generator", slug: "password-generator", icon: <Layers className="w-5 h-5" />, color: 152 },
-  { title: "JSON Formatter", slug: "json-formatter", icon: <Code className="w-5 h-5" />, color: 25 },
-  { title: "Lorem Ipsum Generator", slug: "lorem-ipsum-generator", icon: <Paintbrush className="w-5 h-5" />, color: 265 },
-  { title: "Base64 Encoder/Decoder", slug: "base64-encoder-decoder", icon: <Eye className="w-5 h-5" />, color: 45 },
-];
-
-type GradientType = "linear" | "radial" | "conic";
 
 export default function CssGradientGenerator() {
-  const [color1, setColor1] = useState("#667eea");
-  const [color2, setColor2] = useState("#764ba2");
+  const [gradientType, setGradientType] = useState<"linear" | "radial">("linear");
   const [angle, setAngle] = useState(135);
-  const [gradientType, setGradientType] = useState<GradientType>("linear");
+  const [color1, setColor1] = useState("#ec4899");
+  const [color2, setColor2] = useState("#8b5cf6");
+  
   const [copied, setCopied] = useState(false);
-  const [copiedCss, setCopiedCss] = useState(false);
 
-  const gradientCSS = useMemo(() => {
-    if (gradientType === "linear") return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
-    if (gradientType === "radial") return `radial-gradient(circle, ${color1}, ${color2})`;
-    return `conic-gradient(from ${angle}deg, ${color1}, ${color2})`;
-  }, [color1, color2, angle, gradientType]);
+  // Compile the actual CSS payload
+  const generatedCSS = useMemo(() => {
+    if (gradientType === "linear") {
+      return `background: linear-gradient(${angle}deg, ${color1} 0%, ${color2} 100%);`;
+    }
+    return `background: radial-gradient(circle, ${color1} 0%, ${color2} 100%);`;
+  }, [gradientType, angle, color1, color2]);
 
-  const fullCSS = `background: ${gradientCSS};`;
+  const copyResult = () => {
+    navigator.clipboard.writeText(generatedCSS);
+    setCopied(true); setTimeout(() => setCopied(false), 2000);
+  };
 
-  const copyCss = () => { navigator.clipboard.writeText(fullCSS); setCopiedCss(true); setTimeout(() => setCopiedCss(false), 2000); };
-  const copyLink = () => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const randomize = () => {
+    const chars = "0123456789ABCDEF";
+    let hex1 = "#"; let hex2 = "#";
+    for (let i = 0; i < 6; i++) {
+        hex1 += chars[Math.floor(Math.random() * 16)];
+        hex2 += chars[Math.floor(Math.random() * 16)];
+    }
+    setColor1(hex1);
+    setColor2(hex2);
+    setAngle(Math.floor(Math.random() * 360));
+  };
 
   return (
     <Layout>
       <SEO
-        title="CSS Gradient Generator - Free Online Tool | Create Beautiful CSS Gradients"
-        description="Free CSS gradient generator. Create beautiful linear, radial, and conic gradients visually. Copy CSS code instantly. No signup required."
+        title="CSS Gradient Generator – Create Beautiful Blends Visually"
+        description="Free online CSS Gradient Generator. Create, optimize, and preview beautiful linear and radial CSS backgrounds visually and copy the clean CSS output code."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <Link href="/category/css-design" className="text-muted-foreground hover:text-foreground transition-colors">CSS & Design</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
-          <span className="text-foreground">CSS Gradient Generator</span>
+          <ChevronRight className="w-4 h-4 mx-2 text-fuchsia-500" strokeWidth={3} />
+          <Link href="/category/css-design" className="text-muted-foreground hover:text-foreground transition-colors">CSS &amp; Design</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-fuchsia-500" strokeWidth={3} />
+          <span className="text-foreground">Gradient Generator</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        {/* HERO */}
+        <section className="rounded-2xl overflow-hidden border border-fuchsia-500/15 bg-gradient-to-br from-fuchsia-500/5 via-card to-pink-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <PaintBucket className="w-3.5 h-3.5" /> Frontend Builder
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">CSS Gradient Generator</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Visually assemble rich modern linear or radial gradient layers for modern UI backgrounds instantly, and copy the strict cross-browser compliant CSS `background:` declaration.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold text-xs px-3 py-1.5 rounded-full border border-pink-500/20"><Palette className="w-3.5 h-3.5" /> Hex / RGB Modes</span>
+            <span className="inline-flex items-center gap-1.5 bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 font-bold text-xs px-3 py-1.5 rounded-full border border-fuchsia-500/20"><Code2 className="w-3.5 h-3.5" /> Instant CSS Export</span>
+            <span className="inline-flex items-center gap-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold text-xs px-3 py-1.5 rounded-full border border-indigo-500/20"><Shield className="w-3.5 h-3.5" /> Client Side Output</span>
+          </div>
+        </section>
 
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+
+            {/* INTEGRATED BUILDER */}
             <section>
-              <div className="inline-flex items-center gap-1.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <Palette className="w-3.5 h-3.5" /> CSS & Design
+              <div className="rounded-2xl overflow-hidden border border-fuchsia-500/20 shadow-lg shadow-fuchsia-500/5">
+                <div className="h-1.5 w-full bg-gradient-to-r from-fuchsia-400 to-pink-600" />
+                <div className="bg-card p-6 md:p-8">
+
+                  {/* Top Preview */}
+                  <div className="w-full h-48 md:h-64 rounded-xl border border-border shadow-inner mb-8 transform transition-colors"
+                       style={{ background: generatedCSS.replace("background: ", "").replace(";", "") }} />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     
+                     {/* Controls Left */}
+                     <div className="space-y-6">
+                        <div>
+                          <label className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-widest block">Gradient Style (Linear / Radial)</label>
+                          <div className="flex bg-muted p-1 rounded-xl w-fit">
+                            <button onClick={() => setGradientType("linear")} className={`px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${gradientType === "linear" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>Linear</button>
+                            <button onClick={() => setGradientType("radial")} className={`px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${gradientType === "radial" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>Radial / Circle</button>
+                          </div>
+                        </div>
+
+                        {gradientType === "linear" && (
+                           <div>
+                              <div className="flex justify-between items-center mb-1.5">
+                                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">Flow Rotation Angle</label>
+                                 <span className="text-xs font-bold text-fuchsia-500">{angle}° Deg</span>
+                              </div>
+                              <input type="range" min="0" max="360" value={angle} onChange={(e)=>setAngle(parseInt(e.target.value))} className="w-full accent-fuchsia-500" />
+                           </div>
+                        )}
+
+                        <div className="grid grid-cols-2 gap-4">
+                           <div>
+                              <label className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-widest block">Color Drop 1 (Hex)</label>
+                              <div className="flex items-center gap-3">
+                                 <input type="color" value={color1} onChange={(e)=>setColor1(e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer flex-shrink-0 bg-transparent border-0 p-0" />
+                                 <input type="text" value={color1} onChange={(e)=>setColor1(e.target.value)} className="tool-calc-input w-full font-mono uppercase text-sm" />
+                              </div>
+                           </div>
+                           <div>
+                              <label className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-widest block">Color Drop 2 (Hex)</label>
+                              <div className="flex items-center gap-3">
+                                 <input type="color" value={color2} onChange={(e)=>setColor2(e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer flex-shrink-0 bg-transparent border-0 p-0" />
+                                 <input type="text" value={color2} onChange={(e)=>setColor2(e.target.value)} className="tool-calc-input w-full font-mono uppercase text-sm" />
+                              </div>
+                           </div>
+                        </div>
+
+                        <button onClick={randomize} className="text-sm font-bold text-fuchsia-600 dark:text-fuchsia-400 hover:text-fuchsia-500 transition-colors flex items-center gap-2 py-2">
+                           <RefreshCw className="w-4 h-4" /> Randomize Colors
+                        </button>
+                     </div>
+
+                     {/* Export Right */}
+                     <div className="bg-muted/30 p-6 rounded-xl border border-border flex flex-col justify-between">
+                         <div>
+                           <label className="text-xs font-bold text-muted-foreground mb-2 flex items-center gap-2 uppercase tracking-widest"><Code2 className="w-4 h-4 text-fuchsia-500"/> CSS Export Value</label>
+                           <textarea readOnly value={generatedCSS} className="w-full h-32 bg-zinc-950 font-mono text-fuchsia-400 text-sm p-4 rounded-xl border-border resize-none select-all focus:ring-1 focus:ring-fuchsia-500 transition-all shadow-inner" />
+                         </div>
+
+                         <button onClick={copyResult} className={`w-full py-3.5 mt-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md ${copied ? 'bg-emerald-500 text-white' : 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white'}`}>
+                            {copied ? <><Check className="w-5 h-5" /> Copied CSS Chunk</> : <><Copy className="w-5 h-5" /> Copy Code</>}
+                         </button>
+                     </div>
+
+                  </div>
+
+                </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">CSS Gradient Generator</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Create stunning CSS gradients visually. Choose colors, adjust angles, pick presets, and copy production-ready CSS code — free, instant, and no signup needed.
+            </section>
+
+            {/* HOW IT WORKS */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="documentation">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Mastering CSS Gradients</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Web browsers render CSS gradient rules as actual dynamically drawn `image` properties—not strictly as base background colors. This prevents image loads, HTTP requests overhead, and creates perfect scalable high-fidelity retina vectors spanning multiple viewports.
               </p>
-            </section>
-
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><Zap className="w-5 h-5 text-primary" /></div>
-              <div>
-                <p className="font-bold text-foreground text-sm">Visual gradient builder</p>
-                <p className="text-muted-foreground text-sm">Pick colors, choose a type, and see your gradient update in real-time.</p>
-              </div>
-            </section>
-
-            <section className="space-y-5">
-              <div className="tool-calc-card" style={{ "--calc-hue": 290 } as React.CSSProperties}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="tool-calc-number">1</div>
-                  <h3 className="text-lg font-bold text-foreground">CSS Gradient Generator</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                <div className="p-5 border border-border rounded-xl bg-muted/30">
+                   <h3 className="text-sm font-bold text-foreground mb-2 uppercase tracking-widest relative z-10 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-500" /> Linear Layouts</h3>
+                   <p className="text-sm text-muted-foreground leading-relaxed relative z-10">Creates color blending strictly passing across a parallel straight grid intersecting defined angles (0 to 360 Degrees) mapped edge to edge universally.</p>
                 </div>
-
-                {/* Preview */}
-                <div className="w-full h-48 rounded-xl mb-5 border border-border" style={{ background: gradientCSS }} />
-
-                {/* Controls */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Color 1</label>
-                    <div className="flex items-center gap-2">
-                      <input type="color" value={color1} onChange={e => setColor1(e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer border-0" />
-                      <input type="text" value={color1} onChange={e => setColor1(e.target.value)} className="tool-calc-input w-full font-mono text-sm" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Color 2</label>
-                    <div className="flex items-center gap-2">
-                      <input type="color" value={color2} onChange={e => setColor2(e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer border-0" />
-                      <input type="text" value={color2} onChange={e => setColor2(e.target.value)} className="tool-calc-input w-full font-mono text-sm" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-1.5 block">Angle: {angle}°</label>
-                    <input type="range" min="0" max="360" value={angle} onChange={e => setAngle(parseInt(e.target.value))} className="w-full mt-2" />
-                  </div>
-                </div>
-
-                {/* Type selector */}
-                <div className="flex items-center gap-2 mb-5">
-                  {(["linear", "radial", "conic"] as const).map(t => (
-                    <button key={t} onClick={() => setGradientType(t)} className={`px-4 py-2 rounded-lg text-sm font-bold capitalize transition-all ${gradientType === t ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}>{t}</button>
-                  ))}
-                </div>
-
-                {/* Presets */}
-                <div className="mb-5">
-                  <label className="text-sm font-semibold text-muted-foreground mb-2 block">Presets</label>
-                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-                    {PRESETS.map(p => (
-                      <button key={p.name} onClick={() => { setColor1(p.color1); setColor2(p.color2); }} className="w-full aspect-square rounded-lg border border-border hover:scale-110 transition-transform" style={{ background: `linear-gradient(135deg, ${p.color1}, ${p.color2})` }} title={p.name} />
-                    ))}
-                  </div>
-                </div>
-
-                {/* CSS Output */}
-                <div className="relative">
-                  <pre className="tool-calc-result p-4 rounded-xl font-mono text-sm overflow-x-auto">{fullCSS}</pre>
-                  <button onClick={copyCss} className="absolute top-3 right-3 px-3 py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-lg hover:-translate-y-0.5 transition-transform">
-                    {copiedCss ? "Copied!" : "Copy CSS"}
-                  </button>
-                </div>
-
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
-                  <div className="flex gap-2 items-start">
-                    <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-foreground/80 leading-relaxed">
-                      Your {gradientType} gradient uses colors {color1} and {color2}{gradientType === "linear" ? ` at ${angle}°` : ""}. Copy the CSS code above and paste it into your stylesheet.
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
-
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How CSS Gradients Work</h2>
-              <div className="space-y-5">
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">1</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Linear Gradients</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Create smooth color transitions along a straight line. Use <code className="px-1.5 py-0.5 bg-muted rounded text-xs font-mono">linear-gradient(angle, color1, color2)</code> to define direction and colors.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">2</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Radial Gradients</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Create circular or elliptical color transitions that radiate from a center point. Perfect for spotlight effects and button backgrounds.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 font-bold text-sm">3</div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-1">Conic Gradients</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Create pie-chart-like color transitions that rotate around a center point. Great for progress indicators and decorative elements.</p>
-                  </div>
+                <div className="p-5 border border-border rounded-xl bg-muted/30">
+                   <h3 className="text-sm font-bold text-foreground mb-2 uppercase tracking-widest relative z-10 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-fuchsia-500" /> Radial Spheres</h3>
+                   <p className="text-sm text-muted-foreground leading-relaxed relative z-10">Constructs color blends projecting heavily outwards in 360 orientations starting aggressively from a designated central point (such as `circle` or `ellipse`).</p>
                 </div>
               </div>
             </section>
 
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Generator?</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { icon: <Zap className="w-4 h-4" />, text: "Real-time visual gradient preview" },
-                  { icon: <CheckCircle2 className="w-4 h-4" />, text: "Linear, radial, and conic gradient types" },
-                  { icon: <Shield className="w-4 h-4" />, text: "Copy production-ready CSS instantly" },
-                  { icon: <Smartphone className="w-4 h-4" />, text: "Mobile-friendly gradient builder" },
-                  { icon: <Clock className="w-4 h-4" />, text: "8 beautiful preset gradients included" },
-                  { icon: <Palette className="w-4 h-4" />, text: "Full color picker with hex input" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
-                    <span className="text-sm font-medium text-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">CSS Gradients: A Complete Guide</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>CSS gradients allow you to create smooth color transitions between two or more colors without using images. They render at the resolution of the device, scale perfectly, and are significantly faster to load than gradient images.</p>
-                <p>This free CSS gradient generator tool lets web developers and designers create beautiful gradients visually and copy the CSS code directly into their projects. Whether you need a subtle background, a vibrant hero section, or a sleek button effect, gradients make your design stand out.</p>
-                <h3 className="text-xl font-bold text-foreground pt-2">Best Practices for CSS Gradients</h3>
-                <ul className="space-y-2 ml-1">
-                  {[
-                    "Use complementary or analogous colors for harmonious gradients",
-                    "Add a solid fallback color for older browsers that don't support gradients",
-                    "Keep gradients subtle on text-heavy sections for readability",
-                    "Use linear gradients for headers and radial for spotlight effects",
-                    "Test gradients on both light and dark backgrounds",
-                    "Consider accessibility — ensure sufficient contrast with text",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /><span>{item}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
+            {/* FAQ */}
+            <section id="faq">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">FAQ</h2>
               <div className="space-y-3">
-                <FaqItem q="What is a CSS gradient?" a="A CSS gradient is a smooth transition between two or more colors rendered by the browser. It replaces image-based gradients with code, resulting in faster loading, perfect scaling, and smaller file sizes." />
-                <FaqItem q="What's the difference between linear and radial gradients?" a="Linear gradients transition along a straight line (defined by an angle), while radial gradients transition outward from a center point in a circular or elliptical shape. Linear is great for backgrounds; radial is great for spotlight effects." />
-                <FaqItem q="Do CSS gradients work in all browsers?" a="Yes. CSS gradients are supported in all modern browsers including Chrome, Firefox, Safari, Edge, and mobile browsers. For very old browsers, always include a solid background-color fallback." />
-                <FaqItem q="Can I add more than 2 colors?" a="Yes! CSS supports multi-stop gradients with unlimited colors. This generator uses 2 colors for simplicity, but you can manually add more color stops in the CSS code." />
-                <FaqItem q="Is this tool free?" a="100% free with no ads, no signup, and no limitations. Create as many gradients as you need and copy the CSS instantly." />
-              </div>
-            </section>
-
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <h2 className="text-2xl font-black tracking-tight mb-2">Explore More Design Tools</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">Try our color converter, meta tag generator, and 400+ more free tools for designers and developers.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
-                </Link>
+                <FaqItem q="Are the exported codes web-safe?" a="Yes! Standard linear-gradient and radial-gradient syntax without prefix handles standard browsers dating 10+ years back. We don't include bloated legacy WebKit tags as standard w3c specification runs automatically in modern Webkit / Gecko." />
+                <FaqItem q="Can I apply a CSS gradient to text instead of a background box?" a="Yes! By applying the background logic to text alongside WebKit masking: background-clip: text; -webkit-background-clip: text; color: transparent; it will crop the gradient explicitly to the font geometry." />
               </div>
             </section>
           </div>
 
+          {/* SIDEBAR */}
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
-                  {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED.map(t => (
+                    <Link key={t.slug} href={`/${t.cat}/${t.slug}`} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5" style={{ background: `linear-gradient(135deg, hsl(${t.color} 70% 55%), hsl(${t.color} 75% 42%))` }}>{t.icon}</div>
+                      <div className="flex-1 min-w-0"><p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{t.title}</p><p className="text-[10px] text-muted-foreground/60 truncate">{t.benefit}</p></div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-fuchsia-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others create CSS gradients easily.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
-                </button>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {["Visual Engine", "Export Syntaxes", "FAQ"].map(label => (
+                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g,"-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-fuchsia-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-fuchsia-500/40 flex-shrink-0" />{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

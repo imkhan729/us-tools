@@ -145,8 +145,8 @@ const RELATED_TOOLS = [
   { title: "Age Calculator", slug: "age-calculator", icon: <Cake className="w-5 h-5" />, color: 340 },
   { title: "GPA Calculator", slug: "gpa-calculator", icon: <Calculator className="w-5 h-5" />, color: 217 },
   { title: "Word Counter", slug: "word-counter", icon: <CheckCircle2 className="w-5 h-5" />, color: 152 },
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 25 },
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <Calculator className="w-5 h-5" />, color: 265 },
+  { title: "Compound Interest Calculator", slug: "online-compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 25 },
+  { title: "Salary Calculator", slug: "online-salary-calculator", icon: <Calculator className="w-5 h-5" />, color: 265 },
   { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Calculator className="w-5 h-5" />, color: 45 },
 ];
 

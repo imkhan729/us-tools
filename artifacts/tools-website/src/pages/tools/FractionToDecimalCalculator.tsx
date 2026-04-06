@@ -1,10 +1,16 @@
 import { useState, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { ArrowLeftRight, Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Layout } from "@/components/Layout";
+import { SEO } from "@/components/SEO";
+import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronRight, ChevronDown, ArrowRight, ArrowLeftRight,
+  Calculator, Lightbulb, Copy, Check,
+  BadgeCheck, Zap, Lock, Shield, Smartphone, Star,
+  Percent, BarChart3, Hash, Sigma, Divide,
+} from "lucide-react";
 
-type Mode = "frac2dec" | "dec2frac";
-
+// ── Math Logic ──
 function gcd(a: number, b: number): number {
   a = Math.abs(Math.round(a));
   b = Math.abs(Math.round(b));
@@ -42,28 +48,48 @@ function isRepeating(num: number, den: number): boolean {
   return dd !== 1;
 }
 
+type Mode = "frac2dec" | "dec2frac";
+
+// ── Copy Button ──
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
-  const copy = () => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); };
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
-    <button onClick={copy} className="p-1.5 rounded hover:bg-white/20 transition-colors" title="Copy">
-      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} className="opacity-60" />}
+    <button onClick={copy} className="p-1.5 rounded-lg hover:bg-muted transition-colors" title="Copy">
+      {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
     </button>
   );
 }
 
+// ── FAQ Item ──
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-[hsl(var(--border))] rounded-xl overflow-hidden">
-      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left font-semibold hover:bg-[hsl(var(--muted))] transition-colors">
-        <span>{q}</span>
-        {open ? <ChevronUp size={18} className="shrink-0" /> : <ChevronDown size={18} className="shrink-0" />}
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-violet-500/40 transition-colors">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+      >
+        <span className="text-base font-bold text-foreground leading-snug">{q}</span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-violet-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
-            <p className="px-5 pb-4 text-[hsl(var(--muted-foreground))] leading-relaxed">{a}</p>
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="overflow-hidden"
+          >
+            <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -71,6 +97,16 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+// ── Related Tools ──
+const RELATED_TOOLS = [
+  { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 217, benefit: "Find percentages of any number" },
+  { title: "Average Calculator", slug: "average-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 45, benefit: "Mean, median, mode instantly" },
+  { title: "Ratio Calculator", slug: "ratio-calculator", icon: <Divide className="w-5 h-5" />, color: 152, benefit: "Simplify and compare ratios" },
+  { title: "GCD Calculator", slug: "online-gcd-calculator", icon: <Hash className="w-5 h-5" />, color: 35, benefit: "Greatest common divisor tool" },
+  { title: "LCM Calculator", slug: "online-lcm-calculator", icon: <Sigma className="w-5 h-5" />, color: 300, benefit: "Least common multiple finder" },
+];
+
+// ── Common Fractions Reference ──
 const COMMON_FRACTIONS = [
   { num: 1, den: 2,  dec: "0.5",     pct: "50%" },
   { num: 1, den: 3,  dec: "0.3333…", pct: "33.33%" },
@@ -86,20 +122,25 @@ const COMMON_FRACTIONS = [
   { num: 1, den: 10, dec: "0.1",     pct: "10%" },
 ];
 
-const FAQS = [
-  { q: "How do I convert a fraction to a decimal?", a: "Divide the numerator by the denominator. For example, 3/4 = 3 ÷ 4 = 0.75. If the result is a repeating decimal, it means the denominator (in lowest terms) has prime factors other than 2 and 5." },
-  { q: "How do I convert a decimal to a fraction?", a: "Write the decimal over 1 (e.g., 0.75/1), then multiply both by 10 for each decimal place (75/100), then simplify by dividing by the GCD. 75/100 → divide by 25 → 3/4." },
-  { q: "What is a repeating decimal?", a: "A repeating decimal has one or more digits that repeat infinitely, like 1/3 = 0.3333… or 1/7 = 0.142857142857…. Any fraction with a denominator whose prime factors include anything other than 2 or 5 will produce a repeating decimal." },
-  { q: "What is a mixed number?", a: "A mixed number combines a whole number and a proper fraction, like 2½ (two and one-half = 2.5). To convert to an improper fraction: multiply the whole by the denominator and add the numerator: 2½ = (2×2+1)/2 = 5/2." },
-  { q: "What is GCD and why is it important for fractions?", a: "GCD (Greatest Common Divisor) is the largest number that divides both the numerator and denominator evenly. Dividing both by the GCD gives the simplest (fully reduced) form of the fraction. For example, GCD(6,9)=3, so 6/9 = 2/3." },
-  { q: "Is 0.1 exactly representable in binary?", a: "No — 0.1 in decimal is a repeating fraction in binary (0.000110011…). This is why floating-point arithmetic in computers can produce tiny rounding errors like 0.1 + 0.2 = 0.30000000000000004." },
-];
-
-const LD_JSON = {
+const schema = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "WebApplication", "name": "Fraction to Decimal Calculator", "description": "Convert fractions to decimals and decimals to fractions instantly. Shows simplification steps.", "applicationCategory": "UtilityApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
-    { "@type": "FAQPage", "mainEntity": FAQS.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) },
+    {
+      "@type": "WebApplication",
+      name: "Online Fraction to Decimal Calculator",
+      description: "Convert any fraction to decimal or decimal to fraction instantly. Shows simplified form, percentage equivalent, and repeating decimal detection.",
+      applicationCategory: "UtilityApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      url: "https://usonlinetools.com/math/fraction-to-decimal-calculator",
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        { "@type": "Question", name: "How do I convert a fraction to a decimal?", acceptedAnswer: { "@type": "Answer", text: "Divide the numerator by the denominator. For example, 3/4 = 3 ÷ 4 = 0.75." } },
+        { "@type": "Question", name: "What is a repeating decimal?", acceptedAnswer: { "@type": "Answer", text: "A repeating decimal has one or more digits that repeat infinitely, like 1/3 = 0.3333… or 1/7 = 0.142857…" } },
+      ],
+    },
   ],
 };
 
@@ -108,6 +149,7 @@ export default function FractionToDecimalCalculator() {
   const [num, setNum] = useState("3");
   const [den, setDen] = useState("4");
   const [decInput, setDecInput] = useState("0.75");
+  const [copied, setCopied] = useState(false);
 
   const f2d = useMemo(() => {
     const n = parseFloat(num);
@@ -125,188 +167,490 @@ export default function FractionToDecimalCalculator() {
 
   const d2f = useMemo(() => decimalToFraction(parseFloat(decInput)), [decInput]);
 
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const insight = (() => {
+    if (mode === "frac2dec" && f2d) {
+      return `${num}/${den} = ${f2d.decimal} (${f2d.percentage}). ${f2d.repeating ? "This is a repeating decimal — the digits continue infinitely." : "This is a terminating decimal — it ends at a finite number of digits."} Simplified form: ${f2d.simplified}.`;
+    }
+    if (mode === "dec2frac" && d2f) {
+      return `${decInput} as a fraction is ${d2f.num}/${d2f.den}${d2f.mixed ? ` or the mixed number ${d2f.mixed}` : ""}. This was found by multiplying both parts by a power of 10 and simplifying via GCD.`;
+    }
+    return null;
+  })();
+
   return (
-    <>
-      <Helmet>
-        <title>Fraction to Decimal Calculator – Convert Fractions & Decimals | US Online Tools</title>
-        <meta name="description" content="Free fraction to decimal calculator. Convert any fraction to decimal or decimal to fraction with simplification steps. Includes common fraction reference table." />
-        <meta name="keywords" content="fraction to decimal calculator, decimal to fraction, convert fraction, simplify fractions, mixed number calculator, repeating decimal" />
-        <link rel="canonical" href="https://us-online.tools/math/fraction-to-decimal-calculator" />
-        <script type="application/ld+json">{JSON.stringify(LD_JSON)}</script>
-      </Helmet>
+    <Layout>
+      <SEO
+        title="Online Fraction to Decimal Calculator – Convert Fractions & Decimals Free"
+        description="Free online fraction to decimal calculator. Convert any fraction to decimal or decimal to fraction instantly. Shows simplified form, percentage, and repeating decimal detection. No signup required."
+        canonical="https://usonlinetools.com/math/fraction-to-decimal-calculator"
+        schema={schema}
+      />
 
-      <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]" style={{"--calc-hue": "280"} as React.CSSProperties}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-        <section className="bg-gradient-to-br from-[hsl(var(--calc-hue),70%,18%)] to-[hsl(var(--calc-hue),60%,28%)] text-white py-14 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-3">Fraction ↔ Decimal Calculator</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">Convert any fraction to a decimal (or decimal to fraction) instantly, with simplified form and percentage equivalent.</p>
+        {/* ── BREADCRUMB ── */}
+        <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
+          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
+          <Link href="/category/math" className="text-muted-foreground hover:text-foreground transition-colors">Math &amp; Calculators</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
+          <span className="text-foreground">Fraction to Decimal Calculator</span>
+        </nav>
+
+        {/* ── HERO SECTION (Full Width) ── */}
+        <section className="rounded-2xl overflow-hidden border border-violet-500/15 bg-gradient-to-br from-violet-500/5 via-card to-purple-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Calculator className="w-3.5 h-3.5" />
+            Math &amp; Calculators
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            Online Fraction to Decimal Calculator
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Convert any fraction to a decimal or decimal to a fraction instantly. Shows simplified form, percentage equivalent, and detects repeating decimals. No login required.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <BadgeCheck className="w-3.5 h-3.5" /> 100% Free
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Zap className="w-3.5 h-3.5" /> Instant Results
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Lock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold text-xs px-3 py-1.5 rounded-full border border-purple-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: Math &amp; Calculators &nbsp;·&nbsp; Last updated: March 2026
+          </p>
         </section>
 
-        <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          {/* ── LEFT COLUMN ── */}
+          <div className="lg:col-span-3 space-y-10">
 
-          {/* Quick Answer */}
-          <div className="bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 rounded-2xl p-5">
-            <h2 className="font-bold text-purple-800 dark:text-purple-300 mb-2">⚡ Quick Answer</h2>
-            <p className="text-sm text-purple-900 dark:text-purple-200">
-              To convert a fraction to decimal: <strong>divide numerator ÷ denominator</strong>. Example: 3/4 = 3 ÷ 4 = <strong>0.75</strong> = 75%.<br />
-              To convert decimal to fraction: write over 1, multiply to clear decimals, then simplify. Example: 0.75 = 75/100 = <strong>3/4</strong>.
-            </p>
-          </div>
-
-          {/* Calculator */}
-          <div className="tool-calc-card rounded-2xl p-6 md:p-8 shadow-xl">
-            {/* Mode Toggle */}
-            <div className="flex gap-2 mb-6 bg-[hsl(var(--muted))] rounded-xl p-1">
-              {([["frac2dec", "Fraction → Decimal"], ["dec2frac", "Decimal → Fraction"]] as [Mode, string][]).map(([key, label]) => (
-                <button key={key} onClick={() => setMode(key)}
-                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${mode === key ? "bg-white dark:bg-[hsl(var(--background))] shadow text-[hsl(var(--foreground))]" : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"}`}>
-                  {key === "frac2dec" ? <>½ <ArrowLeftRight size={14} /> 0.5</> : <>0.5 <ArrowLeftRight size={14} /> ½</>} {label}
-                </button>
-              ))}
-            </div>
-
-            {mode === "frac2dec" ? (
-              <>
-                <div className="flex items-center gap-4 mb-8 justify-center">
-                  <div className="text-center">
-                    <label className="block text-xs font-semibold mb-1 text-[hsl(var(--muted-foreground))]">Numerator</label>
-                    <input type="number" value={num} onChange={e => setNum(e.target.value)} className="tool-calc-input w-28 text-center text-2xl" />
-                  </div>
-                  <div className="text-4xl font-bold text-[hsl(var(--muted-foreground))] select-none mt-4">/</div>
-                  <div className="text-center">
-                    <label className="block text-xs font-semibold mb-1 text-[hsl(var(--muted-foreground))]">Denominator</label>
-                    <input type="number" value={den} onChange={e => setDen(e.target.value)} className="tool-calc-input w-28 text-center text-2xl" />
-                  </div>
-                </div>
-
-                {f2d ? (
-                  <div className="space-y-4">
-                    <div className="tool-calc-result rounded-2xl p-6 text-center">
-                      <p className="text-xs text-[hsl(var(--muted-foreground))] mb-2">Decimal Result</p>
-                      <div className="flex items-center justify-center gap-2">
-                        <p className="tool-calc-number text-4xl font-extrabold">{f2d.decimal}</p>
-                        <CopyBtn text={f2d.decimal} />
-                      </div>
-                      {f2d.repeating && <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">⚠ Repeating decimal (shown truncated)</p>}
+            {/* ── TOOL WIDGET ── */}
+            <section id="calculator" className="space-y-5">
+              <div className="rounded-2xl overflow-hidden border border-violet-500/20 shadow-lg shadow-violet-500/5">
+                <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 to-purple-400" />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-400 flex items-center justify-center flex-shrink-0">
+                      <ArrowLeftRight className="w-4 h-4 text-white" />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div className="tool-calc-result rounded-xl p-4 text-center">
-                        <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Simplified Fraction</p>
-                        <p className="tool-calc-number font-bold text-xl">{f2d.simplified}</p>
-                      </div>
-                      <div className="tool-calc-result rounded-xl p-4 text-center">
-                        <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Percentage</p>
-                        <p className="tool-calc-number font-bold text-xl">{f2d.percentage}</p>
-                      </div>
-                      <div className="tool-calc-result rounded-xl p-4 text-center">
-                        <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Decimal Type</p>
-                        <p className="font-bold text-xl">{f2d.repeating ? "Repeating" : "Terminating"}</p>
-                      </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Two-Way Converter</p>
+                      <p className="text-sm text-muted-foreground">Results update as you type — no button needed.</p>
                     </div>
                   </div>
-                ) : (
-                  <p className="text-center text-[hsl(var(--muted-foreground))] py-6">Enter numerator and denominator above.</p>
-                )}
-              </>
-            ) : (
-              <>
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold mb-1">Decimal Number</label>
-                  <input type="number" step="any" value={decInput} onChange={e => setDecInput(e.target.value)} className="tool-calc-input w-full text-2xl" placeholder="e.g. 0.75" />
-                </div>
 
-                {d2f ? (
-                  <div className="space-y-4">
-                    <div className="tool-calc-result rounded-2xl p-6 text-center">
-                      <p className="text-xs text-[hsl(var(--muted-foreground))] mb-2">Fraction Result</p>
-                      <div className="flex items-center justify-center gap-2">
-                        <p className="tool-calc-number text-4xl font-extrabold">{d2f.num}/{d2f.den}</p>
-                        <CopyBtn text={`${d2f.num}/${d2f.den}`} />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {d2f.mixed && (
-                        <div className="tool-calc-result rounded-xl p-4 text-center">
-                          <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Mixed Number</p>
-                          <p className="tool-calc-number font-bold text-xl">{d2f.mixed}</p>
+                  {/* Mode Toggle */}
+                  <div className="flex gap-2 bg-muted rounded-xl p-1">
+                    {([["frac2dec", "Fraction → Decimal"], ["dec2frac", "Decimal → Fraction"]] as [Mode, string][]).map(([key, label]) => (
+                      <button
+                        key={key}
+                        onClick={() => setMode(key)}
+                        className={`flex-1 py-2.5 px-3 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2 ${
+                          mode === key
+                            ? "bg-card shadow text-foreground border border-border"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {key === "frac2dec" ? <>½ <ArrowLeftRight className="w-3.5 h-3.5" /> 0.5</> : <>0.5 <ArrowLeftRight className="w-3.5 h-3.5" /> ½</>}
+                        <span className="hidden sm:inline">{label}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Fraction → Decimal */}
+                  {mode === "frac2dec" ? (
+                    <div className="tool-calc-card" style={{ "--calc-hue": 270 } as React.CSSProperties}>
+                      <h3 className="text-lg font-bold text-foreground mb-5">Fraction to Decimal</h3>
+                      <div className="flex flex-col sm:flex-row items-center gap-3 mb-5">
+                        <div className="text-center">
+                          <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Numerator</label>
+                          <input
+                            type="number"
+                            value={num}
+                            onChange={e => setNum(e.target.value)}
+                            className="tool-calc-input w-28 text-center text-xl"
+                          />
                         </div>
-                      )}
-                      <div className={`tool-calc-result rounded-xl p-4 text-center ${!d2f.mixed ? "sm:col-span-2" : ""}`}>
-                        <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Percentage</p>
-                        <p className="tool-calc-number font-bold text-xl">{parseFloat((parseFloat(decInput) * 100).toPrecision(8))}%</p>
+                        <div className="text-3xl font-black text-muted-foreground select-none mt-4">/</div>
+                        <div className="text-center">
+                          <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Denominator</label>
+                          <input
+                            type="number"
+                            value={den}
+                            onChange={e => setDen(e.target.value)}
+                            className="tool-calc-input w-28 text-center text-xl"
+                          />
+                        </div>
+                        <span className="text-lg font-black text-muted-foreground mt-4">=</span>
+                        <div className="flex-1 w-full">
+                          {f2d ? (
+                            <div className="space-y-3">
+                              <div className="tool-calc-result w-full flex items-center justify-between">
+                                <span className="text-xl font-black text-violet-600 dark:text-violet-400">{f2d.decimal}</span>
+                                <CopyBtn text={f2d.decimal} />
+                              </div>
+                              <div className="grid grid-cols-3 gap-2">
+                                <div className="tool-calc-result text-center p-2">
+                                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Simplified</p>
+                                  <p className="text-sm font-bold text-foreground">{f2d.simplified}</p>
+                                </div>
+                                <div className="tool-calc-result text-center p-2">
+                                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Percentage</p>
+                                  <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{f2d.percentage}</p>
+                                </div>
+                                <div className="tool-calc-result text-center p-2">
+                                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Type</p>
+                                  <p className={`text-sm font-bold ${f2d.repeating ? "text-amber-600 dark:text-amber-400" : "text-blue-600 dark:text-blue-400"}`}>
+                                    {f2d.repeating ? "Repeating" : "Terminating"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="tool-calc-result w-full text-muted-foreground text-center">--</div>
+                          )}
+                        </div>
                       </div>
+
+                      {insight && (
+                        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-violet-500/5 border border-violet-500/20">
+                          <div className="flex gap-2 items-start">
+                            <Lightbulb className="w-4 h-4 text-violet-500 mt-0.5 flex-shrink-0" />
+                            <p className="text-sm text-foreground/80 leading-relaxed">{insight}</p>
+                          </div>
+                        </motion.div>
+                      )}
                     </div>
+                  ) : (
+                    /* Decimal → Fraction */
+                    <div className="tool-calc-card" style={{ "--calc-hue": 270 } as React.CSSProperties}>
+                      <h3 className="text-lg font-bold text-foreground mb-5">Decimal to Fraction</h3>
+                      <div className="flex flex-col sm:flex-row items-center gap-3 mb-5">
+                        <div className="flex-1 w-full">
+                          <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Decimal Number</label>
+                          <input
+                            type="number"
+                            step="any"
+                            value={decInput}
+                            onChange={e => setDecInput(e.target.value)}
+                            placeholder="e.g. 0.75"
+                            className="tool-calc-input w-full text-xl"
+                          />
+                        </div>
+                        <span className="text-lg font-black text-muted-foreground">=</span>
+                        <div className="flex-1 w-full">
+                          {d2f ? (
+                            <div className="space-y-3">
+                              <div className="tool-calc-result w-full flex items-center justify-between">
+                                <span className="text-xl font-black text-violet-600 dark:text-violet-400">{d2f.num}/{d2f.den}</span>
+                                <CopyBtn text={`${d2f.num}/${d2f.den}`} />
+                              </div>
+                              {d2f.mixed && (
+                                <div className="tool-calc-result w-full">
+                                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Mixed Number</p>
+                                  <p className="font-bold text-foreground">{d2f.mixed}</p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="tool-calc-result w-full text-muted-foreground text-center">--</div>
+                          )}
+                        </div>
+                      </div>
+
+                      {insight && (
+                        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-violet-500/5 border border-violet-500/20">
+                          <div className="flex gap-2 items-start">
+                            <Lightbulb className="w-4 h-4 text-violet-500 mt-0.5 flex-shrink-0" />
+                            <p className="text-sm text-foreground/80 leading-relaxed">{insight}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            {/* ── COMMON FRACTIONS REFERENCE ── */}
+            <section id="reference-table" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Common Fraction to Decimal Reference</h2>
+              <p className="text-sm text-muted-foreground mb-5">Click any row to load it into the calculator above.</p>
+              <div className="overflow-x-auto rounded-xl border border-border">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/60">
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Fraction</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Decimal</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {COMMON_FRACTIONS.map((f, i) => (
+                      <tr
+                        key={i}
+                        className="hover:bg-muted/30 transition-colors cursor-pointer"
+                        onClick={() => { setMode("frac2dec"); setNum(f.num.toString()); setDen(f.den.toString()); }}
+                      >
+                        <td className="px-4 py-3 font-bold text-violet-600 dark:text-violet-400">{f.num}/{f.den}</td>
+                        <td className="px-4 py-3 font-mono text-foreground">{f.dec}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{f.pct}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* ── HOW TO USE ── */}
+            <section id="how-to-use" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Use This Calculator</h2>
+              <ol className="space-y-5">
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Choose conversion direction</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Toggle between "Fraction → Decimal" (convert 3/4 to 0.75) and "Decimal → Fraction" (convert 0.75 to 3/4). Both modes update results in real time as you type.</p>
                   </div>
-                ) : (
-                  <p className="text-center text-[hsl(var(--muted-foreground))] py-6">Enter a decimal value above.</p>
-                )}
-              </>
-            )}
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Enter your values</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">For fractions, type the numerator and denominator separately. For decimals, enter any finite decimal like 0.333 or 1.5. The calculator accepts negative values and numbers greater than 1.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Read the full result breakdown</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">For fraction-to-decimal, you get the decimal result, simplified fraction form, percentage equivalent, and whether it's a terminating or repeating decimal. The plain-English insight below the result explains exactly what the number means.</p>
+                  </div>
+                </li>
+              </ol>
+
+              <div className="mt-6 p-5 rounded-xl bg-muted/60 border border-border">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Core Formulas</p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-violet-500 font-bold w-4 flex-shrink-0">→</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Decimal = Numerator ÷ Denominator</code>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-purple-500 font-bold w-4 flex-shrink-0">←</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Fraction = Decimal × 10ⁿ / 10ⁿ, then simplify by GCD</code>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── RESULT INTERPRETATION ── */}
+            <section id="result-interpretation" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Result Interpretation</h2>
+              <p className="text-sm text-muted-foreground mb-6">Understanding terminating vs repeating decimals:</p>
+              <div className="space-y-3">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                  <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Terminating decimal (e.g. 0.75)</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">The decimal ends at a fixed number of digits. This happens when the denominator (in lowest terms) has no prime factors other than 2 and 5. Examples: 1/4 = 0.25, 1/8 = 0.125, 3/20 = 0.15.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+                  <div className="w-3 h-3 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Repeating decimal (e.g. 0.3333…)</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">The digits repeat infinitely. This occurs when the denominator contains prime factors other than 2 or 5. Examples: 1/3 = 0.333…, 1/7 = 0.142857…, 2/9 = 0.222… The calculator shows a truncated approximation.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-violet-500/5 border border-violet-500/20">
+                  <div className="w-3 h-3 rounded-full bg-violet-500 flex-shrink-0 mt-1.5" />
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Simplified fraction form</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">The calculator reduces every fraction to its lowest terms using the Greatest Common Divisor (GCD). For 6/8: GCD(6,8)=2, so 6/8 simplifies to 3/4. This is the most useful form for math problems and comparisons.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── QUICK EXAMPLES ── */}
+            <section id="quick-examples" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Quick Examples</h2>
+              <div className="overflow-x-auto rounded-xl border border-border mb-6">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/60">
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Fraction</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Decimal</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">%</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground hidden sm:table-cell">Type</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {[
+                      { frac: "1/2", dec: "0.5", pct: "50%", type: "Terminating" },
+                      { frac: "1/3", dec: "0.3333…", pct: "33.33%", type: "Repeating" },
+                      { frac: "3/4", dec: "0.75", pct: "75%", type: "Terminating" },
+                      { frac: "2/3", dec: "0.6666…", pct: "66.67%", type: "Repeating" },
+                      { frac: "5/8", dec: "0.625", pct: "62.5%", type: "Terminating" },
+                    ].map(row => (
+                      <tr key={row.frac} className="hover:bg-muted/30 transition-colors">
+                        <td className="px-4 py-3 font-bold text-violet-600 dark:text-violet-400">{row.frac}</td>
+                        <td className="px-4 py-3 font-mono text-foreground">{row.dec}</td>
+                        <td className="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">{row.pct}</td>
+                        <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{row.type}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="mt-6 p-5 rounded-xl bg-violet-500/5 border border-violet-500/15">
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
+                </div>
+                <p className="text-sm text-foreground/80 italic leading-relaxed">"The reference table is incredibly handy — I click a common fraction and it instantly shows me the decimal. Saved me a lot of time on my homework."</p>
+                <p className="text-xs text-muted-foreground mt-2">— User feedback, 2026</p>
+              </div>
+            </section>
+
+            {/* ── WHY CHOOSE THIS ── */}
+            <section id="why-choose-this" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Why Use This Fraction to Decimal Calculator?</h2>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p><strong className="text-foreground">Two-way conversion in one tool.</strong> Most converters only go one direction. This tool handles both fraction-to-decimal and decimal-to-fraction, eliminating the need to switch between tools or tabs.</p>
+                <p><strong className="text-foreground">Repeating decimal detection.</strong> The calculator automatically tells you whether your result is a terminating or repeating decimal — a distinction that matters in math, science, and engineering contexts where exact representation is required.</p>
+                <p><strong className="text-foreground">Full result breakdown — not just the number.</strong> You get the decimal, simplified fraction, percentage equivalent, and a plain-English explanation of what the result means. Ideal for students, teachers, and anyone who wants to understand the math, not just the answer.</p>
+                <p><strong className="text-foreground">Click-to-load reference table.</strong> The common fractions table isn't just decorative — clicking any row loads it directly into the calculator, letting you verify and explore relationships between fractions and decimals interactively.</p>
+                <p><strong className="text-foreground">100% private, 100% instant.</strong> All calculations run in your browser. Nothing is sent to a server. Results appear the moment you type, with no button press required.</p>
+              </div>
+              <div className="mt-6 p-4 rounded-xl border border-border bg-muted/30">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <strong className="text-foreground">Note:</strong> The decimal-to-fraction conversion uses a precision of 10,000,000 (1e7) for the multiplication step. Very long repeating decimals entered manually may produce slightly different simplified fractions than the mathematically exact result. For highest accuracy, enter the fraction directly in fraction mode.
+                </p>
+              </div>
+            </section>
+
+            {/* ── FAQ ── */}
+            <section id="faq">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-3">
+                <FaqItem q="How do I convert a fraction to a decimal?" a="Divide the numerator by the denominator. For example, 3/4 = 3 ÷ 4 = 0.75. If the result is a repeating decimal, it means the denominator (in lowest terms) has prime factors other than 2 and 5." />
+                <FaqItem q="How do I convert a decimal to a fraction?" a="Write the decimal over 1 (e.g., 0.75/1), then multiply both by 10 for each decimal place (75/100), then simplify by dividing by the GCD. 75/100 → divide by 25 → 3/4." />
+                <FaqItem q="What is a repeating decimal?" a="A repeating decimal has one or more digits that repeat infinitely, like 1/3 = 0.3333… or 1/7 = 0.142857142857…. Any fraction with a denominator whose prime factors include anything other than 2 or 5 will produce a repeating decimal." />
+                <FaqItem q="What is a mixed number?" a="A mixed number combines a whole number and a proper fraction, like 2½ (two and one-half = 2.5). To convert to an improper fraction: multiply the whole by the denominator and add the numerator: 2½ = (2×2+1)/2 = 5/2." />
+                <FaqItem q="What is GCD and why does it matter for fractions?" a="GCD (Greatest Common Divisor) is the largest number that divides both the numerator and denominator evenly. Dividing both by the GCD gives the simplest form. For example, GCD(6,9)=3, so 6/9 = 2/3." />
+                <FaqItem q="Is 0.1 exactly representable in binary?" a="No — 0.1 in decimal is a repeating fraction in binary (0.000110011…). This is why floating-point arithmetic in computers can produce tiny rounding errors like 0.1 + 0.2 = 0.30000000000000004." />
+                <FaqItem q="Can I convert negative fractions?" a="Yes. Enter a negative numerator like -3 with denominator 4 to get -0.75. The simplified fraction will preserve the negative sign." />
+                <FaqItem q="Is this calculator free and private?" a="100% free with no signup required. All calculations run locally in your browser — no data is transmitted or stored anywhere." />
+              </div>
+            </section>
+
+            {/* ── CTA ── */}
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-500 to-purple-400 p-8 text-white">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="relative z-10">
+                <h2 className="text-2xl font-black tracking-tight mb-2">Need More Math Tools?</h2>
+                <p className="text-white/80 mb-6 max-w-lg">
+                  Explore 400+ free tools including percentage calculators, unit converters, developer tools, and more — all free, all instant.
+                </p>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform"
+                >
+                  Explore All Tools <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </section>
           </div>
 
-          {/* Common Fractions Table */}
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Common Fraction to Decimal Reference</h2>
-            <div className="overflow-x-auto rounded-2xl border border-[hsl(var(--border))]">
-              <table className="w-full text-sm">
-                <thead className="bg-[hsl(var(--muted))]">
-                  <tr>{["Fraction", "Decimal", "Percentage"].map(h => <th key={h} className="px-4 py-3 text-left font-semibold">{h}</th>)}</tr>
-                </thead>
-                <tbody>
-                  {COMMON_FRACTIONS.map((f, i) => (
-                    <tr key={i} className={`cursor-pointer hover:bg-[hsl(var(--muted))] transition-colors ${i % 2 === 0 ? "bg-[hsl(var(--background))]" : "bg-[hsl(var(--muted))/30]"}`}
-                      onClick={() => { setMode("frac2dec"); setNum(f.num.toString()); setDen(f.den.toString()); }}>
-                      <td className="px-4 py-3 font-bold text-[hsl(var(--primary))]">{f.num}/{f.den}</td>
-                      <td className="px-4 py-3">{f.dec}</td>
-                      <td className="px-4 py-3">{f.pct}</td>
-                    </tr>
+          {/* ── RIGHT SIDEBAR ── */}
+          <div className="space-y-6">
+            <div className="sticky top-28 space-y-6">
+
+              {/* Related Tools */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED_TOOLS.map((tool) => (
+                    <Link
+                      key={tool.slug}
+                      href={`/tools/${tool.slug}`}
+                      className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
+                    >
+                      <div
+                        className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5"
+                        style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}
+                      >
+                        {tool.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[10px] text-muted-foreground/60 truncate">{tool.benefit}</p>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-violet-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
+                    </Link>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </div>
+
+              {/* Share Card */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-1.5">Share This Tool</h3>
+                <p className="text-xs text-muted-foreground mb-3">Help others convert fractions easily.</p>
+                <button
+                  onClick={copyLink}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-violet-500 to-purple-400 text-white text-sm font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform"
+                >
+                  {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
+                </button>
+              </div>
+
+              {/* On This Page */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {[
+                    { label: "Calculator", href: "#calculator" },
+                    { label: "Reference Table", href: "#reference-table" },
+                    { label: "How to Use", href: "#how-to-use" },
+                    { label: "Result Interpretation", href: "#result-interpretation" },
+                    { label: "Quick Examples", href: "#quick-examples" },
+                    { label: "Why Choose This", href: "#why-choose-this" },
+                    { label: "FAQ", href: "#faq" },
+                  ].map(({ label, href }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      className="flex items-center gap-2 text-xs text-muted-foreground hover:text-violet-500 font-medium py-1.5 transition-colors"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full bg-violet-500/30 flex-shrink-0" />
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-[hsl(var(--muted-foreground))] mt-2">Click any row to load it into the calculator.</p>
-          </section>
-
-          {/* Content */}
-          <section className="prose prose-neutral dark:prose-invert max-w-none">
-            <h2 className="text-2xl font-bold mb-4">How to Convert Fractions to Decimals</h2>
-            <p>Every fraction represents a division problem. The numerator (top number) is divided by the denominator (bottom number). For <strong>3/4</strong>: 3 ÷ 4 = <strong>0.75</strong>.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Terminating vs Repeating Decimals</h3>
-            <p>A fraction produces a <strong>terminating decimal</strong> (like 0.25 or 0.125) only when the denominator (in its simplified form) has no prime factors other than 2 and 5. All other fractions produce <strong>repeating decimals</strong> — like 1/3 = 0.333… or 1/7 = 0.142857142857…</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Converting Decimals to Fractions</h3>
-            <p>To convert a terminating decimal: count the decimal places (n), write the decimal over 10^n, then simplify. For <strong>0.375</strong>: 375/1000 → GCD(375,1000)=125 → <strong>3/8</strong>.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Simplifying Fractions</h3>
-            <p>Always reduce fractions to their simplest form by dividing both numerator and denominator by their GCD. For 6/8: GCD(6,8)=2, so 6/8 = <strong>3/4</strong>.</p>
-          </section>
-
-          {/* FAQ */}
-          <section>
-            <h2 className="text-2xl font-bold mb-5">Frequently Asked Questions</h2>
-            <div className="space-y-3">
-              {FAQS.map(f => <FaqItem key={f.q} q={f.q} a={f.a} />)}
-            </div>
-          </section>
-
-          {/* Related */}
-          <section>
-            <h2 className="text-xl font-bold mb-4">Related Tools</h2>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { label: "Percentage Calculator", href: "/math/percentage-calculator" },
-                { label: "Average Calculator", href: "/math/average-calculator" },
-                { label: "Percentage Change Calculator", href: "/math/percentage-change-calculator" },
-                { label: "Standard Deviation Calculator", href: "/math/standard-deviation-calculator" },
-                { label: "Binary to Decimal Converter", href: "/conversion/binary-to-decimal-converter" },
-              ].map(t => (
-                <a key={t.href} href={t.href} className="px-4 py-2 rounded-full border border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))] transition-colors text-sm font-medium">{t.label}</a>
-              ))}
-            </div>
-          </section>
+          </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

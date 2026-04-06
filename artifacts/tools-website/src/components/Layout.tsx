@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { Bolt, Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
@@ -23,8 +23,16 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b-2 border-border bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2 group">
-              <Bolt className="w-8 h-8 text-primary" strokeWidth={2.5} />
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="w-7 h-7 rounded-[8px] bg-primary flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_hsl(var(--primary)/0.45)] group-hover:scale-105 transition-transform">
+                <svg viewBox="0 0 180 180" width="17" height="17" fill="none" aria-hidden="true">
+                  <g transform="rotate(45, 90, 90)">
+                    <rect x="55" y="82" width="100" height="16" rx="8" fill="white"/>
+                    <circle cx="55" cy="90" r="32" fill="white"/>
+                    <polygon points="55,74 69,82 69,98 55,106 41,98 41,82" fill="#FF3C00"/>
+                  </g>
+                </svg>
+              </div>
               <span className="font-display font-black text-2xl tracking-tighter text-foreground uppercase">
                 US Online <span className="text-primary">Tools</span>
               </span>
@@ -109,8 +117,16 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center space-x-2 mb-6">
-                <Bolt className="w-8 h-8 text-primary" strokeWidth={2.5} />
+              <div className="flex items-center gap-2.5 mb-6">
+                <div className="w-7 h-7 rounded-[8px] bg-primary flex items-center justify-center flex-shrink-0">
+                  <svg viewBox="0 0 180 180" width="17" height="17" fill="none" aria-hidden="true">
+                    <g transform="rotate(45, 90, 90)">
+                      <rect x="55" y="82" width="100" height="16" rx="8" fill="white"/>
+                      <circle cx="55" cy="90" r="32" fill="white"/>
+                      <polygon points="55,74 69,82 69,98 55,106 41,98 41,82" fill="#FF3C00"/>
+                    </g>
+                  </svg>
+                </div>
                 <span className="font-display font-black text-2xl tracking-tighter uppercase">
                   US Online <span className="text-primary">Tools</span>
                 </span>

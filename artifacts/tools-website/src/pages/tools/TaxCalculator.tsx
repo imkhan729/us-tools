@@ -11,41 +11,47 @@ import {
 } from "lucide-react";
 import { getToolPath } from "@/data/tools";
 
-// ── US 2024 Federal Tax Brackets (Married Filing Jointly / Single) ──
+// US 2026 Federal tax brackets and standard deductions.
 type FilingStatus = "single" | "married" | "hoh";
 type TaxBracket = { rate: number; min: number; max: number };
 
 const BRACKETS: Record<FilingStatus, TaxBracket[]> = {
   single: [
-    { rate: 0.10, min: 0,      max: 11600 },
-    { rate: 0.12, min: 11600,  max: 47150 },
-    { rate: 0.22, min: 47150,  max: 100525 },
-    { rate: 0.24, min: 100525, max: 191950 },
-    { rate: 0.32, min: 191950, max: 243725 },
-    { rate: 0.35, min: 243725, max: 609350 },
-    { rate: 0.37, min: 609350, max: Infinity },
+    { rate: 0.10, min: 0,      max: 12400 },
+    { rate: 0.12, min: 12400,  max: 50400 },
+    { rate: 0.22, min: 50400,  max: 105700 },
+    { rate: 0.24, min: 105700, max: 201775 },
+    { rate: 0.32, min: 201775, max: 256225 },
+    { rate: 0.35, min: 256225, max: 640600 },
+    { rate: 0.37, min: 640600, max: Infinity },
   ],
   married: [
-    { rate: 0.10, min: 0,      max: 23200 },
-    { rate: 0.12, min: 23200,  max: 94300 },
-    { rate: 0.22, min: 94300,  max: 201050 },
-    { rate: 0.24, min: 201050, max: 383900 },
-    { rate: 0.32, min: 383900, max: 487450 },
-    { rate: 0.35, min: 487450, max: 731200 },
-    { rate: 0.37, min: 731200, max: Infinity },
+    { rate: 0.10, min: 0,      max: 24800 },
+    { rate: 0.12, min: 24800,  max: 100800 },
+    { rate: 0.22, min: 100800, max: 211400 },
+    { rate: 0.24, min: 211400, max: 403550 },
+    { rate: 0.32, min: 403550, max: 512450 },
+    { rate: 0.35, min: 512450, max: 768700 },
+    { rate: 0.37, min: 768700, max: Infinity },
   ],
   hoh: [
-    { rate: 0.10, min: 0,      max: 16550 },
-    { rate: 0.12, min: 16550,  max: 63100 },
-    { rate: 0.22, min: 63100,  max: 100500 },
-    { rate: 0.24, min: 100500, max: 191950 },
-    { rate: 0.32, min: 191950, max: 243700 },
-    { rate: 0.35, min: 243700, max: 609350 },
-    { rate: 0.37, min: 609350, max: Infinity },
+    { rate: 0.10, min: 0,      max: 17700 },
+    { rate: 0.12, min: 17700,  max: 67450 },
+    { rate: 0.22, min: 67450,  max: 105700 },
+    { rate: 0.24, min: 105700, max: 201750 },
+    { rate: 0.32, min: 201750, max: 256200 },
+    { rate: 0.35, min: 256200, max: 640600 },
+    { rate: 0.37, min: 640600, max: Infinity },
   ],
 };
 
-const STANDARD_DEDUCTIONS: Record<FilingStatus, number> = { single: 14600, married: 29200, hoh: 21900 };
+const STANDARD_DEDUCTIONS: Record<FilingStatus, number> = { single: 16100, married: 32200, hoh: 24150 };
+const SOCIAL_SECURITY_WAGE_BASE = 184500;
+const ADDITIONAL_MEDICARE_THRESHOLDS: Record<FilingStatus, number> = {
+  single: 200000,
+  married: 250000,
+  hoh: 200000,
+};
 
 function useTaxCalc() {
   const [income, setIncome] = useState("");
@@ -74,9 +80,10 @@ function useTaxCalc() {
       }
     }
 
-    // FICA (Social Security 6.2% up to $168,600, Medicare 1.45%)
-    const ssWage = Math.min(gross, 168600);
-    const fica = ssWage * 0.062 + gross * 0.0145;
+    // FICA: Social Security plus Medicare, including Additional Medicare Tax where applicable.
+    const ssWage = Math.min(gross, SOCIAL_SECURITY_WAGE_BASE);
+    const additionalMedicareTax = Math.max(0, gross - ADDITIONAL_MEDICARE_THRESHOLDS[filingStatus]) * 0.009;
+    const fica = ssWage * 0.062 + gross * 0.0145 + additionalMedicareTax;
 
     // State tax
     const stateTax = taxableIncome * ((parseFloat(stateRate) || 0) / 100);
@@ -92,6 +99,7 @@ function useTaxCalc() {
       takeHome,
       monthlyTakeHome: takeHome / 12,
       biweeklyTakeHome: takeHome / 26,
+      additionalMedicareTax,
     };
   }, [income, filingStatus, deductions, stateRate]);
 
@@ -135,10 +143,10 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 const RELATED_TOOLS = [
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152 },
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <Landmark className="w-5 h-5" />, color: 217 },
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
-  { title: "Mortgage Payment Calculator", slug: "mortgage-payment-calculator", icon: <Building2 className="w-5 h-5" />, color: 340 },
+  { title: "Salary Calculator", slug: "online-salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152 },
+  { title: "Compound Interest Calculator", slug: "online-compound-interest-calculator", icon: <Landmark className="w-5 h-5" />, color: 217 },
+  { title: "ROI Calculator", slug: "online-roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
+  { title: "Mortgage Payment Calculator", slug: "online-mortgage-payment-calculator", icon: <Building2 className="w-5 h-5" />, color: 340 },
   { title: "Savings Calculator", slug: "savings-calculator", icon: <Wallet className="w-5 h-5" />, color: 45 },
   { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 25 },
 ];
@@ -156,16 +164,16 @@ export default function TaxCalculator() {
   return (
     <Layout>
       <SEO
-        title="Tax Calculator 2024 - Estimate Federal Income Tax | Free US Tax Estimator"
-        description="Free 2024 US income tax calculator. Estimate federal tax, FICA, state tax, effective tax rate, and take-home pay. Based on IRS tax brackets — no signup required."
+        title="Online Tax Calculator 2026 - Estimate Federal Income Tax | Free US Tax Estimator"
+        description="Free 2026 US income tax calculator. Estimate federal tax, FICA, state tax, effective tax rate, and take-home pay using 2026 IRS brackets and deductions."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "WebApplication", "name": "Tax Calculator", "url": "https://usonlinetools.com/finance/tax-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
+          { "@type": "WebApplication", "name": "Online Tax Calculator", "url": "https://usonlinetools.com/finance/online-tax-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
           { "@type": "FAQPage", "mainEntity": [
             { "@type": "Question", "name": "What is the difference between marginal and effective tax rate?", "acceptedAnswer": { "@type": "Answer", "text": "The marginal rate is the highest bracket rate applied to your last dollar of income. The effective rate is the total tax paid divided by gross income — always lower than the marginal rate." } },
-            { "@type": "Question", "name": "What is the standard deduction for 2024?", "acceptedAnswer": { "@type": "Answer", "text": "For 2024, the standard deduction is $14,600 for single filers, $29,200 for married filing jointly, and $21,900 for head of household." } },
+            { "@type": "Question", "name": "What is the standard deduction for 2026?", "acceptedAnswer": { "@type": "Answer", "text": "For tax year 2026, the standard deduction is $16,100 for single filers, $32,200 for married filing jointly, and $24,150 for head of household." } },
           ]}
         ]
       })}} />
@@ -189,10 +197,10 @@ export default function TaxCalculator() {
                 Finance & Tax
               </div>
               <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">
-                Tax Calculator 2024
+                Online Tax Calculator 2026
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Estimate your US federal income tax, FICA (Social Security + Medicare), state tax, effective tax rate, and annual take-home pay. Based on 2024 IRS tax brackets — free, instant, no signup required.
+                Estimate your US federal income tax, FICA, state tax, effective tax rate, and annual take-home pay. Based on 2026 IRS brackets and standard deductions, with instant browser-side results.
               </p>
               <p className="text-sm text-amber-600 dark:text-amber-400 mt-3 font-medium">⚠ For estimation purposes only. Consult a tax professional for filing guidance.</p>
             </section>
@@ -201,17 +209,17 @@ export default function TaxCalculator() {
             <section className="p-5 rounded-xl bg-green-500/5 border-2 border-green-500/20">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="w-5 h-5 text-green-500" />
-                <h2 className="font-black text-foreground text-base">2024 Federal Tax Brackets (Single)</h2>
+                <h2 className="font-black text-foreground text-base">2026 Federal Tax Brackets (Single)</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
                 {[
-                  { rate: "10%", range: "Up to $11,600" },
-                  { rate: "12%", range: "$11,601 – $47,150" },
-                  { rate: "22%", range: "$47,151 – $100,525" },
-                  { rate: "24%", range: "$100,526 – $191,950" },
-                  { rate: "32%", range: "$191,951 – $243,725" },
-                  { rate: "35%", range: "$243,726 – $609,350" },
-                  { rate: "37%", range: "Over $609,350" },
+                  { rate: "10%", range: "Up to $12,400" },
+                  { rate: "12%", range: "$12,401 - $50,400" },
+                  { rate: "22%", range: "$50,401 - $105,700" },
+                  { rate: "24%", range: "$105,701 - $201,775" },
+                  { rate: "32%", range: "$201,776 - $256,225" },
+                  { rate: "35%", range: "$256,226 - $640,600" },
+                  { rate: "37%", range: "Over $640,600" },
                 ].map((b, i) => (
                   <div key={i} className="bg-background rounded px-2 py-1.5 border border-border">
                     <div className="font-black text-primary">{b.rate}</div>
@@ -227,7 +235,7 @@ export default function TaxCalculator() {
                 <Zap className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="font-bold text-foreground text-sm">Estimate your 2024 taxes instantly</p>
+                <p className="font-bold text-foreground text-sm">Estimate your 2026 taxes instantly</p>
                 <p className="text-muted-foreground text-sm">Enter your gross income and filing status — see federal tax, FICA, state tax, and take-home pay in real time.</p>
               </div>
             </section>
@@ -317,8 +325,8 @@ export default function TaxCalculator() {
               <div className="space-y-5">
                 {[
                   { color: "green", title: "Calculate Taxable Income", desc: "Your taxable income = Gross income − deductions. The calculator automatically uses the higher of the standard deduction or your itemized amount." },
-                  { color: "blue", title: "Apply Federal Tax Brackets", desc: "The US uses a progressive tax system — each bracket only applies to income within that range. The calculator applies the 2024 IRS brackets accurately." },
-                  { color: "purple", title: "Add FICA & State Tax", desc: "Social Security (6.2% up to $168,600) and Medicare (1.45%) are added separately. State tax is estimated using your input rate on taxable income." },
+                  { color: "blue", title: "Apply Federal Tax Brackets", desc: "The US uses a progressive tax system, so each bracket only applies to the income inside that range. The calculator uses the 2026 IRS bracket thresholds for the selected filing status." },
+                  { color: "purple", title: "Add FICA & State Tax", desc: "Social Security (6.2% up to $184,500), Medicare (1.45%), and Additional Medicare Tax where applicable are added separately. State tax is estimated using your input rate on taxable income." },
                 ].map((step, i) => (
                   <div key={i} className="flex gap-4">
                     <div className={`w-8 h-8 rounded-lg bg-${step.color}-500/10 text-${step.color}-600 dark:text-${step.color}-400 flex items-center justify-center flex-shrink-0 font-bold text-sm`}>{i + 1}</div>
@@ -345,7 +353,7 @@ export default function TaxCalculator() {
                 </div>
                 <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/15">
                   <div className="flex items-center gap-2 mb-2"><Wallet className="w-4 h-4 text-purple-500" /><h4 className="font-bold text-foreground text-sm">High Earner, Single</h4></div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">$200,000, single: Marginal rate 32%, effective ~<strong className="text-foreground">25%</strong>. FICA capped after $168,600 in Social Security wages. Take-home ~<strong className="text-foreground">$147,000</strong>.</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">$200,000, single: Marginal rate 24%, effective ~<strong className="text-foreground">24%</strong>. Social Security tax stops after $184,500 in wages, while Medicare continues on all wages. Take-home is still roughly in the mid-$140,000s before credits and itemized adjustments.</p>
                 </div>
                 <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/15">
                   <div className="flex items-center gap-2 mb-2"><FileText className="w-4 h-4 text-amber-500" /><h4 className="font-bold text-foreground text-sm">Freelancer / 1099 Worker</h4></div>
@@ -359,7 +367,7 @@ export default function TaxCalculator() {
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Why Use This Tax Calculator?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { icon: <FileText className="w-4 h-4" />, text: "Uses 2024 IRS federal tax brackets" },
+                  { icon: <FileText className="w-4 h-4" />, text: "Uses 2026 IRS federal tax brackets and deductions" },
                   { icon: <CheckCircle2 className="w-4 h-4" />, text: "Calculates FICA, state tax, and federal tax" },
                   { icon: <Shield className="w-4 h-4" />, text: "100% private — no data sent to servers" },
                   { icon: <Smartphone className="w-4 h-4" />, text: "Works on mobile and desktop" },
@@ -378,14 +386,14 @@ export default function TaxCalculator() {
             <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">Understanding US Income Tax</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>The <strong className="text-foreground">United States federal income tax</strong> is progressive, meaning higher income levels are taxed at higher rates — but only the income in each bracket pays that rate. This is a common misconception: earning $50,000 doesn't mean all income is taxed at 22%. Only the portion above $47,150 (the 22% bracket threshold for single filers in 2024) is taxed at that rate.</p>
+                <p>The <strong className="text-foreground">United States federal income tax</strong> is progressive, meaning higher income levels are taxed at higher rates, but only the income inside each bracket pays that rate. For example, earning $50,000 does not mean all income is taxed at 22%; for a single filer in tax year 2026, only the portion above $50,400 reaches the 22% bracket.</p>
                 <h3 className="text-xl font-bold text-foreground pt-2">Marginal Rate vs. Effective Rate</h3>
                 <p>Your <strong className="text-foreground">marginal rate</strong> is the tax bracket that applies to your highest dollar of income. Your <strong className="text-foreground">effective rate</strong> is the total tax you pay divided by your gross income — always lower than the marginal rate. For example, someone in the 22% bracket might have an effective rate of 14%.</p>
                 <h3 className="text-xl font-bold text-foreground pt-2">What Are FICA Taxes?</h3>
                 <ul className="space-y-2 ml-1">
                   {[
-                    "Social Security: 6.2% on wages up to $168,600 (2024 wage base)",
-                    "Medicare: 1.45% on all wages (no cap), plus 0.9% surtax over $200K (single)",
+                    "Social Security: 6.2% on wages up to $184,500 for tax year 2026",
+                    "Medicare: 1.45% on all wages, plus 0.9% Additional Medicare Tax above $200,000 for single or head-of-household filers and $250,000 for married filing jointly",
                     "Employers match these amounts — self-employed pay both halves (15.3% total)",
                     "FICA is paid in addition to income tax and is shown separately on your W-2",
                   ].map((item, i) => (
@@ -403,11 +411,11 @@ export default function TaxCalculator() {
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
                 <FaqItem q="What is the difference between marginal and effective tax rate?" a="Your marginal rate is the rate applied to your last dollar of income (the highest bracket you're in). Your effective rate is total taxes divided by gross income — it's always lower than the marginal rate because lower income is taxed at lower rates." />
-                <FaqItem q="What is the standard deduction for 2024?" a="For tax year 2024: $14,600 for single filers, $29,200 for married filing jointly, and $21,900 for head of household. You can only deduct the higher of the standard deduction or your itemized deductions." />
+                <FaqItem q="What is the standard deduction for 2026?" a="For tax year 2026, the standard deduction is $16,100 for single filers, $32,200 for married filing jointly, and $24,150 for head of household. You can only deduct the higher of the standard deduction or your itemized deductions." />
                 <FaqItem q="Does this include state taxes?" a="This calculator lets you enter a custom state income tax rate. Average US state income tax is around 4–6%, but it ranges from 0% (TX, FL, WA, NV) to over 13% (CA). Enter your state's rate for a complete estimate." />
-                <FaqItem q="How accurate is this tax calculator?" a="This tool provides a close estimate based on 2024 IRS tax brackets and standard deductions. It does not account for tax credits (child tax credit, EITC, etc.), capital gains taxes, AMT, or self-employment tax. For exact filing, consult a CPA or use IRS Free File." />
-                <FaqItem q="What is FICA and why is it separate from income tax?" a="FICA (Federal Insurance Contributions Act) funds Social Security and Medicare. It's a flat rate (Social Security: 6.2% up to $168,600; Medicare: 1.45%) separate from income tax brackets. It applies to earned wages regardless of your tax bracket." />
-                <FaqItem q="Can this estimate taxes for married filing jointly?" a="Yes, select 'Married Filing Jointly' in the filing status dropdown. The 2024 standard deduction for MFJ is $29,200, and the tax brackets are roughly double the single filer thresholds, benefiting couples who are in a 22%+ bracket individually." />
+                <FaqItem q="How accurate is this tax calculator?" a="This tool provides a close estimate based on 2026 IRS tax brackets, standard deductions, and the 2026 Social Security wage base. It does not account for tax credits, capital gains taxes, AMT, or the full range of special tax situations. For exact filing, consult a CPA or use official IRS filing tools." />
+                <FaqItem q="What is FICA and why is it separate from income tax?" a="FICA (Federal Insurance Contributions Act) funds Social Security and Medicare. For 2026, employee Social Security tax is 6.2% up to $184,500 in wages, Medicare is 1.45% on all wages, and Additional Medicare Tax can apply above the filing-status thresholds. These payroll taxes are separate from federal income tax brackets." />
+                <FaqItem q="Can this estimate taxes for married filing jointly?" a="Yes. Select 'Married Filing Jointly' in the filing status dropdown. For tax year 2026, the standard deduction for MFJ is $32,200 and the bracket thresholds are generally wider than the single-filer brackets." />
               </div>
             </section>
 
@@ -444,7 +452,7 @@ export default function TaxCalculator() {
 
               <div className="bg-card border border-border rounded-2xl p-5">
                 <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others estimate their 2024 taxes.</p>
+                <p className="text-sm text-muted-foreground mb-4">Help others estimate their 2026 taxes.</p>
                 <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
                   {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
                 </button>

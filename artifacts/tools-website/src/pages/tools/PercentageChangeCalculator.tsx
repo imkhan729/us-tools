@@ -1,49 +1,110 @@
-import { useState, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { TrendingUp, TrendingDown, Percent, ChevronDown, ChevronUp } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Layout } from "@/components/Layout";
+import { SEO } from "@/components/SEO";
+import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronRight, ChevronDown, TrendingUp, Calculator, ArrowRight,
+  Zap, CheckCircle2, Smartphone, Shield, Clock, Percent,
+  DollarSign, Scale, BarChart3, Lightbulb, Copy, Check,
+  BadgeCheck, Lock, Star, TrendingDown,
+} from "lucide-react";
 
-type Mode = "increase" | "decrease" | "difference";
+// ── Calculator Logic ──
+function usePercentageCalculator(mode: "increase" | "decrease" | "difference") {
+  const [original, setOriginal] = useState("");
+  const [newValue, setNewValue] = useState("");
 
-function useCalc(mode: Mode, v1: string, v2: string) {
-  return useMemo(() => {
-    const a = parseFloat(v1);
-    const b = parseFloat(v2);
-    if (!isFinite(a) || !isFinite(b)) return null;
-    if (a === 0 && mode !== "difference") return null;
+  const result = useMemo(() => {
+    const orig = parseFloat(original);
+    const newVal = parseFloat(newValue);
+    if (isNaN(orig) || isNaN(newVal) || (mode !== "difference" && orig === 0)) return null;
 
-    let pct: number;
+    let percentage: number;
     let change: number;
 
     if (mode === "increase") {
-      change = b - a;
-      pct = ((b - a) / Math.abs(a)) * 100;
+      change = newVal - orig;
+      percentage = (change / Math.abs(orig)) * 100;
     } else if (mode === "decrease") {
-      change = a - b;
-      pct = ((a - b) / Math.abs(a)) * 100;
+      change = orig - newVal;
+      percentage = (change / Math.abs(orig)) * 100;
     } else {
-      // Percentage difference: |v1 - v2| / ((v1+v2)/2) * 100
-      change = Math.abs(a - b);
-      const avg = (Math.abs(a) + Math.abs(b)) / 2;
-      pct = avg === 0 ? 0 : (change / avg) * 100;
+      // Percentage difference
+      change = Math.abs(orig - newVal);
+      const avg = (Math.abs(orig) + Math.abs(newVal)) / 2;
+      percentage = avg === 0 ? 0 : (change / avg) * 100;
     }
 
-    return { pct: parseFloat(pct.toFixed(4)), change: parseFloat(change.toFixed(4)), a, b };
-  }, [mode, v1, v2]);
+    return {
+      change: parseFloat(change.toFixed(4)),
+      percentage: parseFloat(percentage.toFixed(4)),
+      original: orig,
+      newValue: newVal
+    };
+  }, [original, newValue, mode]);
+
+  return { original, setOriginal, newValue, setNewValue, result };
 }
 
+// ── Result Insight Component ──
+function ResultInsight({ result, mode }: { result: { change: number; percentage: number; original: number; newValue: number } | null, mode: "increase" | "decrease" | "difference" }) {
+  if (!result) return null;
+
+  const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 4 });
+
+  let message = "";
+  if (mode === "difference") {
+    message = `The absolute difference between the two values is ${fmt(result.change)}. This represents ${fmt(result.percentage)}% of their average.`;
+  } else if (mode === "increase") {
+    message = result.percentage >= 0
+      ? `The value increased by ${fmt(result.change)} (${fmt(result.percentage)}%). This means the new value is ${fmt(result.percentage)}% higher than the original.`
+      : `The value decreased by ${fmt(Math.abs(result.change))} (${fmt(Math.abs(result.percentage))}%). This means the new value is ${fmt(Math.abs(result.percentage))}% lower than the original.`;
+  } else {
+    message = result.percentage >= 0
+      ? `The value decreased by ${fmt(result.change)} (${fmt(result.percentage)}%). This means the new value is ${fmt(result.percentage)}% lower than the original.`
+      : `The value increased by ${fmt(Math.abs(result.change))} (${fmt(Math.abs(result.percentage))}%). This means the new value is ${fmt(Math.abs(result.percentage))}% higher than the original.`;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mt-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20"
+    >
+      <div className="flex gap-2 items-start">
+        <Lightbulb className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+        <p className="text-sm text-foreground/80 leading-relaxed">{message}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+// ── FAQ Item Component ──
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-[hsl(var(--border))] rounded-xl overflow-hidden">
-      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left font-semibold hover:bg-[hsl(var(--muted))] transition-colors">
-        <span>{q}</span>
-        {open ? <ChevronUp size={18} className="shrink-0" /> : <ChevronDown size={18} className="shrink-0" />}
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-blue-500/40 transition-colors">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+      >
+        <span className="text-base font-bold text-foreground leading-snug">{q}</span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-blue-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
-            <p className="px-5 pb-4 text-[hsl(var(--muted-foreground))] leading-relaxed">{a}</p>
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="overflow-hidden"
+          >
+            <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -51,225 +112,421 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const FAQS = [
-  { q: "What is the formula for percentage increase?", a: "Percentage Increase = ((New Value − Old Value) / |Old Value|) × 100. For example, from 50 to 75: ((75−50)/50)×100 = 50% increase." },
-  { q: "How do I calculate percentage decrease?", a: "Percentage Decrease = ((Old Value − New Value) / |Old Value|) × 100. For example, from 200 to 150: ((200−150)/200)×100 = 25% decrease." },
-  { q: "What is the difference between percentage change and percentage difference?", a: "Percentage change compares a new value to a specific original value (directional). Percentage difference compares two values symmetrically using their average as the base — neither value is treated as the 'original'." },
-  { q: "Can percentage increase exceed 100%?", a: "Yes! A value increasing from 10 to 30 is a 200% increase (tripled). A 100% increase means doubling. There is no upper limit on percentage increase." },
-  { q: "How do I reverse a percentage increase?", a: "To reverse, do NOT subtract the same percentage. If a price increased 25%, to find the original: Original = New ÷ 1.25. For a 50% increase: Original = New ÷ 1.50." },
-  { q: "What is a CAGR (Compound Annual Growth Rate)?", a: "CAGR = (Ending Value / Beginning Value)^(1/Years) − 1. It smooths out yearly fluctuations to show the steady growth rate that would achieve the same end result." },
+// ── Related Tools ──
+const RELATED_TOOLS = [
+  { title: "Percentage Decrease Calculator", slug: "percentage-decrease-calculator", icon: <TrendingUp className="w-5 h-5 rotate-180" />, color: 340, benefit: "Calculate drops, markdowns, and losses" },
+  { title: "Percentage Difference Calculator", slug: "percentage-difference-calculator", icon: <Percent className="w-5 h-5" />, color: 45, benefit: "Compare two values symmetrically" },
+  { title: "Discount Calculator", slug: "discount-calculator", icon: <DollarSign className="w-5 h-5" />, color: 25, benefit: "See final price after any % off" },
+  { title: "Ratio Calculator", slug: "ratio-calculator", icon: <Scale className="w-5 h-5" />, color: 265, benefit: "Simplify and compare ratios instantly" },
+  { title: "Average Calculator", slug: "average-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 217, benefit: "Mean, median, mode in one tool" },
+  { title: "Percentage Calculator", slug: "percentage-calculator", icon: <Percent className="w-5 h-5" />, color: 217, benefit: "Three percentage calculators in one" },
 ];
 
-const EXAMPLES = [
-  { desc: "Stock goes from $100 to $135", type: "increase", result: "+35%" },
-  { desc: "Price drops from $80 to $60", type: "decrease", result: "−25%" },
-  { desc: "Population changes from 1,000 to 1,200", type: "increase", result: "+20%" },
-  { desc: "Test score drops from 95 to 76", type: "decrease", result: "−20%" },
-  { desc: "Sales: 400 vs 480 (which is better?)", type: "difference", result: "18.18% diff" },
-  { desc: "Salary: $50k to $75k raise", type: "increase", result: "+50%" },
-];
-
-const LD_JSON = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "WebApplication", "name": "Percentage Change Calculator", "description": "Calculate percentage increase, decrease, and difference between any two numbers.", "applicationCategory": "UtilityApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
-    { "@type": "FAQPage", "mainEntity": FAQS.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) },
-  ],
-};
-
-const TABS: { key: Mode; label: string; icon: React.ReactNode }[] = [
-  { key: "increase", label: "Increase", icon: <TrendingUp size={16} /> },
-  { key: "decrease", label: "Decrease", icon: <TrendingDown size={16} /> },
-  { key: "difference", label: "Difference", icon: <Percent size={16} /> },
-];
-
+// ── Main Component ──
 export default function PercentageChangeCalculator() {
-  const [mode, setMode] = useState<Mode>("increase");
-  const [v1, setV1] = useState("100");
-  const [v2, setV2] = useState("135");
-  const result = useCalc(mode, v1, v2);
+  const [mode, setMode] = useState<"increase" | "decrease" | "difference">("increase");
 
-  const label1 = mode === "difference" ? "Value A" : "Original Value";
-  const label2 = mode === "difference" ? "Value B" : "New Value";
+  // Detect mode from URL
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes("percentage-increase")) {
+      setMode("increase");
+    } else if (path.includes("percentage-decrease")) {
+      setMode("decrease");
+    } else if (path.includes("percentage-difference")) {
+      setMode("difference");
+    }
+  }, []);
 
-  const isPositive = result && result.pct >= 0;
+  const calculator = usePercentageCalculator(mode);
+  const [copied, setCopied] = useState(false);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const fmt = (n: number | null) => {
+    if (n === null) return "--";
+    return n.toLocaleString("en-US", { maximumFractionDigits: 4 });
+  };
+
+  // Dynamic content based on mode
+  const toolConfig = {
+    increase: {
+      title: "Percentage Increase Calculator",
+      description: "Calculate the percentage increase between any two values. Find out how much something grew by as a percentage — perfect for tracking growth, raises, investments, and more.",
+      metaTitle: "Percentage Increase Calculator – Calculate Growth Between Two Values | US Online Tools",
+      metaDesc: "Free online percentage increase calculator. Find what percentage a value increased by between two numbers. Calculate growth, raises, and gains instantly.",
+      keywords: "percentage increase calculator, calculate percentage increase, percent growth calculator, percentage change calculator",
+      color: "emerald",
+      icon: <TrendingUp className="w-4 h-4 text-white" />,
+      gradient: "from-emerald-500 to-teal-400",
+      bgGradient: "from-emerald-500/5 via-card to-teal-500/5",
+      borderColor: "emerald-500/20",
+      shadowColor: "emerald-500/5",
+      resultColor: "text-emerald-600 dark:text-emerald-400",
+      label1: "From",
+      label2: "to",
+      resultPrefix: "+",
+      formula: "Increase = ((New Value − Original Value) / |Original Value|) × 100"
+    },
+    decrease: {
+      title: "Percentage Decrease Calculator",
+      description: "Calculate the percentage decrease between any two values. Find out how much something dropped by as a percentage — perfect for tracking losses, discounts, and reductions.",
+      metaTitle: "Percentage Decrease Calculator – Calculate Loss Between Two Values | US Online Tools",
+      metaDesc: "Free online percentage decrease calculator. Find what percentage a value decreased by between two numbers. Calculate drops, markdowns, and losses instantly.",
+      keywords: "percentage decrease calculator, calculate percentage decrease, percent drop calculator, percentage change calculator",
+      color: "red",
+      icon: <TrendingDown className="w-4 h-4 text-white" />,
+      gradient: "from-red-500 to-pink-400",
+      bgGradient: "from-red-500/5 via-card to-pink-500/5",
+      borderColor: "red-500/20",
+      shadowColor: "red-500/5",
+      resultColor: "text-red-600 dark:text-red-400",
+      label1: "From",
+      label2: "to",
+      resultPrefix: "−",
+      formula: "Decrease = ((Original Value − New Value) / |Original Value|) × 100"
+    },
+    difference: {
+      title: "Percentage Difference Calculator",
+      description: "Calculate the percentage difference between any two values. Find out how different two values are as a percentage — perfect for comparing options symmetrically.",
+      metaTitle: "Percentage Difference Calculator – Compare Two Values Symmetrically | US Online Tools",
+      metaDesc: "Free online percentage difference calculator. Find what percentage two values differ by. Compare options, prices, and values symmetrically.",
+      keywords: "percentage difference calculator, calculate percentage difference, percent comparison calculator, percentage change calculator",
+      color: "amber",
+      icon: <Percent className="w-4 h-4 text-white" />,
+      gradient: "from-amber-500 to-orange-400",
+      bgGradient: "from-amber-500/5 via-card to-orange-500/5",
+      borderColor: "amber-500/20",
+      shadowColor: "amber-500/5",
+      resultColor: "text-amber-600 dark:text-amber-400",
+      label1: "Value A",
+      label2: "Value B",
+      resultPrefix: "",
+      formula: "Difference = |A − B| / ((|A| + |B|) / 2) × 100"
+    }
+  };
+
+  const config = toolConfig[mode];
 
   return (
-    <>
-      <Helmet>
-        <title>Percentage Change Calculator – Increase, Decrease & Difference | US Online Tools</title>
-        <meta name="description" content="Free percentage change calculator. Calculate percentage increase, decrease, or difference between two numbers. Includes formulas and examples." />
-        <meta name="keywords" content="percentage change calculator, percentage increase calculator, percentage decrease calculator, percentage difference calculator, percent change formula" />
-        <link rel="canonical" href="https://us-online.tools/math/percentage-change-calculator" />
-        <script type="application/ld+json">{JSON.stringify(LD_JSON)}</script>
-      </Helmet>
+    <Layout>
+      <SEO
+        title={config.metaTitle}
+        description={config.metaDesc}
+      />
 
-      <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]" style={{"--calc-hue": "142"} as React.CSSProperties}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-        <section className="bg-gradient-to-br from-[hsl(var(--calc-hue),70%,18%)] to-[hsl(var(--calc-hue),60%,28%)] text-white py-14 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-3">Percentage Change Calculator</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">Calculate percentage increase, decrease, or difference between any two numbers — with step-by-step formulas.</p>
+        {/* ── BREADCRUMB ── */}
+        <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
+          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
+          <Link href="/category/math" className="text-muted-foreground hover:text-foreground transition-colors">Math & Calculators</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
+          <span className="text-foreground">{config.title}</span>
+        </nav>
+
+        {/* ── HERO SECTION (Full Width) ── */}
+        <section className={`rounded-2xl overflow-hidden border border-${config.color}/15 bg-gradient-to-br ${config.bgGradient} px-8 md:px-12 py-10 md:py-14 mb-10`}>
+          {/* Category pill */}
+          <div className="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Calculator className="w-3.5 h-3.5" />
+            Math &amp; Calculators
+          </div>
+
+          {/* Heading */}
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            {config.title}
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            {config.description}
+          </p>
+
+          {/* Badges */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <BadgeCheck className="w-3.5 h-3.5" /> 100% Free
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs px-3 py-1.5 rounded-full border border-blue-500/20">
+              <Zap className="w-3.5 h-3.5" /> Instant Results
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Lock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+
+          {/* Meta */}
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: Math &amp; Calculators &nbsp;·&nbsp; Last updated: March 2026
+          </p>
         </section>
 
-        <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          {/* ── LEFT COLUMN (Main Content) ── */}
+          <div className="lg:col-span-3 space-y-10">
 
-          {/* Quick Answer */}
-          <div className="bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 rounded-2xl p-5">
-            <h2 className="font-bold text-green-800 dark:text-green-300 mb-2">⚡ Quick Formulas</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-green-900 dark:text-green-200">
-              <div className="bg-white/60 dark:bg-white/10 rounded-lg p-3">
-                <p className="font-semibold mb-1">% Increase</p>
-                <code className="text-xs">((New − Old) / |Old|) × 100</code>
-              </div>
-              <div className="bg-white/60 dark:bg-white/10 rounded-lg p-3">
-                <p className="font-semibold mb-1">% Decrease</p>
-                <code className="text-xs">((Old − New) / |Old|) × 100</code>
-              </div>
-              <div className="bg-white/60 dark:bg-white/10 rounded-lg p-3">
-                <p className="font-semibold mb-1">% Difference</p>
-                <code className="text-xs">|A − B| / ((|A|+|B|)/2) × 100</code>
-              </div>
-            </div>
-          </div>
+            {/* ── 2. TOOL WIDGET ── */}
+            <section className="space-y-5">
+              <div className={`rounded-2xl overflow-hidden border border-${config.borderColor} shadow-lg shadow-${config.shadowColor}`}>
+                <div className={`h-1.5 w-full bg-gradient-to-r ${config.gradient}`} />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center flex-shrink-0`}>
+                      {config.icon}
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Percentage {mode.charAt(0).toUpperCase() + mode.slice(1)}</p>
+                      <p className="text-sm text-muted-foreground">Results update as you type — no button needed.</p>
+                    </div>
+                  </div>
 
-          {/* Calculator */}
-          <div className="tool-calc-card rounded-2xl p-6 md:p-8 shadow-xl">
-            {/* Mode Tabs */}
-            <div className="flex gap-2 mb-6 bg-[hsl(var(--muted))] rounded-xl p-1">
-              {TABS.map(t => (
-                <button key={t.key} onClick={() => setMode(t.key)}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold transition-all ${mode === t.key ? "bg-white dark:bg-[hsl(var(--background))] shadow text-[hsl(var(--foreground))]" : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"}`}>
-                  {t.icon} {t.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-              <div>
-                <label className="block text-sm font-semibold mb-1">{label1}</label>
-                <input type="number" value={v1} onChange={e => setV1(e.target.value)} className="tool-calc-input w-full text-xl" placeholder="e.g. 100" />
+                  {/* Calculator */}
+                  <div className="tool-calc-card" style={{ "--calc-hue": mode === "increase" ? 152 : mode === "decrease" ? 0 : 45 } as React.CSSProperties}>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="tool-calc-number">1</div>
+                      <h3 className="text-lg font-bold text-foreground">Calculate Percentage {mode.charAt(0).toUpperCase() + mode.slice(1)}</h3>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center gap-3">
+                      <span className="text-sm font-semibold text-muted-foreground">{config.label1}</span>
+                      <input
+                        type="number"
+                        placeholder={mode === "difference" ? "100" : "100"}
+                        className="tool-calc-input w-32"
+                        value={calculator.original}
+                        onChange={e => calculator.setOriginal(e.target.value)}
+                      />
+                      <span className="text-sm font-semibold text-muted-foreground">{config.label2}</span>
+                      <input
+                        type="number"
+                        placeholder={mode === "difference" ? "120" : mode === "increase" ? "125" : "80"}
+                        className="tool-calc-input w-32"
+                        value={calculator.newValue}
+                        onChange={e => calculator.setNewValue(e.target.value)}
+                      />
+                      <span className="text-lg font-black text-muted-foreground">=</span>
+                      <div className={`tool-calc-result flex-1 w-full ${config.resultColor}`}>
+                        {calculator.result ? `${config.resultPrefix}${fmt(calculator.result.percentage)}%` : "--"}
+                      </div>
+                    </div>
+                    <ResultInsight result={calculator.result} mode={mode} />
+                  </div>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">{label2}</label>
-                <input type="number" value={v2} onChange={e => setV2(e.target.value)} className="tool-calc-input w-full text-xl" placeholder="e.g. 135" />
-              </div>
-            </div>
+            </section>
 
-            {result ? (
+            {/* ── 3. HOW TO USE ── */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Calculate Percentage {mode.charAt(0).toUpperCase() + mode.slice(1)}</h2>
+
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                {mode === "increase" && "Percentage increase measures how much a value has grown, expressed as a percentage of the original amount. It's commonly used for tracking growth in investments, sales, salaries, and other metrics."}
+                {mode === "decrease" && "Percentage decrease measures how much a value has dropped, expressed as a percentage of the original amount. It's commonly used for tracking losses, discounts, reductions, and declines."}
+                {mode === "difference" && "Percentage difference measures how different two values are, expressed as a percentage using their average as the base. It's commonly used for comparing options when neither value is clearly the 'original'."}
+              </p>
+
+              <ol className="space-y-5 mb-8">
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Enter your values</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {mode === "difference"
+                        ? "Type the two values you want to compare in the input fields. The calculator will find the absolute difference and express it as a percentage of the average of both values."
+                        : `Type the original value in the first field and the ${mode === "increase" ? "new higher" : "new lower"} value in the second field. The percentage ${mode} will be calculated automatically.`}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">Read the result</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      The result shows the percentage {mode}. {mode === "difference" ? "This is always a positive value since it measures absolute difference." : `A ${mode === "increase" ? "positive" : "negative"} result means the value actually ${mode === "increase" ? "grew" : "dropped"}.`}
+                    </p>
+                  </div>
+                </li>
+              </ol>
+
+              <div className="p-5 rounded-xl bg-muted/60 border border-border">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Core Formula</p>
+                <div className="space-y-3 mb-5">
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-blue-500 font-bold w-4 flex-shrink-0">%</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">{config.formula}</code>
+                  </div>
+                </div>
+                <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                  {mode === "increase" && (
+                    <>
+                      <p><strong className="text-foreground">Step 1:</strong> Subtract the original value from the new value to find the absolute increase.</p>
+                      <p><strong className="text-foreground">Step 2:</strong> Divide by the absolute value of the original amount.</p>
+                      <p><strong className="text-foreground">Step 3:</strong> Multiply by 100 to convert to a percentage.</p>
+                    </>
+                  )}
+                  {mode === "decrease" && (
+                    <>
+                      <p><strong className="text-foreground">Step 1:</strong> Subtract the new value from the original value to find the absolute decrease.</p>
+                      <p><strong className="text-foreground">Step 2:</strong> Divide by the absolute value of the original amount.</p>
+                      <p><strong className="text-foreground">Step 3:</strong> Multiply by 100 to convert to a percentage.</p>
+                    </>
+                  )}
+                  {mode === "difference" && (
+                    <>
+                      <p><strong className="text-foreground">Step 1:</strong> Find the absolute difference between the two values.</p>
+                      <p><strong className="text-foreground">Step 2:</strong> Calculate the average of the absolute values of both numbers.</p>
+                      <p><strong className="text-foreground">Step 3:</strong> Divide the difference by the average and multiply by 100.</p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            {/* ── 4. EXAMPLES ── */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Percentage Increase Examples</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-5 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+                  <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-emerald-500" />
+                    Investment Growth
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">Your stock portfolio grew from $10,000 to $12,500.</p>
+                  <div className="bg-background rounded-lg p-3 font-mono text-sm">
+                    <div>Original: $10,000</div>
+                    <div>New: $12,500</div>
+                    <div className="text-emerald-600 font-bold">Increase: +25%</div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                  <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-blue-500" />
+                    Salary Raise
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">Your annual salary increased from $50,000 to $57,500.</p>
+                  <div className="bg-background rounded-lg p-3 font-mono text-sm">
+                    <div>Original: $50,000</div>
+                    <div>New: $57,500</div>
+                    <div className="text-emerald-600 font-bold">Increase: +15%</div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-xl bg-purple-500/5 border border-purple-500/20">
+                  <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-purple-500" />
+                    Business Revenue
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">Monthly sales increased from $25,000 to $31,250.</p>
+                  <div className="bg-background rounded-lg p-3 font-mono text-sm">
+                    <div>Original: $25,000</div>
+                    <div>New: $31,250</div>
+                    <div className="text-emerald-600 font-bold">Increase: +25%</div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-xl bg-orange-500/5 border border-orange-500/20">
+                  <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-orange-500" />
+                    Population Growth
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">City population grew from 500,000 to 525,000.</p>
+                  <div className="bg-background rounded-lg p-3 font-mono text-sm">
+                    <div>Original: 500,000</div>
+                    <div>New: 525,000</div>
+                    <div className="text-emerald-600 font-bold">Increase: +5%</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── 5. FAQ ── */}
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
+
               <div className="space-y-4">
-                {/* Main Result */}
-                <div className={`rounded-2xl p-6 text-center ${isPositive ? "bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800"}`}>
-                  <p className="text-sm font-semibold text-[hsl(var(--muted-foreground))] mb-2">
-                    {mode === "difference" ? "Percentage Difference" : mode === "increase" ? "Percentage Increase" : "Percentage Decrease"}
-                  </p>
-                  <p className={`text-5xl font-extrabold ${isPositive ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>
-                    {mode !== "difference" && (isPositive ? "+" : "−")}{Math.abs(result.pct)}%
-                  </p>
-                </div>
-
-                {/* Supporting metrics */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="tool-calc-result rounded-xl p-4 text-center">
-                    <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">{label1}</p>
-                    <p className="tool-calc-number font-bold text-lg">{result.a}</p>
-                  </div>
-                  <div className="tool-calc-result rounded-xl p-4 text-center">
-                    <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">{label2}</p>
-                    <p className="tool-calc-number font-bold text-lg">{result.b}</p>
-                  </div>
-                  <div className="tool-calc-result rounded-xl p-4 text-center">
-                    <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">Absolute Change</p>
-                    <p className="tool-calc-number font-bold text-lg">{result.change >= 0 ? "+" : ""}{result.change}</p>
-                  </div>
-                </div>
-
-                {/* Step-by-step */}
-                <div className="bg-[hsl(var(--muted))] rounded-xl p-4 text-sm font-mono">
-                  <p className="font-semibold mb-2 font-sans">Step-by-step:</p>
-                  {mode === "increase" && <>
-                    <p>1. Change = {result.b} − {result.a} = {result.b - result.a}</p>
-                    <p>2. % = ({result.b - result.a} ÷ {Math.abs(result.a)}) × 100</p>
-                    <p>3. = <strong>{result.pct}%</strong></p>
-                  </>}
-                  {mode === "decrease" && <>
-                    <p>1. Change = {result.a} − {result.b} = {result.a - result.b}</p>
-                    <p>2. % = ({result.a - result.b} ÷ {Math.abs(result.a)}) × 100</p>
-                    <p>3. = <strong>{result.pct}%</strong></p>
-                  </>}
-                  {mode === "difference" && <>
-                    <p>1. |A − B| = |{result.a} − {result.b}| = {result.change}</p>
-                    <p>2. Avg = ({Math.abs(result.a)} + {Math.abs(result.b)}) / 2 = {((Math.abs(result.a) + Math.abs(result.b)) / 2).toFixed(4)}</p>
-                    <p>3. % = ({result.change} ÷ {((Math.abs(result.a) + Math.abs(result.b)) / 2).toFixed(4)}) × 100</p>
-                    <p>4. = <strong>{result.pct}%</strong></p>
-                  </>}
-                </div>
+                <FaqItem
+                  q="Can percentage increase be more than 100%?"
+                  a="Yes! A percentage increase can exceed 100%. For example, if a value doubles from 50 to 100, that's a 100% increase. If it triples from 50 to 150, that's a 200% increase. There's no upper limit on percentage increase."
+                />
+                <FaqItem
+                  q="What if the original value is negative?"
+                  a="The formula handles negative original values correctly by using the absolute value in the denominator. For example, if a business loss improves from -$5,000 to -$2,000, that's a 60% increase (improvement)."
+                />
+                <FaqItem
+                  q="How is percentage increase different from percentage change?"
+                  a="Percentage increase specifically measures growth from an original value to a new value. Percentage change can be either positive (increase) or negative (decrease). This calculator focuses on increases, but will show negative results if the new value is actually lower."
+                />
+                <FaqItem
+                  q="What's the difference between percentage increase and markup?"
+                  a="Percentage increase measures how much something has grown. Markup is the percentage added to cost to determine selling price. For example, a 50% markup on a $10 cost item gives a $15 selling price (50% increase from cost)."
+                />
               </div>
-            ) : (
-              <p className="text-center text-[hsl(var(--muted-foreground))] py-6">Enter two values above to calculate.</p>
-            )}
+            </section>
+
           </div>
 
-          {/* Examples */}
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Real-World Examples</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {EXAMPLES.map((ex, i) => (
-                <div key={i} className="tool-calc-result rounded-xl p-4">
-                  <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">{ex.type.charAt(0).toUpperCase() + ex.type.slice(1)}</p>
-                  <p className="text-sm font-medium mb-2">{ex.desc}</p>
-                  <p className="tool-calc-number font-bold text-lg">{ex.result}</p>
-                </div>
-              ))}
+          {/* ── RIGHT COLUMN (Sidebar) ── */}
+          <div className="lg:col-span-1 space-y-6">
+
+            {/* Share */}
+            <div className="bg-card border border-border rounded-2xl p-6">
+              <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                <ArrowRight className="w-4 h-4" />
+                Share This Tool
+              </h3>
+              <button
+                onClick={copyLink}
+                className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors"
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copied!" : "Copy Link"}
+              </button>
             </div>
-          </section>
 
-          {/* Content */}
-          <section className="prose prose-neutral dark:prose-invert max-w-none">
-            <h2 className="text-2xl font-bold mb-4">Understanding Percentage Change</h2>
-            <p>Percentage change is one of the most widely used calculations in everyday life — from stock market returns to sale discounts to grade improvements. Understanding the three types of percentage calculations helps you analyze data correctly.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Percentage Increase</h3>
-            <p>Used when a value goes up from a known starting point. The base is always the original (older/smaller) value. A salary increase from $50,000 to $60,000 is a <strong>20% increase</strong>: (10,000 / 50,000) × 100 = 20%.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Percentage Decrease</h3>
-            <p>Used when a value falls from a known starting point. A product marked down from $200 to $150 is a <strong>25% decrease</strong>: (50 / 200) × 100 = 25%. Note: a 25% decrease is NOT reversed by a 25% increase — you'd need a ~33.3% increase to return to the original price.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Percentage Difference</h3>
-            <p>Used when comparing two values without a defined "original" — like comparing test scores from two different people, or prices from two stores. The base is the average of both values, making it symmetrical (swapping A and B gives the same result).</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Common Mistakes</h3>
-            <ul>
-              <li><strong>Wrong base value:</strong> Always use the original as the denominator for increase/decrease.</li>
-              <li><strong>Reversing a decrease with the same %:</strong> A 50% decrease needs a 100% increase to recover.</li>
-              <li><strong>Confusing increase with difference:</strong> Use "difference" only when neither value is a clear starting point.</li>
-            </ul>
-          </section>
-
-          {/* FAQ */}
-          <section>
-            <h2 className="text-2xl font-bold mb-5">Frequently Asked Questions</h2>
-            <div className="space-y-3">
-              {FAQS.map(f => <FaqItem key={f.q} q={f.q} a={f.a} />)}
+            {/* Related Tools */}
+            <div className="bg-card border border-border rounded-2xl p-6">
+              <h3 className="font-bold text-foreground mb-4">Related Tools</h3>
+              <div className="space-y-3">
+                {RELATED_TOOLS.map((tool) => (
+                  <Link
+                    key={tool.slug}
+                    href={`/math/${tool.slug}`}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors group"
+                  >
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: `hsl(${tool.color}, 70%, 95%)`, color: `hsl(${tool.color}, 70%, 40%)` }}
+                    >
+                      {tool.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm leading-tight group-hover:text-blue-600 transition-colors">
+                        {tool.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-tight">
+                        {tool.benefit}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </section>
 
-          {/* Related */}
-          <section>
-            <h2 className="text-xl font-bold mb-4">Related Tools</h2>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { label: "Percentage Calculator", href: "/math/percentage-calculator" },
-                { label: "Average Calculator", href: "/math/average-calculator" },
-                { label: "Fraction to Decimal", href: "/math/fraction-to-decimal-calculator" },
-                { label: "ROI Calculator", href: "/finance/roi-calculator" },
-                { label: "Discount Calculator", href: "/finance/discount-calculator" },
-              ].map(t => (
-                <a key={t.href} href={t.href} className="px-4 py-2 rounded-full border border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))] transition-colors text-sm font-medium">{t.label}</a>
-              ))}
-            </div>
-          </section>
+          </div>
         </div>
+
       </div>
-    </>
+    </Layout>
   );
 }

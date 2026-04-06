@@ -48,7 +48,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
-"class-variance-authority": "catalog:",
+    "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
@@ -74,6 +74,9 @@
     "zod": "catalog:"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4",
     "react-helmet-async": "^3.0.0"
   }
 }

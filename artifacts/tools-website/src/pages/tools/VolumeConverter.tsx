@@ -1,77 +1,112 @@
-import { useState, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { ArrowLeftRight, Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Flame,
+  Gauge,
+  Lightbulb,
+  Lock,
+  Shield,
+  Smartphone,
+  Waves,
+} from "lucide-react";
+import { Link } from "wouter";
+import { Layout } from "@/components/Layout";
+import { SEO } from "@/components/SEO";
 
-// ── Conversion factors to liters ──────────────────────────────────────────────
-const UNITS: { key: string; label: string; factor: number }[] = [
-  { key: "l",    label: "Liter (L)",           factor: 1 },
-  { key: "ml",   label: "Milliliter (mL)",      factor: 0.001 },
-  { key: "m3",   label: "Cubic Meter (m³)",     factor: 1000 },
-  { key: "cm3",  label: "Cubic Centimeter (cm³)",factor: 0.001 },
-  { key: "gal",  label: "US Gallon (gal)",      factor: 3.785411784 },
-  { key: "qt",   label: "US Quart (qt)",        factor: 0.946352946 },
-  { key: "pt",   label: "US Pint (pt)",         factor: 0.473176473 },
-  { key: "cup",  label: "US Cup (cup)",         factor: 0.2365882365 },
-  { key: "floz", label: "Fluid Ounce (fl oz)",  factor: 0.0295735296 },
-  { key: "tbsp", label: "Tablespoon (tbsp)",    factor: 0.01478676478 },
-  { key: "tsp",  label: "Teaspoon (tsp)",       factor: 0.00492892159 },
-  { key: "ft3",  label: "Cubic Foot (ft³)",     factor: 28.3168466 },
-  { key: "in3",  label: "Cubic Inch (in³)",     factor: 0.016387064 },
+const UNITS = [
+  { id: "l", label: "Liter", short: "L", toLiters: 1, note: "Base metric volume unit" },
+  { id: "ml", label: "Milliliter", short: "mL", toLiters: 0.001, note: "Food, medicine, and small liquid values" },
+  { id: "m3", label: "Cubic meter", short: "m3", toLiters: 1000, note: "Large storage and industrial capacity" },
+  { id: "cm3", label: "Cubic centimeter", short: "cm3", toLiters: 0.001, note: "Equivalent to one milliliter" },
+  { id: "gal", label: "US gallon", short: "gal", toLiters: 3.785411784, note: "Fuel, liquids, and US household use" },
+  { id: "qt", label: "US quart", short: "qt", toLiters: 0.946352946, note: "Kitchen and container sizing" },
+  { id: "pt", label: "US pint", short: "pt", toLiters: 0.473176473, note: "Food service and small container sizes" },
+  { id: "cup", label: "US cup", short: "cup", toLiters: 0.2365882365, note: "Cooking and nutrition measures" },
+  { id: "floz", label: "Fluid ounce", short: "fl oz", toLiters: 0.0295735296, note: "Beverage and nutrition labeling" },
+  { id: "tbsp", label: "Tablespoon", short: "tbsp", toLiters: 0.01478676478, note: "Cooking and small volume measures" },
+  { id: "tsp", label: "Teaspoon", short: "tsp", toLiters: 0.00492892159, note: "Very small recipe quantities" },
+  { id: "ft3", label: "Cubic foot", short: "ft3", toLiters: 28.3168466, note: "Room, appliance, and storage volume" },
+  { id: "in3", label: "Cubic inch", short: "in3", toLiters: 0.016387064, note: "Mechanical and packaging dimensions" },
+] as const;
+
+const PRESETS = [
+  { label: "Water bottle", value: "500", unit: "ml" },
+  { label: "Milk jug", value: "1", unit: "gal" },
+  { label: "Soda can", value: "12", unit: "floz" },
+  { label: "Room volume", value: "10", unit: "m3" },
+  { label: "Cooking cup", value: "1", unit: "cup" },
 ];
 
-const QUICK_PAIRS = [
-  { from: "gal", to: "l",    label: "1 US Gallon → Liters" },
-  { from: "l",   to: "gal",  label: "1 Liter → US Gallons" },
-  { from: "m3",  to: "gal",  label: "1 m³ → US Gallons" },
-  { from: "cup", to: "ml",   label: "1 Cup → Milliliters" },
-  { from: "ft3", to: "l",    label: "1 ft³ → Liters" },
-  { from: "floz",to: "ml",   label: "1 fl oz → Milliliters" },
+const RELATED = [
+  { title: "Weight Converter", href: "/conversion/weight-converter", benefit: "Pair mass and volume comparisons" },
+  { title: "Length Converter", href: "/conversion/length-converter", benefit: "Useful for dimensional container calculations" },
+  { title: "Area Converter", href: "/conversion/area-converter", benefit: "Combine surface and volume planning work" },
+  { title: "Temperature Converter", href: "/conversion/temperature-converter", benefit: "Common alongside cooking and fluid tasks" },
+  { title: "Fuel Efficiency Converter", href: "/conversion/fuel-efficiency-converter", benefit: "Move from liquid units into vehicle-use math" },
 ];
 
-function fmt(n: number): string {
-  if (n === 0) return "0";
-  if (Math.abs(n) >= 1e9 || (Math.abs(n) < 1e-4 && n !== 0)) return n.toExponential(6);
-  const s = n.toPrecision(10);
-  return parseFloat(s).toString();
-}
+const FAQS = [
+  {
+    q: "How many liters are in a US gallon?",
+    a: "One US gallon equals exactly 3.785411784 liters. That is a very common conversion for fuel, household liquids, and large containers. This page also converts gallons into quarts, pints, cups, fluid ounces, and the metric units at the same time.",
+  },
+  {
+    q: "What is the difference between a fluid ounce and an ounce?",
+    a: "A fluid ounce measures volume, while an ounce without the word fluid usually refers to mass or weight. That distinction matters because they are not interchangeable unless you also know the substance density.",
+  },
+  {
+    q: "Is 1 milliliter the same as 1 cubic centimeter?",
+    a: "Yes. One milliliter is exactly equal to one cubic centimeter. That is why medicine, chemistry, and small mechanical volume measurements often switch between mL and cm3 depending on the context.",
+  },
+  {
+    q: "How many cups are in a liter?",
+    a: "There are about 4.227 US cups in one liter. This comes up often in cooking, food labeling, and kitchen conversions when metric and US recipe measurements are mixed together.",
+  },
+  {
+    q: "What is 1 cubic meter in liters?",
+    a: "One cubic meter equals exactly 1,000 liters. That is why cubic meters are useful for rooms, tanks, and bulk storage while liters remain more readable for everyday liquid quantities.",
+  },
+  {
+    q: "Why do recipes use cups, tablespoons, and teaspoons instead of liters?",
+    a: "Because cooking traditions and consumer habits vary by region. Many US recipes are written in cups and spoon-based measures, while much of the world uses milliliters and liters. A converter bridges those systems quickly.",
+  },
+  {
+    q: "Can I use this for fuel, cooking, and storage calculations?",
+    a: "Yes. It is useful for beverage labels, recipe conversions, fuel quantities, appliance capacities, packaging, room volume estimates, and many household or engineering volume comparisons.",
+  },
+  {
+    q: "Who is this volume converter useful for?",
+    a: "It is useful for cooks, shoppers, travelers, drivers, students, technicians, warehouse staff, and anyone comparing liquid or container volumes across metric and US customary systems.",
+  },
+];
 
-function useVolume(value: string, fromKey: string) {
-  return useMemo(() => {
-    const n = parseFloat(value);
-    if (!isFinite(n)) return null;
-    const fromFactor = UNITS.find(u => u.key === fromKey)!.factor;
-    const liters = n * fromFactor;
-    return Object.fromEntries(UNITS.map(u => [u.key, fmt(liters / u.factor)]));
-  }, [value, fromKey]);
-}
-
-function CopyBtn({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = () => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-  return (
-    <button onClick={copy} className="p-1 rounded hover:bg-white/20 transition-colors" title="Copy">
-      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} className="opacity-60" />}
-    </button>
-  );
+function fmtVolume(value: number) {
+  if (value === 0) return "0";
+  if (Math.abs(value) >= 1e9 || Math.abs(value) < 0.0001) return value.toExponential(5);
+  return parseFloat(value.toPrecision(9)).toLocaleString("en-US");
 }
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="border border-[hsl(var(--border))] rounded-xl overflow-hidden">
-      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left font-semibold hover:bg-[hsl(var(--muted))] transition-colors">
-        <span>{q}</span>
-        {open ? <ChevronUp size={18} className="shrink-0" /> : <ChevronDown size={18} className="shrink-0" />}
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-teal-500/40 transition-colors">
+      <button onClick={() => setOpen((v) => !v)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
+        <span className="text-base font-bold text-foreground leading-snug">{q}</span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="text-teal-500">
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
-            <p className="px-5 pb-4 text-[hsl(var(--muted-foreground))] leading-relaxed">{a}</p>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+            <p className="px-5 pb-5 pt-4 border-t border-border text-muted-foreground leading-relaxed">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -79,231 +114,282 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const FAQS = [
-  { q: "How many liters in a US gallon?", a: "1 US gallon equals exactly 3.78541 liters. This is the standard US liquid gallon used for fuel, beverages, and other liquids." },
-  { q: "What is the difference between a fluid ounce and an ounce?", a: "A fluid ounce (fl oz) measures volume, while an ounce (oz) measures weight or mass. 1 US fluid ounce ≈ 29.57 mL." },
-  { q: "How many cups in a liter?", a: "There are approximately 4.227 US cups in 1 liter (since 1 cup = 236.59 mL)." },
-  { q: "How do I convert liters to gallons?", a: "Divide the number of liters by 3.78541 to get US gallons. For example, 10 liters ÷ 3.78541 = 2.642 gallons." },
-  { q: "What is 1 cubic meter in liters?", a: "1 cubic meter (m³) equals exactly 1,000 liters. This is because 1 m³ = 1,000,000 cm³ and 1 liter = 1,000 cm³." },
-  { q: "How many tablespoons in a cup?", a: "There are 16 tablespoons in 1 US cup. 1 tablespoon = 3 teaspoons = 14.787 mL." },
-];
-
-const RELATED_TOOLS = [
-  { label: "Weight Converter",      href: "/conversion/weight-converter" },
-  { label: "Length Converter",      href: "/conversion/length-converter" },
-  { label: "Area Converter",        href: "/conversion/area-converter" },
-  { label: "Temperature Converter", href: "/conversion/temperature-converter" },
-  { label: "Speed Converter",       href: "/conversion/speed-converter" },
-];
-
-const REFERENCE_TABLE = [
-  ["1 US Gallon",    "3.785 L",  "4 qt",      "128 fl oz"],
-  ["1 Liter",        "1000 mL",  "0.264 gal", "33.81 fl oz"],
-  ["1 Cubic Meter",  "1000 L",   "264.2 gal", "35.31 ft³"],
-  ["1 Cubic Foot",   "28.317 L", "7.481 gal", "1728 in³"],
-  ["1 Cup",          "236.6 mL", "8 fl oz",   "16 tbsp"],
-  ["1 Fluid Ounce",  "29.57 mL", "2 tbsp",    "6 tsp"],
-];
-
-const LD_JSON = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "Volume Converter",
-      "description": "Free online volume converter. Convert between liters, gallons, milliliters, cubic meters, cups, fluid ounces, and 13 more units instantly.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": FAQS.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
-    },
-  ],
-};
-
 export default function VolumeConverter() {
   const [value, setValue] = useState("1");
-  const [fromKey, setFromKey] = useState("gal");
-  const results = useVolume(value, fromKey);
+  const [fromUnit, setFromUnit] = useState("gal");
+  const [copied, setCopied] = useState("");
 
-  const swap = (toKey: string) => {
-    if (!results) return;
-    setValue(results[toKey]);
-    setFromKey(toKey);
+  const results = useMemo(() => {
+    const parsed = parseFloat(value);
+    if (Number.isNaN(parsed) || value.trim() === "") return null;
+    const from = UNITS.find((unit) => unit.id === fromUnit);
+    if (!from) return null;
+
+    const liters = parsed * from.toLiters;
+
+    return {
+      liters,
+      from,
+      rows: UNITS.map((unit) => ({
+        ...unit,
+        converted: liters / unit.toLiters,
+      })),
+    };
+  }, [fromUnit, value]);
+
+  const copyText = async (key: string, text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(key);
+    window.setTimeout(() => setCopied(""), 1800);
   };
 
   return (
-    <>
-      <Helmet>
-        <title>Volume Converter – L, mL, Gallons, Cups, fl oz | US Online Tools</title>
-        <meta name="description" content="Free online volume converter. Instantly convert between liters, milliliters, US gallons, quarts, pints, cups, fluid ounces, tablespoons, cubic meters, and more." />
-        <meta name="keywords" content="volume converter, liters to gallons, gallons to liters, ml to cups, fluid ounce converter, cubic meter converter, unit converter" />
-        <link rel="canonical" href="https://us-online.tools/conversion/volume-converter" />
-        <meta property="og:title" content="Volume Converter – Free Online Unit Converter" />
-        <meta property="og:description" content="Convert volume units instantly: liters, gallons, cups, fluid ounces, cubic meters and more." />
-        <script type="application/ld+json">{JSON.stringify(LD_JSON)}</script>
-      </Helmet>
+    <Layout>
+      <SEO
+        title="Volume Converter - Convert liters, gallons, cups, fl oz"
+        description="Free online volume converter. Convert liters, milliliters, gallons, quarts, cups, fluid ounces, cubic meters, and more with live results and practical reference examples."
+      />
 
-      <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]" style={{"--calc-hue": "200"} as React.CSSProperties}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
+          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-teal-500" strokeWidth={3} />
+          <Link href="/category/conversion" className="text-muted-foreground hover:text-foreground transition-colors">Conversion Tools</Link>
+          <ChevronRight className="w-4 h-4 mx-2 text-teal-500" strokeWidth={3} />
+          <span className="text-foreground">Volume Converter</span>
+        </nav>
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[hsl(var(--calc-hue),70%,18%)] to-[hsl(var(--calc-hue),60%,28%)] text-white py-14 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-3">Volume Converter</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">Convert between liters, gallons, cups, fluid ounces, cubic meters, and 8 more units — instantly.</p>
+        <section className="rounded-2xl overflow-hidden border border-teal-500/15 bg-gradient-to-br from-teal-500/5 via-card to-cyan-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-teal-500/10 text-teal-700 dark:text-teal-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <Waves className="w-3.5 h-3.5" /> Conversion Tools
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-4xl">Volume Converter</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-3xl">
+            Convert liters, milliliters, gallons, cups, fluid ounces, cubic meters, and more instantly. This redesign keeps the existing volume coverage while upgrading the page structure, result readability, and real-world context for cooking, fuel, packaging, and storage use.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20"><BadgeCheck className="w-3.5 h-3.5" /> 100% Free</span>
+            <span className="inline-flex items-center gap-1.5 bg-teal-500/10 text-teal-700 dark:text-teal-400 font-bold text-xs px-3 py-1.5 rounded-full border border-teal-500/20"><Waves className="w-3.5 h-3.5" /> 13 Units</span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20"><Lock className="w-3.5 h-3.5" /> No Signup</span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20"><Shield className="w-3.5 h-3.5" /> Privacy First</span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20"><Smartphone className="w-3.5 h-3.5" /> Mobile Ready</span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">Category: Conversion Tools | Covers kitchen, household, fuel, packaging, and bulk-storage volume units</p>
         </section>
 
-        <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
-
-          {/* Quick Answer */}
-          <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 rounded-2xl p-5">
-            <h2 className="font-bold text-blue-800 dark:text-blue-300 mb-2">⚡ Quick Reference</h2>
-            <ul className="grid grid-cols-2 md:grid-cols-3 gap-1 text-sm text-blue-900 dark:text-blue-200">
-              <li>• 1 US Gallon = <strong>3.785 L</strong></li>
-              <li>• 1 Liter = <strong>0.264 gal</strong></li>
-              <li>• 1 m³ = <strong>1,000 L</strong></li>
-              <li>• 1 Cup = <strong>236.6 mL</strong></li>
-              <li>• 1 fl oz = <strong>29.57 mL</strong></li>
-              <li>• 1 ft³ = <strong>28.32 L</strong></li>
-            </ul>
-          </div>
-
-          {/* Calculator Card */}
-          <div className="tool-calc-card rounded-2xl p-6 md:p-8 shadow-xl">
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
-              <div className="flex-1">
-                <label className="block text-sm font-semibold mb-1">Value</label>
-                <input
-                  type="number"
-                  value={value}
-                  onChange={e => setValue(e.target.value)}
-                  className="tool-calc-input w-full text-xl"
-                  placeholder="Enter value…"
-                />
-              </div>
-              <div className="flex-1">
-                <label className="block text-sm font-semibold mb-1">Convert From</label>
-                <select value={fromKey} onChange={e => setFromKey(e.target.value)} className="tool-calc-input w-full text-xl">
-                  {UNITS.map(u => <option key={u.key} value={u.key}>{u.label}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {results ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {UNITS.filter(u => u.key !== fromKey).map(u => (
-                  <div key={u.key} className="tool-calc-result rounded-xl p-3 flex items-center justify-between gap-2">
-                    <div>
-                      <p className="text-xs text-[hsl(var(--muted-foreground))] mb-0.5">{u.label}</p>
-                      <p className="tool-calc-number font-bold text-lg">{results[u.key]}</p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CopyBtn text={results[u.key]} />
-                      <button onClick={() => swap(u.key)} title="Use as input" className="p-1 rounded hover:bg-white/20 transition-colors">
-                        <ArrowLeftRight size={14} className="opacity-60" />
-                      </button>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+            <section id="converter" className="rounded-2xl overflow-hidden border border-teal-500/20 shadow-lg shadow-teal-500/5">
+              <div className="h-1.5 w-full bg-gradient-to-r from-teal-500 to-cyan-500" />
+              <div className="bg-card p-6 md:p-8 space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"><Waves className="w-4 h-4 text-white" /></div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live Volume Conversion</p>
+                    <p className="text-sm text-muted-foreground">Translate liquid, cooking, fuel, storage, and container volume values instantly.</p>
                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">Value</label>
+                    <input type="number" value={value} onChange={(e) => setValue(e.target.value)} className="tool-calc-input w-full font-mono text-lg" placeholder="1" />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">From Unit</label>
+                    <select value={fromUnit} onChange={(e) => setFromUnit(e.target.value)} className="tool-calc-input w-full">
+                      {UNITS.map((unit) => <option key={unit.id} value={unit.id}>{unit.label} ({unit.short})</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Quick Presets</p>
+                  <div className="flex flex-wrap gap-3">
+                    {PRESETS.map((preset) => (
+                      <button key={preset.label} onClick={() => { setValue(preset.value); setFromUnit(preset.unit); }} className="rounded-xl border border-border bg-card px-4 py-3 text-sm font-bold text-foreground hover:bg-muted">
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {results && (
+                  <>
+                    <div className="rounded-2xl border border-border bg-muted/30 p-4">
+                      <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Source Summary</p>
+                      <p className="text-lg font-black text-foreground">{fmtVolume(parseFloat(value))} {results.from.short} = {fmtVolume(results.liters)} L</p>
+                      <p className="text-sm text-muted-foreground mt-1">{results.from.note}</p>
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      <motion.div key={`${value}-${fromUnit}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                        {results.rows.map((row) => (
+                          <div key={row.id} className={`rounded-2xl border p-4 ${row.id === fromUnit ? "border-teal-500/40 bg-teal-500/5" : "border-border bg-card"}`}>
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              <div>
+                                <p className="text-xs text-muted-foreground mb-1">{row.label}</p>
+                                <p className="text-2xl font-black text-foreground font-mono break-all">{fmtVolume(row.converted)}</p>
+                                <p className="text-xs text-muted-foreground mt-1">{row.short}</p>
+                              </div>
+                              <button onClick={() => copyText(row.id, `${fmtVolume(row.converted)} ${row.short}`)} className="p-2 rounded-lg hover:bg-muted transition-colors" title={`Copy ${row.label}`}>
+                                {copied === row.id ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
+                              </button>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{row.note}</p>
+                          </div>
+                        ))}
+                      </motion.div>
+                    </AnimatePresence>
+                  </>
+                )}
+              </div>
+            </section>
+
+            <section id="reference" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Real-World Volume Reference</h2>
+              <div className="overflow-x-auto rounded-xl border border-border mb-6">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/60">
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Example</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Typical Volume</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground">Approx. Alternate</th>
+                      <th className="text-left px-4 py-3 font-bold text-foreground hidden sm:table-cell">Context</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {[
+                      ["Teaspoon", "4.93 mL", "0.17 fl oz", "Very small recipe measure"],
+                      ["US cup", "236.6 mL", "8 fl oz", "Cooking and nutrition standard"],
+                      ["Water bottle", "500 mL", "16.9 fl oz", "Everyday beverage size"],
+                      ["Milk jug", "1 gal", "3.785 L", "US household liquid benchmark"],
+                      ["Bathtub fill", "150 L", "39.6 gal", "Home water volume scale"],
+                      ["Refrigerator space", "18 ft3", "510 L", "Appliance capacity context"],
+                      ["Room volume", "30 m3", "1,059 ft3", "Interior air-space scale"],
+                      ["Fuel tank", "60 L", "15.9 gal", "Vehicle liquid capacity example"],
+                    ].map((row) => (
+                      <tr key={row[0]}>
+                        <td className="px-4 py-3 font-medium text-foreground">{row[0]}</td>
+                        <td className="px-4 py-3 font-mono text-teal-700 dark:text-teal-400">{row[1]}</td>
+                        <td className="px-4 py-3 font-mono text-foreground">{row[2]}</td>
+                        <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{row[3]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p><strong className="text-foreground">Volume gets easier to interpret when tied to everyday containers.</strong> A teaspoon, water bottle, milk jug, fuel tank, or room capacity can all represent volume, but they are described in different units depending on the setting.</p>
+                <p><strong className="text-foreground">That is why mixed-unit conversions are so common.</strong> Recipes may use cups and tablespoons, labels may use milliliters and fluid ounces, fuel uses gallons or liters, and room or appliance sizes may shift to cubic feet or cubic meters.</p>
+                <p><strong className="text-foreground">Converting once to a shared unit prevents confusion.</strong> It is especially useful when comparing packaging, scaling recipes, checking appliance capacities, or translating between household and technical measurements.</p>
+              </div>
+            </section>
+
+            <section id="guide" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Understanding Volume Units</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="rounded-xl border border-teal-500/20 bg-teal-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Liters and Milliliters</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These are the most common metric units for liquids and container sizes. Liters work well for larger quantities, while milliliters handle beverages, medicines, and recipe quantities.</p>
+                </div>
+                <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Gallons, Quarts, and Pints</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These US customary units remain common in fuel, kitchen, and household container sizing. They are deeply embedded in labels and buying habits, especially in the United States.</p>
+                </div>
+                <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Cups, Fluid Ounces, Tablespoons, Teaspoons</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These smaller units dominate recipe writing, nutrition labels, and daily kitchen use. They are practical for human-scale portions even though they are less convenient in technical settings.</p>
+                </div>
+                <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+                  <p className="font-bold text-foreground mb-1">Cubic Feet and Cubic Meters</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">These larger volume units matter in storage, appliances, room sizing, and industrial capacity. They describe three-dimensional space rather than just liquid quantities in a container.</p>
+                </div>
+              </div>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                <p><strong className="text-foreground">This converter uses liters as the internal bridge.</strong> Every supported input is translated into liters first, then converted outward to every other unit. That keeps the math consistent whether the source value starts in gallons, cups, cubic feet, or teaspoons.</p>
+                <p><strong className="text-foreground">The practical advantage is that household and technical measurements stop fighting each other.</strong> Once everything is normalized to one shared scale, it becomes much easier to compare product sizes, recipe quantities, tank capacities, and room volumes accurately.</p>
+                <p><strong className="text-foreground">The best habit is to compare like with like.</strong> Use liters or milliliters for most international and technical work, gallons and cups for US household contexts, and cubic units when the measurement is really describing three-dimensional space.</p>
+              </div>
+              <div className="mt-6 rounded-xl border border-border bg-muted/30 p-4">
+                <div className="flex gap-3 items-start">
+                  <Lightbulb className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground leading-relaxed"><strong className="text-foreground">Practical shortcut:</strong> use mL for small liquids, L for standard containers and fuel, cups and spoon units for recipes, gallons for US bulk liquids, and cubic feet or cubic meters when you are measuring space rather than a pourable amount.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="faq" className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-3">
+                {FAQS.map((faq) => (
+                  <FaqItem key={faq.q} q={faq.q} a={faq.a} />
                 ))}
               </div>
-            ) : (
-              <p className="text-center text-[hsl(var(--muted-foreground))] py-6">Enter a value above to see conversions.</p>
-            )}
+            </section>
+
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 p-8 text-white">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="relative z-10">
+                <h2 className="text-2xl font-black tracking-tight mb-2">Need More Everyday Converters?</h2>
+                <p className="text-white/85 mb-6 max-w-lg">Move from volume into weight, length, area, and more with the rest of the conversion suite.</p>
+                <Link href="/category/conversion" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-teal-700 font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
+                  Explore Conversion Tools <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </section>
           </div>
 
-          {/* Quick Conversion Pairs */}
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Common Volume Conversions</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {QUICK_PAIRS.map(p => {
-                const fromFactor = UNITS.find(u => u.key === p.from)!.factor;
-                const toFactor   = UNITS.find(u => u.key === p.to)!.factor;
-                const result = fmt(fromFactor / toFactor);
-                return (
-                  <button key={p.label} onClick={() => { setValue("1"); setFromKey(p.from); }}
-                    className="tool-calc-result rounded-xl p-4 text-left hover:opacity-80 transition-opacity">
-                    <p className="text-xs text-[hsl(var(--muted-foreground))] mb-1">{p.label}</p>
-                    <p className="tool-calc-number font-bold text-lg">= {result}</p>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Reference Table */}
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Volume Conversion Reference Table</h2>
-            <div className="overflow-x-auto rounded-2xl border border-[hsl(var(--border))]">
-              <table className="w-full text-sm">
-                <thead className="bg-[hsl(var(--muted))]">
-                  <tr>{["Unit", "Liters", "Other", "Also"].map(h => <th key={h} className="px-4 py-3 text-left font-semibold">{h}</th>)}</tr>
-                </thead>
-                <tbody>
-                  {REFERENCE_TABLE.map((row, i) => (
-                    <tr key={i} className={i % 2 === 0 ? "bg-[hsl(var(--background))]" : "bg-[hsl(var(--muted))/30]"}>
-                      {row.map((cell, j) => <td key={j} className="px-4 py-3">{cell}</td>)}
-                    </tr>
+          <div className="space-y-6">
+            <div className="sticky top-28 space-y-6">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
+                  {RELATED.map((tool) => (
+                    <Link key={tool.href} href={tool.href} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 bg-gradient-to-br from-teal-500 to-cyan-500"><Gauge className="w-3.5 h-3.5" /></div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[11px] text-muted-foreground/80 truncate">{tool.benefit}</p>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-teal-500 opacity-0 group-hover:opacity-100" />
+                    </Link>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </div>
+
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {[["#converter", "Converter"], ["#reference", "Volume Reference"], ["#guide", "Unit Guide"], ["#faq", "FAQ"]].map(([href, label]) => (
+                    <a key={href} href={href} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-teal-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-teal-500/40" />
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">Quick Notes</h3>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  {[
+                    "13 live-converted volume units",
+                    "Covers kitchen, fuel, and storage measurements",
+                    "Includes both liquid and cubic-space units",
+                    "Real-world benchmark table included",
+                  ].map((note) => (
+                    <div key={note} className="flex items-start gap-2">
+                      <Flame className="w-3.5 h-3.5 text-teal-500 shrink-0 mt-0.5" />
+                      <span>{note}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </section>
-
-          {/* How it works */}
-          <section className="prose prose-neutral dark:prose-invert max-w-none">
-            <h2 className="text-2xl font-bold mb-4">How to Convert Volume Units</h2>
-            <p>Volume conversion is straightforward once you know the base factor. This converter uses <strong>liters as the common base unit</strong>. Every value is first converted to liters, then to the target unit using the formula:</p>
-            <div className="tool-calc-result rounded-xl p-4 my-4 font-mono text-sm">
-              Result = Input × (from_factor / to_factor)
-            </div>
-            <p>For example, to convert 5 US gallons to liters: 5 × 3.78541 = <strong>18.93 liters</strong>.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">US vs Imperial Volume Units</h3>
-            <p>Be aware that the <strong>US gallon (3.785 L)</strong> differs from the <strong>Imperial gallon (4.546 L)</strong> used in the UK. This converter uses US customary units. When following UK recipes or fuel measurements, use the Imperial gallon value instead.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Cooking Conversions</h3>
-            <p>For cooking, the most useful conversions are: <strong>1 cup = 16 tablespoons = 48 teaspoons = 8 fluid ounces = 236.6 mL</strong>. Doubling or halving a recipe is easy once you know these base equivalences.</p>
-
-            <h3 className="text-xl font-bold mt-6 mb-3">Scientific Volume Units</h3>
-            <p>In scientific contexts, cubic meters (m³) and cubic centimeters (cm³) are standard SI units. Note that <strong>1 cm³ = 1 mL</strong> exactly — making milliliters and cubic centimeters interchangeable for liquids.</p>
-          </section>
-
-          {/* Pro Tips */}
-          <section className="bg-[hsl(var(--muted))] rounded-2xl p-6">
-            <h2 className="text-xl font-bold mb-4">💡 Pro Tips for Volume Conversion</h2>
-            <ul className="space-y-2 text-sm">
-              <li>🔵 <strong>Gallons to liters shortcut:</strong> Multiply by 3.785 (or roughly 3.8 for mental math).</li>
-              <li>🔵 <strong>Cups to mL shortcut:</strong> Multiply by 240 (close enough for most recipes).</li>
-              <li>🔵 <strong>1 mL = 1 cm³</strong> — useful for chemistry and medicine dosing.</li>
-              <li>🔵 <strong>UK vs US gallons:</strong> Always check which gallon is meant — they differ by ~20%.</li>
-              <li>🔵 <strong>Fuel economy:</strong> Convert mpg to L/100km using: 235.2 ÷ mpg = L/100km.</li>
-            </ul>
-          </section>
-
-          {/* FAQ */}
-          <section>
-            <h2 className="text-2xl font-bold mb-5">Frequently Asked Questions</h2>
-            <div className="space-y-3">
-              {FAQS.map(f => <FaqItem key={f.q} q={f.q} a={f.a} />)}
-            </div>
-          </section>
-
-          {/* Related Tools */}
-          <section>
-            <h2 className="text-xl font-bold mb-4">Related Conversion Tools</h2>
-            <div className="flex flex-wrap gap-3">
-              {RELATED_TOOLS.map(t => (
-                <a key={t.href} href={t.href} className="px-4 py-2 rounded-full border border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))] transition-colors text-sm font-medium">{t.label}</a>
-              ))}
-            </div>
-          </section>
+          </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

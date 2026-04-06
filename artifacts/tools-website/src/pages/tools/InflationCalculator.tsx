@@ -71,11 +71,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 const RELATED_TOOLS = [
   { title: "Savings Calculator", slug: "savings-calculator", icon: <Wallet className="w-5 h-5" />, color: 152 },
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 217 },
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 265 },
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 45 },
-  { title: "Tax Calculator", slug: "tax-calculator", icon: <Percent className="w-5 h-5" />, color: 340 },
-  { title: "Mortgage Payment Calculator", slug: "mortgage-payment-calculator", icon: <Globe2 className="w-5 h-5" />, color: 25 },
+  { title: "Compound Interest Calculator", slug: "online-compound-interest-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 217 },
+  { title: "ROI Calculator", slug: "online-roi-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 265 },
+  { title: "Salary Calculator", slug: "online-salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 45 },
+  { title: "Tax Calculator", slug: "online-tax-calculator", icon: <Percent className="w-5 h-5" />, color: 340 },
+  { title: "Mortgage Payment Calculator", slug: "online-mortgage-payment-calculator", icon: <Globe2 className="w-5 h-5" />, color: 25 },
 ];
 
 // Historical US CPI inflation rates
@@ -106,7 +106,7 @@ export default function InflationCalculator() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "WebApplication", "name": "Inflation Calculator", "url": "https://usonlinetools.com/finance/inflation-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
+          { "@type": "WebApplication", "name": "Inflation Calculator", "url": "https://usonlinetools.com/finance/online-inflation-calculator", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } },
           { "@type": "FAQPage", "mainEntity": [{ "@type": "Question", "name": "How does inflation affect purchasing power?", "acceptedAnswer": { "@type": "Answer", "text": "Inflation reduces purchasing power over time. At 3% annual inflation, $100 today will only buy what $74 buys in 10 years. The formula is: Adjusted Amount = Original × (1 + rate)^years." } }] }
         ]
       })}} />

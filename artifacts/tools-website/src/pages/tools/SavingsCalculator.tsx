@@ -57,9 +57,9 @@ function ResultInsight({ result }: { result: ReturnType<typeof useSavingsCalc>["
   const fmt = (n: number) => "$" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
   const interestPct = ((result.interestEarned / result.futureValue) * 100).toFixed(1);
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
       <div className="flex gap-2 items-start">
-        <Lightbulb className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <Lightbulb className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
         <p className="text-sm text-foreground/80 leading-relaxed">
           After {result.years} years, your savings grow to <strong>{fmt(result.futureValue)}</strong>. You contributed <strong>{fmt(result.totalContributions)}</strong> and earned <strong>{fmt(result.interestEarned)}</strong> in interest — that's <strong>{interestPct}%</strong> of the final balance from compound growth alone.
         </p>
@@ -71,10 +71,10 @@ function ResultInsight({ result }: { result: ReturnType<typeof useSavingsCalc>["
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-emerald-500/40 transition-colors">
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between gap-4 p-5 text-left">
         <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-primary"><ChevronDown className="w-5 h-5" /></motion.span>
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-emerald-500"><ChevronDown className="w-5 h-5" /></motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -88,12 +88,12 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 const RELATED_TOOLS = [
-  { title: "Compound Interest Calculator", slug: "compound-interest-calculator", icon: <Landmark className="w-5 h-5" />, color: 217 },
-  { title: "ROI Calculator", slug: "roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265 },
-  { title: "Retirement Calculator", slug: "retirement-calculator", icon: <Target className="w-5 h-5" />, color: 45 },
-  { title: "Salary Calculator", slug: "salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152 },
-  { title: "Tax Calculator", slug: "tax-calculator", icon: <Percent className="w-5 h-5" />, color: 25 },
-  { title: "Car Loan Calculator", slug: "car-loan-calculator", icon: <Wallet className="w-5 h-5" />, color: 340 },
+  { title: "Compound Interest Calculator", slug: "online-compound-interest-calculator", icon: <Landmark className="w-5 h-5" />, color: 217, benefit: "See interest compound over time" },
+  { title: "ROI Calculator", slug: "online-roi-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 265, benefit: "Measure return on any investment" },
+  { title: "Retirement Calculator", slug: "online-retirement-calculator", icon: <Target className="w-5 h-5" />, color: 45, benefit: "Plan your retirement nest egg" },
+  { title: "Salary Calculator", slug: "online-salary-calculator", icon: <DollarSign className="w-5 h-5" />, color: 152, benefit: "Convert hourly to annual salary" },
+  { title: "Tax Calculator", slug: "online-tax-calculator", icon: <Percent className="w-5 h-5" />, color: 25, benefit: "Estimate your tax liability" },
+  { title: "Car Loan Calculator", slug: "online-car-loan-calculator", icon: <Wallet className="w-5 h-5" />, color: 340, benefit: "Find monthly auto payments" },
 ];
 
 export default function SavingsCalculator() {
@@ -118,45 +118,47 @@ export default function SavingsCalculator() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-emerald-500" strokeWidth={3} />
           <Link href="/category/finance" className="text-muted-foreground hover:text-foreground transition-colors">Finance & Cost</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-primary" strokeWidth={3} />
+          <ChevronRight className="w-4 h-4 mx-2 text-emerald-500" strokeWidth={3} />
           <span className="text-foreground">Savings Calculator</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+        {/* ── HERO SECTION (Full Width) ── */}
+        <section className="rounded-2xl overflow-hidden border border-emerald-500/15 bg-gradient-to-br from-emerald-500/5 via-card to-green-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
+          <div className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <PiggyBank className="w-3.5 h-3.5" /> Savings &amp; Investment
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            Online Savings Calculator
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            Project how much your savings will grow with compound interest. Enter your starting balance, monthly contributions, interest rate, and time horizon to see your future balance, total contributions, and interest earned.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <CheckCircle2 className="w-3.5 h-3.5" /> 100% Free
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-green-500/10 text-green-600 dark:text-green-400 font-bold text-xs px-3 py-1.5 rounded-full border border-green-500/20">
+              <Zap className="w-3.5 h-3.5" /> Instant Results
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Clock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: Finance &amp; Cost &nbsp;·&nbsp; Last updated: March 2026
+          </p>
+        </section>
 
-            <section>
-              <div className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <PiggyBank className="w-3.5 h-3.5" />
-                Savings & Investment
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-3">Savings Calculator</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Project how much your savings will grow with compound interest. Enter your starting balance, monthly contributions, interest rate, and time horizon to see your future balance, total contributions, and interest earned.
-              </p>
-            </section>
-
-            {/* QUICK ANSWER */}
-            <section className="p-5 rounded-xl bg-emerald-500/5 border-2 border-emerald-500/20">
-              <div className="flex items-center gap-2 mb-2">
-                <Lightbulb className="w-5 h-5 text-emerald-500" />
-                <h2 className="font-black text-foreground text-base">The Power of Compound Interest</h2>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Saving just <strong className="text-foreground">$200/month</strong> at 7% annual return for <strong className="text-foreground">30 years</strong> = <strong className="text-foreground">$243,994</strong> total, with only $72,000 contributed. Compound interest earns you an extra <strong className="text-foreground">$171,994</strong>.
-              </p>
-            </section>
-
-            {/* QUICK ACTION */}
-            <section className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/15">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><Zap className="w-5 h-5 text-primary" /></div>
-              <div>
-                <p className="font-bold text-foreground text-sm">See your savings grow instantly</p>
-                <p className="text-muted-foreground text-sm">Adjust any field to instantly see how changes in rate, time, or contributions affect your final balance.</p>
-              </div>
-            </section>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
 
             {/* TOOL */}
             <section className="space-y-5">
@@ -186,7 +188,7 @@ export default function SavingsCalculator() {
                     <label className="text-sm font-semibold text-muted-foreground mb-2 block">Compounding Frequency</label>
                     <div className="grid grid-cols-3 gap-2">
                       {(["monthly", "quarterly", "annually"] as Compound[]).map(c => (
-                        <button key={c} onClick={() => calc.setCompound(c)} className={`py-2.5 rounded-xl border font-bold text-sm transition-all capitalize ${calc.compound === c ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary/40 text-muted-foreground"}`}>{c}</button>
+                        <button key={c} onClick={() => calc.setCompound(c)} className={`py-2.5 rounded-xl border font-bold text-sm transition-all capitalize ${calc.compound === c ? "bg-emerald-500 text-white border-emerald-500" : "border-border hover:border-emerald-500/40 text-muted-foreground"}`}>{c}</button>
                       ))}
                     </div>
                   </div>
@@ -271,7 +273,7 @@ export default function SavingsCalculator() {
                   { icon: <Calculator className="w-4 h-4" />, text: "Shows growth multiplier for motivation" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="text-primary">{item.icon}</div>
+                    <div className="text-emerald-500">{item.icon}</div>
                     <span className="text-sm font-medium text-foreground">{item.text}</span>
                   </div>
                 ))}
@@ -292,7 +294,7 @@ export default function SavingsCalculator() {
                     "401(k) / IRA: Tax-advantaged accounts, best for long-term retirement savings",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -313,12 +315,12 @@ export default function SavingsCalculator() {
               </div>
             </section>
 
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground">
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-green-500 p-8 text-white">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative z-10">
                 <h2 className="text-2xl font-black tracking-tight mb-2">More Financial Planning Tools</h2>
-                <p className="text-primary-foreground/80 mb-6 max-w-lg">Explore compound interest, ROI, mortgage, and retirement calculators — all free and instant.</p>
-                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
+                <p className="text-white/80 mb-6 max-w-lg">Explore compound interest, ROI, mortgage, and retirement calculators — all free and instant.</p>
+                <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform">
                   Explore All Tools <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -327,24 +329,37 @@ export default function SavingsCalculator() {
 
           <div className="space-y-6">
             <div className="sticky top-28 space-y-6">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
-                <div className="space-y-2">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
+                <div className="space-y-0.5">
                   {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
-                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors leading-snug">{tool.title}</span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
+                    <Link key={tool.slug} href={getToolPath(tool.slug)} className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5" style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>{tool.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
+                        <p className="text-[10px] text-muted-foreground/60 truncate">{tool.benefit}</p>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-emerald-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <h3 className="text-lg font-black text-foreground tracking-tight mb-2">Share This Tool</h3>
-                <p className="text-sm text-muted-foreground mb-4">Help others plan their savings goals.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
-                  {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-1.5">Share This Tool</h3>
+                <p className="text-xs text-muted-foreground mb-3">Help others plan their savings goals.</p>
+                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform">
+                  {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
                 </button>
+              </div>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
+                <div className="space-y-0.5">
+                  {["Calculator", "How It Works", "Examples", "Why Use This", "FAQ"].map((label) => (
+                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g, "-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-emerald-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-emerald-500/40 flex-shrink-0" />{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

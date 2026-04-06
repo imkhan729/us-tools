@@ -3,7 +3,7 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { TOOL_CATEGORIES, getToolPath, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, type Tool } from "@/data/tools";
 import { ChevronRight, ArrowRight,
   Calculator, DollarSign, Ruler, Clock, Heart, HardHat, Type, BookOpen, Gamepad2,
   Percent, TrendingUp, CreditCard, PiggyBank, ReceiptText, Landmark, BarChart3, Scale, Hash,
@@ -121,6 +121,7 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "tile-calculator": <Grid3x3 className="w-4 h-4" />,
   "word-counter": <FileText className="w-4 h-4" />,
   "character-counter": <AlignLeft className="w-4 h-4" />,
+  "character-counter-tool": <AlignLeft className="w-4 h-4" />,
   "password-generator": <KeyRound className="w-4 h-4" />,
   "text-case-converter": <Type className="w-4 h-4" />,
   "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
@@ -303,15 +304,10 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "soil-calculator": <Grid3x3 className="w-4 h-4" />,
   "solar-panel-calculator": <Sun className="w-4 h-4" />,
   "electrical-load-calculator": <Plug className="w-4 h-4" />,
-  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
-  "qr-code-generator": <QrCode className="w-4 h-4" />,
-  "uuid-generator": <Hash className="w-4 h-4" />,
-  "json-formatter": <Code className="w-4 h-4" />,
-  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
-  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
   "color-picker": <Palette className="w-4 h-4" />,
   "emoji-picker": <Smile className="w-4 h-4" />,
   "markdown-previewer": <FileText className="w-4 h-4" />,
+  "online-markdown-previewer": <FileText className="w-4 h-4" />,
   "cgpa-calculator": <BookOpen className="w-4 h-4" />,
   "sat-score-calculator": <BookOpen className="w-4 h-4" />,
   "typing-speed-test": <Type className="w-4 h-4" />,
@@ -340,7 +336,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "svg-to-png": <FileImage className="w-4 h-4" />,
   "image-background-remover": <Sparkles className="w-4 h-4" />,
   "image-collage-maker": <Layers className="w-4 h-4" />,
-  "qr-code-generator": <QrCode className="w-4 h-4" />,
   "meme-generator": <Smile className="w-4 h-4" />,
   "favicon-generator": <ImageIcon className="w-4 h-4" />,
   "image-pixel-counter": <ScanLine className="w-4 h-4" />,
@@ -362,10 +357,10 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "jpg-to-pdf": <FileUp className="w-4 h-4" />,
   "pdf-sign": <FileSignature className="w-4 h-4" />,
   // Developer Tools
-  "json-formatter": <Braces className="w-4 h-4" />,
   "json-validator": <Braces className="w-4 h-4" />,
   "json-to-csv": <FileCode className="w-4 h-4" />,
   "csv-to-json": <FileCode className="w-4 h-4" />,
+  "csv-to-json-converter": <FileCode className="w-4 h-4" />,
   "json-minifier": <Braces className="w-4 h-4" />,
   "html-formatter": <FileCode className="w-4 h-4" />,
   "html-minifier": <FileCode className="w-4 h-4" />,
@@ -374,19 +369,12 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "javascript-minifier": <FileCode className="w-4 h-4" />,
   "javascript-formatter": <FileCode className="w-4 h-4" />,
   "regex-tester": <Bug className="w-4 h-4" />,
-  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
-  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
   "html-entity-encoder": <FileCode className="w-4 h-4" />,
   "jwt-decoder": <KeyRound className="w-4 h-4" />,
-  "uuid-generator": <Hash className="w-4 h-4" />,
   "xml-formatter": <FileCode className="w-4 h-4" />,
   "sql-formatter": <TerminalSquare className="w-4 h-4" />,
-  "markdown-previewer": <FileText className="w-4 h-4" />,
   "diff-checker": <FileCode className="w-4 h-4" />,
-  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
-  "slug-generator": <Link2 className="w-4 h-4" />,
   "cron-expression-generator": <Timer className="w-4 h-4" />,
-  "unix-timestamp-converter": <Clock className="w-4 h-4" />,
   "color-code-converter": <Palette className="w-4 h-4" />,
   "hash-generator": <Hash className="w-4 h-4" />,
   "html-to-markdown": <FileCode className="w-4 h-4" />,
@@ -407,7 +395,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "css-filter-generator": <Paintbrush className="w-4 h-4" />,
   "color-palette-generator": <Palette className="w-4 h-4" />,
   "color-contrast-checker": <Eye className="w-4 h-4" />,
-  "color-picker": <Pipette className="w-4 h-4" />,
   "hex-to-rgb-converter": <Hexagon className="w-4 h-4" />,
   "rgb-to-hex-converter": <Hexagon className="w-4 h-4" />,
   "tailwind-color-generator": <Palette className="w-4 h-4" />,
@@ -430,7 +417,6 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "heading-tag-checker": <FileCode className="w-4 h-4" />,
   "favicon-checker": <ImageIcon className="w-4 h-4" />,
   // Security & Encryption
-  "password-strength-checker": <ShieldAlert className="w-4 h-4" />,
   "md5-hash-generator": <Fingerprint className="w-4 h-4" />,
   "sha256-hash-generator": <Fingerprint className="w-4 h-4" />,
   "sha1-hash-generator": <Fingerprint className="w-4 h-4" />,
@@ -447,10 +433,8 @@ const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   // Social Media Tools
   "twitter-character-counter": <MessageCircle className="w-4 h-4" />,
   "instagram-caption-counter": <MessageCircle className="w-4 h-4" />,
-  "hashtag-generator": <Hash className="w-4 h-4" />,
   "social-media-image-resizer": <ImageIcon className="w-4 h-4" />,
   "youtube-thumbnail-checker": <Film className="w-4 h-4" />,
-  "emoji-picker": <Smile className="w-4 h-4" />,
   "text-to-emoji": <Smile className="w-4 h-4" />,
   "linkedin-post-formatter": <FileText className="w-4 h-4" />,
   "bio-generator": <AtSign className="w-4 h-4" />,
@@ -485,7 +469,7 @@ function getIcon(slug: string) {
   return TOOL_ICON_MAP[slug] ?? <Wrench className="w-4 h-4" />;
 }
 
-function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
+function ToolCard({ tool, colorIndex, categoryId }: { tool: Tool; colorIndex: number; categoryId: string }) {
   const hue = CARD_HUES[colorIndex % CARD_HUES.length];
   const badge = CARD_BADGES[colorIndex % CARD_BADGES.length];
   const [mainTitle, subtitle] = splitToolTitle(tool.title);
@@ -499,7 +483,7 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
       className="h-full"
     >
       <Link
-        href={getToolPath(tool.slug)}
+        href={`/${categoryId}/${tool.slug}`}
         className="tool-card-active group"
         style={{ "--card-hue": hue } as React.CSSProperties}
       >
@@ -528,7 +512,7 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
   const catId = params.id;
-  const category = TOOL_CATEGORIES.find(c => c.id === catId);
+  const category = DISPLAY_TOOL_CATEGORIES.find(c => c.id === catId);
 
   if (!category) {
     return (
@@ -543,7 +527,7 @@ export default function CategoryPage() {
 
   const colors = CATEGORY_COLORS[catId] ?? CATEGORY_COLORS["math"];
   const liveCount = category.tools.filter(t => t.implemented).length;
-  const otherCategories = TOOL_CATEGORIES.filter(c => c.id !== catId);
+  const otherCategories = DISPLAY_TOOL_CATEGORIES.filter(c => c.id !== catId);
 
   return (
     <Layout>
@@ -605,7 +589,7 @@ export default function CategoryPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {category.tools.map((tool, i) => (
-              <ToolCard key={tool.slug} tool={tool} colorIndex={i} />
+              <ToolCard key={tool.slug} tool={tool} colorIndex={i} categoryId={catId} />
             ))}
           </div>
         </div>

@@ -1,22 +1,140 @@
+import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { getToolBySlug, getRelatedTools, getToolPath, TOOL_CATEGORIES } from "@/data/tools";
-import { ChevronRight, Wrench, Clock, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Calculator,
+  ChevronDown,
+  ChevronRight,
+  Clock,
+  Copy,
+  Hammer,
+  HeartPulse,
+  Lock,
+  Shield,
+  Smartphone,
+  Sparkles,
+  Wrench,
+} from "lucide-react";
+
+function FaqItem({ question, answer, accentClass }: { question: string; answer: string; accentClass: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border border-border rounded-xl overflow-hidden bg-card">
+      <button
+        onClick={() => setOpen((value) => !value)}
+        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+      >
+        <span className="text-base font-bold text-foreground leading-snug">{question}</span>
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className={`flex-shrink-0 ${accentClass}`}
+        >
+          <ChevronDown className="w-5 h-5" />
+        </motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="overflow-hidden"
+          >
+            <p className="px-5 pb-5 pt-1 text-muted-foreground leading-relaxed">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+const CATEGORY_STYLES: Record<
+  string,
+  {
+    hero: string;
+    border: string;
+    soft: string;
+    accent: string;
+    chip: string;
+    icon: LucideIcon;
+  }
+> = {
+  "Math & Calculators": {
+    hero: "from-blue-500/8 via-card to-cyan-500/8",
+    border: "border-blue-500/20",
+    soft: "bg-blue-500/6",
+    accent: "text-blue-600 dark:text-blue-400",
+    chip: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+    icon: Calculator,
+  },
+  "Finance & Cost": {
+    hero: "from-emerald-500/8 via-card to-green-500/8",
+    border: "border-emerald-500/20",
+    soft: "bg-emerald-500/6",
+    accent: "text-emerald-600 dark:text-emerald-400",
+    chip: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    icon: Calculator,
+  },
+  "Health & Fitness": {
+    hero: "from-rose-500/8 via-card to-orange-500/8",
+    border: "border-rose-500/20",
+    soft: "bg-rose-500/6",
+    accent: "text-rose-600 dark:text-rose-400",
+    chip: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+    icon: HeartPulse,
+  },
+  "Construction & DIY": {
+    hero: "from-amber-500/8 via-card to-yellow-500/8",
+    border: "border-amber-500/20",
+    soft: "bg-amber-500/6",
+    accent: "text-amber-600 dark:text-amber-400",
+    chip: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
+    icon: Hammer,
+  },
+  "Time & Date": {
+    hero: "from-violet-500/8 via-card to-fuchsia-500/8",
+    border: "border-violet-500/20",
+    soft: "bg-violet-500/6",
+    accent: "text-violet-600 dark:text-violet-400",
+    chip: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
+    icon: Clock,
+  },
+};
+
+const DEFAULT_STYLE = {
+  hero: "from-slate-500/8 via-card to-zinc-500/8",
+  border: "border-slate-500/20",
+  soft: "bg-slate-500/6",
+  accent: "text-slate-700 dark:text-slate-300",
+  chip: "bg-slate-500/10 text-slate-700 dark:text-slate-300 border-slate-500/20",
+  icon: Wrench,
+};
 
 export default function ToolPlaceholder() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
   const tool = getToolBySlug(slug);
+  const [copied, setCopied] = useState(false);
 
   if (!tool) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto px-4 py-24 text-center">
           <h1 className="text-4xl font-black text-foreground uppercase">Tool Not Found</h1>
-          <p className="text-muted-foreground mt-4 text-lg">This tool doesn't exist yet.</p>
-          <Link href="/" className="inline-block mt-8 px-8 py-4 bg-primary text-primary-foreground font-black uppercase rounded-xl border-2 border-foreground hard-shadow">
+          <p className="text-muted-foreground mt-4 text-lg">This tool doesn&apos;t exist yet.</p>
+          <Link
+            href="/"
+            className="inline-block mt-8 px-8 py-4 bg-primary text-primary-foreground font-black uppercase rounded-xl border-2 border-foreground hard-shadow"
+          >
             Go Home
           </Link>
         </div>
@@ -25,188 +143,290 @@ export default function ToolPlaceholder() {
   }
 
   const related = getRelatedTools(slug, tool.category, 5);
-  const category = TOOL_CATEGORIES.find(c => c.name === tool.category);
+  const category = TOOL_CATEGORIES.find((entry) => entry.name === tool.category);
+  const categoryHref = category ? `/category/${category.id}` : "/";
+  const styles = CATEGORY_STYLES[tool.category] ?? DEFAULT_STYLE;
+  const CategoryIcon = styles.icon;
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": tool.title,
-    "url": `https://usonlinetools.com/tools/${tool.slug}`,
-    "description": tool.metaDescription,
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    name: tool.title,
+    url: `https://usonlinetools.com${getToolPath(tool.slug)}`,
+    description: tool.metaDescription,
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Any",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   };
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+
+  const faqItems = [
+    {
+      question: `What will the ${tool.title} do?`,
+      answer: `${tool.title} is planned as a browser-based tool that helps you ${tool.description.toLowerCase()} The finished page will follow the same fast, no-signup workflow used by the live calculator pages.`,
+    },
+    {
+      question: `Is the ${tool.title} free to use?`,
+      answer: `Yes. Like the rest of US Online Tools, the ${tool.title} will be free to use without subscriptions, gated features, or account creation.`,
+    },
+    {
+      question: "Will it work on mobile and desktop?",
+      answer: "Yes. The page shell is already responsive, and the finished calculator will be built to work cleanly on phones, tablets, and larger screens.",
+    },
+    {
+      question: "What can I use in the meantime?",
+      answer: related.length
+        ? `Until this page is complete, use the related tools shown on this page. They are the closest live alternatives in the same category.`
+        : "Until this page is complete, browse the category page for other live tools with similar workflows and output patterns.",
+    },
+  ];
 
   return (
     <Layout>
       <SEO
         title={`${tool.title} - Free Online Tool`}
         description={tool.metaDescription}
-        structuredData={structuredData}
+        schema={structuredData}
+        noindex
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        {/* Breadcrumbs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
-          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-5 h-5 mx-2 text-primary" strokeWidth={3} />
-          <Link href={`/#${category?.id}`} className="text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
+            Home
+          </Link>
+          <ChevronRight className={`w-4 h-4 mx-2 ${styles.accent}`} strokeWidth={3} />
+          <Link href={categoryHref} className="text-muted-foreground hover:text-foreground transition-colors">
             {tool.category}
           </Link>
-          <ChevronRight className="w-5 h-5 mx-2 text-primary" strokeWidth={3} />
-          <span className="text-foreground truncate">{tool.title}</span>
+          <ChevronRight className={`w-4 h-4 mx-2 ${styles.accent}`} strokeWidth={3} />
+          <span className="text-foreground">{tool.title}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-10">
-            {/* Title */}
-            <div className="space-y-4 border-l-8 border-primary pl-6 py-2">
-              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter uppercase leading-none">
-                {tool.title}
-              </h1>
-              <p className="text-lg font-medium text-muted-foreground max-w-2xl">{tool.description}</p>
-            </div>
+        <section
+          className={`rounded-2xl overflow-hidden border bg-gradient-to-br ${styles.hero} ${styles.border} px-8 md:px-12 py-10 md:py-14 mb-10`}
+        >
+          <div className={`inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5 border ${styles.chip}`}>
+            <CategoryIcon className="w-3.5 h-3.5" />
+            {tool.category}
+          </div>
 
-            {/* Coming Soon Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-card border-4 border-dashed border-primary/40 rounded-xl p-12 text-center"
-            >
-              <div className="w-20 h-20 bg-primary/10 border-4 border-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Wrench className="w-10 h-10 text-primary" />
-              </div>
-              <h2 className="text-3xl font-black uppercase text-foreground mb-3">Tool Coming Soon</h2>
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold uppercase text-sm px-4 py-2 rounded-full border-2 border-primary mb-6">
-                <Clock className="w-4 h-4" /> Under Development
-              </div>
-              <p className="text-muted-foreground text-lg font-medium max-w-md mx-auto mb-8">
-                The <strong className="text-foreground">{tool.title}</strong> is currently being built. 
-                Check back soon — it will be live at <span className="text-primary font-bold">usonlinetools.com</span>.
-              </p>
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 transition-transform"
-              >
-                Browse Available Tools <ArrowRight className="w-5 h-5" />
-              </Link>
-            </motion.div>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
+            {tool.title}
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
+            {tool.description} This page is still in development, but the structure is ready and the full tool will follow the same content-first pattern as the live calculator pages.
+          </p>
 
-            {/* About This Tool */}
-            <section className="bg-card border-2 border-border rounded-xl p-8">
-              <h2 className="text-2xl font-black text-foreground uppercase tracking-tight mb-4">
-                About {tool.title}
-              </h2>
-              <p className="text-muted-foreground font-medium text-lg leading-relaxed mb-4">
-                The <strong className="text-foreground">{tool.title}</strong> on <a href="https://usonlinetools.com" className="text-primary hover:underline font-bold">usonlinetools.com</a> is a free, browser-based utility designed to help you {tool.description.toLowerCase()} No registration required — simply open the tool and get instant results.
-              </p>
-              <p className="text-muted-foreground font-medium leading-relaxed">
-                All calculations are performed locally in your browser. Your data is never sent to any server, making this a 100% private tool. It works on all devices including mobile, tablet, and desktop.
-              </p>
+          <div className="flex flex-wrap gap-2 mb-5">
+            <span className={`inline-flex items-center gap-1.5 font-bold text-xs px-3 py-1.5 rounded-full border ${styles.chip}`}>
+              <BadgeCheck className="w-3.5 h-3.5" /> Free Tool
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
+              <Sparkles className="w-3.5 h-3.5" /> Page Shell Ready
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
+              <Lock className="w-3.5 h-3.5" /> No Signup
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
+              <Shield className="w-3.5 h-3.5" /> Privacy First
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
+              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
+            </span>
+          </div>
+
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            Category: {tool.category} | Status: In development
+          </p>
+        </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+          <div className="lg:col-span-3 space-y-10">
+            <section className="space-y-5">
+              <div className={`rounded-2xl overflow-hidden border shadow-lg ${styles.border}`}>
+                <div className="h-1.5 w-full bg-gradient-to-r from-foreground/80 via-foreground/60 to-transparent" />
+                <div className="bg-card p-6 md:p-8 space-y-5">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className={`w-9 h-9 rounded-xl ${styles.soft} flex items-center justify-center flex-shrink-0`}>
+                      <Wrench className={`w-4 h-4 ${styles.accent}`} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Tool Preview</p>
+                      <p className="text-sm text-muted-foreground">The final calculator will live in this section with instant browser-side results.</p>
+                    </div>
+                  </div>
+
+                  <div className={`rounded-2xl border ${styles.border} ${styles.soft} p-5 md:p-6`}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="rounded-xl border border-border bg-background p-4">
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Input</p>
+                        <div className="space-y-3">
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                        </div>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background p-4">
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Output</p>
+                        <div className="h-[124px] rounded-xl border border-dashed border-border bg-muted/30 flex items-center justify-center">
+                          <span className={`text-sm font-bold uppercase tracking-wider ${styles.accent}`}>Instant results</span>
+                        </div>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background p-4">
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Actions</p>
+                        <div className="space-y-3">
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                          <div className="h-11 rounded-xl border border-dashed border-border bg-muted/30" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      <Link
+                        href={categoryHref}
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-foreground text-background font-bold text-sm"
+                      >
+                        Browse {tool.category}
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      {related[0] && (
+                        <Link
+                          href={getToolPath(related[0].slug)}
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border bg-background text-foreground font-bold text-sm"
+                        >
+                          Try {related[0].title}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
 
-            {/* How It Will Work */}
-            <section className="bg-card border-2 border-border rounded-xl p-8">
-              <h2 className="text-2xl font-black text-foreground uppercase tracking-tight mb-6">
-                How to Use This Tool
-              </h2>
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  title: "Clear Inputs",
+                  text: `The finished ${tool.title} will use a focused input flow with plain-language labels and fast validation.`,
+                },
+                {
+                  title: "Instant Results",
+                  text: "Results will update as values change, matching the quick-feedback interaction used on the better-developed pages.",
+                },
+                {
+                  title: "Helpful Context",
+                  text: "This page will include explanation blocks, usage guidance, and related tools instead of a thin utility-only layout.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-2xl border border-border bg-card p-5">
+                  <p className="text-sm font-black uppercase tracking-wider text-foreground mb-2">{item.title}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+                </div>
+              ))}
+            </section>
+
+            <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How This Page Will Work</h2>
               <div className="space-y-4">
                 {[
-                  { step: "1", text: `Open the ${tool.title} on usonlinetools.com` },
-                  { step: "2", text: "Enter your values in the input fields provided" },
-                  { step: "3", text: "Results are calculated instantly as you type" },
-                  { step: "4", text: "Copy or share your results with one click" },
-                ].map(({ step, text }) => (
-                  <div key={step} className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-primary text-primary-foreground font-black text-lg rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-foreground">
-                      {step}
+                  `Open ${tool.title} and enter the values or selections relevant to your task.`,
+                  "See the result update instantly without page refreshes or form submissions.",
+                  "Use the explanation and helper sections to understand what the output means.",
+                  "Jump to related live tools if you need a nearby workflow before this one is finished.",
+                ].map((text, index) => (
+                  <div key={text} className="flex items-start gap-4">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm border ${styles.chip}`}>
+                      {index + 1}
                     </div>
-                    <p className="text-muted-foreground font-medium pt-2">{text}</p>
+                    <p className="text-muted-foreground leading-relaxed pt-2">{text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            {/* FAQ */}
+            <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-4">About {tool.title}</h2>
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
+                <p>
+                  <strong className="text-foreground">{tool.title}</strong> is planned as a free browser-based utility for users who want to {tool.description.toLowerCase()}
+                </p>
+                <p>
+                  The final version will keep the same practical structure used by stronger pages in the project: a strong hero, a focused calculator block, explanation sections, FAQ content, and internal links to related tools.
+                </p>
+                <p>
+                  This page works as a structured holding page instead of a bare placeholder message, so users still get context and useful navigation.
+                </p>
+              </div>
+            </section>
+
             <section className="space-y-4">
-              <h2 className="text-2xl font-black text-foreground uppercase tracking-tight">Frequently Asked Questions</h2>
-              {[
-                {
-                  q: `Is the ${tool.title} free to use?`,
-                  a: `Yes, the ${tool.title} on usonlinetools.com is completely free. There are no hidden fees, subscriptions, or paywalls.`
-                },
-                {
-                  q: "Do I need to create an account?",
-                  a: "No registration or sign-up is required. All tools on usonlinetools.com are available instantly without any account."
-                },
-                {
-                  q: "Is my data safe?",
-                  a: "Absolutely. All calculations happen directly in your browser. No data is ever sent to our servers or stored anywhere."
-                },
-                {
-                  q: "Does this tool work on mobile?",
-                  a: `Yes, the ${tool.title} is fully responsive and works perfectly on smartphones, tablets, and desktop computers.`
-                },
-              ].map((item, i) => (
-                <div key={i} className="bg-card p-6 rounded-xl border-2 border-border hover:border-primary transition-colors">
-                  <h3 className="text-lg font-bold text-foreground mb-2">{item.q}</h3>
-                  <p className="text-muted-foreground font-medium">{item.a}</p>
-                </div>
+              <h2 className="text-2xl font-black text-foreground tracking-tight">Frequently Asked Questions</h2>
+              {faqItems.map((item) => (
+                <FaqItem
+                  key={item.question}
+                  question={item.question}
+                  answer={item.answer}
+                  accentClass={styles.accent}
+                />
               ))}
             </section>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-8">
-            <div className="sticky top-28">
+            <div className="sticky top-28 space-y-6">
               {related.length > 0 && (
-                <div className="bg-card p-6 rounded-xl border-2 border-border mb-8">
-                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground mb-5">
-                    Related Tools
-                  </h3>
+                <div className="rounded-2xl border border-border bg-card p-6">
+                  <h3 className="text-lg font-black tracking-tight text-foreground mb-5">Related Tools</h3>
                   <div className="space-y-3">
-                    {related.map((item, index) => (
+                    {related.map((item) => (
                       <Link
-                        key={index}
+                        key={item.slug}
                         href={getToolPath(item.slug)}
-                        className="group flex items-center p-3 rounded-xl hover:bg-muted transition-all border-2 border-transparent hover:border-foreground"
+                        className="group flex items-center gap-3 rounded-xl border border-border p-3 bg-background hover:bg-muted/40 transition-colors"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border-2 border-primary/20 group-hover:border-primary flex-shrink-0">
-                          <Wrench className="w-4 h-4 text-primary" />
+                        <div className={`w-10 h-10 rounded-xl ${styles.soft} flex items-center justify-center flex-shrink-0`}>
+                          <ArrowRight className={`w-4 h-4 ${styles.accent}`} />
                         </div>
-                        <span className="ml-3 font-bold text-sm text-muted-foreground group-hover:text-foreground transition-colors leading-tight">
-                          {item.title}
-                        </span>
+                        <div className="min-w-0">
+                          <p className="font-bold text-sm text-foreground leading-tight">{item.title}</p>
+                          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{item.description}</p>
+                        </div>
                       </Link>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Category link */}
               {category && (
-                <div className="bg-card border-2 border-border rounded-xl p-6 mb-8">
-                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground mb-2">Category</h3>
-                  <Link href={`/#${category.id}`} className="inline-flex items-center gap-2 text-primary font-bold hover:underline">
-                    {category.name} <ArrowRight className="w-4 h-4" />
+                <div className="rounded-2xl border border-border bg-card p-6">
+                  <h3 className="text-lg font-black tracking-tight text-foreground mb-2">Category</h3>
+                  <Link href={categoryHref} className={`inline-flex items-center gap-2 font-bold hover:underline ${styles.accent}`}>
+                    {category.name}
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
-                  <p className="text-sm text-muted-foreground mt-2">{category.tools.length} tools available</p>
+                  <p className="text-sm text-muted-foreground mt-3">{category.description}</p>
+                  <p className="text-xs text-muted-foreground/70 mt-3">{category.tools.length} tools listed in this category.</p>
                 </div>
               )}
 
-              <div className="bg-primary p-6 rounded-xl border-4 border-foreground text-primary-foreground hard-shadow">
-                <h3 className="text-xl font-black uppercase tracking-tight mb-2">Love this tool?</h3>
-                <p className="text-primary-foreground/90 font-medium mb-5">
-                  Share usonlinetools.com with your friends and colleagues!
+              <div className={`rounded-2xl border p-6 ${styles.border} ${styles.soft}`}>
+                <h3 className="text-lg font-black tracking-tight text-foreground mb-2">Share This Page</h3>
+                <p className="text-sm text-muted-foreground mb-5">
+                  Keep this URL handy or share it with someone who may want the finished tool when it goes live.
                 </p>
                 <button
-                  onClick={() => navigator.clipboard.writeText(window.location.href)}
-                  className="w-full py-3 bg-background text-foreground font-black uppercase tracking-wider rounded-xl border-2 border-foreground hard-shadow hover:-translate-y-1 active:translate-y-1 transition-transform text-sm"
+                  onClick={copyLink}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-foreground text-background font-bold text-sm"
                 >
-                  Copy Link
+                  {copied ? "Link Copied" : "Copy Link"}
+                  <Copy className="w-4 h-4" />
                 </button>
               </div>
             </div>
