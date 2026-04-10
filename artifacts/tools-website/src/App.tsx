@@ -2,13 +2,16 @@ import { Switch, Route, Router as WouterRouter, useLocation, useParams } from "w
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { SEO } from "./components/SEO";
 import { lazy, Suspense, useEffect } from "react";
-import { getToolBySlug, getToolPath } from "./data/tools";
+import { getCanonicalToolPath, getToolBySlug } from "./data/tools";
 
 // Core Pages
+import About from "./pages/About";
 import Home from "./pages/Home";
 import CategoryPage from "./pages/CategoryPage";
-import ToolPlaceholder from "./pages/ToolPlaceholder";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/not-found";
 
 // Fully implemented tools
@@ -141,6 +144,7 @@ const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToD
 const DecimalToFractionCalculator = lazy(() => import("./pages/tools/DecimalToFractionCalculator"));
 const ScientificCalculator = lazy(() => import("./pages/tools/ScientificCalculator"));
 const CalorieCalculator = lazy(() => import("./pages/tools/CalorieCalculator"));
+const BodySurfaceAreaCalculator = lazy(() => import("./pages/tools/BodySurfaceAreaCalculator"));
 const RatioCalculator = lazy(() => import("./pages/tools/RatioCalculator"));
 const SquareRootCalculator = lazy(() => import("./pages/tools/SquareRootCalculator"));
 const CubeRootCalculator = lazy(() => import("./pages/tools/CubeRootCalculator"));
@@ -166,6 +170,9 @@ const MarkupCalculator = lazy(() => import("./pages/tools/MarkupCalculator"));
 const BreakEvenCalculator = lazy(() => import("./pages/tools/BreakEvenCalculator"));
 const FinanceToolSuite = lazy(() => import("./pages/tools/FinanceToolSuite"));
 const PaybackPeriodCalculator = lazy(() => import("./pages/tools/PaybackPeriodCalculator"));
+const CagrCalculator = lazy(() => import("./pages/tools/CagrCalculator"));
+const DebtToIncomeCalculator = lazy(() => import("./pages/tools/DebtToIncomeCalculator"));
+const LoanToValueCalculator = lazy(() => import("./pages/tools/LoanToValueCalculator"));
 const LoanInterestCalculator = lazy(() => import("./pages/tools/LoanInterestCalculator"));
 const SavingsGoalCalculator = lazy(() => import("./pages/tools/SavingsGoalCalculator"));
 const RevenueCalculator = lazy(() => import("./pages/tools/RevenueCalculator"));
@@ -401,22 +408,37 @@ function LazyWrap({ children }: { children: React.ReactNode }) {
 }
 
 function ToolSlugRedirect() {
-  const params = useParams<{ slug: string }>();
+  const params = useParams<{ slug: string; categoryId?: string }>();
   const [, setLocation] = useLocation();
   const slug = params.slug;
+  const requestedCategoryId = params.categoryId?.toLowerCase();
   const tool = getToolBySlug(slug);
+  const destination = tool ? getCanonicalToolPath(slug) : undefined;
+  const canonicalCategoryId = destination?.split("/")[1];
+  const hasCategoryMismatch =
+    Boolean(requestedCategoryId && canonicalCategoryId && requestedCategoryId !== canonicalCategoryId);
+  const safeDestination = hasCategoryMismatch ? undefined : destination;
 
   useEffect(() => {
-    if (!tool) return;
-    const destination = getToolPath(slug);
-    setLocation(destination, { replace: true });
-  }, [setLocation, slug, tool]);
+    if (!safeDestination) return;
+    setLocation(safeDestination, { replace: true });
+  }, [safeDestination, setLocation]);
 
-  if (!tool) {
-    return <ToolPlaceholder />;
+  if (!tool || hasCategoryMismatch) {
+    return <NotFound />;
   }
 
-  return <div className="min-h-screen bg-background" />;
+  return (
+    <>
+      <SEO
+        title="Redirecting to the canonical tool page"
+        description="This legacy tool URL has moved to a preferred canonical path."
+        canonical={destination}
+        noindex
+      />
+      <div className="min-h-screen bg-background" />
+    </>
+  );
 }
 
 function StaticPathRedirect({ to }: { to: string }) {
@@ -426,21 +448,35 @@ function StaticPathRedirect({ to }: { to: string }) {
     setLocation(to, { replace: true });
   }, [setLocation, to]);
 
-  return <div className="min-h-screen bg-background" />;
+  return (
+    <>
+      <SEO
+        title="Redirecting to the canonical page"
+        description="This legacy URL has moved to a preferred canonical path."
+        canonical={to}
+        noindex
+      />
+      <div className="min-h-screen bg-background" />
+    </>
+  );
 }
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-of-service" component={TermsOfService} />
 
       {/* Category pages */}
       <Route path="/category/:id" component={CategoryPage} />
 
       {/* Legacy /tools/ routes (redirect-friendly) */}
       <Route path="/tools/percentage-calculator" component={PercentageCalculator} />
-      <Route path="/tools/password-generator" component={PasswordGenerator} />
-      <Route path="/security/password-generator" component={PasswordGenerator} />
+      <Route path="/tools/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
+      <Route path="/security/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
+      <Route path="/security/online-password-generator" component={PasswordGenerator} />
       <Route path="/tools/word-counter" component={WordCounter} />
       <Route path="/tools/age-calculator" component={AgeCalculator} />
       <Route path="/tools/color-converter" component={ColorConverter} />
@@ -470,9 +506,10 @@ function Router() {
       <Route path="/tools/combination-calculator">{() => <LazyWrap><CombinationCalculator /></LazyWrap>}</Route>
 
       {/* New SEO-friendly /:category/:tool routes — existing tools */}
-      <Route path="/math/percentage-calculator" component={PercentageCalculator} />
-      <Route path="/productivity/password-generator" component={PasswordGenerator} />
-      <Route path="/productivity/online-password-generator" component={PasswordGenerator} />
+      <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
+      <Route path="/math/online-percentage-calculator" component={PercentageCalculator} />
+      <Route path="/productivity/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
+      <Route path="/productivity/online-password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/productivity/word-counter" component={WordCounter} />
       <Route path="/productivity/online-word-counter" component={WordCounter} />
       <Route path="/productivity/hashtag-generator">{() => <LazyWrap><HashtagGenerator /></LazyWrap>}</Route>
@@ -535,12 +572,13 @@ function Router() {
       <Route path="/developer/online-sql-formatter">{() => <LazyWrap><SqlFormatter /></LazyWrap>}</Route>
       <Route path="/developer/string-escape-unescape">{() => <LazyWrap><StringEscapeUnescape /></LazyWrap>}</Route>
       <Route path="/developer/diff-checker">{() => <LazyWrap><TextDiffChecker /></LazyWrap>}</Route>
+      <Route path="/developer/text-diff-checker">{() => <LazyWrap><TextDiffChecker /></LazyWrap>}</Route>
       <Route path="/developer/json-to-csv">{() => <StaticPathRedirect to="/developer/online-json-to-csv" />}</Route>
       <Route path="/developer/online-json-to-csv">{() => <LazyWrap><JsonToCsvConverter /></LazyWrap>}</Route>
       <Route path="/developer/json-to-xml">{() => <LazyWrap><JsonToXmlConverter /></LazyWrap>}</Route>
       <Route path="/developer/xml-formatter">{() => <LazyWrap><XmlFormatter /></LazyWrap>}</Route>
       <Route path="/developer/yaml-to-json">{() => <LazyWrap><YamlToJsonConverter /></LazyWrap>}</Route>
-      <Route path="/developer/lorem-ipsum-generator">{() => <LazyWrap><LoremIpsumGenerator /></LazyWrap>}</Route>
+      <Route path="/developer/lorem-ipsum-generator">{() => <StaticPathRedirect to="/developer/online-lorem-ipsum-generator" />}</Route>
       <Route path="/developer/online-lorem-ipsum-generator">{() => <LazyWrap><LoremIpsumGenerator /></LazyWrap>}</Route>
       <Route path="/gaming/dnd-dice-roller">{() => <LazyWrap><DndDiceRoller /></LazyWrap>}</Route>
       <Route path="/gaming/blox-fruits-calculator">{() => <LazyWrap><BloxFruitsCalculator /></LazyWrap>}</Route>
@@ -592,6 +630,7 @@ function Router() {
       <Route path="/productivity/password-strength-checker">{() => <LazyWrap><PasswordStrengthChecker /></LazyWrap>}</Route>
       <Route path="/productivity/slug-generator">{() => <LazyWrap><SlugGenerator /></LazyWrap>}</Route>
       <Route path="/developer/slug-generator">{() => <LazyWrap><SlugGenerator /></LazyWrap>}</Route>
+      <Route path="/developer/url-slug-generator">{() => <LazyWrap><SlugGenerator /></LazyWrap>}</Route>
       <Route path="/social-media/twitter-character-counter">{() => <LazyWrap><TwitterCharacterCounter /></LazyWrap>}</Route>
       <Route path="/social-media/instagram-caption-counter">{() => <StaticPathRedirect to="/social-media/online-instagram-caption-counter" />}</Route>
       <Route path="/social-media/tiktok-character-counter">{() => <LazyWrap><TikTokCaptionCounter /></LazyWrap>}</Route>
@@ -599,9 +638,11 @@ function Router() {
       <Route path="/social-media/linkedin-post-formatter">{() => <StaticPathRedirect to="/social-media/online-linkedin-post-formatter" />}</Route>
       <Route path="/social-media/online-linkedin-post-formatter">{() => <LazyWrap><LinkedinPostFormatter /></LazyWrap>}</Route>
       <Route path="/social-media/bio-generator">{() => <LazyWrap><SocialMediaBioGenerator /></LazyWrap>}</Route>
+      <Route path="/social-media/social-media-bio-generator">{() => <LazyWrap><SocialMediaBioGenerator /></LazyWrap>}</Route>
       <Route path="/social-media/social-post-scheduler-planner">{() => <StaticPathRedirect to="/social-media/online-social-post-scheduler-planner" />}</Route>
       <Route path="/social-media/online-social-post-scheduler-planner">{() => <LazyWrap><SocialPostPlanner /></LazyWrap>}</Route>
       <Route path="/social-media/text-to-emoji">{() => <LazyWrap><TextToEmojiConverter /></LazyWrap>}</Route>
+      <Route path="/social-media/text-to-emoji-converter">{() => <LazyWrap><TextToEmojiConverter /></LazyWrap>}</Route>
       <Route path="/social-media/unicode-text-converter">{() => <LazyWrap><UnicodeTextConverter /></LazyWrap>}</Route>
       <Route path="/social-media/social-media-image-resizer">{() => <StaticPathRedirect to="/social-media/online-social-media-image-resizer" />}</Route>
       <Route path="/social-media/youtube-thumbnail-checker">{() => <LazyWrap><YouTubeThumbnailChecker /></LazyWrap>}</Route>
@@ -703,6 +744,15 @@ function Router() {
       <Route path="/finance/online-car-loan-calculator">{() => <LazyWrap><CarLoanCalculator /></LazyWrap>}</Route>
       <Route path="/finance/savings-calculator">{() => <LazyWrap><SavingsCalculator /></LazyWrap>}</Route>
       <Route path="/finance/profit-margin-calculator">{() => <LazyWrap><ProfitMarginCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/cagr-calculator">{() => <StaticPathRedirect to="/finance/online-cagr-calculator" />}</Route>
+      <Route path="/tools/cagr-calculator">{() => <StaticPathRedirect to="/finance/online-cagr-calculator" />}</Route>
+      <Route path="/finance/online-cagr-calculator">{() => <LazyWrap><CagrCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/debt-to-income-calculator">{() => <StaticPathRedirect to="/finance/online-debt-to-income-calculator" />}</Route>
+      <Route path="/tools/debt-to-income-calculator">{() => <StaticPathRedirect to="/finance/online-debt-to-income-calculator" />}</Route>
+      <Route path="/finance/online-debt-to-income-calculator">{() => <LazyWrap><DebtToIncomeCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/loan-to-value-calculator">{() => <StaticPathRedirect to="/finance/online-loan-to-value-calculator" />}</Route>
+      <Route path="/tools/loan-to-value-calculator">{() => <StaticPathRedirect to="/finance/online-loan-to-value-calculator" />}</Route>
+      <Route path="/finance/online-loan-to-value-calculator">{() => <LazyWrap><LoanToValueCalculator /></LazyWrap>}</Route>
       <Route path="/finance/inflation-calculator">{() => <StaticPathRedirect to="/finance/online-inflation-calculator" />}</Route>
       <Route path="/finance/online-inflation-calculator">{() => <LazyWrap><InflationCalculator /></LazyWrap>}</Route>
       <Route path="/conversion/area-converter">{() => <LazyWrap><AreaConverter /></LazyWrap>}</Route>
@@ -711,15 +761,18 @@ function Router() {
       <Route path="/conversion/online-volume-converter">{() => <LazyWrap><VolumeConverter /></LazyWrap>}</Route>
       <Route path="/conversion/speed-converter">{() => <LazyWrap><SpeedConverter /></LazyWrap>}</Route>
       <Route path="/conversion/online-speed-converter">{() => <LazyWrap><SpeedConverter /></LazyWrap>}</Route>
-      <Route path="/math/percentage-change-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
-      <Route path="/math/percentage-increase-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
-      <Route path="/math/percentage-decrease-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
-      <Route path="/math/percentage-difference-calculator">{() => <LazyWrap><PercentageChangeCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-change-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-increase-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-decrease-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-difference-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
       <Route path="/math/fraction-to-decimal-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
       <Route path="/math/decimal-to-fraction-calculator">{() => <LazyWrap><DecimalToFractionCalculator /></LazyWrap>}</Route>
       <Route path="/math/scientific-calculator">{() => <StaticPathRedirect to="/math/online-scientific-calculator" />}</Route>
       <Route path="/math/online-scientific-calculator">{() => <LazyWrap><ScientificCalculator /></LazyWrap>}</Route>
       <Route path="/health/calorie-calculator">{() => <LazyWrap><CalorieCalculator /></LazyWrap>}</Route>
+      <Route path="/health/body-surface-area-calculator">{() => <StaticPathRedirect to="/health/online-body-surface-area-calculator" />}</Route>
+      <Route path="/tools/body-surface-area-calculator">{() => <StaticPathRedirect to="/health/online-body-surface-area-calculator" />}</Route>
+      <Route path="/health/online-body-surface-area-calculator">{() => <LazyWrap><BodySurfaceAreaCalculator /></LazyWrap>}</Route>
       <Route path="/math/ratio-calculator">{() => <LazyWrap><RatioCalculator /></LazyWrap>}</Route>
       <Route path="/math/square-root-calculator">{() => <LazyWrap><SquareRootCalculator /></LazyWrap>}</Route>
       <Route path="/math/cube-root-calculator">{() => <LazyWrap><CubeRootCalculator /></LazyWrap>}</Route>
@@ -835,40 +888,48 @@ function Router() {
       <Route path="/tools/cooking-converter">{() => <LazyWrap><CookingConverter /></LazyWrap>}</Route>
 
       {/* Image tools */}
-      <Route path="/image/image-resizer">{() => <LazyWrap><ImageResizer /></LazyWrap>}</Route>
-      <Route path="/tools/image-resizer">{() => <LazyWrap><ImageResizer /></LazyWrap>}</Route>
-      <Route path="/image/image-compressor">{() => <LazyWrap><ImageCompressor /></LazyWrap>}</Route>
-      <Route path="/tools/image-compressor">{() => <LazyWrap><ImageCompressor /></LazyWrap>}</Route>
-      <Route path="/image/image-cropper">{() => <LazyWrap><ImageCropper /></LazyWrap>}</Route>
-      <Route path="/tools/image-cropper">{() => <LazyWrap><ImageCropper /></LazyWrap>}</Route>
+      <Route path="/image/image-resizer">{() => <StaticPathRedirect to="/image/online-image-resizer" />}</Route>
+      <Route path="/tools/image-resizer">{() => <StaticPathRedirect to="/image/online-image-resizer" />}</Route>
+      <Route path="/image/online-image-resizer">{() => <LazyWrap><ImageResizer /></LazyWrap>}</Route>
+
+      <Route path="/image/image-compressor">{() => <StaticPathRedirect to="/image/online-image-compressor" />}</Route>
+      <Route path="/tools/image-compressor">{() => <StaticPathRedirect to="/image/online-image-compressor" />}</Route>
+      <Route path="/image/online-image-compressor">{() => <LazyWrap><ImageCompressor /></LazyWrap>}</Route>
+
+      <Route path="/image/image-cropper">{() => <StaticPathRedirect to="/image/online-image-cropper" />}</Route>
+      <Route path="/tools/image-cropper">{() => <StaticPathRedirect to="/image/online-image-cropper" />}</Route>
+      <Route path="/image/online-image-cropper">{() => <LazyWrap><ImageCropper /></LazyWrap>}</Route>
       <Route path="/image/image-format-converter">{() => <LazyWrap><ImageFormatConverter /></LazyWrap>}</Route>
       <Route path="/tools/image-format-converter">{() => <LazyWrap><ImageFormatConverter /></LazyWrap>}</Route>
       <Route path="/image/image-to-base64">{() => <LazyWrap><ImageToBase64 /></LazyWrap>}</Route>
       <Route path="/tools/image-to-base64">{() => <LazyWrap><ImageToBase64 /></LazyWrap>}</Route>
-      <Route path="/image/base64-to-image">{() => <LazyWrap><Base64ToImage /></LazyWrap>}</Route>
-      <Route path="/tools/base64-to-image">{() => <LazyWrap><Base64ToImage /></LazyWrap>}</Route>
-      <Route path="/image/qr-code-generator">{() => <LazyWrap><QrCodeGeneratorPage /></LazyWrap>}</Route>
-      <Route path="/tools/qr-code-generator">{() => <LazyWrap><QrCodeGeneratorPage /></LazyWrap>}</Route>
+      <Route path="/image/base64-to-image">{() => <StaticPathRedirect to="/image/online-base64-to-image" />}</Route>
+      <Route path="/tools/base64-to-image">{() => <StaticPathRedirect to="/image/online-base64-to-image" />}</Route>
+      <Route path="/image/online-base64-to-image">{() => <LazyWrap><Base64ToImage /></LazyWrap>}</Route>
+
+      <Route path="/image/qr-code-generator">{() => <StaticPathRedirect to="/image/online-qr-code-generator" />}</Route>
+      <Route path="/tools/qr-code-generator">{() => <StaticPathRedirect to="/image/online-qr-code-generator" />}</Route>
+      <Route path="/image/online-qr-code-generator">{() => <LazyWrap><QrCodeGeneratorPage /></LazyWrap>}</Route>
       <Route path="/image/:slug">{() => <LazyWrap><ImageCategoryToolPage /></LazyWrap>}</Route>
 
       {/* PDF tools */}
       <Route path="/pdf/:slug">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-merge">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-split">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-compress">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/image-to-pdf">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/jpg-to-pdf">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-to-image">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-rotate">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-page-remover">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-page-reorder">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-watermark">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-password-protect">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-unlock">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-to-text">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-page-number">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-header-footer">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
-      <Route path="/tools/pdf-sign">{() => <LazyWrap><PdfToolSuite /></LazyWrap>}</Route>
+      <Route path="/tools/pdf-merge">{() => <StaticPathRedirect to="/pdf/online-pdf-merge" />}</Route>
+      <Route path="/tools/pdf-split">{() => <StaticPathRedirect to="/pdf/online-pdf-split" />}</Route>
+      <Route path="/tools/pdf-compress">{() => <StaticPathRedirect to="/pdf/online-pdf-compress" />}</Route>
+      <Route path="/tools/image-to-pdf">{() => <StaticPathRedirect to="/pdf/online-image-to-pdf" />}</Route>
+      <Route path="/tools/jpg-to-pdf">{() => <StaticPathRedirect to="/pdf/online-jpg-to-pdf" />}</Route>
+      <Route path="/tools/pdf-to-image">{() => <StaticPathRedirect to="/pdf/online-pdf-to-image" />}</Route>
+      <Route path="/tools/pdf-rotate">{() => <StaticPathRedirect to="/pdf/online-pdf-rotate" />}</Route>
+      <Route path="/tools/pdf-page-remover">{() => <StaticPathRedirect to="/pdf/online-pdf-page-remover" />}</Route>
+      <Route path="/tools/pdf-page-reorder">{() => <StaticPathRedirect to="/pdf/online-pdf-page-reorder" />}</Route>
+      <Route path="/tools/pdf-watermark">{() => <StaticPathRedirect to="/pdf/online-pdf-watermark" />}</Route>
+      <Route path="/tools/pdf-password-protect">{() => <StaticPathRedirect to="/pdf/online-pdf-password-protect" />}</Route>
+      <Route path="/tools/pdf-unlock">{() => <StaticPathRedirect to="/pdf/online-pdf-unlock" />}</Route>
+      <Route path="/tools/pdf-to-text">{() => <StaticPathRedirect to="/pdf/online-pdf-to-text" />}</Route>
+      <Route path="/tools/pdf-page-number">{() => <StaticPathRedirect to="/pdf/online-pdf-page-number" />}</Route>
+      <Route path="/tools/pdf-header-footer">{() => <StaticPathRedirect to="/pdf/online-pdf-header-footer" />}</Route>
+      <Route path="/tools/pdf-sign">{() => <StaticPathRedirect to="/pdf/online-pdf-sign" />}</Route>
 
       {/* Pair 14 routes */}
       <Route path="/health/cycling-calories-calculator">{() => <LazyWrap><CyclingCaloriesCalculator /></LazyWrap>}</Route>
@@ -979,9 +1040,10 @@ function Router() {
       <Route path="/tools/days-between-dates-calculator">{() => <LazyWrap><DaysBetweenDatesCalculator /></LazyWrap>}</Route>
       <Route path="/time-date/working-days-calculator">{() => <LazyWrap><WorkingDaysCalculator /></LazyWrap>}</Route>
       <Route path="/tools/working-days-calculator">{() => <LazyWrap><WorkingDaysCalculator /></LazyWrap>}</Route>
-      <Route path="/developer/unix-timestamp-converter">{() => <LazyWrap><UnixTimestampConverter /></LazyWrap>}</Route>
-      <Route path="/time-date/unix-timestamp-converter">{() => <LazyWrap><UnixTimestampConverter /></LazyWrap>}</Route>
-      <Route path="/time-date/online-unix-timestamp-converter">{() => <LazyWrap><UnixTimestampConverter /></LazyWrap>}</Route>
+      <Route path="/developer/unix-timestamp-converter">{() => <StaticPathRedirect to="/developer/online-unix-timestamp-converter" />}</Route>
+      <Route path="/developer/online-unix-timestamp-converter">{() => <LazyWrap><UnixTimestampConverter /></LazyWrap>}</Route>
+      <Route path="/time-date/unix-timestamp-converter">{() => <StaticPathRedirect to="/developer/online-unix-timestamp-converter" />}</Route>
+      <Route path="/time-date/online-unix-timestamp-converter">{() => <StaticPathRedirect to="/developer/online-unix-timestamp-converter" />}</Route>
       <Route path="/tools/unix-timestamp-converter">{() => <LazyWrap><UnixTimestampConverter /></LazyWrap>}</Route>
       <Route path="/time-date/age-in-days-calculator">{() => <LazyWrap><AgeInDaysCalculator /></LazyWrap>}</Route>
       <Route path="/tools/age-in-days-calculator">{() => <LazyWrap><AgeInDaysCalculator /></LazyWrap>}</Route>
@@ -1068,7 +1130,7 @@ function Router() {
       <Route path="/tools/word-frequency-counter">{() => <LazyWrap><WordFrequencyCounter /></LazyWrap>}</Route>
       <Route path="/productivity/json-formatter">{() => <LazyWrap><JsonFormatter /></LazyWrap>}</Route>
       <Route path="/productivity/base64-encoder-decoder">{() => <LazyWrap><Base64EncoderDecoder /></LazyWrap>}</Route>
-      <Route path="/productivity/uuid-generator">{() => <LazyWrap><UuidGenerator /></LazyWrap>}</Route>
+      <Route path="/productivity/uuid-generator">{() => <StaticPathRedirect to="/developer/online-uuid-generator" />}</Route>
       <Route path="/productivity/url-encoder-decoder">{() => <LazyWrap><UrlEncoderDecoder /></LazyWrap>}</Route>
 
       {/* Developer encoding tools */}
@@ -1155,7 +1217,7 @@ function Router() {
       <Route path="/tools/social-post-scheduler-planner">{() => <StaticPathRedirect to="/social-media/online-social-post-scheduler-planner" />}</Route>
       <Route path="/tools/text-to-emoji">{() => <LazyWrap><TextToEmojiConverter /></LazyWrap>}</Route>
       <Route path="/tools/social-media-image-resizer">{() => <StaticPathRedirect to="/social-media/online-social-media-image-resizer" />}</Route>
-      <Route path="/productivity/lorem-ipsum-generator">{() => <LazyWrap><LoremIpsumGenerator /></LazyWrap>}</Route>
+      <Route path="/productivity/lorem-ipsum-generator">{() => <StaticPathRedirect to="/developer/online-lorem-ipsum-generator" />}</Route>
       <Route path="/tools/lorem-ipsum-generator">{() => <LazyWrap><LoremIpsumGenerator /></LazyWrap>}</Route>
       <Route path="/health/bmr-calculator">{() => <LazyWrap><BmrCalculator /></LazyWrap>}</Route>
       <Route path="/tools/bmr-calculator">{() => <LazyWrap><BmrCalculator /></LazyWrap>}</Route>
@@ -1250,16 +1312,18 @@ function Router() {
       <Route path="/css-design/color-palette-generator">{() => <LazyWrap><ColorPaletteGenerator /></LazyWrap>}</Route>
       <Route path="/tools/color-palette-generator">{() => <LazyWrap><ColorPaletteGenerator /></LazyWrap>}</Route>
       <Route path="/css-design/color-picker">{() => <LazyWrap><ColorPickerTool /></LazyWrap>}</Route>
+      <Route path="/css-design/color-picker-tool">{() => <LazyWrap><ColorPickerTool /></LazyWrap>}</Route>
       <Route path="/tools/color-picker">{() => <LazyWrap><ColorPickerTool /></LazyWrap>}</Route>
       <Route path="/css-design/tailwind-color-generator">{() => <LazyWrap><TailwindColorGenerator /></LazyWrap>}</Route>
       <Route path="/tools/tailwind-color-generator">{() => <LazyWrap><TailwindColorGenerator /></LazyWrap>}</Route>
       <Route path="/social-media/emoji-picker">{() => <LazyWrap><EmojiPickerTool /></LazyWrap>}</Route>
+      <Route path="/social-media/emoji-picker-and-copier">{() => <LazyWrap><EmojiPickerTool /></LazyWrap>}</Route>
       <Route path="/tools/emoji-picker">{() => <LazyWrap><EmojiPickerTool /></LazyWrap>}</Route>
       {/* Catch-all: /:category/:slug for unimplemented tools */}
       <Route path="/finance/credit-card-payoff-calculator">{() => <LazyWrap><CreditCardPayoffCalculator /></LazyWrap>}</Route>
       <Route path="/tools/credit-card-payoff-calculator">{() => <LazyWrap><CreditCardPayoffCalculator /></LazyWrap>}</Route>
       <Route path="/finance/:slug">{() => <LazyWrap><FinanceToolSuite /></LazyWrap>}</Route>
-      <Route path="/developer/uuid-generator">{() => <LazyWrap><UuidGenerator /></LazyWrap>}</Route>
+      <Route path="/developer/uuid-generator">{() => <StaticPathRedirect to="/developer/online-uuid-generator" />}</Route>
       <Route path="/developer/online-uuid-generator">{() => <LazyWrap><UuidGenerator /></LazyWrap>}</Route>
       <Route path="/tools/uuid-generator">{() => <LazyWrap><UuidGenerator /></LazyWrap>}</Route>
       <Route path="/developer/csv-to-json">{() => <LazyWrap><CsvToJsonConverter /></LazyWrap>}</Route>
@@ -1268,7 +1332,7 @@ function Router() {
       <Route path="/css-design/color-contrast-checker">{() => <LazyWrap><ColorContrastChecker /></LazyWrap>}</Route>
       <Route path="/tools/color-contrast-checker">{() => <LazyWrap><ColorContrastChecker /></LazyWrap>}</Route>
       <Route path="/tools/:slug" component={ToolSlugRedirect} />
-      <Route path="/:categoryId/:slug" component={ToolPlaceholder} />
+      <Route path="/:categoryId/:slug" component={ToolSlugRedirect} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -72,6 +73,31 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+const DUPLICATE_LINE_CANONICAL = `https://usonlinetools.com${getCanonicalToolPath("duplicate-line-remover")}`;
+
+const DUPLICATE_LINE_FAQS = [
+  {
+    q: "Does this tool remove all duplicates or just consecutive ones?",
+    a: "All duplicates — not just consecutive ones. The tool uses a hash set (JavaScript Set) to track every unique line seen so far. The first occurrence of each line is always kept regardless of its position in the list. This is different from Unix 'uniq' which only removes consecutive duplicates.",
+  },
+  {
+    q: "Will it change the order of my lines?",
+    a: "No. The output preserves the original order of first occurrences. If your input is: cherry, apple, cherry, banana, apple — the output will be: cherry, apple, banana. The order of the first time each item appears is maintained.",
+  },
+  {
+    q: "How does case-sensitive mode affect de-duplication?",
+    a: "With case sensitivity OFF (default): 'Apple', 'apple', and 'APPLE' are all considered the same line — only the first occurrence is kept. With case sensitivity ON: 'Apple', 'apple', and 'APPLE' are treated as three distinct lines and all three are retained. Use OFF for human-readable text and ON for code identifiers.",
+  },
+  {
+    q: "What is the maximum list size this tool can handle?",
+    a: "There is no enforced limit. The tool uses browser memory and JavaScript's native Set data structure, which handles millions of entries efficiently. In practice, lists of 100,000+ lines process in under a second on modern hardware. Browser memory is the only practical constraint.",
+  },
+  {
+    q: "Can I remove duplicate lines from a CSV column?",
+    a: "Not directly — this tool processes one full line at a time. For CSV column de-duplication, export the column as a single-column list (one value per line), use this tool to de-duplicate, then re-import. Most spreadsheet tools support exporting and re-importing single columns.",
+  },
+] as const;
+
 const RELATED = [
   { title: "Alphabetical Sort",  slug: "alphabetical-sort",    cat: "productivity", icon: <ListOrdered className="w-5 h-5" />, color: 265, benefit: "Sort lines A-Z or Z-A" },
   { title: "Word Counter",       slug: "word-counter",         cat: "productivity", icon: <Hash className="w-5 h-5" />,       color: 217, benefit: "Count words and characters" },
@@ -87,11 +113,40 @@ export default function DuplicateLineRemover() {
   const copyResult = () => { navigator.clipboard.writeText(result.output); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const copyLink = () => { navigator.clipboard.writeText(window.location.href); setLinkCopied(true); setTimeout(() => setLinkCopied(false), 2000); };
 
+  const schema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          name: "Duplicate Line Remover",
+          url: DUPLICATE_LINE_CANONICAL,
+          description:
+            "Free online duplicate line remover. Instantly remove duplicate lines from any list, text, or code. Control case sensitivity and whitespace trimming.",
+          applicationCategory: "UtilityApplication",
+          operatingSystem: "Any",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: DUPLICATE_LINE_FAQS.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
+        },
+      ],
+    }),
+    [],
+  );
+
   return (
     <Layout>
       <SEO
         title="Duplicate Line Remover – Remove Repeated Lines Online Free | US Online Tools"
         description="Free online duplicate line remover. Instantly remove duplicate lines from any list, text, or code. Control case sensitivity and whitespace trimming. Real-time results. No signup."
+        canonical={DUPLICATE_LINE_CANONICAL}
+        schema={schema}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
@@ -124,7 +179,7 @@ export default function DuplicateLineRemover() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           <div className="lg:col-span-3 space-y-10">
 
-            <section className="space-y-5">
+            <section id="tool" className="space-y-5">
               <div className="rounded-2xl overflow-hidden border border-teal-500/20 shadow-lg shadow-teal-500/5">
                 <div className="h-1.5 w-full bg-gradient-to-r from-teal-500 to-cyan-400" />
                 <div className="bg-card p-6 md:p-8 space-y-5">
@@ -313,11 +368,9 @@ export default function DuplicateLineRemover() {
             <section id="faq">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
-                <FaqItem q="Does this tool remove all duplicates or just consecutive ones?" a="All duplicates — not just consecutive ones. The tool uses a hash set (JavaScript Set) to track every unique line seen so far. The first occurrence of each line is always kept regardless of its position in the list. This is different from Unix 'uniq' which only removes consecutive duplicates." />
-                <FaqItem q="Will it change the order of my lines?" a="No. The output preserves the original order of first occurrences. If your input is: cherry, apple, cherry, banana, apple — the output will be: cherry, apple, banana. The order of the first time each item appears is maintained." />
-                <FaqItem q="How does case-sensitive mode affect de-duplication?" a="With case sensitivity OFF (default): 'Apple', 'apple', and 'APPLE' are all considered the same line — only the first occurrence is kept. With case sensitivity ON: 'Apple', 'apple', and 'APPLE' are treated as three distinct lines and all three are retained. Use OFF for human-readable text and ON for code identifiers." />
-                <FaqItem q="What is the maximum list size this tool can handle?" a="There is no enforced limit. The tool uses browser memory and JavaScript's native Set data structure, which handles millions of entries efficiently. In practice, lists of 100,000+ lines process in under a second on modern hardware. Browser memory is the only practical constraint." />
-                <FaqItem q="Can I remove duplicate lines from a CSV column?" a="Not directly — this tool processes one full line at a time. For CSV column de-duplication, export the column as a single-column list (one value per line), use this tool to de-duplicate, then re-import. Most spreadsheet tools support exporting and re-importing single columns." />
+                {DUPLICATE_LINE_FAQS.map((item) => (
+                  <FaqItem key={item.q} q={item.q} a={item.a} />
+                ))}
               </div>
             </section>
 

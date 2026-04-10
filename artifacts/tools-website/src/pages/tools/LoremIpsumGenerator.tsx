@@ -100,7 +100,7 @@ export default function LoremIpsumGenerator() {
   return (
     <Layout>
       <SEO
-        title="Lorem Ipsum Generator – Dummy Text Placeholder Tool"
+        title="Online Lorem Ipsum Generator – Dummy Text Placeholder Tool"
         description="Free online Lorem Ipsum Generator. Create placeholder text for prototypes, wireframes, and design mockups via custom paragraphs, sentences, or word counts."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
@@ -108,9 +108,9 @@ export default function LoremIpsumGenerator() {
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
-          <Link href="/category/productivity-text" className="text-muted-foreground hover:text-foreground transition-colors">Productivity</Link>
+          <Link href="/category/productivity" className="text-muted-foreground hover:text-foreground transition-colors">Productivity</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
-          <span className="text-foreground">Lorem Generator</span>
+          <span className="text-foreground">Online Lorem Ipsum Generator</span>
         </nav>
 
         {/* HERO */}
@@ -118,7 +118,7 @@ export default function LoremIpsumGenerator() {
           <div className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
             <BookOpen className="w-3.5 h-3.5" /> Text Utilities
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">Lorem Ipsum Generator</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">Online Lorem Ipsum Generator</h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             Populate client wireframes and web layouts instantly with structured dummy latin copy. Output specific quantities partitioned by generic words, short phrases, or heavy paragraph blocks.
           </p>

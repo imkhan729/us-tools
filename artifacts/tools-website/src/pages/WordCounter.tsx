@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -110,7 +111,7 @@ export default function WordCounter() {
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
-          <Link href="/category/text" className="text-muted-foreground hover:text-foreground transition-colors">Text Tools</Link>
+          <Link href="/category/productivity" className="text-muted-foreground hover:text-foreground transition-colors">Text Tools</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
           <span className="text-foreground">Word Counter</span>
         </nav>
@@ -529,7 +530,7 @@ export default function WordCounter() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div

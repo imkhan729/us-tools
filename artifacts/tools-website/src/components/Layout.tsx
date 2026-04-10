@@ -1,21 +1,64 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
+import { DISPLAY_TOOL_CATEGORIES, getCanonicalToolPath } from "@/data/tools";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const moreMenuCloseTimerRef = useRef<number | null>(null);
 
-  const navLinks = [
+  const clearMoreMenuCloseTimer = () => {
+    if (moreMenuCloseTimerRef.current !== null) {
+      window.clearTimeout(moreMenuCloseTimerRef.current);
+      moreMenuCloseTimerRef.current = null;
+    }
+  };
+
+  const openMoreMenu = () => {
+    clearMoreMenuCloseTimer();
+    setIsMoreMenuOpen(true);
+  };
+
+  const scheduleCloseMoreMenu = () => {
+    clearMoreMenuCloseTimer();
+    moreMenuCloseTimerRef.current = window.setTimeout(() => {
+      setIsMoreMenuOpen(false);
+      moreMenuCloseTimerRef.current = null;
+    }, 140);
+  };
+
+  const formatNavLabel = (value: string) => value.replace(/\s+Tools$/i, "").replace(/\s*&\s*/g, " & ").trim();
+
+  const primaryCategoryIds = ["math", "conversion", "image", "pdf"] as const;
+  const primaryLinks = [
     { name: "Home", path: "/" },
-    { name: "Calculators", path: "/category/math" },
-    { name: "Generators", path: "/category/productivity" },
-    { name: "Converters", path: "/category/conversion" },
+    ...primaryCategoryIds
+      .map((id) => DISPLAY_TOOL_CATEGORIES.find((category) => category.id === id))
+      .filter(Boolean)
+      .map((category) => ({
+        name: formatNavLabel(category!.name),
+        path: `/category/${category!.id}`,
+      })),
   ];
+
+  const moreLinks = DISPLAY_TOOL_CATEGORIES
+    .filter((category) => !primaryCategoryIds.includes(category.id as (typeof primaryCategoryIds)[number]))
+    .map((category) => ({
+      name: formatNavLabel(category.name),
+      path: `/category/${category.id}`,
+    }));
 
   return (
     <div className="min-h-screen flex flex-col relative bg-background text-foreground">
@@ -40,7 +83,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center space-x-8">
-              {navLinks.map((link) => {
+              {primaryLinks.map((link) => {
                 const isActive = link.path === "/" ? location === "/" : location.startsWith(link.path);
                 return (
                   <Link 
@@ -54,6 +97,42 @@ export function Layout({ children }: { children: ReactNode }) {
                   </Link>
                 );
               })}
+
+              {moreLinks.length > 0 ? (
+                <DropdownMenu open={isMoreMenuOpen} onOpenChange={setIsMoreMenuOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      onMouseEnter={openMoreMenu}
+                      onMouseLeave={scheduleCloseMoreMenu}
+                      onFocus={openMoreMenu}
+                      className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 inline-flex items-center gap-2 ${
+                        location.startsWith("/category/") && !primaryLinks.some((link) => location.startsWith(link.path))
+                          ? "text-primary border-b-2 border-primary pb-1"
+                          : "text-foreground"
+                      }`}
+                      aria-label="More categories"
+                    >
+                      More <ChevronDown className="w-4 h-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    sideOffset={10}
+                    onMouseEnter={openMoreMenu}
+                    onMouseLeave={scheduleCloseMoreMenu}
+                    className="min-w-56 border-2 border-border bg-background/98 text-foreground shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/85"
+                  >
+                    {moreLinks.map((link) => (
+                      <DropdownMenuItem key={link.path} asChild>
+                        <Link href={link.path} className="cursor-pointer">
+                          {link.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : null}
               
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -94,7 +173,7 @@ export function Layout({ children }: { children: ReactNode }) {
             className="md:hidden fixed top-16 left-0 right-0 z-40 bg-background border-b-2 border-border shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
-              {navLinks.map((link) => (
+              {primaryLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.path}
@@ -104,6 +183,24 @@ export function Layout({ children }: { children: ReactNode }) {
                   {link.name}
                 </Link>
               ))}
+
+              {moreLinks.length > 0 ? (
+                <div className="pt-2 border-t border-border">
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-muted-foreground mb-3">More Categories</p>
+                  <div className="space-y-3">
+                    {moreLinks.map((link) => (
+                      <Link
+                        key={link.path}
+                        href={link.path}
+                        className="block text-lg font-bold uppercase tracking-wider text-foreground hover:text-primary"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </motion.div>
         )}
@@ -139,9 +236,9 @@ export function Layout({ children }: { children: ReactNode }) {
             <div>
               <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Top Tools</h4>
               <ul className="space-y-3 font-medium">
-                <li><Link href="/tools/percentage-calculator" className="text-gray-300 hover:text-primary transition-colors">Percentage Calculator</Link></li>
-                <li><Link href="/tools/password-generator" className="text-gray-300 hover:text-primary transition-colors">Password Generator</Link></li>
-                <li><Link href="/tools/word-counter" className="text-gray-300 hover:text-primary transition-colors">Word Counter</Link></li>
+                <li><Link href={getCanonicalToolPath("percentage-calculator")} className="text-gray-300 hover:text-primary transition-colors">Percentage Calculator</Link></li>
+                <li><Link href={getCanonicalToolPath("password-generator")} className="text-gray-300 hover:text-primary transition-colors">Password Generator</Link></li>
+                <li><Link href={getCanonicalToolPath("word-counter")} className="text-gray-300 hover:text-primary transition-colors">Word Counter</Link></li>
               </ul>
             </div>
 
@@ -158,11 +255,11 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
 
             <div>
-              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Legal</h4>
+              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Company</h4>
               <ul className="space-y-3 font-medium">
-                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-primary transition-colors">Contact Us</a></li>
+                <li><Link href="/about" className="text-gray-300 hover:text-primary transition-colors">About Us</Link></li>
+                <li><Link href="/privacy-policy" className="text-gray-300 hover:text-primary transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms-of-service" className="text-gray-300 hover:text-primary transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 # compiled output
 dist
+hostinger-public
 tmp
 out-tsc
 *.tsbuildinfo

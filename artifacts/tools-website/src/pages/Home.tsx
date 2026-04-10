@@ -24,7 +24,7 @@ import {
   ShieldAlert, KeySquare, Fingerprint, UnlockKeyhole, ScanText,
 } from "lucide-react";
 import { useState, useMemo } from "react";
-import { DISPLAY_TOOL_CATEGORIES, SITE_TOOL_COUNT, getToolPath, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, SITE_TOOL_COUNT, getCanonicalToolPath, getToolPath, type Tool } from "@/data/tools";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "math": <Calculator className="w-7 h-7" />,
@@ -698,12 +698,29 @@ export default function Home() {
   const totalTools = homepageTools.length;
   const displayCount = SITE_TOOL_COUNT;
   const liveTools = homepageTools.filter(t => t.implemented).length;
+  const homeSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "US Online Tools",
+      url: "https://usonlinetools.com",
+      description: `${displayCount} free online tools including calculators, converters, generators, and utilities.`,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "US Online Tools",
+      url: "https://usonlinetools.com",
+      logo: "https://usonlinetools.com/favicon.svg",
+    },
+  ];
 
   return (
     <Layout>
       <SEO
         title="Free Online Tools - US Online Tools"
         description={`${displayCount} free online tools including calculators, converters, generators, and utilities. No signup required. 100% free at usonlinetools.com.`}
+        schema={homeSchema}
       />
 
       {/* ── HERO ── */}
@@ -1085,18 +1102,18 @@ export default function Home() {
             </h2>
             <p className="text-muted-foreground font-medium leading-relaxed mb-4">
               <strong className="text-foreground">US Online Tools</strong> (usonlinetools.com) is your go-to source for free, fast, and private online utilities. Whether you need a{" "}
-              <Link href="/tools/percentage-calculator" className="text-primary font-bold hover:underline">Percentage Calculator</Link>,{" "}
-              <Link href="/tools/password-generator" className="text-primary font-bold hover:underline">Password Generator</Link>,{" "}
-              <Link href="/tools/bmi-calculator" className="text-primary font-bold hover:underline">BMI Calculator</Link>,{" "}
-              <Link href="/tools/loan-emi-calculator" className="text-primary font-bold hover:underline">Loan EMI Calculator</Link>,{" "}
-              <Link href="/tools/color-converter" className="text-primary font-bold hover:underline">Color Converter</Link>, or a{" "}
-              <Link href="/tools/gpa-calculator" className="text-primary font-bold hover:underline">GPA Calculator</Link>{" "}
+              <Link href={getCanonicalToolPath("percentage-calculator")} className="text-primary font-bold hover:underline">Percentage Calculator</Link>,{" "}
+              <Link href={getCanonicalToolPath("password-generator")} className="text-primary font-bold hover:underline">Password Generator</Link>,{" "}
+              <Link href={getCanonicalToolPath("bmi-calculator")} className="text-primary font-bold hover:underline">BMI Calculator</Link>,{" "}
+              <Link href={getCanonicalToolPath("loan-emi-calculator")} className="text-primary font-bold hover:underline">Loan EMI Calculator</Link>,{" "}
+              <Link href={getCanonicalToolPath("color-converter")} className="text-primary font-bold hover:underline">Color Converter</Link>, or a{" "}
+              <Link href={getCanonicalToolPath("gpa-calculator")} className="text-primary font-bold hover:underline">GPA Calculator</Link>{" "}
               — we have everything covered across {homepageCategories.length} categories.
             </p>
             <p className="text-muted-foreground font-medium leading-relaxed">
               All tools run entirely in your browser with no data collection, no registration, and no hidden fees. From finance calculators like the{" "}
-              <Link href="/tools/compound-interest-calculator" className="text-primary font-bold hover:underline">Compound Interest Calculator</Link> to gaming tools like the{" "}
-              <Link href="/tools/roblox-tax-calculator" className="text-primary font-bold hover:underline">Roblox Tax Calculator</Link>,{" "}
+              <Link href={getCanonicalToolPath("compound-interest-calculator")} className="text-primary font-bold hover:underline">Compound Interest Calculator</Link> to gaming tools like the{" "}
+              <Link href={getCanonicalToolPath("roblox-tax-calculator")} className="text-primary font-bold hover:underline">Roblox Tax Calculator</Link>,{" "}
               usonlinetools.com is built for everyone.
             </p>
           </div>

@@ -170,7 +170,7 @@ export default function GradeCalculator() {
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
-          <Link href="/category/student-education" className="text-muted-foreground hover:text-foreground transition-colors">Student &amp; Education</Link>
+          <Link href="/category/education" className="text-muted-foreground hover:text-foreground transition-colors">Student &amp; Education</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-violet-500" strokeWidth={3} />
           <span className="text-foreground">Grade Calculator</span>
         </nav>

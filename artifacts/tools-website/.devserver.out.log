@@ -1,0 +1,44 @@
+
+> @workspace/tools-website@0.0.0 dev C:\Users\Roy\Downloads\Utility-Hub\artifacts\tools-website
+> vite --config vite.config.ts --host 0.0.0.0
+
+
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m5379[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.8.80:[1m4173[22m/[39m
+[2m5:23:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/pages/ToolPlaceholder.tsx, /src/pages/CategoryPage.tsx, /src/pages/Home.tsx, /src/index.css[22m
+[2m5:23:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/SEO.tsx[22m
+[2m5:25:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m5:26:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Layout.tsx[22m
+[2m5:27:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/CategoryPage.tsx, /src/index.css[22m
+[2m5:28:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/CategoryPage.tsx, /src/index.css[22m
+[2m5:28:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/not-found.tsx, /src/index.css[22m
+[2m5:28:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m5:29:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/Home.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AgeCalculator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BmiCalculator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/ColorConverter.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/DiscountCalculator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/PasswordGenerator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/PercentageCalculator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/RandomNumberGenerator.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/TemperatureConverter.tsx, /src/index.css[22m
+[2m5:31:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/WordCounter.tsx, /src/index.css[22m
+[2m5:31:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:31:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:31:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:31:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m5:32:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/pages/ToolPlaceholder.tsx, /src/pages/CategoryPage.tsx, /src/pages/Home.tsx, /src/components/SEO.tsx, /src/components/Layout.tsx, /src/pages/AgeCalculator.tsx, /src/pages/BmiCalculator.tsx, /src/pages/ColorConverter.tsx, /src/pages/DiscountCalculator.tsx, /src/pages/PasswordGenerator.tsx, /src/pages/PercentageCalculator.tsx, /src/pages/RandomNumberGenerator.tsx, /src/pages/TemperatureConverter.tsx, /src/pages/WordCounter.tsx, /src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/pages/ToolPlaceholder.tsx, /src/pages/CategoryPage.tsx, /src/pages/Home.tsx, /src/components/SEO.tsx, /src/components/Layout.tsx, /src/pages/AgeCalculator.tsx, /src/pages/BmiCalculator.tsx, /src/pages/ColorConverter.tsx, /src/pages/DiscountCalculator.tsx, /src/pages/PasswordGenerator.tsx, /src/pages/PercentageCalculator.tsx, /src/pages/RandomNumberGenerator.tsx, /src/pages/TemperatureConverter.tsx, /src/pages/WordCounter.tsx, /src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m6:36:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+ ELIFECYCLE  Command failed with exit code 3221225786.

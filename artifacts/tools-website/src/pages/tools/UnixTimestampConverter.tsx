@@ -162,7 +162,7 @@ export default function UnixTimestampConverter() {
   return (
     <Layout>
       <SEO
-        title="Unix Timestamp Converter – Epoch to Human Readable Date"
+        title="Online Unix Timestamp Converter – Epoch to Human Readable Date"
         description="Convert Unix epoch timestamps to human-readable dates, or translate a calendar date back into seconds instantly. Free Unix time calculator."
       />
 
@@ -173,7 +173,7 @@ export default function UnixTimestampConverter() {
           <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
           <Link href="/category/time-date" className="text-muted-foreground hover:text-foreground transition-colors">Time & Date</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-orange-500" strokeWidth={3} />
-          <span className="text-foreground">Unix Timestamp Converter</span>
+          <span className="text-foreground">Online Unix Timestamp Converter</span>
         </nav>
 
         {/* ── HERO SECTION ── */}
@@ -184,7 +184,7 @@ export default function UnixTimestampConverter() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
-            Unix Timestamp Converter
+            Online Unix Timestamp Converter
           </h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             Translate machine-readable epoch timestamps into your exact local time natively. Support for standard 10-digit seconds or 13-digit JavaScript millisecond variants.

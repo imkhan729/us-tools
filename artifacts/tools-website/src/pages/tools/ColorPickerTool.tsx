@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BarChart3, Palette, Pipette, Type } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
+import { getCanonicalToolPath } from "@/data/tools";
 
 function normalizeHex(value: string) {
   const trimmed = value.trim().replace(/^#/, "");
@@ -104,7 +105,7 @@ export default function ColorPickerTool() {
       title="Color Picker Tool"
       seoTitle="Color Picker Tool"
       seoDescription="Pick colors, inspect HEX RGB HSL values, and copy matching palette variants instantly with this free browser-based color picker."
-      canonical="https://usonlinetools.com/css-design/color-picker"
+      canonical={`https://usonlinetools.com${getCanonicalToolPath("color-picker")}`}
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"
       heroDescription="Pick a color visually, inspect its HEX, RGB, and HSL values, and copy ready-to-use codes for design systems, websites, branding work, and quick UI experiments."

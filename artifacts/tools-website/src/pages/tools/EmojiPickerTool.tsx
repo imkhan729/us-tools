@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { BarChart3, Hash, Search, Smile, Type } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
+import { getCanonicalToolPath } from "@/data/tools";
 
 const EMOJIS = [
   { char: "\u{1F600}", label: "grinning face", category: "Smileys" },
@@ -64,7 +65,7 @@ export default function EmojiPickerTool() {
       title="Emoji Picker Tool"
       seoTitle="Emoji Picker Tool"
       seoDescription="Browse, search, and copy useful emojis by category with this free browser-based emoji picker."
-      canonical="https://usonlinetools.com/social-media/emoji-picker"
+      canonical={`https://usonlinetools.com${getCanonicalToolPath("emoji-picker")}`}
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"
       heroDescription="Browse practical emoji categories, search by label, and copy the character you need for captions, comments, bios, docs, and messages without leaving the browser."

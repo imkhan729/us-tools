@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -9,6 +10,8 @@ import {
   DollarSign, Scale, BarChart3, Lightbulb, Copy, Check,
   BadgeCheck, Lock, Star,
 } from "lucide-react";
+
+type ChangeMode = "change" | "increase" | "decrease" | "difference";
 
 // ── Calculator Logic ──
 function useCalc1() {
@@ -33,19 +36,44 @@ function useCalc2() {
   return { x, setX, y, setY, result };
 }
 
-function useCalc3() {
+function useCalc3(mode: ChangeMode) {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const result = useMemo(() => {
     const px = parseFloat(x), py = parseFloat(y);
-    if (isNaN(px) || isNaN(py) || px === 0) return null;
+    if (isNaN(px) || isNaN(py)) return null;
+
+    if (mode === "difference") {
+      const change = Math.abs(py - px);
+      const avg = (Math.abs(px) + Math.abs(py)) / 2;
+      if (avg === 0) return 0;
+      return (change / avg) * 100;
+    }
+
+    if (px === 0) return null;
+
+    if (mode === "decrease") {
+      return ((px - py) / Math.abs(px)) * 100;
+    }
+
+    // "change" (signed) and "increase" share the same formula; display rules differ in UI
     return ((py - px) / Math.abs(px)) * 100;
-  }, [x, y]);
+  }, [mode, x, y]);
   return { x, setX, y, setY, result };
 }
 
 // ── Result Insight Component ──
-function ResultInsight({ type, result, inputs }: { type: 1 | 2 | 3; result: number | null; inputs: { x: string; y: string } }) {
+function ResultInsight({
+  type,
+  result,
+  inputs,
+  changeMode,
+}: {
+  type: 1 | 2 | 3;
+  result: number | null;
+  inputs: { x: string; y: string };
+  changeMode?: ChangeMode;
+}) {
   if (result === null) return null;
 
   const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 4 });
@@ -56,8 +84,20 @@ function ResultInsight({ type, result, inputs }: { type: 1 | 2 | 3; result: numb
   } else if (type === 2) {
     message = `${inputs.x} is ${fmt(result)}% of ${inputs.y}. This means ${inputs.x} represents about ${fmt(result)} out of every 100 units of ${inputs.y}.`;
   } else {
-    const direction = result > 0 ? "increase" : result < 0 ? "decrease" : "no change";
-    message = `There is a ${fmt(Math.abs(result))}% ${direction} from ${inputs.x} to ${inputs.y}. ${result > 0 ? "The value went up." : result < 0 ? "The value went down." : "The value stayed the same."}`;
+    const resolvedMode = changeMode ?? "change";
+    if (resolvedMode === "difference") {
+      message = `The two values differ by ${fmt(result)}% (measured relative to their average). This is useful when there is no clear “original” value.`;
+    } else if (resolvedMode === "decrease") {
+      message = `From ${inputs.x} to ${inputs.y}, the value decreased by ${fmt(result)}% (relative to the original).`;
+    } else if (resolvedMode === "increase") {
+      const isIncrease = result >= 0;
+      message = isIncrease
+        ? `From ${inputs.x} to ${inputs.y}, the value increased by ${fmt(result)}% (relative to the original).`
+        : `From ${inputs.x} to ${inputs.y}, the value did not increase. It changed by ${fmt(result)}% (negative means a decrease).`;
+    } else {
+      const direction = result > 0 ? "increase" : result < 0 ? "decrease" : "no change";
+      message = `There is a ${fmt(Math.abs(result))}% ${direction} from ${inputs.x} to ${inputs.y}. ${result > 0 ? "The value went up." : result < 0 ? "The value went down." : "The value stayed the same."}`;
+    }
   }
 
   return (
@@ -120,7 +160,8 @@ const RELATED_TOOLS = [
 export default function PercentageCalculator() {
   const calc1 = useCalc1();
   const calc2 = useCalc2();
-  const calc3 = useCalc3();
+  const [changeMode, setChangeMode] = useState<ChangeMode>("change");
+  const calc3 = useCalc3(changeMode);
   const [copied, setCopied] = useState(false);
 
   const copyLink = () => {
@@ -137,8 +178,8 @@ export default function PercentageCalculator() {
   return (
     <Layout>
       <SEO
-        title="Percentage Calculator – Calculate Any Percentage Instantly, Free | US Online Tools"
-        description="Free online percentage calculator. Find what percent X is of Y, calculate percentage change, increase or decrease. Instant results, accurate to 4 decimal places. No signup required."
+        title="Percentage Calculator – Percent Of, Increase, Decrease & Difference (All-in-One) | US Online Tools"
+        description="Free all-in-one percentage calculator: find X% of Y, what percent X is of Y, and calculate percentage change, increase, decrease, or difference. Instant results, accurate to 4 decimals."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
@@ -149,7 +190,7 @@ export default function PercentageCalculator() {
           <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
           <Link href="/category/math" className="text-muted-foreground hover:text-foreground transition-colors">Math & Calculators</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
-          <span className="text-foreground">Percentage Calculator</span>
+          <span className="text-foreground">Online Percentage Calculator</span>
         </nav>
 
         {/* ── HERO SECTION (Full Width) ── */}
@@ -162,7 +203,7 @@ export default function PercentageCalculator() {
 
           {/* Heading */}
           <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
-            Percentage Calculator
+            Online Percentage Calculator
           </h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             Three percentage calculators in one — find a percentage of a number, express one value as a percent of another, or calculate percentage change. Instant results, no login required.
@@ -198,7 +239,7 @@ export default function PercentageCalculator() {
           <div className="lg:col-span-3 space-y-10">
 
             {/* ── 2. TOOL WIDGET ── */}
-            <section className="space-y-5">
+            <section id="calculator" className="space-y-5">
               <div className="rounded-2xl overflow-hidden border border-blue-500/20 shadow-lg shadow-blue-500/5">
                 <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 to-cyan-400" />
                 <div className="bg-card p-6 md:p-8 space-y-5">
@@ -276,11 +317,34 @@ export default function PercentageCalculator() {
                     <ResultInsight type={2} result={calc2.result} inputs={{ x: calc2.x, y: calc2.y }} />
                   </div>
 
-                  {/* Calculator 3: Percentage Change */}
+                  {/* Calculator 3: Change / Increase / Decrease / Difference */}
                   <div className="tool-calc-card" style={{ "--calc-hue": 152 } as React.CSSProperties}>
                     <div className="flex items-center gap-3 mb-5">
                       <div className="tool-calc-number">3</div>
-                      <h3 className="text-lg font-bold text-foreground">Percentage Change from X to Y</h3>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-foreground">Percentage Change (Increase / Decrease / Difference)</h3>
+                        <p className="text-sm text-muted-foreground mt-1">Pick the variant you need, then enter two values.</p>
+                      </div>
+                    </div>
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {([
+                        ["change", "Change"],
+                        ["increase", "Increase"],
+                        ["decrease", "Decrease"],
+                        ["difference", "Difference"],
+                      ] as const).map(([value, label]) => (
+                        <button
+                          key={value}
+                          onClick={() => setChangeMode(value)}
+                          className={`rounded-xl border px-3 py-2 text-xs font-black uppercase tracking-[0.14em] transition-colors ${
+                            changeMode === value
+                              ? "border-blue-500/40 bg-blue-500/10 text-blue-700 dark:text-blue-300"
+                              : "border-border bg-background text-muted-foreground hover:text-foreground hover:border-blue-500/20"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
                     </div>
                     <div className="flex flex-col sm:flex-row items-center gap-3">
                       <span className="text-sm font-semibold text-muted-foreground">From</span>
@@ -300,18 +364,32 @@ export default function PercentageCalculator() {
                         onChange={e => calc3.setY(e.target.value)}
                       />
                       <span className="text-lg font-black text-muted-foreground">=</span>
-                      <div className={`tool-calc-result flex-1 w-full ${calc3.result !== null && calc3.result >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
-                        {calc3.result !== null ? `${calc3.result > 0 ? "+" : ""}${fmt(calc3.result)}%` : "--"}
+                      <div
+                        className={`tool-calc-result flex-1 w-full ${
+                          changeMode === "difference"
+                            ? "text-amber-600 dark:text-amber-400"
+                            : changeMode === "decrease"
+                              ? "text-red-600 dark:text-red-400"
+                              : calc3.result !== null && calc3.result >= 0
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : "text-red-600 dark:text-red-400"
+                        }`}
+                      >
+                        {calc3.result !== null
+                          ? `${changeMode === "difference" ? "" : changeMode === "decrease" ? "−" : calc3.result > 0 ? "+" : ""}${fmt(
+                              Math.abs(calc3.result),
+                            )}%`
+                          : "--"}
                       </div>
                     </div>
-                    <ResultInsight type={3} result={calc3.result} inputs={{ x: calc3.x, y: calc3.y }} />
+                    <ResultInsight type={3} result={calc3.result} inputs={{ x: calc3.x, y: calc3.y }} changeMode={changeMode} />
                   </div>
                 </div>
               </div>
             </section>
 
             {/* ── 3. HOW TO USE ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="how-to-use" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Use the Percentage Calculator</h2>
 
               <p className="text-muted-foreground leading-relaxed mb-6">
@@ -324,7 +402,7 @@ export default function PercentageCalculator() {
                   <div>
                     <p className="font-bold text-foreground mb-1">Choose the right calculator for your question</p>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      Use <strong className="text-foreground">Calculator 1</strong> ("What is X% of Y?") when you know the percentage and the whole value — for example, finding a 20% tip on a $50 bill, or calculating 15% VAT on a product price. Use <strong className="text-foreground">Calculator 2</strong> ("X is what % of Y?") when you know both values but want to express their relationship as a percentage — ideal for exam scores, market share, or recipe ratios. Use <strong className="text-foreground">Calculator 3</strong> ("Percentage Change") when comparing a before-and-after value — like a price increase, salary change, or monthly revenue shift.
+                      Use <strong className="text-foreground">Calculator 1</strong> ("What is X% of Y?") when you know the percentage and the whole value — for example, finding a 20% tip on a $50 bill, or calculating 15% VAT on a product price. Use <strong className="text-foreground">Calculator 2</strong> ("X is what % of Y?") when you know both values but want to express their relationship as a percentage — ideal for exam scores, market share, or recipe ratios. Use <strong className="text-foreground">Calculator 3</strong> when comparing two values: choose <strong className="text-foreground">Change</strong> for signed movement, <strong className="text-foreground">Increase</strong> or <strong className="text-foreground">Decrease</strong> for directional calculations, and <strong className="text-foreground">Difference</strong> when there’s no clear “original.”
                     </p>
                   </div>
                 </li>
@@ -363,6 +441,14 @@ export default function PercentageCalculator() {
                     <span className="text-emerald-500 font-bold w-4 flex-shrink-0">3</span>
                     <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Change = ((Y − X) ÷ |X|) × 100</code>
                   </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-red-500 font-bold w-4 flex-shrink-0">4</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Decrease = ((X − Y) ÷ |X|) × 100</code>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-amber-500 font-bold w-4 flex-shrink-0">5</span>
+                    <code className="px-2 py-1.5 bg-background rounded text-xs font-mono flex-1">Difference = |X − Y| ÷ ((|X| + |Y|) ÷ 2) × 100</code>
+                  </div>
                 </div>
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   <p>
@@ -374,12 +460,18 @@ export default function PercentageCalculator() {
                   <p>
                     <strong className="text-foreground">Formula 3</strong> measures relative change. Using the absolute value of X in the denominator ensures the formula works correctly even when the starting value is negative — for example, a business that improves from a loss of −$5,000 to a profit of $2,500. The result is signed: positive for growth, negative for decline.
                   </p>
+                  <p>
+                    <strong className="text-foreground">Formula 4</strong> is the standard percentage decrease formula. It’s directional and uses the original value as the base — common for discounts, losses, and drops.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Formula 5</strong> is percentage difference. It is symmetric (no “before/after”), which is ideal for comparing options like two vendor quotes when neither is the “original.”
+                  </p>
                 </div>
               </div>
             </section>
 
             {/* ── 4. RESULT INTERPRETATION ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="result-interpretation" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Result Categories & Interpretation</h2>
               <p className="text-muted-foreground text-sm mb-6">How to read and act on your percentage result:</p>
 
@@ -423,7 +515,7 @@ export default function PercentageCalculator() {
             </section>
 
             {/* ── 5. QUICK EXAMPLES ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="quick-examples" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Quick Examples</h2>
 
               <div className="overflow-x-auto rounded-xl border border-border mb-6">
@@ -503,7 +595,7 @@ export default function PercentageCalculator() {
             </section>
 
             {/* ── 6. WHY CHOOSE THIS ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="why-choose-this" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Why Choose This Percentage Calculator?</h2>
 
               <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
@@ -533,7 +625,7 @@ export default function PercentageCalculator() {
             </section>
 
             {/* ── 7. FAQ ── */}
-            <section>
+            <section id="faq">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
                 <FaqItem
@@ -600,7 +692,7 @@ export default function PercentageCalculator() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div

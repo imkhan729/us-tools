@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useParams, Link } from "wouter";
+import { useParams, Link, useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { getToolBySlug, getRelatedTools, getToolPath, TOOL_CATEGORIES } from "@/data/tools";
+import { getCanonicalToolPath, getToolBySlug, getRelatedTools, getToolPath, TOOL_CATEGORIES } from "@/data/tools";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -121,9 +122,18 @@ const DEFAULT_STYLE = {
 
 export default function ToolPlaceholder() {
   const params = useParams<{ slug: string }>();
+  const [location, setLocation] = useLocation();
   const slug = params.slug;
   const tool = getToolBySlug(slug);
   const [copied, setCopied] = useState(false);
+
+  const canonicalDestination = tool ? getCanonicalToolPath(tool.slug) : undefined;
+
+  useEffect(() => {
+    if (!tool || tool.implemented === false || !canonicalDestination) return;
+    if (location === canonicalDestination) return;
+    setLocation(canonicalDestination, { replace: true });
+  }, [canonicalDestination, location, setLocation, tool]);
 
   if (!tool) {
     return (
@@ -138,6 +148,20 @@ export default function ToolPlaceholder() {
             Go Home
           </Link>
         </div>
+      </Layout>
+    );
+  }
+
+  if (tool.implemented !== false) {
+    return (
+      <Layout>
+        <SEO
+          title="Redirecting to the canonical tool page"
+          description="This legacy placeholder URL now points to the live canonical tool page."
+          canonical={canonicalDestination}
+          noindex
+        />
+        <div className="min-h-screen bg-background" />
       </Layout>
     );
   }
@@ -191,6 +215,7 @@ export default function ToolPlaceholder() {
       <SEO
         title={`${tool.title} - Free Online Tool`}
         description={tool.metaDescription}
+        canonical={`https://usonlinetools.com${getToolPath(tool.slug)}`}
         schema={structuredData}
         noindex
       />

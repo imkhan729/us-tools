@@ -1,6 +1,7 @@
 import { ReactNode, useMemo, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { ToolRightSidebar } from "@/components/ToolRightSidebar";
 import { Link } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -137,7 +138,6 @@ export default function StudentToolPageShell({
   relatedTools,
   quickFacts,
 }: StudentToolPageShellProps) {
-  const [copied, setCopied] = useState(false);
   const pageHeading = /^online\b/i.test(title) ? title : `Online ${title}`;
   const resolvedSeoTitle = /\bonline\b/i.test(seoTitle) ? seoTitle : `Online ${seoTitle}`;
 
@@ -173,12 +173,6 @@ export default function StudentToolPageShell({
     }),
     [canonical, faqs, pageHeading, seoDescription],
   );
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  };
 
   const onThisPageItems = [
     { label: "Calculator", href: "#calculator" },
@@ -243,7 +237,7 @@ export default function StudentToolPageShell({
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          <div className="lg:col-span-3 space-y-10">
+          <div className="lg:col-span-3 min-w-0 space-y-10">
             <section id="calculator" className="space-y-5">
               <div className="rounded-2xl overflow-hidden border border-indigo-500/20 shadow-lg shadow-indigo-500/5">
                 <div className="h-1.5 w-full bg-gradient-to-r from-indigo-500 to-violet-400" />
@@ -257,7 +251,9 @@ export default function StudentToolPageShell({
                       <p className="text-sm text-muted-foreground">{calculatorDescription}</p>
                     </div>
                   </div>
-                  {calculator}
+                  <div className="min-w-0 overflow-x-auto">
+                    {calculator}
+                  </div>
                 </div>
               </div>
             </section>
@@ -337,69 +333,14 @@ export default function StudentToolPageShell({
             </section>
           </div>
 
-          <aside className="lg:col-span-1 space-y-8 lg:sticky lg:top-24 self-start">
-            <div className="sticky top-24 space-y-6">
-              <div className="overflow-hidden rounded-2xl border border-indigo-500/15 bg-card shadow-sm">
-                <div className="h-1 w-full bg-gradient-to-r from-indigo-500 to-violet-400" />
-                <div className="p-4">
-                <h3 className="text-sm font-black uppercase tracking-tight text-foreground mb-1">Related Tools</h3>
-                <p className="text-xs text-muted-foreground mb-3">Jump to the next calculator students usually need once this number is clear.</p>
-                <div className="space-y-2">
-                  {relatedTools.map((tool) => (
-                    <Link
-                      key={tool.href}
-                      href={tool.href}
-                      className="group flex items-start gap-3 rounded-xl border border-border bg-muted/25 px-3 py-3 transition-all hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-indigo-500/5"
-                    >
-                      <div className="mt-0.5 w-9 h-9 rounded-xl flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-4 [&>svg]:h-4"
-                        style={{ background: "linear-gradient(135deg, hsl(214 70% 55%), hsl(214 75% 42%))" }}
-                      >
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground/70 mb-1">Study Flow</p>
-                        <p className="text-sm font-bold leading-snug text-foreground group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors">{tool.title}</p>
-                        <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{tool.benefit}</p>
-                      </div>
-                      <ChevronRight className="mt-1 w-4 h-4 text-muted-foreground group-hover:text-primary flex-shrink-0 transition-all group-hover:translate-x-0.5" />
-                    </Link>
-                  ))}
-                </div>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <div className="p-4">
-                <h3 className="text-sm font-black uppercase tracking-tight text-foreground mb-1.5">Share This Tool</h3>
-                <p className="text-xs text-muted-foreground mb-3">Help others calculate faster and share this page.</p>
-                <button
-                  onClick={copyLink}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-400 text-white text-sm font-bold rounded-xl hover:-translate-y-1 active:translate-y-0.5 transition-transform"
-                >
-                  {copied ? (
-                    <><Check className="w-3.5 h-3.5" /> Copied!</>
-                  ) : (
-                    <><Copy className="w-3.5 h-3.5" /> Copy Link</>
-                  )}
-                </button>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <div className="p-4">
-                <h3 className="text-sm font-black uppercase tracking-tight text-foreground mb-3">On This Page</h3>
-                <div className="space-y-1">
-                  {onThisPageItems.map((item) => (
-                    <a key={item.href} href={item.href} className="flex items-center gap-2 rounded-lg px-2 py-2 text-xs text-muted-foreground hover:bg-indigo-500/5 hover:text-indigo-500 font-medium transition-colors">
-                      <div className="w-1.5 h-1.5 rounded-full bg-indigo-500/40 flex-shrink-0" />
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-                </div>
-              </div>
-            </div>
-          </aside>
+          <ToolRightSidebar
+            relatedTools={relatedTools.map((tool) => ({
+              title: tool.title,
+              href: tool.href,
+              benefit: tool.benefit,
+            }))}
+            onThisPageItems={onThisPageItems}
+          />
         </div>
       </div>
     </Layout>

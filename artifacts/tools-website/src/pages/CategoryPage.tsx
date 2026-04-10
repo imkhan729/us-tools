@@ -23,22 +23,24 @@ import { ChevronRight, ArrowRight,
 } from "lucide-react";
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string; light: string }> = {
-  "math":         { bg: "bg-blue-500",    text: "text-blue-500",    border: "border-blue-500",    light: "bg-blue-50 dark:bg-blue-950/30" },
-  "finance":      { bg: "bg-emerald-500", text: "text-emerald-500", border: "border-emerald-500", light: "bg-emerald-50 dark:bg-emerald-950/30" },
-  "conversion":   { bg: "bg-purple-500",  text: "text-purple-500",  border: "border-purple-500",  light: "bg-purple-50 dark:bg-purple-950/30" },
-  "time-date":    { bg: "bg-orange-500",  text: "text-orange-500",  border: "border-orange-500",  light: "bg-orange-50 dark:bg-orange-950/30" },
-  "health":       { bg: "bg-red-500",     text: "text-red-500",     border: "border-red-500",     light: "bg-red-50 dark:bg-red-950/30" },
-  "construction": { bg: "bg-yellow-500",  text: "text-yellow-600",  border: "border-yellow-500",  light: "bg-yellow-50 dark:bg-yellow-950/30" },
-  "productivity": { bg: "bg-teal-500",    text: "text-teal-500",    border: "border-teal-500",    light: "bg-teal-50 dark:bg-teal-950/30" },
-  "education":    { bg: "bg-indigo-500",  text: "text-indigo-500",  border: "border-indigo-500",  light: "bg-indigo-50 dark:bg-indigo-950/30" },
-  "gaming":       { bg: "bg-pink-500",    text: "text-pink-500",    border: "border-pink-500",    light: "bg-pink-50 dark:bg-pink-950/30" },
-  "image":        { bg: "bg-cyan-500",    text: "text-cyan-500",    border: "border-cyan-500",    light: "bg-cyan-50 dark:bg-cyan-950/30" },
-  "pdf":          { bg: "bg-rose-500",    text: "text-rose-500",    border: "border-rose-500",    light: "bg-rose-50 dark:bg-rose-950/30" },
-  "developer":    { bg: "bg-slate-500",   text: "text-slate-500",   border: "border-slate-500",   light: "bg-slate-50 dark:bg-slate-950/30" },
-  "css-design":   { bg: "bg-fuchsia-500", text: "text-fuchsia-500", border: "border-fuchsia-500", light: "bg-fuchsia-50 dark:bg-fuchsia-950/30" },
-  "seo":          { bg: "bg-lime-500",    text: "text-lime-500",    border: "border-lime-500",    light: "bg-lime-50 dark:bg-lime-950/30" },
-  "security":     { bg: "bg-amber-500",   text: "text-amber-500",   border: "border-amber-500",   light: "bg-amber-50 dark:bg-amber-950/30" },
-  "social-media": { bg: "bg-violet-500",  text: "text-violet-500",  border: "border-violet-500",  light: "bg-violet-50 dark:bg-violet-950/30" },
+  // Note: dark-mode hero backgrounds need enough contrast to be visible against the page background.
+  // These values intentionally use stronger dark tints than the previous /30 opacity.
+  "math":         { bg: "bg-blue-500",    text: "text-blue-500",    border: "border-blue-500",    light: "bg-blue-50 dark:bg-blue-950/65" },
+  "finance":      { bg: "bg-emerald-500", text: "text-emerald-500", border: "border-emerald-500", light: "bg-emerald-50 dark:bg-emerald-950/65" },
+  "conversion":   { bg: "bg-purple-500",  text: "text-purple-500",  border: "border-purple-500",  light: "bg-purple-50 dark:bg-purple-950/65" },
+  "time-date":    { bg: "bg-orange-500",  text: "text-orange-500",  border: "border-orange-500",  light: "bg-orange-50 dark:bg-orange-950/65" },
+  "health":       { bg: "bg-red-500",     text: "text-red-500",     border: "border-red-500",     light: "bg-red-50 dark:bg-red-950/65" },
+  "construction": { bg: "bg-yellow-500",  text: "text-yellow-600",  border: "border-yellow-500",  light: "bg-yellow-50 dark:bg-yellow-950/65" },
+  "productivity": { bg: "bg-teal-500",    text: "text-teal-500",    border: "border-teal-500",    light: "bg-teal-50 dark:bg-teal-950/65" },
+  "education":    { bg: "bg-indigo-500",  text: "text-indigo-500",  border: "border-indigo-500",  light: "bg-indigo-50 dark:bg-indigo-950/65" },
+  "gaming":       { bg: "bg-pink-500",    text: "text-pink-500",    border: "border-pink-500",    light: "bg-pink-50 dark:bg-pink-950/65" },
+  "image":        { bg: "bg-cyan-500",    text: "text-cyan-500",    border: "border-cyan-500",    light: "bg-cyan-50 dark:bg-cyan-950/65" },
+  "pdf":          { bg: "bg-rose-500",    text: "text-rose-500",    border: "border-rose-500",    light: "bg-rose-50 dark:bg-rose-950/65" },
+  "developer":    { bg: "bg-slate-500",   text: "text-slate-500",   border: "border-slate-500",   light: "bg-slate-50 dark:bg-slate-950/65" },
+  "css-design":   { bg: "bg-fuchsia-500", text: "text-fuchsia-500", border: "border-fuchsia-500", light: "bg-fuchsia-50 dark:bg-fuchsia-950/65" },
+  "seo":          { bg: "bg-lime-500",    text: "text-lime-500",    border: "border-lime-500",    light: "bg-lime-50 dark:bg-lime-950/65" },
+  "security":     { bg: "bg-amber-500",   text: "text-amber-500",   border: "border-amber-500",   light: "bg-amber-50 dark:bg-amber-950/65" },
+  "social-media": { bg: "bg-violet-500",  text: "text-violet-500",  border: "border-violet-500",  light: "bg-violet-50 dark:bg-violet-950/65" },
 };
 
 const CATEGORY_ICONS_LG: Record<string, React.ReactNode> = {
@@ -528,17 +530,52 @@ export default function CategoryPage() {
   const colors = CATEGORY_COLORS[catId] ?? CATEGORY_COLORS["math"];
   const liveCount = category.tools.filter(t => t.implemented).length;
   const otherCategories = DISPLAY_TOOL_CATEGORIES.filter(c => c.id !== catId);
+  const categorySchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: `${category.name} Tools`,
+      url: `https://usonlinetools.com/category/${catId}`,
+      description: `${category.description}. ${category.tools.length} free online tools.`,
+      isPartOf: {
+        "@type": "WebSite",
+        name: "US Online Tools",
+        url: "https://usonlinetools.com",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://usonlinetools.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: category.name,
+          item: `https://usonlinetools.com/category/${catId}`,
+        },
+      ],
+    },
+  ];
 
   return (
     <Layout>
       <SEO
         title={`${category.name} — Free Online Tools`}
         description={`${category.description}. ${category.tools.length} free online ${category.name.toLowerCase()} tools. No signup required.`}
+        schema={categorySchema}
       />
 
       {/* ── HEADER BANNER ── */}
-      <section className={`${colors.light} border-b-4 border-border`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="relative overflow-hidden border-b-4 border-border bg-gradient-to-br from-background via-card to-muted/40 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
+        <div className={`pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full ${colors.bg}/15 blur-3xl`} />
+        <div className={`pointer-events-none absolute -bottom-28 -left-28 h-72 w-72 rounded-full ${colors.bg}/10 blur-3xl`} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Breadcrumb */}
           <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
             <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>

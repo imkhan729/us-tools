@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Copy, FileCode2, ListTree, RefreshCw, ScanSearch, SplitSquareVertical, Wand2 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
+import { getCanonicalToolPath } from "@/data/tools";
 
 type DiffKind = "same" | "removed" | "added";
 type DiffRow = {
@@ -114,7 +115,7 @@ export default function TextDiffChecker() {
       title="Text Diff Checker"
       seoTitle="Text Diff Checker - Compare Two Texts Online"
       seoDescription="Free text diff checker with side-by-side line comparison, added and removed line highlighting, and unified diff preview."
-      canonical="https://usonlinetools.com/developer/diff-checker"
+      canonical={`https://usonlinetools.com${getCanonicalToolPath("diff-checker")}`}
       categoryName="Developer Tools"
       categoryHref="/category/developer"
       heroDescription="Compare two text blocks line by line in the browser and inspect what changed with a practical diff checker built for docs, config files, payloads, logs, prompts, and copied code snippets. This page focuses on quick review and change visibility instead of making you compare long text manually."

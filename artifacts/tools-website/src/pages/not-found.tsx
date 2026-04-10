@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,6 +7,11 @@ import { motion } from "framer-motion";
 export default function NotFound() {
   return (
     <Layout>
+      <SEO
+        title="404 - Page Not Found"
+        description="The requested page could not be found on US Online Tools."
+        noindex
+      />
       <div className="min-h-[70vh] flex items-center justify-center w-full px-4">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}

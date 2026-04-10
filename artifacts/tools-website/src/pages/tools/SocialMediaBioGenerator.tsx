@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { BadgeCheck, Copy, Instagram, Linkedin, Sparkles, Type, UserRound } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
+import { getCanonicalToolPath } from "@/data/tools";
 
 type Platform = "instagram" | "linkedin" | "tiktok";
 type Tone = "professional" | "friendly" | "bold";
@@ -313,7 +314,7 @@ export default function SocialMediaBioGenerator() {
       title="Social Media Bio Generator"
       seoTitle="Social Media Bio Generator - Create Short Bios For Instagram, LinkedIn, and TikTok"
       seoDescription="Free social media bio generator. Create short profile bios for Instagram, LinkedIn, and TikTok with platform limits, tone controls, and copy-ready variations."
-      canonical="https://usonlinetools.com/social-media/bio-generator"
+      canonical={`https://usonlinetools.com${getCanonicalToolPath("bio-generator")}`}
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"
       heroDescription="Generate short bios for creator, business, and personal-brand profiles. Choose the platform, tone, niche, keywords, and CTA, then copy clean bio variations that fit the profile space without sounding generic."

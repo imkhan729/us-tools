@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { BadgeCheck, Copy, Instagram, Linkedin, MessageCircleMore, Sparkles, Wand2 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
+import { getCanonicalToolPath } from "@/data/tools";
 
 type Platform = "instagram" | "tiktok" | "twitter" | "discord";
 type Intensity = "light" | "balanced" | "bold";
@@ -298,7 +299,7 @@ export default function TextToEmojiConverter() {
       title="Text to Emoji Converter"
       seoTitle="Text to Emoji Converter - Generate Emoji-Enhanced Social Copy"
       seoDescription="Free text to emoji converter. Turn plain text into emoji-enhanced social copy with platform and intensity controls."
-      canonical="https://usonlinetools.com/social-media/text-to-emoji"
+      canonical={`https://usonlinetools.com${getCanonicalToolPath("text-to-emoji")}`}
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"
       heroDescription="Turn plain text into emoji-enhanced social copy without making it unreadable. Choose the platform, adjust the emoji intensity, and copy cleaner social-ready versions for captions, hooks, and community posts."

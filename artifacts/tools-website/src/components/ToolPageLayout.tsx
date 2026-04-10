@@ -66,13 +66,13 @@ export function ToolPageLayout({ title, description, tool, howToUse, faq, relate
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-12">
+          <div className="lg:col-span-2 min-w-0 space-y-12">
             <div className="space-y-4 border-l-8 border-primary pl-6 py-2">
               <h1 className="text-5xl md:text-6xl font-black text-foreground tracking-tighter uppercase leading-none">{title}</h1>
               <p className="text-xl font-medium text-muted-foreground max-w-2xl">{description}</p>
             </div>
 
-            <div className="relative z-10 bg-card border-2 border-border rounded-xl p-6 sm:p-8 shadow-[0_4px_20px_hsl(var(--foreground)/0.06)]">
+            <div className="relative z-10 min-w-0 overflow-x-auto bg-card border-2 border-border rounded-xl p-6 sm:p-8 shadow-[0_4px_20px_hsl(var(--foreground)/0.06)]">
               {tool}
             </div>
 

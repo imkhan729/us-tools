@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent, type ReactNode } from "react";
 import { Image as ImageIcon, Layers, Link2, Palette, QrCode, RotateCw, ScanSearch, Shield, Sparkles, Wand2 } from "lucide-react";
-import { useParams } from "wouter";
+import { useLocation, useParams } from "wouter";
 import ImageToolPageShell from "./ImageToolPageShell";
 import QrCodeGeneratorCalculator from "./QrCodeGeneratorCalculator";
 import {
@@ -10,8 +10,8 @@ import {
   PngToWebpCalculator,
   SvgToPngCalculator,
 } from "./UndevelopedImageToolCalculators";
-import ToolPlaceholder from "../ToolPlaceholder";
-import { getRelatedTools, getToolBySlug } from "@/data/tools";
+import NotFound from "../not-found";
+import { getCanonicalToolPath, getRelatedTools, getToolBySlug, getToolPath } from "@/data/tools";
 import { canvasToBlob, downloadBlob, fileBaseName, formatBytes, loadImageFile, type LoadedImage } from "./imageToolUtils";
 
 type Variant = {
@@ -2849,17 +2849,25 @@ function getVariant(slug: string): Variant {
 
 export default function ImageCategoryToolPage() {
   const params = useParams<{ slug: string }>();
+  const [location, setLocation] = useLocation();
   const tool = getToolBySlug(params.slug);
 
   if (!tool || tool.category !== "Image Tools") {
-    return <ToolPlaceholder />;
+    return <NotFound />;
   }
+
+  const destination = getCanonicalToolPath(tool.slug);
+
+  useEffect(() => {
+    if (location === destination) return;
+    setLocation(destination, { replace: true });
+  }, [destination, location, setLocation]);
 
   const variant = getVariant(tool.slug);
   const pageTitle = tool.slug === "favicon-generator" ? "Online Favicon Generator" : tool.title;
   const relatedTools = getRelatedTools(tool.slug, tool.category, 4).map((item) => ({
     title: item.title,
-    href: `/image/${item.slug}`,
+    href: getToolPath(item.slug),
     benefit: item.description,
   }));
   const isImageColorPicker = tool.slug === "image-color-picker";
@@ -3364,7 +3372,7 @@ export default function ImageCategoryToolPage() {
       title={pageTitle}
       seoTitle={`${pageTitle} - Free Online Image Tool`}
       seoDescription={tool.metaDescription}
-      canonical={`https://usonlinetools.com/image/${tool.slug}`}
+      canonical={`https://usonlinetools.com${getCanonicalToolPath(tool.slug)}`}
       heroDescription={variant.hero}
       heroIcon={variant.icon}
       calculatorLabel={variant.label}

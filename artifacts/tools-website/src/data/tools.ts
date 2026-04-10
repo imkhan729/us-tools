@@ -75,6 +75,9 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "break-even-calculator", title: "Break Even Calculator", description: "Find the break-even point for your business or product.", metaDescription: "Calculate your business break-even point. Free break-even analysis calculator.", category: "Finance & Cost", implemented: true },
       { slug: "online-roi-calculator", title: "ROI Calculator", description: "Calculate return on investment for any amount.", metaDescription: "Calculate ROI (Return on Investment) percentage. Free online investment calculator.", category: "Finance & Cost", implemented: true },
       { slug: "savings-calculator", title: "Savings Calculator", description: "Project your savings growth with interest over time.", metaDescription: "Calculate how much your savings will grow. Free online savings calculator with interest.", category: "Finance & Cost", implemented: true },
+      { slug: "online-cagr-calculator", title: "CAGR Calculator", description: "Calculate compound annual growth rate from start value, end value, and years.", metaDescription: "Free online CAGR calculator. Find annualized compound growth rate for investments and business metrics.", category: "Finance & Cost", implemented: true },
+      { slug: "online-debt-to-income-calculator", title: "Debt-to-Income Calculator", description: "Calculate debt-to-income ratio using monthly debt and gross income.", metaDescription: "Free online debt-to-income calculator. Compute DTI ratio for loan and mortgage planning.", category: "Finance & Cost", implemented: true },
+      { slug: "online-loan-to-value-calculator", title: "Loan-to-Value Calculator", description: "Calculate loan-to-value ratio and equity from loan amount and property value.", metaDescription: "Free online loan-to-value calculator. Calculate LTV ratio for mortgage and refinance decisions.", category: "Finance & Cost", implemented: true },
       { slug: "tip-calculator", title: "Tip Calculator", description: "Calculate the right tip amount and split bills easily.", metaDescription: "Calculate tip amount and split bills between people. Free online tip calculator.", category: "Finance & Cost", implemented: true },
       { slug: "online-salary-calculator", title: "Salary Calculator", description: "Convert between hourly, monthly, and annual salary.", metaDescription: "Convert your salary between hourly, monthly and yearly. Free salary calculator online.", category: "Finance & Cost", implemented: true },
       { slug: "online-tax-calculator", title: "Tax Calculator", description: "Estimate income tax based on earnings and deductions.", metaDescription: "Estimate your income tax. Free online tax calculator for quick tax estimates.", category: "Finance & Cost", implemented: true },
@@ -180,7 +183,6 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "time-tracking-calculator", title: "Time Tracking Calculator", description: "Track time spent on tasks and projects.", metaDescription: "Free online Time Tracking Calculator. Track time spent on tasks and projects. No signup required.", category: "Time & Date", implemented: true },
       { slug: "online-military-time-converter", title: "Military Time Converter", description: "Convert between 12-hour and 24-hour time formats.", metaDescription: "Free online Military Time Converter. Convert between 12-hour and 24-hour time formats. No signup required.", category: "Time & Date", implemented: true },
       { slug: "era-calculator", title: "Era Calculator", description: "Convert dates between different calendar eras and epochs.", metaDescription: "Free era calculator. Convert between calendar eras, epochs, and dating systems online.", category: "Time & Date", implemented: true },
-      { slug: "online-unix-timestamp-converter", title: "Unix Timestamp Converter", description: "Convert Unix timestamps to human-readable dates and back.", metaDescription: "Free Unix timestamp converter. Convert epoch time to date online.", category: "Time & Date", implemented: true },
       { slug: "zodiac-sign-calculator", title: "Zodiac Sign Calculator", description: "Find your zodiac sign based on your birth date.", metaDescription: "Free zodiac sign calculator. Find your star sign from birth date online.", category: "Time & Date", implemented: true },
       { slug: "chinese-zodiac-calculator", title: "Chinese Zodiac Calculator", description: "Find your Chinese zodiac animal from your birth year.", metaDescription: "Free Chinese zodiac calculator. Find your zodiac animal online.", category: "Time & Date", implemented: true },
       { slug: "age-in-days-calculator", title: "Age in Days Calculator", description: "Calculate your exact age in days, hours, and minutes.", metaDescription: "Free age in days calculator. Find how many days old you are online.", category: "Time & Date", implemented: true },
@@ -194,8 +196,9 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-red-500",
     bgColor: "from-red-500 to-rose-400",
     tools: [
-      { slug: "online-bmi-calculator", title: "BMI Calculator", implemented: false, description: "Calculate your Body Mass Index from height and weight.", metaDescription: "Free BMI calculator online. Calculate Body Mass Index using metric or imperial units.", category: "Health & Fitness" },
+      { slug: "online-bmi-calculator", title: "BMI Calculator", implemented: true, description: "Calculate your Body Mass Index from height and weight.", metaDescription: "Free BMI calculator online. Calculate Body Mass Index using metric or imperial units.", category: "Health & Fitness" },
       { slug: "online-bmr-calculator", title: "BMR Calculator", description: "Find your Basal Metabolic Rate (calories at rest).", metaDescription: "Calculate your BMR (Basal Metabolic Rate). Free online BMR calculator.", category: "Health & Fitness", implemented: true },
+      { slug: "online-body-surface-area-calculator", title: "Body Surface Area Calculator", description: "Estimate body surface area (BSA) using height and weight.", metaDescription: "Free online body surface area calculator. Estimate BSA with the Mosteller formula.", category: "Health & Fitness", implemented: true },
       { slug: "online-tdee-calculator", title: "TDEE Calculator", description: "Calculate Total Daily Energy Expenditure for your body.", metaDescription: "Calculate TDEE (Total Daily Energy Expenditure). Free online TDEE calculator.", category: "Health & Fitness", implemented: true },
       { slug: "calorie-intake-calculator", title: "Calorie Intake Calculator", description: "Find your daily calorie needs based on goals.", metaDescription: "Calculate how many calories you need per day. Free online calorie intake calculator.", category: "Health & Fitness", implemented: true },
       { slug: "water-intake-calculator", title: "Water Intake Calculator", description: "Find out how much water you should drink daily.", metaDescription: "Calculate your daily water intake needs. Free online water intake calculator.", category: "Health & Fitness", implemented: true },
@@ -279,7 +282,6 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-teal-500",
     bgColor: "from-teal-500 to-cyan-400",
     tools: [
-      { slug: "online-password-generator", title: "Password Generator", description: "Generate strong, secure, random passwords instantly.", metaDescription: "Generate secure random passwords. Free online password generator with strength checker.", category: "Productivity & Text", implemented: true },
       { slug: "online-word-counter", title: "Word Counter", description: "Count words, characters, sentences, and reading time.", metaDescription: "Count words and characters in text. Free online word counter with reading time estimate.", category: "Productivity & Text", implemented: true },
       { slug: "random-name-generator", title: "Random Name Generator", description: "Generate random first, last, or full names for any use.", metaDescription: "Generate random names online. Free random name generator for characters, projects, and more.", category: "Productivity & Text", implemented: true },
       { slug: "username-generator", title: "Username Generator", description: "Create unique, catchy usernames for any platform.", metaDescription: "Generate unique usernames online. Free username generator tool.", category: "Productivity & Text", implemented: true },
@@ -302,7 +304,6 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "sort-text-lines-tool", title: "Sort Text Lines Tool", description: "Sort lines of text alphabetically or numerically.", metaDescription: "Free online Sort Text Lines Tool. Sort lines of text alphabetically or numerically. No signup required.", category: "Productivity & Text", implemented: true },
       { slug: "list-randomizer-tool", title: "List Randomizer Tool", description: "Randomize the order of items in any list.", metaDescription: "Free online List Randomizer Tool. Randomize the order of items in any list. No signup required.", category: "Productivity & Text", implemented: true },
       { slug: "text-formatter-tool", title: "Text Formatter Tool", description: "Format and beautify text with various options.", metaDescription: "Free online Text Formatter Tool. Format and beautify text with various options. No signup required.", category: "Productivity & Text", implemented: true },
-      { slug: "lorem-ipsum-generator", title: "Lorem Ipsum Generator", description: "Generate placeholder text for designs and mockups.", metaDescription: "Free lorem ipsum generator. Generate placeholder text for web design online.", category: "Productivity & Text", implemented: true },
       { slug: "uuid-generator", title: "UUID Generator", description: "Generate unique UUIDs (v4) for software development.", metaDescription: "Free UUID generator. Generate random UUIDs online.", category: "Productivity & Text", implemented: true },
       { slug: "json-formatter", title: "JSON Formatter", description: "Format, validate, and beautify JSON data instantly.", metaDescription: "Free JSON formatter. Validate and beautify JSON data online.", category: "Productivity & Text", implemented: true },
       { slug: "base64-encoder-decoder", title: "Base64 Encoder Decoder", description: "Encode or decode text and data using Base64.", metaDescription: "Free Base64 encoder decoder. Convert to and from Base64 online.", category: "Productivity & Text", implemented: true },
@@ -449,15 +450,15 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "url-encoder-decoder", title: "URL Encoder & Decoder", description: "Encode or decode URLs and query string parameters.", metaDescription: "Free URL encoder and decoder. Encode and decode URLs online.", category: "Developer Tools", implemented: true },
       { slug: "html-entity-encoder", title: "HTML Entity Encoder & Decoder", description: "Convert special characters to HTML entities and back.", metaDescription: "Free HTML entity encoder and decoder. Convert characters to HTML entities.", category: "Developer Tools", implemented: true },
       { slug: "online-jwt-decoder", title: "JWT Decoder", description: "Decode and inspect JSON Web Tokens without verification.", metaDescription: "Free JWT decoder. Decode and inspect JWT tokens online.", category: "Developer Tools", implemented: true },
-      { slug: "online-uuid-generator", title: "UUID Generator", description: "Generate random UUIDs (v4) for databases and applications.", metaDescription: "Free UUID generator. Generate random UUID v4 identifiers online.", category: "Developer Tools", implemented: true },
       { slug: "xml-formatter", title: "XML Formatter & Beautifier", description: "Format and beautify XML data with proper indentation.", metaDescription: "Free XML formatter and beautifier. Pretty-print XML data online.", category: "Developer Tools", implemented: true },
       { slug: "online-sql-formatter", title: "SQL Formatter", description: "Format and beautify SQL queries with syntax highlighting.", metaDescription: "Free SQL formatter. Format and beautify SQL queries online.", category: "Developer Tools", implemented: true },
       { slug: "online-markdown-previewer", title: "Markdown Previewer", description: "Write Markdown and preview the rendered output in real-time.", metaDescription: "Free Markdown previewer. Write and preview Markdown in real-time online.", category: "Developer Tools", implemented: true },
       { slug: "diff-checker", title: "Text Diff Checker", description: "Compare two texts and highlight the differences side by side.", metaDescription: "Free text diff checker. Compare two texts and find differences online.", category: "Developer Tools", implemented: true },
-      { slug: "online-lorem-ipsum-generator", title: "Lorem Ipsum Generator", description: "Generate placeholder text in paragraphs, sentences, or words.", metaDescription: "Free Lorem Ipsum generator. Generate placeholder text for your designs.", category: "Developer Tools", implemented: true },
       { slug: "slug-generator", title: "URL Slug Generator", description: "Convert any text into a URL-friendly slug.", metaDescription: "Free URL slug generator. Convert text to SEO-friendly URL slugs.", category: "Developer Tools", implemented: true },
       { slug: "cron-expression-generator", title: "Cron Expression Generator", description: "Build and validate cron schedule expressions visually.", metaDescription: "Free cron expression generator. Build cron schedules with a visual editor.", category: "Developer Tools", implemented: true },
-      { slug: "unix-timestamp-converter", title: "Unix Timestamp Converter", description: "Convert Unix timestamps to human-readable dates and back.", metaDescription: "Free Unix timestamp converter. Convert timestamps to dates online.", category: "Developer Tools", implemented: true },
+      { slug: "online-unix-timestamp-converter", title: "Online Unix Timestamp Converter", description: "Convert Unix timestamps to human-readable dates and back.", metaDescription: "Free online Unix timestamp converter. Convert epoch timestamps to dates and back instantly.", category: "Developer Tools", implemented: true },
+      { slug: "online-uuid-generator", title: "Online UUID Generator", description: "Generate random UUIDs (v4) for databases and applications.", metaDescription: "Free online UUID generator. Generate random UUID v4 identifiers instantly.", category: "Developer Tools", implemented: true },
+      { slug: "online-lorem-ipsum-generator", title: "Online Lorem Ipsum Generator", description: "Generate placeholder text for prototypes, mockups, and UI layouts.", metaDescription: "Free online Lorem Ipsum generator. Create placeholder text by paragraphs, sentences, or words.", category: "Developer Tools", implemented: true },
       { slug: "color-code-converter", title: "Color Code Converter", description: "Convert between HEX, RGB, HSL, and CMYK color formats.", metaDescription: "Free color code converter. Convert between HEX, RGB, HSL, CMYK online.", category: "Developer Tools", implemented: true },
       { slug: "online-hash-generator", title: "Hash Generator (MD5, SHA)", description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text.", metaDescription: "Free hash generator. Generate MD5, SHA-1, SHA-256 hashes online.", category: "Developer Tools", implemented: true },
       { slug: "html-to-markdown", title: "HTML to Markdown Converter", description: "Convert HTML code to Markdown format.", metaDescription: "Free HTML to Markdown converter. Convert HTML to Markdown online.", category: "Developer Tools", implemented: true },
@@ -525,7 +526,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-amber-500",
     bgColor: "from-amber-500 to-yellow-400",
     tools: [
-      { slug: "password-generator", title: "Password Generator", description: "Generate strong, secure passwords with custom length and complexity.", metaDescription: "Free password generator. Create strong and secure passwords online.", category: "Security & Encryption", implemented: true },
+      { slug: "online-password-generator", title: "Online Password Generator", description: "Generate strong, secure passwords with custom length and complexity.", metaDescription: "Free online password generator. Create strong and secure passwords instantly.", category: "Security & Encryption", implemented: true },
       { slug: "password-strength-checker", title: "Password Strength Checker", description: "Check how strong your password is and get improvement suggestions.", metaDescription: "Free password strength checker. Test your password security online.", category: "Security & Encryption", implemented: true },
       { slug: "md5-hash-generator", title: "MD5 Hash Generator", description: "Generate MD5 hashes from any text input.", metaDescription: "Free MD5 hash generator. Generate MD5 checksums from text online.", category: "Security & Encryption", implemented: true },
       { slug: "sha256-hash-generator", title: "SHA-256 Hash Generator", description: "Generate SHA-256 hashes from any text input.", metaDescription: "Free SHA-256 hash generator. Generate SHA-256 hashes online.", category: "Security & Encryption", implemented: true },
@@ -630,20 +631,86 @@ export const DISPLAY_TOOL_CATEGORIES: ToolCategory[] = (() => {
 
 export const DISPLAY_ALL_TOOLS: Tool[] = DISPLAY_TOOL_CATEGORIES.flatMap((category) => category.tools);
 export const SITE_TOOL_COUNT = DISPLAY_ALL_TOOLS.length;
+const DISPLAY_TOOL_BY_KEY = new Map(
+  DISPLAY_ALL_TOOLS.map((tool) => [getToolDisplayKey(tool), tool] as const),
+);
 
 const PREFERRED_CATEGORY_BY_SLUG: Record<string, string> = {
   "online-base64-encoder-decoder": "developer",
   "online-json-formatter": "developer",
   "lorem-ipsum-generator": "developer",
+  "online-lorem-ipsum-generator": "developer",
   "online-markdown-previewer": "developer",
   "password-strength-checker": "security",
   "qr-code-generator": "image",
   "slug-generator": "developer",
   "unix-timestamp-converter": "developer",
+  "online-unix-timestamp-converter": "developer",
   "url-encoder-decoder": "developer",
   "uuid-generator": "developer",
   "online-uuid-generator": "developer",
+  "online-password-generator": "security",
 };
+
+const CANONICAL_SLUG_OVERRIDES: Record<string, string> = {
+  "bio-generator": "social-media-bio-generator",
+  "color-picker": "color-picker-tool",
+  "diff-checker": "text-diff-checker",
+  "emoji-picker": "emoji-picker-and-copier",
+  "image-watermark": "online-image-watermark-tool",
+  "lorem-ipsum-generator": "online-lorem-ipsum-generator",
+  "password-generator": "online-password-generator",
+  "pdf-compress": "online-pdf-compress",
+  "pdf-merge": "online-pdf-merge",
+  "pdf-split": "online-pdf-split",
+  "pdf-watermark": "online-pdf-watermark",
+  "percentage-change-calculator": "percentage-calculator",
+  "percentage-decrease-calculator": "percentage-calculator",
+  "percentage-difference-calculator": "percentage-calculator",
+  "percentage-increase-calculator": "percentage-calculator",
+  "percentage-calculator": "online-percentage-calculator",
+  // Image tools
+  "image-resizer": "online-image-resizer",
+  "image-compressor": "online-image-compressor",
+  "image-cropper": "online-image-cropper",
+  "image-format-converter": "online-image-format-converter",
+  "image-to-base64": "online-image-to-base64",
+  "base64-to-image": "online-base64-to-image",
+  "image-rotate-flip": "online-image-rotate-flip",
+  "image-color-picker": "online-image-color-picker",
+  "image-filter-editor": "online-image-filter-editor",
+  "image-to-png": "online-image-to-png",
+  "image-to-jpg": "online-image-to-jpg",
+  "png-to-webp": "online-png-to-webp",
+  "svg-to-png": "online-svg-to-png",
+  "image-background-remover": "online-image-background-remover",
+  "image-collage-maker": "online-image-collage-maker",
+  "qr-code-generator": "online-qr-code-generator",
+  "meme-generator": "online-meme-generator",
+  "favicon-generator": "online-favicon-generator",
+  "image-pixel-counter": "online-image-pixel-counter",
+  // PDF tools
+  "image-to-pdf": "online-image-to-pdf",
+  "jpg-to-pdf": "online-jpg-to-pdf",
+  "pdf-to-image": "online-pdf-to-image",
+  "pdf-rotate": "online-pdf-rotate",
+  "pdf-page-remover": "online-pdf-page-remover",
+  "pdf-page-reorder": "online-pdf-page-reorder",
+  "pdf-password-protect": "online-pdf-password-protect",
+  "pdf-unlock": "online-pdf-unlock",
+  "pdf-to-text": "online-pdf-to-text",
+  "pdf-page-number": "online-pdf-page-number",
+  "pdf-header-footer": "online-pdf-header-footer",
+  "pdf-sign": "online-pdf-sign",
+  "slug-generator": "url-slug-generator",
+  "text-to-emoji": "text-to-emoji-converter",
+  "unix-timestamp-converter": "online-unix-timestamp-converter",
+  "uuid-generator": "online-uuid-generator",
+};
+
+const SLUG_ALIAS_TO_TOOL_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(CANONICAL_SLUG_OVERRIDES).map(([legacySlug, canonicalSlug]) => [canonicalSlug, legacySlug]),
+);
 
 function getToolByExactSlug(slug: string): Tool | undefined {
   const preferredCategoryId = PREFERRED_CATEGORY_BY_SLUG[slug];
@@ -665,6 +732,12 @@ export function resolveToolSlug(slug: string): string | undefined {
 
   if (!normalizedSlug) {
     return undefined;
+  }
+
+  const canonicalAlias = SLUG_ALIAS_TO_TOOL_SLUG[normalizedSlug];
+
+  if (canonicalAlias) {
+    return canonicalAlias;
   }
 
   const exactTool = getToolByExactSlug(normalizedSlug);
@@ -712,9 +785,27 @@ export function getCategoryIdBySlug(slug: string): string {
   return "tools";
 }
 
+function getCanonicalSlug(slug: string): string {
+  const normalizedSlug = slug.trim().toLowerCase();
+  const resolvedSlug = resolveToolSlug(normalizedSlug) ?? normalizedSlug;
+  return CANONICAL_SLUG_OVERRIDES[resolvedSlug] ?? resolvedSlug;
+}
+
 export function getToolPath(slug: string): string {
-  const resolvedSlug = resolveToolSlug(slug) ?? slug;
-  return `/${getCategoryIdBySlug(resolvedSlug)}/${resolvedSlug}`;
+  const canonicalSlug = getCanonicalSlug(slug);
+  return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
+}
+
+export function getCanonicalToolPath(slug: string): string {
+  const tool = getToolBySlug(slug);
+
+  if (!tool) {
+    return getToolPath(slug);
+  }
+
+  const preferredTool = DISPLAY_TOOL_BY_KEY.get(getToolDisplayKey(tool)) ?? tool;
+  const canonicalSlug = getCanonicalSlug(preferredTool.slug);
+  return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
 }
 
 

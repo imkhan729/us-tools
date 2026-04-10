@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -118,7 +119,7 @@ export default function PasswordGenerator() {
   return (
     <Layout>
       <SEO
-        title="Password Generator – Create Strong, Secure Random Passwords Free | US Online Tools"
+        title="Online Password Generator – Create Strong, Secure Random Passwords Free | US Online Tools"
         description="Free secure password generator. Create strong random passwords up to 64 characters with uppercase, lowercase, numbers, and symbols. Passwords generated in your browser — never stored."
       />
 
@@ -130,7 +131,7 @@ export default function PasswordGenerator() {
           <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
           <Link href="/category/security" className="text-muted-foreground hover:text-foreground transition-colors">Security &amp; Privacy</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
-          <span className="text-foreground">Password Generator</span>
+          <span className="text-foreground">Online Password Generator</span>
         </nav>
 
         {/* ── HERO SECTION (Full Width) ── */}
@@ -143,7 +144,7 @@ export default function PasswordGenerator() {
 
           {/* Heading */}
           <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
-            Password Generator
+            Online Password Generator
           </h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             Generate strong, random passwords instantly. Customize length up to 64 characters, choose character types, and copy with one click. All passwords are generated in your browser — never stored or transmitted.
@@ -602,7 +603,7 @@ export default function PasswordGenerator() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div

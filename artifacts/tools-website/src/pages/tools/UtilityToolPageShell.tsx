@@ -2,6 +2,7 @@ import { ReactNode, useMemo, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { getToolPath } from "@/data/tools";
+import { ToolRightSidebar } from "@/components/ToolRightSidebar";
 import { Link } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -121,7 +122,6 @@ export default function UtilityToolPageShell({
   ctaDescription = "Explore more utilities across this hub.",
   ctaHref = "/",
 }: UtilityToolPageShellProps) {
-  const [copied, setCopied] = useState(false);
   const pageHeading = /^online\b/i.test(title) ? title : `Online ${title}`;
   const resolvedSeoTitle = /\bonline\b/i.test(seoTitle) ? seoTitle : `Online ${seoTitle}`;
 
@@ -157,12 +157,6 @@ export default function UtilityToolPageShell({
     }),
     [canonical, faqs, pageHeading, seoDescription],
   );
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  };
 
   const onThisPageItems = [
     { label: "Calculator", href: "#calculator" },
@@ -221,7 +215,7 @@ export default function UtilityToolPageShell({
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          <div className="lg:col-span-3 space-y-10">
+          <div className="lg:col-span-3 min-w-0 space-y-10">
             <section id="calculator" className="space-y-5">
               <div className="rounded-2xl overflow-hidden border border-blue-500/20 shadow-lg shadow-blue-500/5">
                 <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 to-cyan-400" />
@@ -235,7 +229,7 @@ export default function UtilityToolPageShell({
                       <p className="text-sm text-muted-foreground">{calculatorDescription}</p>
                     </div>
                   </div>
-                  <div className="rounded-[1.35rem] border border-border/80 bg-gradient-to-br from-background via-card to-blue-500/5 p-4 md:p-5 shadow-[inset_0_1px_0_hsl(0_0%_100%_/_0.55)]">
+                  <div className="min-w-0 overflow-x-auto rounded-[1.35rem] border border-border/80 bg-gradient-to-br from-background via-card to-blue-500/5 p-4 md:p-5 shadow-[inset_0_1px_0_hsl(0_0%_100%_/_0.55)]">
                     {calculator}
                   </div>
                 </div>
@@ -326,75 +320,16 @@ export default function UtilityToolPageShell({
             </section>
           </div>
 
-          <div className="space-y-6">
-            <div className="sticky top-28 space-y-6">
-              <div className="overflow-hidden rounded-2xl border border-blue-500/15 bg-card shadow-sm">
-                <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-cyan-400" />
-                <div className="p-4">
-                  <h3 className="text-sm font-black mb-1 uppercase">Related Tools</h3>
-                  <p className="text-xs text-muted-foreground mb-3">Continue with the next tool in the same workflow instead of starting over elsewhere.</p>
-                  <div className="space-y-2">
-                  {relatedTools.map((tool) => (
-                    <Link
-                      key={tool.slug}
-                      href={tool.href ?? getToolPath(tool.slug)}
-                      className="group flex items-start gap-3 rounded-xl border border-border bg-muted/25 px-3 py-3 transition-all hover:-translate-y-0.5 hover:border-blue-500/30 hover:bg-blue-500/5"
-                    >
-                      <div
-                        className="mt-0.5 flex h-9 w-9 rounded-xl items-center justify-center text-white flex-shrink-0 shadow-sm"
-                        style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}
-                      >
-                        {tool.icon}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground/70 mb-1">Related</p>
-                        <p className="text-sm font-bold leading-snug text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300">{tool.title}</p>
-                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{tool.benefit}</p>
-                      </div>
-                      <ChevronRight className="mt-1 h-4 w-4 flex-shrink-0 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-blue-500" />
-                    </Link>
-                  ))}
-                </div>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <div className="p-4">
-                <h3 className="text-sm font-black uppercase mb-1.5">Share This Tool</h3>
-                <p className="text-xs text-muted-foreground mb-3">Copy and share this tool link.</p>
-                <button onClick={copyLink} className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-sm font-bold rounded-xl">
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" /> Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" /> Copy Link
-                    </>
-                  )}
-                </button>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <div className="p-4">
-                <h3 className="text-sm font-black uppercase mb-3">On This Page</h3>
-                <div className="space-y-1">
-                  {onThisPageItems.map((item) => (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      className="flex items-center gap-2 rounded-lg px-2 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-blue-500/5 hover:text-blue-500"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500/40" />
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ToolRightSidebar
+            relatedTools={relatedTools.map((tool) => ({
+              title: tool.title,
+              href: tool.href ?? getToolPath(tool.slug),
+              benefit: tool.benefit,
+              icon: tool.icon,
+              color: tool.color,
+            }))}
+            onThisPageItems={onThisPageItems}
+          />
         </div>
       </div>
     </Layout>

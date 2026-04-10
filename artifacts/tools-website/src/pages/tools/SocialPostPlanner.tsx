@@ -211,70 +211,127 @@ export default function SocialPostPlanner() {
 
   const calculator = (
     <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        <button onClick={() => loadPreset("weekly")} className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted">
-          Weekly Preset
-        </button>
-        <button onClick={() => loadPreset("launch")} className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted">
-          Launch Preset
-        </button>
-        <button onClick={() => loadPreset("creator")} className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted">
-          Creator Preset
-        </button>
+      {/* Top command strip */}
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-xl bg-blue-500/10 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-blue-700 dark:text-blue-300">
+              <CalendarRange className="h-4 w-4" />
+              Board
+            </span>
+            <div className="flex rounded-xl border border-border bg-background p-1">
+              <button
+                onClick={() => setViewMode("list")}
+                className={`rounded-lg px-3 py-2 text-xs font-black uppercase tracking-[0.14em] ${
+                  viewMode === "list" ? "bg-blue-600 text-white" : "text-foreground hover:bg-muted"
+                }`}
+              >
+                List
+              </button>
+              <button
+                onClick={() => setViewMode("calendar")}
+                className={`rounded-lg px-3 py-2 text-xs font-black uppercase tracking-[0.14em] ${
+                  viewMode === "calendar" ? "bg-blue-600 text-white" : "text-foreground hover:bg-muted"
+                }`}
+              >
+                Calendar
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => loadPreset("weekly")}
+              className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+            >
+              Weekly preset
+            </button>
+            <button
+              onClick={() => loadPreset("launch")}
+              className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+            >
+              Launch preset
+            </button>
+            <button
+              onClick={() => loadPreset("creator")}
+              className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+            >
+              Creator preset
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_0.8fr] gap-5">
-        <div className="space-y-5">
-          <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5">
-            <div className="mb-4 flex items-center justify-between gap-3">
+      {/* Dashboard grid */}
+      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        {/* Compose */}
+        <div className="min-w-0 space-y-5">
+          <div className="rounded-2xl border border-blue-500/20 bg-[linear-gradient(135deg,rgba(37,99,235,0.08),rgba(255,255,255,0.0))] p-5 dark:bg-[linear-gradient(135deg,rgba(37,99,235,0.14),rgba(0,0,0,0.0))]">
+            <div className="mb-4 flex items-start justify-between gap-3">
               <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Planner Controls</p>
-                <p className="text-sm text-muted-foreground">Add a post title, pick the platform, set the date and status, then keep the week organized in one lightweight planning board.</p>
+                <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Add a post</p>
+                <p className="text-sm text-muted-foreground">Capture the idea, then enrich it with timing + an opening hook. Keep notes tight so handoffs don’t get lost.</p>
               </div>
-              <CalendarRange className="h-5 w-5 text-blue-500" />
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-2 text-blue-700 dark:text-blue-300">
+                {PLATFORM_ICONS[platform]}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Post Title</label>
-                <input value={title} onChange={(event) => setTitle(event.target.value)} className="tool-calc-input w-full" placeholder="What is this post about?" />
-              </div>
+            <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Platform</label>
-                <select value={platform} onChange={(event) => setPlatform(event.target.value as Platform)} className="tool-calc-input w-full">
-                  {Object.entries(PLATFORM_LABELS).map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
+                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Post title</label>
+                <input value={title} onChange={(event) => setTitle(event.target.value)} className="tool-calc-input w-full" placeholder="What’s the post about?" />
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Platform</label>
+                  <select value={platform} onChange={(event) => setPlatform(event.target.value as Platform)} className="tool-calc-input w-full">
+                    {Object.entries(PLATFORM_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Status</label>
+                  <select value={status} onChange={(event) => setStatus(event.target.value as Status)} className="tool-calc-input w-full">
+                    {Object.entries(STATUS_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Publish date</label>
+                  <input type="date" value={date} onChange={(event) => setDate(event.target.value)} className="tool-calc-input w-full" />
+                </div>
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Publish time</label>
+                  <input type="time" value={time} onChange={(event) => setTime(event.target.value)} className="tool-calc-input w-full" />
+                </div>
+              </div>
+
               <div>
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Status</label>
-                <select value={status} onChange={(event) => setStatus(event.target.value as Status)} className="tool-calc-input w-full">
-                  {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
+                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Hook / opening angle</label>
+                <input value={hook} onChange={(event) => setHook(event.target.value)} className="tool-calc-input w-full" placeholder="What should the first line do?" />
               </div>
+
               <div>
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Publish Date</label>
-                <input type="date" value={date} onChange={(event) => setDate(event.target.value)} className="tool-calc-input w-full" />
-              </div>
-              <div>
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Publish Time</label>
-                <input type="time" value={time} onChange={(event) => setTime(event.target.value)} className="tool-calc-input w-full" />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Hook or Opening Angle</label>
-                <input value={hook} onChange={(event) => setHook(event.target.value)} className="tool-calc-input w-full" placeholder="What should the opening line do?" />
-              </div>
-              <div className="sm:col-span-2">
                 <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Notes</label>
-                <textarea value={notes} onChange={(event) => setNotes(event.target.value)} className="tool-calc-input min-h-[108px] w-full resize-y" placeholder="Assets, approvals, CTA, comments to pin, or handoff notes." />
+                <textarea value={notes} onChange={(event) => setNotes(event.target.value)} className="tool-calc-input min-h-[108px] w-full resize-y" placeholder="Assets, approvals, CTA, pinned comment, handoff." />
               </div>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-3">
-              <button onClick={addPost} className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white hover:bg-blue-700">Add Post To Planner</button>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <button
+                onClick={addPost}
+                className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+                disabled={!title.trim() || !date}
+              >
+                Add to planner
+              </button>
               <button
                 onClick={() => {
                   setPosts([]);
@@ -284,97 +341,34 @@ export default function SocialPostPlanner() {
                 }}
                 className="rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold text-foreground hover:border-blue-500/40"
               >
-                Clear Planner
+                Clear planner
               </button>
             </div>
           </div>
 
+          {/* Stats strip */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Planned Posts</p><p className="mt-2 text-2xl font-black text-foreground">{sortedPosts.length}</p></div>
-            <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Scheduled</p><p className="mt-2 text-2xl font-black text-foreground">{stats.scheduledCount}</p></div>
-            <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Published</p><p className="mt-2 text-2xl font-black text-foreground">{stats.publishedCount}</p></div>
-            <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Platforms Used</p><p className="mt-2 text-2xl font-black text-foreground">{stats.platformCount}</p></div>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Planner View</p>
-                <p className="text-sm text-muted-foreground">Switch between a flat publishing list and a date-grouped calendar board.</p>
-              </div>
-              <div className="flex gap-2">
-                <button onClick={() => setViewMode("list")} className={`rounded-xl px-3 py-2 text-xs font-bold ${viewMode === "list" ? "bg-blue-600 text-white" : "border border-border bg-background text-foreground hover:border-blue-500/40"}`}>List View</button>
-                <button onClick={() => setViewMode("calendar")} className={`rounded-xl px-3 py-2 text-xs font-bold ${viewMode === "calendar" ? "bg-blue-600 text-white" : "border border-border bg-background text-foreground hover:border-blue-500/40"}`}>Calendar View</button>
-              </div>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Planned</p>
+              <p className="mt-2 text-2xl font-black text-foreground">{sortedPosts.length}</p>
             </div>
-
-            {viewMode === "list" ? (
-              <div className="space-y-3">
-                {sortedPosts.length ? (
-                  sortedPosts.map((post) => (
-                    <div key={post.id} className="rounded-xl border border-border bg-muted/30 p-4">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-bold text-blue-600 dark:text-blue-300">
-                              {PLATFORM_ICONS[post.platform]}
-                              {PLATFORM_LABELS[post.platform]}
-                            </span>
-                            <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${STATUS_STYLES[post.status]}`}>{STATUS_LABELS[post.status]}</span>
-                          </div>
-                          <p className="mt-3 text-base font-bold text-foreground">{post.title}</p>
-                          <p className="mt-1 text-sm text-muted-foreground">{formatPlannerDate(post.date)} at {post.time || "00:00"}</p>
-                          {post.hook ? <p className="mt-3 text-sm text-muted-foreground"><span className="font-semibold text-foreground">Hook:</span> {post.hook}</p> : null}
-                          {post.notes ? <p className="mt-1 text-sm text-muted-foreground"><span className="font-semibold text-foreground">Notes:</span> {post.notes}</p> : null}
-                        </div>
-                        <button onClick={() => removePost(post.id)} className="text-xs font-bold text-rose-500 hover:text-rose-600">Remove</button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-muted/30 p-8 text-sm text-muted-foreground">Add posts above to start building the schedule.</div>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {groupedPosts.length ? (
-                  groupedPosts.map((group) => (
-                    <div key={group.date} className="rounded-xl border border-border bg-muted/30 p-4">
-                      <div className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground"><CalendarDays className="h-4 w-4 text-blue-500" />{formatPlannerDate(group.date)}</div>
-                      <div className="space-y-3">
-                        {group.items.map((post) => (
-                          <div key={post.id} className="rounded-xl border border-border bg-card p-3">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-300">{PLATFORM_ICONS[post.platform]}{PLATFORM_LABELS[post.platform]}</span>
-                              <span className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-bold ${STATUS_STYLES[post.status]}`}>{STATUS_LABELS[post.status]}</span>
-                            </div>
-                            <p className="mt-2 text-sm font-bold text-foreground">{post.title}</p>
-                            <p className="mt-1 text-xs text-muted-foreground">{post.time || "00:00"} local time</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-muted/30 p-8 text-sm text-muted-foreground">The calendar is empty. Add at least one post to create date groups.</div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-5">
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Planning Guidance</p>
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <div className="rounded-xl border border-border bg-muted/40 p-4"><p className="font-bold text-foreground">Cadence note</p><p className="mt-1">{cadenceNote}</p></div>
-              <div className="rounded-xl border border-border bg-muted/40 p-4"><p className="font-bold text-foreground">Upcoming workload</p><p className="mt-1">{stats.upcomingCount} posts are dated on or after April 2, 2026.</p></div>
-              <div className="rounded-xl border border-border bg-muted/40 p-4"><p className="font-bold text-foreground">Status labels</p><p className="mt-1">Use `Idea` for loose concepts, `Draft` for rough copy, `In Review` for approvals, `Scheduled` for queued posts, and `Published` when the post is live.</p></div>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Scheduled</p>
+              <p className="mt-2 text-2xl font-black text-foreground">{stats.scheduledCount}</p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Published</p>
+              <p className="mt-2 text-2xl font-black text-foreground">{stats.publishedCount}</p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Platforms</p>
+              <p className="mt-2 text-2xl font-black text-foreground">{stats.platformCount}</p>
             </div>
           </div>
 
+          {/* Exports */}
           <div className="rounded-2xl border border-border bg-card p-5">
-            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Copy-Ready Exports</p>
+            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Exports</p>
             {[
               { label: "Schedule summary", value: summary },
               { label: "CSV export", value: csvExport },
@@ -382,11 +376,140 @@ export default function SocialPostPlanner() {
               <div key={item.label} className="mb-3 rounded-xl border border-border bg-muted/40 p-3 last:mb-0">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">{item.label}</p>
-                  <button onClick={() => copyValue(item.label, item.value)} className="text-xs font-bold text-blue-600">{copied === item.label ? "Copied" : "Copy"}</button>
+                  <button onClick={() => copyValue(item.label, item.value)} className="text-xs font-bold text-blue-600">
+                    {copied === item.label ? "Copied" : "Copy"}
+                  </button>
                 </div>
-                <pre className="mt-2 max-h-52 overflow-auto rounded-xl bg-slate-950 p-3 text-xs leading-relaxed text-slate-100"><code>{item.value}</code></pre>
+                <pre className="mt-2 max-h-52 overflow-auto rounded-xl bg-slate-950 p-3 text-xs leading-relaxed text-slate-100">
+                  <code>{item.value}</code>
+                </pre>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Board */}
+        <div className="min-w-0 space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Schedule</p>
+                <p className="text-sm text-muted-foreground">A readable board for spacing checks and quick status scanning.</p>
+              </div>
+              <span className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold text-foreground">
+                <ClipboardList className="h-4 w-4 text-blue-500" />
+                {sortedPosts.length} items
+              </span>
+            </div>
+
+            {viewMode === "list" ? (
+              <div className="space-y-3">
+                {sortedPosts.length ? (
+                  sortedPosts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="rounded-2xl border border-border bg-[linear-gradient(135deg,rgba(2,132,199,0.06),rgba(255,255,255,0.0))] p-4 dark:bg-[linear-gradient(135deg,rgba(2,132,199,0.12),rgba(0,0,0,0.0))]"
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-bold text-blue-700 dark:text-blue-300">
+                              {PLATFORM_ICONS[post.platform]}
+                              {PLATFORM_LABELS[post.platform]}
+                            </span>
+                            <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${STATUS_STYLES[post.status]}`}>
+                              {STATUS_LABELS[post.status]}
+                            </span>
+                            <span className="text-xs font-bold text-muted-foreground">
+                              {formatPlannerDate(post.date)} · {post.time || "00:00"}
+                            </span>
+                          </div>
+
+                          <p className="mt-3 text-base font-black text-foreground">{post.title}</p>
+                          {post.hook ? (
+                            <p className="mt-2 text-sm text-muted-foreground">
+                              <span className="font-semibold text-foreground">Hook:</span> {post.hook}
+                            </p>
+                          ) : null}
+                          {post.notes ? (
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              <span className="font-semibold text-foreground">Notes:</span> {post.notes}
+                            </p>
+                          ) : null}
+                        </div>
+
+                        <button onClick={() => removePost(post.id)} className="text-xs font-bold text-rose-500 hover:text-rose-600">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-8 text-sm text-muted-foreground">
+                    Add posts to start building the schedule.
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {groupedPosts.length ? (
+                  groupedPosts.map((group) => (
+                    <div key={group.date} className="rounded-2xl border border-border bg-muted/30 p-4">
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 text-sm font-black text-foreground">
+                          <CalendarDays className="h-4 w-4 text-blue-500" />
+                          {formatPlannerDate(group.date)}
+                        </div>
+                        <span className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-bold text-muted-foreground">
+                          {group.items.length} posts
+                        </span>
+                      </div>
+
+                      <div className="space-y-3">
+                        {group.items.map((post) => (
+                          <div key={post.id} className="rounded-xl border border-border bg-card p-3">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 dark:text-blue-300">
+                                {PLATFORM_ICONS[post.platform]}
+                                {PLATFORM_LABELS[post.platform]}
+                              </span>
+                              <span className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-bold ${STATUS_STYLES[post.status]}`}>
+                                {STATUS_LABELS[post.status]}
+                              </span>
+                              <span className="ml-auto text-[11px] font-bold text-muted-foreground">{post.time || "00:00"}</span>
+                            </div>
+                            <p className="mt-2 text-sm font-black text-foreground">{post.title}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-8 text-sm text-muted-foreground">
+                    The calendar is empty. Add at least one post to create date groups.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Guidance stays, but reads as a compact ops card */}
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Planning guidance</p>
+            <div className="space-y-3 text-sm text-muted-foreground">
+              <div className="rounded-xl border border-border bg-muted/40 p-4">
+                <p className="font-bold text-foreground">Cadence note</p>
+                <p className="mt-1">{cadenceNote}</p>
+              </div>
+              <div className="rounded-xl border border-border bg-muted/40 p-4">
+                <p className="font-bold text-foreground">Upcoming workload</p>
+                <p className="mt-1">{stats.upcomingCount} posts are dated on or after April 2, 2026.</p>
+              </div>
+              <div className="rounded-xl border border-border bg-muted/40 p-4">
+                <p className="font-bold text-foreground">Status labels</p>
+                <p className="mt-1">Use `Idea` for loose concepts, `Draft` for rough copy, `In Review` for approvals, `Scheduled` for queued posts, and `Published` when the post is live.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

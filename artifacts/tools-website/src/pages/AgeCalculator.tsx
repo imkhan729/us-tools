@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -175,7 +176,7 @@ export default function AgeCalculator() {
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
           <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-emerald-500" strokeWidth={3} />
-          <Link href="/category/date-time" className="text-muted-foreground hover:text-foreground transition-colors">Date &amp; Time</Link>
+          <Link href="/category/time-date" className="text-muted-foreground hover:text-foreground transition-colors">Date &amp; Time</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-emerald-500" strokeWidth={3} />
           <span className="text-foreground">Age Calculator</span>
         </nav>
@@ -615,7 +616,7 @@ export default function AgeCalculator() {
                   Explore our full suite of date calculators, converters, and timers — all free, all instant, no signup required.
                 </p>
                 <Link
-                  href="/category/date-time"
+                  href="/category/time-date"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform"
                 >
                   Explore Date &amp; Time Tools <ArrowRight className="w-4 h-4" />
@@ -636,7 +637,7 @@ export default function AgeCalculator() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div

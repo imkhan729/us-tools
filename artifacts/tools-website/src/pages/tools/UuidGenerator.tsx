@@ -74,7 +74,7 @@ export default function UuidGenerator() {
   return (
     <Layout>
       <SEO
-        title="UUID Generator (v4) – Generate Unique Identifiers Instantly"
+        title="Online UUID Generator (v4) – Generate Unique Identifiers Instantly"
         description="Free online random UUID / GUID generator. Instantly create RFC 4122 compliant version 4 Universally Unique Identifiers for your app databases or software architecture."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
@@ -84,7 +84,7 @@ export default function UuidGenerator() {
           <ChevronRight className="w-4 h-4 mx-2 text-slate-500" strokeWidth={3} />
           <Link href="/category/developer" className="text-muted-foreground hover:text-foreground transition-colors">Developer Tools</Link>
           <ChevronRight className="w-4 h-4 mx-2 text-slate-500" strokeWidth={3} />
-          <span className="text-foreground">UUID Generator</span>
+          <span className="text-foreground">Online UUID Generator</span>
         </nav>
 
         {/* HERO */}
@@ -92,7 +92,7 @@ export default function UuidGenerator() {
           <div className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
             <Database className="w-3.5 h-3.5" /> Database Utility
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">UUID / GUID Generator</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">Online UUID / GUID Generator</h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             Instantly generate bulk batches of highly secure, mathematically random Universally Unique Identifiers (UUIDv4) suitable for usage as primary keys in distributed databases, NoSQL environments, microservices, and modern API architectures. Total collision immunity.
           </p>

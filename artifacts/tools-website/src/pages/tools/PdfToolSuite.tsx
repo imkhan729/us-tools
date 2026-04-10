@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { getRelatedTools, getToolBySlug, getToolPath } from "@/data/tools";
-import ToolPlaceholder from "../ToolPlaceholder";
-import { Link, useParams } from "wouter";
+import { getCanonicalToolPath, getRelatedTools, getToolBySlug, getToolPath, resolveToolSlug } from "@/data/tools";
+import NotFound from "../not-found";
+import { Link, useLocation, useParams } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import { PDFDocument, StandardFonts, degrees, rgb, type PDFPage } from "pdf-lib";
+import { ToolRightSidebar } from "@/components/ToolRightSidebar";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -17,7 +18,6 @@ import {
   FileImage,
   FileOutput,
   FileSignature,
-  Files,
   GripVertical,
   Hash,
   ImageUp,
@@ -1603,28 +1603,32 @@ function renderToolSpecificFields(
 export default function PdfToolSuite() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
-  const config = PDF_TOOL_CONFIGS[slug];
+  const [location, setLocation] = useLocation();
+  const resolvedSlug = resolveToolSlug(slug) ?? slug;
+  const suiteConfig = PDF_TOOL_CONFIGS[resolvedSlug];
   const tool = getToolBySlug(slug);
-  const isSupported = Boolean(config && tool && tool.category === "PDF Tools");
-  const isRecentRedesign = RECENT_REDESIGN_PDF_SLUGS.has(slug);
+  const config = suiteConfig;
+  const processSlug = resolvedSlug;
+  const isPdfTool = Boolean(tool && tool.category === "PDF Tools");
+  const isSupported = Boolean(config && isPdfTool);
+  const isRecentRedesign = RECENT_REDESIGN_PDF_SLUGS.has(resolvedSlug);
 
   const [files, setFiles] = useState<File[]>([]);
   const [signatureFile, setSignatureFile] = useState<File | null>(null);
-  const [settings, setSettings] = useState<Record<string, string>>(() => buildInitialSettings(slug));
+  const [settings, setSettings] = useState<Record<string, string>>(() => buildInitialSettings(resolvedSlug));
   const [outputs, setOutputs] = useState<OutputFile[]>([]);
   const [summary, setSummary] = useState("");
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setFiles([]);
     setSignatureFile(null);
-    setSettings(buildInitialSettings(slug));
+    setSettings(buildInitialSettings(resolvedSlug));
     setOutputs([]);
     setSummary("");
     setError("");
-  }, [slug]);
+  }, [resolvedSlug]);
 
   const relatedTools = useMemo(() => {
     if (!tool) return [];
@@ -1640,25 +1644,29 @@ export default function PdfToolSuite() {
     "FAQ",
   ];
 
+  const destination = isPdfTool && tool ? getCanonicalToolPath(tool.slug) : undefined;
+
+  useEffect(() => {
+    if (!destination) return;
+    if (location === destination) return;
+    setLocation(destination, { replace: true });
+  }, [destination, location, setLocation]);
+
   if (!config || !tool || !isSupported) {
-    return <ToolPlaceholder />;
+    return <NotFound />;
   }
+
+  const pageHeading = /^online\b/i.test(config.title) ? config.title : `Online ${config.title}`;
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: config.title,
+    name: pageHeading,
     description: config.metaDescription,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Any",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    url: `https://usonlinetools.com/pdf/${slug}`,
-  };
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    url: `https://usonlinetools.com${getCanonicalToolPath(tool.slug)}`,
   };
 
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -1684,7 +1692,7 @@ export default function PdfToolSuite() {
     setSummary("");
 
     try {
-      const result = await processPdfTool(slug, files, settings, signatureFile);
+      const result = await processPdfTool(processSlug, files, settings, signatureFile);
       setOutputs(result.outputs);
       setSummary(result.summary);
     } catch (processError) {
@@ -1717,7 +1725,7 @@ export default function PdfToolSuite() {
 
   return (
     <Layout>
-      <SEO title={config.title} description={config.metaDescription} canonical={`https://usonlinetools.com/pdf/${slug}`} schema={schema} />
+      <SEO title={pageHeading} description={config.metaDescription} canonical={`https://usonlinetools.com${getCanonicalToolPath(tool.slug)}`} schema={schema} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
@@ -1729,7 +1737,7 @@ export default function PdfToolSuite() {
             PDF Tools
           </Link>
           <ChevronRight className="w-4 h-4 mx-2 text-rose-500" strokeWidth={3} />
-          <span className="text-foreground">{config.title}</span>
+          <span className="text-foreground">{pageHeading}</span>
         </nav>
 
         <section className="rounded-2xl overflow-hidden border border-rose-500/15 bg-gradient-to-br from-rose-500/5 via-card to-red-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
@@ -1738,7 +1746,7 @@ export default function PdfToolSuite() {
             PDF Tools
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
-            {config.title}
+            {pageHeading}
           </h1>
           <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
             {config.description} This page follows the same content-first layout as the stronger calculator pages, but the core action here is local file processing instead of numeric calculation.
@@ -1764,7 +1772,7 @@ export default function PdfToolSuite() {
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          <div className="lg:col-span-3 space-y-10">
+          <div className="lg:col-span-3 min-w-0 space-y-10">
             <section id="calculator" className="space-y-5">
               <div className={`rounded-2xl overflow-hidden border shadow-lg ${isRecentRedesign ? "border-blue-500/20 shadow-blue-500/5" : "border-rose-500/20 shadow-rose-500/5"}`}>
                 <div className={`h-1.5 w-full bg-gradient-to-r ${isRecentRedesign ? "from-blue-500 to-cyan-400" : "from-rose-500 to-red-400"}`} />
@@ -1961,107 +1969,22 @@ export default function PdfToolSuite() {
             </section>
           </div>
 
-          <div className="space-y-8">
-            <div className="sticky top-28">
-              {isRecentRedesign ? (
-                <div className="space-y-4">
-                  <div className="rounded-[22px] border border-border bg-card/90 p-4">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-foreground">Related Tools</h3>
-                    <div className="mt-3 space-y-1.5">
-                      {relatedTools.map((item, index) => (
-                        <Link
-                          key={item.slug}
-                          href={getToolPath(item.slug)}
-                          className="group flex items-center gap-2.5 rounded-lg px-2 py-2 hover:bg-muted transition-all"
-                        >
-                          <div
-                            className="w-6 h-6 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3 [&>svg]:h-3"
-                            style={{ background: `linear-gradient(135deg, hsl(${SIDEBAR_COLOR_STOPS[index % SIDEBAR_COLOR_STOPS.length]} 70% 55%), hsl(${SIDEBAR_COLOR_STOPS[index % SIDEBAR_COLOR_STOPS.length]} 75% 42%))` }}
-                          >
-                            <Files />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{item.title}</p>
-                            <p className="text-[10px] text-muted-foreground/70 truncate">{item.description}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="rounded-[22px] border border-border bg-card/90 p-4">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-foreground">Share This Tool</h3>
-                    <p className="text-xs text-muted-foreground mt-1.5 mb-3">Help others calculate percentages easily</p>
-                    <button
-                      onClick={copyLink}
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-sm font-bold hover:-translate-y-0.5 active:translate-y-0 transition-transform"
-                    >
-                      <Copy className="w-3.5 h-3.5" />
-                      {copied ? "Link Copied" : "Copy Link"}
-                    </button>
-                  </div>
-
-                  <div className="rounded-[22px] border border-border bg-card/90 p-4">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-foreground">On This Page</h3>
-                    <ul className="mt-2.5 space-y-2 text-xs text-muted-foreground">
-                      {onThisPageItems.map((item) => (
-                        <li key={item}>
-                          <a href={`#${item.toLowerCase().replace(/\s+/g, "-")}`} className="inline-flex items-center gap-2 hover:text-blue-500 transition-colors">
-                            <span className="w-1 h-1 rounded-full bg-blue-500/60" />
-                            {item}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="bg-card p-6 rounded-xl border border-border mb-8">
-                    <h3 className="text-lg font-black tracking-tight text-foreground mb-5">Related PDF Tools</h3>
-                    <div className="space-y-3">
-                      {relatedTools.map((item) => (
-                        <Link
-                          key={item.slug}
-                          href={getToolPath(item.slug)}
-                          className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all border border-transparent hover:border-border"
-                        >
-                          <div className="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center border border-rose-500/20 flex-shrink-0">
-                            <Files className="w-4 h-4 text-rose-500" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="font-bold text-sm text-foreground leading-tight">{item.title}</p>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-card border border-border rounded-xl p-6 mb-8">
-                    <h3 className="text-lg font-black tracking-tight text-foreground mb-2">PDF Tools Status</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      The PDF category is being rolled out in batches. This first pass covers browser-safe operations like merge, split, rotate, reorder, remove, convert images to PDF, watermarking, page numbering, header/footer text, and visible signatures.
-                    </p>
-                  </div>
-
-                  <div className="bg-rose-500/8 p-6 rounded-xl border border-rose-500/20 text-foreground">
-                    <h3 className="text-xl font-black tracking-tight mb-2">Share this tool</h3>
-                    <p className="text-foreground/80 text-sm mb-5">
-                      Copy the current URL if you want to send this exact PDF tool page to someone else.
-                    </p>
-                    <button
-                      onClick={copyLink}
-                      className="w-full py-3 bg-foreground text-background font-bold rounded-xl text-sm inline-flex items-center justify-center gap-2"
-                    >
-                      {copied ? "Link Copied" : "Copy Link"}
-                      <Copy className="w-4 h-4" />
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+          <ToolRightSidebar
+            relatedTools={relatedTools.map((item, index) => ({
+              title: item.title,
+              href: getToolPath(item.slug),
+              benefit: item.description,
+              color: SIDEBAR_COLOR_STOPS[index % SIDEBAR_COLOR_STOPS.length],
+            }))}
+            onThisPageItems={[
+              { label: "Calculator", href: "#calculator" },
+              { label: "How to Use", href: "#how-to-use" },
+              { label: "Result Interpretation", href: "#result-interpretation" },
+              { label: "Quick Examples", href: "#quick-examples" },
+              { label: "Why Choose This", href: "#why-choose-this" },
+              { label: "FAQ", href: "#faq" },
+            ]}
+          />
         </div>
       </div>
     </Layout>

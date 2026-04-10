@@ -3,10 +3,12 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { ToolRightSidebar } from "@/components/ToolRightSidebar";
+import { getCanonicalToolPath } from "@/data/tools";
 import {
   ChevronRight, ChevronDown, TrendingUp, Calculator, ArrowRight,
   Zap, CheckCircle2, Smartphone, Shield, Clock, Percent,
-  DollarSign, Scale, BarChart3, Lightbulb, Copy, Check,
+  DollarSign, Scale, BarChart3, Lightbulb,
   BadgeCheck, Lock, Star, TrendingDown,
 } from "lucide-react";
 
@@ -139,13 +141,6 @@ export default function PercentageChangeCalculator() {
   }, []);
 
   const calculator = usePercentageCalculator(mode);
-  const [copied, setCopied] = useState(false);
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const fmt = (n: number | null) => {
     if (n === null) return "--";
@@ -211,6 +206,12 @@ export default function PercentageChangeCalculator() {
   };
 
   const config = toolConfig[mode];
+  const onThisPageItems = [
+    { label: "Calculator", href: "#calculator" },
+    { label: "How to Use", href: "#how-to-use" },
+    { label: "Examples", href: "#examples" },
+    { label: "FAQ", href: "#faq" },
+  ];
 
   return (
     <Layout>
@@ -273,10 +274,10 @@ export default function PercentageChangeCalculator() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           {/* ── LEFT COLUMN (Main Content) ── */}
-          <div className="lg:col-span-3 space-y-10">
+          <div className="lg:col-span-3 min-w-0 space-y-10">
 
             {/* ── 2. TOOL WIDGET ── */}
-            <section className="space-y-5">
+            <section id="calculator" className="space-y-5">
               <div className={`rounded-2xl overflow-hidden border border-${config.borderColor} shadow-lg shadow-${config.shadowColor}`}>
                 <div className={`h-1.5 w-full bg-gradient-to-r ${config.gradient}`} />
                 <div className="bg-card p-6 md:p-8 space-y-5">
@@ -325,7 +326,7 @@ export default function PercentageChangeCalculator() {
             </section>
 
             {/* ── 3. HOW TO USE ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="how-to-use" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Calculate Percentage {mode.charAt(0).toUpperCase() + mode.slice(1)}</h2>
 
               <p className="text-muted-foreground leading-relaxed mb-6">
@@ -392,7 +393,7 @@ export default function PercentageChangeCalculator() {
             </section>
 
             {/* ── 4. EXAMPLES ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="examples" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Percentage Increase Examples</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -451,7 +452,7 @@ export default function PercentageChangeCalculator() {
             </section>
 
             {/* ── 5. FAQ ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
+            <section id="faq" className="bg-card border border-border rounded-2xl p-6 md:p-8">
               <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
 
               <div className="space-y-4">
@@ -476,54 +477,16 @@ export default function PercentageChangeCalculator() {
 
           </div>
 
-          {/* ── RIGHT COLUMN (Sidebar) ── */}
-          <div className="lg:col-span-1 space-y-6">
-
-            {/* Share */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
-                <ArrowRight className="w-4 h-4" />
-                Share This Tool
-              </h3>
-              <button
-                onClick={copyLink}
-                className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Copied!" : "Copy Link"}
-              </button>
-            </div>
-
-            {/* Related Tools */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h3 className="font-bold text-foreground mb-4">Related Tools</h3>
-              <div className="space-y-3">
-                {RELATED_TOOLS.map((tool) => (
-                  <Link
-                    key={tool.slug}
-                    href={`/math/${tool.slug}`}
-                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors group"
-                  >
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: `hsl(${tool.color}, 70%, 95%)`, color: `hsl(${tool.color}, 70%, 40%)` }}
-                    >
-                      {tool.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-foreground text-sm leading-tight group-hover:text-blue-600 transition-colors">
-                        {tool.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground leading-tight">
-                        {tool.benefit}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-          </div>
+          <ToolRightSidebar
+            relatedTools={RELATED_TOOLS.map((tool) => ({
+              title: tool.title,
+              href: getCanonicalToolPath(tool.slug),
+              benefit: tool.benefit,
+              icon: tool.icon,
+              color: tool.color,
+            }))}
+            onThisPageItems={onThisPageItems}
+          />
         </div>
 
       </div>

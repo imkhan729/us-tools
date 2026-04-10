@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -572,7 +573,7 @@ export default function DiscountCalculator() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div
