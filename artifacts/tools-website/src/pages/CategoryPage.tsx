@@ -3,12 +3,11 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { DISPLAY_TOOL_CATEGORIES, getCanonicalToolPath, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, type Tool } from "@/data/tools";
 import {
   SITE_URL,
   createBreadcrumbSchema,
   createCollectionPageSchema,
-  createItemListSchema,
 } from "@/lib/seo";
 import { ChevronRight, ArrowRight,
   Calculator, DollarSign, Ruler, Clock, Heart, HardHat, Type, BookOpen, Gamepad2,
@@ -535,11 +534,6 @@ export default function CategoryPage() {
   const liveCount = category.tools.filter(t => t.implemented).length;
   const otherCategories = DISPLAY_TOOL_CATEGORIES.filter(c => c.id !== catId);
   const categoryUrl = `${SITE_URL}/category/${catId}`;
-  const categorySchemaTools = Array.from(
-    new Map(
-      category.tools.map((tool) => [`${SITE_URL}${getCanonicalToolPath(tool.slug)}`, tool] as const),
-    ).values(),
-  );
   const categorySchema = [
     createCollectionPageSchema({
       canonicalUrl: categoryUrl,
@@ -550,12 +544,6 @@ export default function CategoryPage() {
       { name: "Home", item: SITE_URL },
       { name: category.name, item: categoryUrl },
     ]),
-    createItemListSchema(
-      categorySchemaTools.map((tool) => ({
-        name: tool.title,
-        item: `${SITE_URL}${getCanonicalToolPath(tool.slug)}`,
-      })),
-    ),
   ];
 
   return (

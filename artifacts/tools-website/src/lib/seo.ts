@@ -16,11 +16,6 @@ export interface BreadcrumbItem {
   item: string;
 }
 
-export interface ItemListEntry {
-  name: string;
-  item: string;
-}
-
 export function toAbsoluteUrl(pathOrUrl: string): string {
   if (/^https?:\/\//i.test(pathOrUrl)) {
     return pathOrUrl;
@@ -40,6 +35,7 @@ export function createOrganizationSchema(): SchemaNode {
       "@type": "ImageObject",
       url: SITE_LOGO,
     },
+    image: SITE_OG_IMAGE,
   };
 }
 
@@ -90,25 +86,16 @@ export function createWebPageSchema({
 }
 
 export function createBreadcrumbSchema(items: BreadcrumbItem[]): SchemaNode {
+  const lastItem = items.at(-1)?.item;
+
   return {
     "@type": "BreadcrumbList",
+    ...(lastItem ? { "@id": `${lastItem}#breadcrumb` } : {}),
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
       item: item.item,
-    })),
-  };
-}
-
-export function createItemListSchema(items: ItemListEntry[]): SchemaNode {
-  return {
-    "@type": "ItemList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.name,
-      url: item.item,
     })),
   };
 }
@@ -124,11 +111,19 @@ export function createCollectionPageSchema({
 }): SchemaNode {
   return {
     "@type": "CollectionPage",
+    "@id": `${canonicalUrl}#collection`,
     name,
     url: canonicalUrl,
     description,
+    inLanguage: SITE_LANGUAGE,
     isPartOf: {
       "@id": `${SITE_URL}/#website`,
+    },
+    about: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
     },
   };
 }
@@ -169,10 +164,20 @@ export function createWebApplicationSchema({
 }): SchemaNode {
   return {
     "@type": "WebApplication",
+    "@id": `${canonicalUrl}#webapplication`,
     name,
     url: canonicalUrl,
     description,
     applicationCategory: category,
+    isAccessibleForFree: true,
+    inLanguage: SITE_LANGUAGE,
+    image: SITE_OG_IMAGE,
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
     operatingSystem: "Any",
     browserRequirements: "Requires JavaScript. Works in modern browsers.",
     offers: {

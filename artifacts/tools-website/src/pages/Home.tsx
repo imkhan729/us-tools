@@ -1,34 +1,17 @@
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
-import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
   Search, ArrowRight, Zap, ShieldCheck, Smartphone, Ban,
-  Calculator, KeyRound, Type, CalendarDays, Palette,
-  DollarSign, Ruler, Clock, Heart, HardHat, BookOpen, Gamepad2,
-  Star, Users, ChevronRight, Percent, TrendingUp, CreditCard,
-  PiggyBank, ReceiptText, Landmark, BarChart3, Scale, Hash,
-  Divide, Sigma, Infinity, FlaskConical, Dices, AlignLeft,
-  FileText, Lock, Globe, Thermometer, Weight, Timer, AlarmClock,
-  BicepsFlexed, Apple, Droplets, Activity, Building2, PaintBucket,
-  Grid3x3, SquareStack, Swords, Trophy, Zap as ZapIcon, Shuffle,
-  ListOrdered, Binary, Link2, QrCode, Image, Film,
-  Car, Plug, Sun, Footprints, Wine, Smile, Code, Wrench,
-  ImageIcon, FileImage, Crop, Paintbrush, Pipette, RotateCw,
-  Layers, ScanLine, Sparkles, Download, FileUp, FileDown,
-  FileLock, FileKey, FileSignature, FileType, Stamp, GripVertical,
-  Scissors, Minimize2, Maximize2, MonitorPlay,
-  Braces, FileCode, TerminalSquare, Bug, RefreshCw,
-  PenTool, Hexagon, Eye, Share2, AtSign, MessageCircle,
-  Search as SearchIcon, Tag, MapPin, Landmark as LandmarkIcon,
-  ShieldAlert, KeySquare, Fingerprint, UnlockKeyhole, ScanText,
+  Calculator, KeyRound, Type, DollarSign, Ruler, Clock, Heart, HardHat,
+  BookOpen, Gamepad2, Star, Users, ImageIcon, FileImage,
+  Braces, PenTool, Share2, Search as SearchIcon, ShieldAlert,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DISPLAY_TOOL_CATEGORIES, SITE_TOOL_COUNT, getCanonicalToolPath, getToolPath, type Tool } from "@/data/tools";
 import {
   SITE_URL,
   createCollectionPageSchema,
-  createItemListSchema,
 } from "@/lib/seo";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -86,444 +69,6 @@ const CATEGORY_ICON_BY_ID: Record<string, React.ReactNode> = {
   "seo": <SearchIcon className="w-3.5 h-3.5" />,
   "security": <ShieldAlert className="w-3.5 h-3.5" />,
   "social-media": <Share2 className="w-3.5 h-3.5" />,
-};
-
-const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
-  "percentage-calculator": <Percent className="w-4 h-4" />,
-  "fraction-to-decimal-calculator": <Divide className="w-4 h-4" />,
-  "decimal-to-fraction-calculator": <Divide className="w-4 h-4" />,
-  "ratio-calculator": <Scale className="w-4 h-4" />,
-  "average-calculator": <BarChart3 className="w-4 h-4" />,
-  "scientific-calculator": <FlaskConical className="w-4 h-4" />,
-  "standard-deviation-calculator": <Sigma className="w-4 h-4" />,
-  "square-root-calculator": <Calculator className="w-4 h-4" />,
-  "cube-root-calculator": <Calculator className="w-4 h-4" />,
-  "power-calculator": <ZapIcon className="w-4 h-4" />,
-  "logarithm-calculator": <Infinity className="w-4 h-4" />,
-  "factorial-calculator": <Hash className="w-4 h-4" />,
-  "prime-number-checker": <Hash className="w-4 h-4" />,
-  "lcm-calculator": <ListOrdered className="w-4 h-4" />,
-  "gcd-calculator": <ListOrdered className="w-4 h-4" />,
-  "random-number-generator": <Dices className="w-4 h-4" />,
-  "mean-median-mode-calculator": <BarChart3 className="w-4 h-4" />,
-  "simple-interest-calculator": <Percent className="w-4 h-4" />,
-  "compound-interest-calculator": <TrendingUp className="w-4 h-4" />,
-  "loan-emi-calculator": <Landmark className="w-4 h-4" />,
-  "discount-calculator": <ReceiptText className="w-4 h-4" />,
-  "profit-margin-calculator": <TrendingUp className="w-4 h-4" />,
-  "markup-calculator": <TrendingUp className="w-4 h-4" />,
-  "break-even-calculator": <BarChart3 className="w-4 h-4" />,
-  "roi-calculator": <TrendingUp className="w-4 h-4" />,
-  "savings-calculator": <PiggyBank className="w-4 h-4" />,
-  "tip-calculator": <ReceiptText className="w-4 h-4" />,
-  "salary-calculator": <CreditCard className="w-4 h-4" />,
-  "tax-calculator": <ReceiptText className="w-4 h-4" />,
-  "mortgage-payment-calculator": <Landmark className="w-4 h-4" />,
-  "gst-calculator": <ReceiptText className="w-4 h-4" />,
-  "inflation-calculator": <TrendingUp className="w-4 h-4" />,
-  "commission-calculator": <DollarSign className="w-4 h-4" />,
-  "investment-growth-calculator": <TrendingUp className="w-4 h-4" />,
-  "budget-calculator": <PiggyBank className="w-4 h-4" />,
-  "length-converter": <Ruler className="w-4 h-4" />,
-  "weight-converter": <Weight className="w-4 h-4" />,
-  "temperature-converter": <Thermometer className="w-4 h-4" />,
-  "speed-converter": <ZapIcon className="w-4 h-4" />,
-  "area-converter": <Grid3x3 className="w-4 h-4" />,
-  "volume-converter": <FlaskConical className="w-4 h-4" />,
-  "time-converter": <Timer className="w-4 h-4" />,
-  "data-storage-converter": <Binary className="w-4 h-4" />,
-  "color-converter": <Palette className="w-4 h-4" />,
-  "number-base-converter": <Binary className="w-4 h-4" />,
-  "currency-converter": <DollarSign className="w-4 h-4" />,
-  "energy-converter": <ZapIcon className="w-4 h-4" />,
-  "pressure-converter": <Activity className="w-4 h-4" />,
-  "angle-converter": <Scale className="w-4 h-4" />,
-  "age-calculator": <CalendarDays className="w-4 h-4" />,
-  "date-difference-calculator": <CalendarDays className="w-4 h-4" />,
-  "time-zone-converter": <Globe className="w-4 h-4" />,
-  "countdown-timer": <AlarmClock className="w-4 h-4" />,
-  "unix-timestamp-converter": <Timer className="w-4 h-4" />,
-  "days-until-calculator": <CalendarDays className="w-4 h-4" />,
-  "work-hours-calculator": <Clock className="w-4 h-4" />,
-  "time-addition-calculator": <Timer className="w-4 h-4" />,
-  "day-of-week-calculator": <CalendarDays className="w-4 h-4" />,
-  "leap-year-checker": <CalendarDays className="w-4 h-4" />,
-  "week-number-calculator": <CalendarDays className="w-4 h-4" />,
-  "business-days-calculator": <CalendarDays className="w-4 h-4" />,
-  "bmi-calculator": <Activity className="w-4 h-4" />,
-  "bmr-calculator": <Activity className="w-4 h-4" />,
-  "tdee-calculator": <BicepsFlexed className="w-4 h-4" />,
-  "calorie-intake-calculator": <Apple className="w-4 h-4" />,
-  "water-intake-calculator": <Droplets className="w-4 h-4" />,
-  "ideal-weight-calculator": <Scale className="w-4 h-4" />,
-  "body-fat-calculator": <Activity className="w-4 h-4" />,
-  "pregnancy-calculator": <Heart className="w-4 h-4" />,
-  "ovulation-calculator": <CalendarDays className="w-4 h-4" />,
-  "sleep-calculator": <AlarmClock className="w-4 h-4" />,
-  "macro-calculator": <Apple className="w-4 h-4" />,
-  "protein-intake-calculator": <Apple className="w-4 h-4" />,
-  "heart-rate-calculator": <Heart className="w-4 h-4" />,
-  "running-pace-calculator": <Timer className="w-4 h-4" />,
-  "due-date-calculator": <CalendarDays className="w-4 h-4" />,
-  "blood-type-calculator": <Activity className="w-4 h-4" />,
-  "vo2-max-calculator": <Activity className="w-4 h-4" />,
-  "concrete-calculator": <Building2 className="w-4 h-4" />,
-  "paint-calculator": <PaintBucket className="w-4 h-4" />,
-  "mulch-calculator": <Grid3x3 className="w-4 h-4" />,
-  "gravel-calculator": <Grid3x3 className="w-4 h-4" />,
-  "roofing-calculator": <Building2 className="w-4 h-4" />,
-  "flooring-calculator": <Grid3x3 className="w-4 h-4" />,
-  "tile-calculator": <Grid3x3 className="w-4 h-4" />,
-  "fence-calculator": <Building2 className="w-4 h-4" />,
-  "stair-calculator": <Building2 className="w-4 h-4" />,
-  "drywall-calculator": <Building2 className="w-4 h-4" />,
-  "lumber-calculator": <Ruler className="w-4 h-4" />,
-  "wallpaper-calculator": <SquareStack className="w-4 h-4" />,
-  "soil-calculator": <Grid3x3 className="w-4 h-4" />,
-  "brick-calculator": <Building2 className="w-4 h-4" />,
-  "word-counter": <FileText className="w-4 h-4" />,
-  "character-counter": <AlignLeft className="w-4 h-4" />,
-  "character-counter-tool": <AlignLeft className="w-4 h-4" />,
-  "password-generator": <KeyRound className="w-4 h-4" />,
-  "text-case-converter": <Type className="w-4 h-4" />,
-  "lorem-ipsum-generator": <AlignLeft className="w-4 h-4" />,
-  "url-encoder-decoder": <Link2 className="w-4 h-4" />,
-  "base64-encoder-decoder": <Binary className="w-4 h-4" />,
-  "json-formatter": <FileText className="w-4 h-4" />,
-  "markdown-previewer": <FileText className="w-4 h-4" />,
-  "online-markdown-previewer": <FileText className="w-4 h-4" />,
-  "text-reverser": <Shuffle className="w-4 h-4" />,
-  "duplicate-line-remover": <AlignLeft className="w-4 h-4" />,
-  "word-frequency-counter": <BarChart3 className="w-4 h-4" />,
-  "text-to-slug-converter": <Link2 className="w-4 h-4" />,
-  "uuid-generator": <Hash className="w-4 h-4" />,
-  "qr-code-generator": <QrCode className="w-4 h-4" />,
-  "username-generator": <KeyRound className="w-4 h-4" />,
-  "gpa-calculator": <BookOpen className="w-4 h-4" />,
-  "grade-calculator": <BookOpen className="w-4 h-4" />,
-  "test-grade-calculator": <BookOpen className="w-4 h-4" />,
-  "final-grade-calculator": <BookOpen className="w-4 h-4" />,
-  "weighted-grade-calculator": <BookOpen className="w-4 h-4" />,
-  "roman-numeral-converter": <Binary className="w-4 h-4" />,
-  "binary-converter": <Binary className="w-4 h-4" />,
-  "hex-calculator": <Hash className="w-4 h-4" />,
-  "reading-time-calculator": <Timer className="w-4 h-4" />,
-  "words-per-minute-calculator": <Timer className="w-4 h-4" />,
-  "roblox-tax-calculator": <Gamepad2 className="w-4 h-4" />,
-  "blox-fruits-calculator": <Swords className="w-4 h-4" />,
-  "blox-fruits-trade-calculator": <Shuffle className="w-4 h-4" />,
-  "minecraft-circle-calculator": <Grid3x3 className="w-4 h-4" />,
-  "valorant-sensitivity-calculator": <Swords className="w-4 h-4" />,
-  "fortnite-dpi-calculator": <Swords className="w-4 h-4" />,
-  "elden-ring-calculator": <Swords className="w-4 h-4" />,
-  "pokemon-damage-calculator": <Trophy className="w-4 h-4" />,
-  "dnd-dice-roller": <Dices className="w-4 h-4" />,
-  "esports-earnings-calculator": <Trophy className="w-4 h-4" />,
-  // New math tools
-  "rounding-numbers-calculator": <Calculator className="w-4 h-4" />,
-  "exponents-calculator": <ZapIcon className="w-4 h-4" />,
-  "variance-calculator": <BarChart3 className="w-4 h-4" />,
-  "number-sequence-generator": <ListOrdered className="w-4 h-4" />,
-  "divisibility-checker": <Hash className="w-4 h-4" />,
-  // New finance tools
-  "expense-calculator": <ReceiptText className="w-4 h-4" />,
-  "cost-per-unit-calculator": <DollarSign className="w-4 h-4" />,
-  "price-per-unit-calculator": <DollarSign className="w-4 h-4" />,
-  "payback-period-calculator": <TrendingUp className="w-4 h-4" />,
-  "loan-interest-calculator": <Landmark className="w-4 h-4" />,
-  "savings-goal-calculator": <PiggyBank className="w-4 h-4" />,
-  "revenue-calculator": <BarChart3 className="w-4 h-4" />,
-  "cost-split-calculator": <Scale className="w-4 h-4" />,
-  // New conversion tools
-  "frequency-converter": <Activity className="w-4 h-4" />,
-  "fuel-efficiency-converter": <ZapIcon className="w-4 h-4" />,
-  "number-to-words-converter": <FileText className="w-4 h-4" />,
-  "words-to-number-converter": <Hash className="w-4 h-4" />,
-  "base-converter": <Binary className="w-4 h-4" />,
-  "binary-to-hex-converter": <Binary className="w-4 h-4" />,
-  "hex-to-binary-converter": <Binary className="w-4 h-4" />,
-  "octal-converter": <Binary className="w-4 h-4" />,
-  "unit-price-converter": <DollarSign className="w-4 h-4" />,
-  "density-converter": <FlaskConical className="w-4 h-4" />,
-  "binary-to-decimal-converter": <Binary className="w-4 h-4" />,
-  "decimal-to-binary-converter": <Binary className="w-4 h-4" />,
-  "hex-to-decimal-converter": <Hash className="w-4 h-4" />,
-  // New time & date tools
-  "days-between-dates-calculator": <CalendarDays className="w-4 h-4" />,
-  "working-days-calculator": <CalendarDays className="w-4 h-4" />,
-  "time-subtraction-calculator": <Timer className="w-4 h-4" />,
-  "meeting-time-calculator": <Clock className="w-4 h-4" />,
-  "shift-schedule-calculator": <Clock className="w-4 h-4" />,
-  "deadline-calculator": <AlarmClock className="w-4 h-4" />,
-  "study-time-calculator": <Timer className="w-4 h-4" />,
-  "event-countdown-timer": <AlarmClock className="w-4 h-4" />,
-  "hourly-time-calculator": <Clock className="w-4 h-4" />,
-  "shift-hours-calculator": <Clock className="w-4 h-4" />,
-  "time-tracking-calculator": <Timer className="w-4 h-4" />,
-  "time-duration-calculator": <Timer className="w-4 h-4" />,
-  "overtime-calculator": <Clock className="w-4 h-4" />,
-  "stopwatch": <Timer className="w-4 h-4" />,
-  "half-birthday-calculator": <CalendarDays className="w-4 h-4" />,
-  // New health tools
-  "lean-body-mass-calculator": <BicepsFlexed className="w-4 h-4" />,
-  "daily-calories-burn-calculator": <Activity className="w-4 h-4" />,
-  "one-rep-max-calculator": <BicepsFlexed className="w-4 h-4" />,
-  "body-type-calculator": <Activity className="w-4 h-4" />,
-  "fitness-age-calculator": <Heart className="w-4 h-4" />,
-  "walking-calories-calculator": <Activity className="w-4 h-4" />,
-  "cycling-calories-calculator": <Activity className="w-4 h-4" />,
-  "macro-nutrient-calculator": <Apple className="w-4 h-4" />,
-  "fat-intake-calculator": <Apple className="w-4 h-4" />,
-  "workout-duration-calculator": <Timer className="w-4 h-4" />,
-  "step-counter-estimator": <Activity className="w-4 h-4" />,
-  "pregnancy-due-date-calculator": <Heart className="w-4 h-4" />,
-  "calorie-deficit-calculator": <Apple className="w-4 h-4" />,
-  "cat-age-calculator": <Heart className="w-4 h-4" />,
-  "dog-age-calculator": <Heart className="w-4 h-4" />,
-  // New construction tools
-  "concrete-volume-calculator": <Building2 className="w-4 h-4" />,
-  "cement-calculator": <Building2 className="w-4 h-4" />,
-  "steel-weight-calculator": <Scale className="w-4 h-4" />,
-  "room-area-calculator": <Grid3x3 className="w-4 h-4" />,
-  "roof-area-calculator": <Building2 className="w-4 h-4" />,
-  "water-tank-calculator": <Droplets className="w-4 h-4" />,
-  "asphalt-calculator": <Building2 className="w-4 h-4" />,
-  "fence-length-calculator": <Ruler className="w-4 h-4" />,
-  "wall-area-calculator": <Grid3x3 className="w-4 h-4" />,
-  "pipe-volume-calculator": <FlaskConical className="w-4 h-4" />,
-  "sand-calculator": <Grid3x3 className="w-4 h-4" />,
-  "excavation-calculator": <Building2 className="w-4 h-4" />,
-  "material-cost-calculator": <DollarSign className="w-4 h-4" />,
-  "deck-area-calculator": <Grid3x3 className="w-4 h-4" />,
-  "plaster-calculator": <PaintBucket className="w-4 h-4" />,
-  "insulation-calculator": <Building2 className="w-4 h-4" />,
-  "concrete-block-calculator": <Building2 className="w-4 h-4" />,
-  "paver-calculator": <Grid3x3 className="w-4 h-4" />,
-  "bitumen-calculator": <Building2 className="w-4 h-4" />,
-  "pool-salt-calculator": <Droplets className="w-4 h-4" />,
-  // New productivity tools
-  "random-name-generator": <Dices className="w-4 h-4" />,
-  "password-strength-checker": <Lock className="w-4 h-4" />,
-  "dice-roller": <Dices className="w-4 h-4" />,
-  "coin-flip": <Dices className="w-4 h-4" />,
-  "random-color-generator": <Palette className="w-4 h-4" />,
-  "case-converter": <Type className="w-4 h-4" />,
-  "alphabetical-sort": <ListOrdered className="w-4 h-4" />,
-  "palindrome-checker": <Type className="w-4 h-4" />,
-  "slug-generator": <Link2 className="w-4 h-4" />,
-  "hashtag-generator": <Hash className="w-4 h-4" />,
-  "random-letter-generator": <Dices className="w-4 h-4" />,
-  "random-picker": <Dices className="w-4 h-4" />,
-  "spin-wheel-generator": <Dices className="w-4 h-4" />,
-  "line-counter": <ListOrdered className="w-4 h-4" />,
-  "remove-extra-spaces": <Type className="w-4 h-4" />,
-  "sort-text-lines": <ListOrdered className="w-4 h-4" />,
-  "list-randomizer": <Shuffle className="w-4 h-4" />,
-  "text-formatter": <Type className="w-4 h-4" />,
-  // New education tools
-  "percentage-grade-calculator": <BookOpen className="w-4 h-4" />,
-  "attendance-percentage-calculator": <BookOpen className="w-4 h-4" />,
-  "reading-speed-calculator": <Timer className="w-4 h-4" />,
-  "marks-percentage-calculator": <BookOpen className="w-4 h-4" />,
-  "marks-to-gpa-converter": <BookOpen className="w-4 h-4" />,
-  "class-average-calculator": <BarChart3 className="w-4 h-4" />,
-  "score-calculator": <BookOpen className="w-4 h-4" />,
-  "study-planner-calculator": <CalendarDays className="w-4 h-4" />,
-  "homework-time-calculator": <Timer className="w-4 h-4" />,
-  "exam-countdown-timer": <AlarmClock className="w-4 h-4" />,
-  "assignment-grade-calculator": <BookOpen className="w-4 h-4" />,
-  "semester-planner": <CalendarDays className="w-4 h-4" />,
-  "quiz-score-calculator": <BookOpen className="w-4 h-4" />,
-  "flashcard-timer": <Timer className="w-4 h-4" />,
-  "exam-score-predictor": <TrendingUp className="w-4 h-4" />,
-  "study-hours-tracker": <Clock className="w-4 h-4" />,
-  "grade-improvement-calculator": <TrendingUp className="w-4 h-4" />,
-  "test-score-analyzer": <BarChart3 className="w-4 h-4" />,
-  "learning-time-calculator": <Timer className="w-4 h-4" />,
-  "school-schedule-planner": <CalendarDays className="w-4 h-4" />,
-  "revision-planner": <CalendarDays className="w-4 h-4" />,
-  // Gaming tools
-  "xp-level-calculator": <Trophy className="w-4 h-4" />,
-  "clash-of-clans-upgrade-calculator": <Swords className="w-4 h-4" />,
-  "damage-calculator": <Swords className="w-4 h-4" />,
-  "game-currency-converter": <DollarSign className="w-4 h-4" />,
-  // New math tools (batch 2)
-  "matrix-calculator": <Grid3x3 className="w-4 h-4" />,
-  "quadratic-equation-solver": <Calculator className="w-4 h-4" />,
-  "permutation-calculator": <Shuffle className="w-4 h-4" />,
-  "combination-calculator": <Shuffle className="w-4 h-4" />,
-  "modulo-calculator": <Hash className="w-4 h-4" />,
-  "proportion-calculator": <Scale className="w-4 h-4" />,
-  // New finance tools (batch 2)
-  "depreciation-calculator": <TrendingUp className="w-4 h-4 rotate-180" />,
-  "net-worth-calculator": <DollarSign className="w-4 h-4" />,
-  "retirement-calculator": <PiggyBank className="w-4 h-4" />,
-  "car-loan-calculator": <Car className="w-4 h-4" />,
-  "credit-card-payoff-calculator": <CreditCard className="w-4 h-4" />,
-  "down-payment-calculator": <Landmark className="w-4 h-4" />,
-  "amortization-calculator": <BarChart3 className="w-4 h-4" />,
-  "stock-profit-calculator": <TrendingUp className="w-4 h-4" />,
-  "dividend-calculator": <DollarSign className="w-4 h-4" />,
-  "currency-exchange-calculator": <DollarSign className="w-4 h-4" />,
-  "hourly-to-salary-calculator": <CreditCard className="w-4 h-4" />,
-  // New conversion tools (batch 2)
-  "power-converter": <Plug className="w-4 h-4" />,
-  "torque-converter": <Wrench className="w-4 h-4" />,
-  "force-converter": <Activity className="w-4 h-4" />,
-  "electric-current-converter": <Plug className="w-4 h-4" />,
-  "shoe-size-converter": <Footprints className="w-4 h-4" />,
-  "cooking-converter": <Apple className="w-4 h-4" />,
-  // New time tools (batch 2)
-  "era-calculator": <CalendarDays className="w-4 h-4" />,
-  "zodiac-sign-calculator": <Star className="w-4 h-4" />,
-  "chinese-zodiac-calculator": <Star className="w-4 h-4" />,
-  "age-in-days-calculator": <CalendarDays className="w-4 h-4" />,
-  "retirement-age-calculator": <Clock className="w-4 h-4" />,
-  // New health tools (batch 2)
-  "calorie-calculator": <Apple className="w-4 h-4" />,
-  "bac-calculator": <Wine className="w-4 h-4" />,
-  "waist-to-hip-ratio-calculator": <Activity className="w-4 h-4" />,
-  "keto-calculator": <Apple className="w-4 h-4" />,
-  "intermittent-fasting-calculator": <Timer className="w-4 h-4" />,
-  // New construction tools (batch 2)
-  "rebar-calculator": <Building2 className="w-4 h-4" />,
-  "solar-panel-calculator": <Sun className="w-4 h-4" />,
-  "electrical-load-calculator": <Plug className="w-4 h-4" />,
-  // New productivity tools (batch 2)
-  "color-picker": <Palette className="w-4 h-4" />,
-  "emoji-picker": <Smile className="w-4 h-4" />,
-  // New education tools (batch 2)
-  "cgpa-calculator": <BookOpen className="w-4 h-4" />,
-  "sat-score-calculator": <BookOpen className="w-4 h-4" />,
-  "typing-speed-test": <Type className="w-4 h-4" />,
-  "scholarship-calculator": <DollarSign className="w-4 h-4" />,
-  "college-gpa-calculator": <BookOpen className="w-4 h-4" />,
-  // New gaming tools (batch 2)
-  "genshin-impact-calculator": <Swords className="w-4 h-4" />,
-  "cs2-sensitivity-calculator": <Swords className="w-4 h-4" />,
-  "pokemon-iv-calculator": <Trophy className="w-4 h-4" />,
-  "gaming-fps-calculator": <Gamepad2 className="w-4 h-4" />,
-  // Image Tools
-  "image-resizer": <Maximize2 className="w-4 h-4" />,
-  "image-compressor": <Minimize2 className="w-4 h-4" />,
-  "image-cropper": <Crop className="w-4 h-4" />,
-  "image-format-converter": <FileImage className="w-4 h-4" />,
-  "image-to-base64": <Code className="w-4 h-4" />,
-  "base64-to-image": <ImageIcon className="w-4 h-4" />,
-  "image-rotate-flip": <RotateCw className="w-4 h-4" />,
-  "image-color-picker": <Pipette className="w-4 h-4" />,
-  "image-watermark": <Stamp className="w-4 h-4" />,
-  "image-filter-editor": <Paintbrush className="w-4 h-4" />,
-  "image-to-png": <FileImage className="w-4 h-4" />,
-  "image-to-jpg": <FileImage className="w-4 h-4" />,
-  "png-to-webp": <FileImage className="w-4 h-4" />,
-  "svg-to-png": <FileImage className="w-4 h-4" />,
-  "image-background-remover": <Sparkles className="w-4 h-4" />,
-  "image-collage-maker": <Layers className="w-4 h-4" />,
-  "meme-generator": <Smile className="w-4 h-4" />,
-  "favicon-generator": <ImageIcon className="w-4 h-4" />,
-  "image-pixel-counter": <ScanLine className="w-4 h-4" />,
-  // PDF Tools
-  "pdf-merge": <Layers className="w-4 h-4" />,
-  "pdf-split": <Scissors className="w-4 h-4" />,
-  "pdf-compress": <Minimize2 className="w-4 h-4" />,
-  "image-to-pdf": <FileUp className="w-4 h-4" />,
-  "pdf-to-image": <FileDown className="w-4 h-4" />,
-  "pdf-rotate": <RotateCw className="w-4 h-4" />,
-  "pdf-page-remover": <FileImage className="w-4 h-4" />,
-  "pdf-page-reorder": <GripVertical className="w-4 h-4" />,
-  "pdf-watermark": <Stamp className="w-4 h-4" />,
-  "pdf-password-protect": <FileLock className="w-4 h-4" />,
-  "pdf-unlock": <FileKey className="w-4 h-4" />,
-  "pdf-to-text": <FileType className="w-4 h-4" />,
-  "pdf-page-number": <Hash className="w-4 h-4" />,
-  "pdf-header-footer": <FileImage className="w-4 h-4" />,
-  "jpg-to-pdf": <FileUp className="w-4 h-4" />,
-  "pdf-sign": <FileSignature className="w-4 h-4" />,
-  // Developer Tools
-  "json-validator": <Braces className="w-4 h-4" />,
-  "json-to-csv": <FileCode className="w-4 h-4" />,
-  "csv-to-json": <FileCode className="w-4 h-4" />,
-  "csv-to-json-converter": <FileCode className="w-4 h-4" />,
-  "json-minifier": <Braces className="w-4 h-4" />,
-  "html-formatter": <FileCode className="w-4 h-4" />,
-  "html-minifier": <FileCode className="w-4 h-4" />,
-  "css-minifier": <FileCode className="w-4 h-4" />,
-  "css-formatter": <FileCode className="w-4 h-4" />,
-  "javascript-minifier": <FileCode className="w-4 h-4" />,
-  "javascript-formatter": <FileCode className="w-4 h-4" />,
-  "regex-tester": <Bug className="w-4 h-4" />,
-  "html-entity-encoder": <FileCode className="w-4 h-4" />,
-  "jwt-decoder": <KeyRound className="w-4 h-4" />,
-  "xml-formatter": <FileCode className="w-4 h-4" />,
-  "sql-formatter": <TerminalSquare className="w-4 h-4" />,
-  "diff-checker": <FileCode className="w-4 h-4" />,
-  "cron-expression-generator": <Timer className="w-4 h-4" />,
-  "color-code-converter": <Palette className="w-4 h-4" />,
-  "hash-generator": <Hash className="w-4 h-4" />,
-  "html-to-markdown": <FileCode className="w-4 h-4" />,
-  "markdown-to-html": <FileCode className="w-4 h-4" />,
-  "json-to-xml": <FileCode className="w-4 h-4" />,
-  "yaml-to-json": <FileCode className="w-4 h-4" />,
-  "string-escape-unescape": <Code className="w-4 h-4" />,
-  "json-path-tester": <Braces className="w-4 h-4" />,
-  // CSS & Design Tools
-  "css-gradient-generator": <PenTool className="w-4 h-4" />,
-  "css-box-shadow-generator": <PenTool className="w-4 h-4" />,
-  "css-text-shadow-generator": <PenTool className="w-4 h-4" />,
-  "css-border-radius-generator": <PenTool className="w-4 h-4" />,
-  "css-flexbox-generator": <Grid3x3 className="w-4 h-4" />,
-  "css-grid-generator": <Grid3x3 className="w-4 h-4" />,
-  "css-animation-generator": <RefreshCw className="w-4 h-4" />,
-  "css-clip-path-generator": <PenTool className="w-4 h-4" />,
-  "css-filter-generator": <Paintbrush className="w-4 h-4" />,
-  "color-palette-generator": <Palette className="w-4 h-4" />,
-  "color-contrast-checker": <Eye className="w-4 h-4" />,
-  "hex-to-rgb-converter": <Hexagon className="w-4 h-4" />,
-  "rgb-to-hex-converter": <Hexagon className="w-4 h-4" />,
-  "tailwind-color-generator": <Palette className="w-4 h-4" />,
-  "glassmorphism-generator": <PenTool className="w-4 h-4" />,
-  "neumorphism-generator": <PenTool className="w-4 h-4" />,
-  "css-triangle-generator": <PenTool className="w-4 h-4" />,
-  // SEO Tools
-  "meta-tag-generator": <Tag className="w-4 h-4" />,
-  "open-graph-generator": <Share2 className="w-4 h-4" />,
-  "twitter-card-generator": <Share2 className="w-4 h-4" />,
-  "robots-txt-generator": <FileText className="w-4 h-4" />,
-  "sitemap-generator": <MapPin className="w-4 h-4" />,
-  "keyword-density-checker": <SearchIcon className="w-4 h-4" />,
-  "serp-preview-tool": <SearchIcon className="w-4 h-4" />,
-  "schema-markup-generator": <Braces className="w-4 h-4" />,
-  "canonical-tag-generator": <Tag className="w-4 h-4" />,
-  "htaccess-redirect-generator": <FileCode className="w-4 h-4" />,
-  "readability-checker": <Eye className="w-4 h-4" />,
-  "heading-tag-checker": <FileCode className="w-4 h-4" />,
-  "favicon-checker": <ImageIcon className="w-4 h-4" />,
-  // Security & Encryption
-  "md5-hash-generator": <Fingerprint className="w-4 h-4" />,
-  "sha256-hash-generator": <Fingerprint className="w-4 h-4" />,
-  "sha1-hash-generator": <Fingerprint className="w-4 h-4" />,
-  "sha512-hash-generator": <Fingerprint className="w-4 h-4" />,
-  "bcrypt-hash-generator": <Fingerprint className="w-4 h-4" />,
-  "aes-encrypt-decrypt": <Lock className="w-4 h-4" />,
-  "rsa-key-generator": <KeySquare className="w-4 h-4" />,
-  "hmac-generator": <Fingerprint className="w-4 h-4" />,
-  "random-string-generator": <Shuffle className="w-4 h-4" />,
-  "encryption-decoder": <UnlockKeyhole className="w-4 h-4" />,
-  "binary-to-text": <Binary className="w-4 h-4" />,
-  "hex-to-text": <Hash className="w-4 h-4" />,
-  "morse-code-translator": <ScanText className="w-4 h-4" />,
-  // Social Media Tools
-  "twitter-character-counter": <MessageCircle className="w-4 h-4" />,
-  "instagram-caption-counter": <MessageCircle className="w-4 h-4" />,
-  "social-media-image-resizer": <ImageIcon className="w-4 h-4" />,
-  "youtube-thumbnail-checker": <Film className="w-4 h-4" />,
-  "text-to-emoji": <Smile className="w-4 h-4" />,
-  "linkedin-post-formatter": <FileText className="w-4 h-4" />,
-  "bio-generator": <AtSign className="w-4 h-4" />,
-  "unicode-text-converter": <Type className="w-4 h-4" />,
-  "tiktok-character-counter": <MessageCircle className="w-4 h-4" />,
-  "social-post-scheduler-planner": <CalendarDays className="w-4 h-4" />,
 };
 
 const HERO_TILES = [
@@ -603,6 +148,12 @@ const CARD_BADGES = [
   "TRUSTED", "\u2B50 5.0", "BEST", "SMART",
 ];
 
+const HOMEPAGE_CATEGORY_PREVIEW_LIMIT = 4;
+const OFFSCREEN_SECTION_STYLE = {
+  contentVisibility: "auto",
+  containIntrinsicSize: "900px",
+} as const;
+
 // Extract subtitle from title (e.g., "Simple Interest Calculator" → ["Simple Interest", "Calculator"])
 function splitToolTitle(title: string): [string, string] {
   const subtitleWords = ["Calculator", "Converter", "Generator", "Checker", "Planner", "Counter", "Timer", "Tool", "Tracker", "Analyzer", "Estimator", "Remover", "Roller"];
@@ -616,17 +167,11 @@ function splitToolTitle(title: string): [string, string] {
 function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
   const hue = CARD_HUES[colorIndex % CARD_HUES.length];
   const badge = CARD_BADGES[colorIndex % CARD_BADGES.length];
-  const icon = TOOL_ICON_MAP[tool.slug] ?? CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-5 h-5" />;
+  const icon = CATEGORY_ICON_SM[tool.category] ?? <Calculator className="w-5 h-5" />;
   const [mainTitle, subtitle] = splitToolTitle(tool.title);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.3 }}
-      className="h-full"
-    >
+    <div className="h-full">
       <Link
         href={getToolPath(tool.slug)}
         className="tool-card-active group"
@@ -650,7 +195,7 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
           </span>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -658,6 +203,7 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
 export default function Home() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [showDeferredSections, setShowDeferredSections] = useState(false);
 
   const homepageCategories = useMemo(() => DISPLAY_TOOL_CATEGORIES, []);
 
@@ -700,30 +246,25 @@ export default function Home() {
   const totalTools = homepageTools.length;
   const displayCount = SITE_TOOL_COUNT;
   const liveTools = homepageTools.filter(t => t.implemented).length;
-  const featuredSchemaTools = Array.from(
-    new Map(
-      homepageTools.map((tool) => [`${SITE_URL}${getCanonicalToolPath(tool.slug)}`, tool] as const),
-    ).values(),
-  ).slice(0, 12);
   const homeSchema = [
     createCollectionPageSchema({
       canonicalUrl: SITE_URL,
       name: "US Online Tools Home",
       description: `${displayCount} free online tools including calculators, converters, generators, and utilities.`,
     }),
-    createItemListSchema(
-      homepageCategories.slice(0, 8).map((category) => ({
-        name: `${category.name} Tools`,
-        item: `${SITE_URL}/category/${category.id}`,
-      })),
-    ),
-    createItemListSchema(
-      featuredSchemaTools.map((tool) => ({
-        name: tool.title,
-        item: `${SITE_URL}${getCanonicalToolPath(tool.slug)}`,
-      })),
-    ),
   ];
+
+  useEffect(() => {
+    const loadDeferredSections = () => setShowDeferredSections(true);
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(loadDeferredSections, { timeout: 1200 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(loadDeferredSections, 350);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   return (
     <Layout>
@@ -761,14 +302,9 @@ export default function Home() {
           </div>
           {/* Right — 3D glossy square tile grid */}
           <div className="hidden lg:grid grid-cols-3 gap-5 max-w-md ml-auto">
-            {HERO_TILES.map((tile, i) => (
-              <motion.div
+            {HERO_TILES.map((tile) => (
+              <div
                 key={tile.label}
-                initial={{ opacity: 0, y: 24, scale: 0.85 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                whileHover={{ y: -8, scale: 1.08, rotateX: 0, rotateY: 0, transition: { duration: 0.25 } }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 180 }}
                 className="hero-tile cursor-pointer"
                 style={{ "--tile-hue": tile.hue } as React.CSSProperties}
               >
@@ -776,7 +312,7 @@ export default function Home() {
                   {tile.icon}
                 </div>
                 <span className="hero-tile-label">{tile.label}</span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -809,22 +345,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Search heading */}
           <div className="text-center mb-10">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-5"
-            >
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-5">
               <Search className="w-3.5 h-3.5" />
               Instant Search
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.05 }}
-              className="text-4xl md:text-[3.25rem] font-black tracking-tighter text-foreground leading-tight"
-            >
+            </div>
+            <h2 className="text-4xl md:text-[3.25rem] font-black tracking-tighter text-foreground leading-tight">
               Find the{" "}
               <span className="relative inline-block">
                 <span className="text-primary">Perfect Tool</span>
@@ -832,26 +357,17 @@ export default function Home() {
                   <path d="M0 5 Q50 0 100 5 Q150 10 200 5" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.5" />
                 </svg>
               </span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-muted-foreground font-medium mt-4 text-lg"
-            >
+            </h2>
+            <p className="text-muted-foreground font-medium mt-4 text-lg">
               {displayCount} free tools at your fingertips
-            </motion.p>
+            </p>
+            <p className="text-sm text-muted-foreground/80 mt-3">
+              The homepage shows fast-loading previews. Use search or category pages for the full library.
+            </p>
           </div>
 
           {/* Search bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.12 }}
-            className="relative max-w-2xl mx-auto mb-10"
-          >
+          <div className="relative max-w-2xl mx-auto mb-10">
             <div className={`flex items-center bg-card border-2 rounded-2xl transition-all duration-200 shadow-sm ${search ? "border-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]" : "border-border hover:border-primary/50"}`}>
               <div className="flex items-center justify-center w-14 h-14 flex-shrink-0">
                 <Search className={`w-5 h-5 transition-colors ${search ? "text-primary" : "text-muted-foreground"}`} />
@@ -882,24 +398,14 @@ export default function Home() {
 
             {/* Live result count badge */}
             {search && filteredTools !== null && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm whitespace-nowrap"
-              >
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[11px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm whitespace-nowrap">
                 {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} found
-              </motion.div>
+              </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Category pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="mb-14 mt-8"
-          >
+          <div className="mb-14 mt-8">
             {/* 17 items: ALL TOOLS col-span-2 → 3 perfect rows of 6 on desktop */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
               <button
@@ -934,15 +440,11 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Search Results */}
           {filteredTools !== null && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div>
               {filteredTools.length === 0 ? (
                 <div className="text-center py-20 glass-card rounded-2xl">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
@@ -956,14 +458,14 @@ export default function Home() {
                   {filteredTools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
                 </div>
               )}
-            </motion.div>
+            </div>
           )}
 
           {/* All categories (default) */}
           {filteredTools === null && (
             <div className="space-y-16">
-              {homepageCategories.map(cat => (
-                  <div key={cat.id} id={cat.id}>
+              {homepageCategories.slice(0, showDeferredSections ? homepageCategories.length : 6).map(cat => (
+                  <div key={cat.id} id={cat.id} style={OFFSCREEN_SECTION_STYLE}>
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-lg ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground`}>
@@ -973,7 +475,9 @@ export default function Home() {
                           <h2 className={`text-2xl font-black uppercase tracking-tight text-foreground border-l-4 ${CATEGORY_BG[cat.id]} pl-3`}>
                             {cat.name}
                           </h2>
-                          <p className="text-sm text-muted-foreground font-medium">{cat.tools.length} Powerful Tools</p>
+                          <p className="text-sm text-muted-foreground font-medium">
+                            Top {Math.min(HOMEPAGE_CATEGORY_PREVIEW_LIMIT, cat.tools.length)} of {cat.tools.length} tools
+                          </p>
                         </div>
                       </div>
                       <Link
@@ -985,7 +489,9 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {cat.tools.map((tool, i) => <ToolCard key={tool.slug} tool={tool} colorIndex={i} />)}
+                      {cat.tools.slice(0, HOMEPAGE_CATEGORY_PREVIEW_LIMIT).map((tool, i) => (
+                        <ToolCard key={tool.slug} tool={tool} colorIndex={i} />
+                      ))}
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-6 py-3 text-sm text-muted-foreground font-medium">
@@ -1002,7 +508,9 @@ export default function Home() {
       </section>
 
       {/* ── CATEGORIES SHOWCASE ── */}
-      <section id="categories" className="py-20 bg-muted/30 border-t-4 border-border">
+      {showDeferredSections ? (
+        <>
+      <section id="categories" className="py-20 bg-muted/30 border-t-4 border-border" style={OFFSCREEN_SECTION_STYLE}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground border-l-8 border-primary pl-4">
@@ -1013,14 +521,10 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {homepageCategories.map((cat, i) => (
-              <motion.button
+            {homepageCategories.map((cat) => (
+              <button
                 key={cat.id}
                 onClick={() => { setActiveCategory(cat.id); document.getElementById("all-tools")?.scrollIntoView({ behavior: "smooth" }); }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
                 className="group text-left bg-card border-2 border-border hover:border-primary rounded-xl p-6 hard-shadow hover:-translate-y-1 transition-all duration-200 cursor-pointer"
               >
                 <div className={`w-12 h-12 rounded-xl ${CATEGORY_COLORS[cat.id]} flex items-center justify-center border-2 border-foreground mb-4`}>
@@ -1036,14 +540,14 @@ export default function Home() {
                   </span>
                   <ArrowRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── WHY CHOOSE US ── */}
-      <section className="py-20 bg-background border-t-4 border-border">
+      <section className="py-20 bg-background border-t-4 border-border" style={OFFSCREEN_SECTION_STYLE}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-4xl font-black uppercase tracking-tighter text-foreground">
@@ -1075,7 +579,7 @@ export default function Home() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="py-20 bg-foreground text-background">
+      <section className="py-20 bg-foreground text-background" style={OFFSCREEN_SECTION_STYLE}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-black uppercase tracking-tighter text-primary text-center mb-16">
             How It Works
@@ -1085,26 +589,22 @@ export default function Home() {
               { n: "01", title: "Find Your Tool", desc: "Search or browse by category to find the tool you need from our library of 120+ utilities." },
               { n: "02", title: "Enter Your Data", desc: "Type in your values — no forms, no sign-ups, no loading screens. Just instant results." },
               { n: "03", title: "Get Results", desc: "See your answer instantly. Copy, share, or bookmark the result with a single click." },
-            ].map(({ n, title, desc }, i) => (
-              <motion.div
+            ].map(({ n, title, desc }) => (
+              <div
                 key={n}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
                 className="text-center"
               >
                 <div className="text-8xl font-black text-primary leading-none mb-4">{n}</div>
                 <h3 className="text-2xl font-black uppercase tracking-tight text-background mb-3">{title}</h3>
                 <p className="text-background/70 font-medium">{desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── SEO CONTENT ── */}
-      <section className="py-16 bg-background border-t-4 border-border">
+      <section className="py-16 bg-background border-t-4 border-border" style={OFFSCREEN_SECTION_STYLE}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-8 border-primary pl-6 bg-card border-2 border-border rounded-r-xl p-8">
             <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-4">
@@ -1131,7 +631,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA BANNER ── */}
-      <section className="bg-primary border-t-4 border-foreground py-16">
+      <section className="bg-primary border-t-4 border-foreground py-16" style={OFFSCREEN_SECTION_STYLE}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-primary-foreground mb-4">
             Bookmark usonlinetools.com
@@ -1152,6 +652,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+        </>
+      ) : null}
     </Layout>
   );
 }

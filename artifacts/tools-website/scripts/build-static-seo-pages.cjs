@@ -84,6 +84,7 @@ function createOrganizationSchema() {
       "@type": "ImageObject",
       url: SITE_LOGO,
     },
+    image: SITE_OG_IMAGE,
   };
 }
 
@@ -126,8 +127,11 @@ function createWebPageSchema(canonicalUrl, name, description) {
 }
 
 function createBreadcrumbSchema(items) {
+  const lastItem = items.at(-1)?.item;
+
   return {
     "@type": "BreadcrumbList",
+    ...(lastItem ? { "@id": `${lastItem}#breadcrumb` } : {}),
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -137,26 +141,22 @@ function createBreadcrumbSchema(items) {
   };
 }
 
-function createItemListSchema(items) {
-  return {
-    "@type": "ItemList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.name,
-      url: item.item,
-    })),
-  };
-}
-
 function createCollectionPageSchema(canonicalUrl, name, description) {
   return {
     "@type": "CollectionPage",
+    "@id": `${canonicalUrl}#collection`,
     name,
     url: canonicalUrl,
     description,
+    inLanguage: SITE_LANGUAGE,
     isPartOf: {
       "@id": `${SITE_URL}/#website`,
+    },
+    about: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
     },
   };
 }
@@ -164,10 +164,20 @@ function createCollectionPageSchema(canonicalUrl, name, description) {
 function createWebApplicationSchema(name, canonicalUrl, description, category) {
   return {
     "@type": "WebApplication",
+    "@id": `${canonicalUrl}#webapplication`,
     name,
     url: canonicalUrl,
     description,
     applicationCategory: category,
+    isAccessibleForFree: true,
+    inLanguage: SITE_LANGUAGE,
+    image: SITE_OG_IMAGE,
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
     operatingSystem: "Any",
     browserRequirements: "Requires JavaScript. Works in modern browsers.",
     offers: {
@@ -176,18 +186,6 @@ function createWebApplicationSchema(name, canonicalUrl, description, category) {
       priceCurrency: "USD",
     },
   };
-}
-
-function uniqueItemsByUrl(items) {
-  const seen = new Set();
-  return items.filter((item) => {
-    if (seen.has(item.item)) {
-      return false;
-    }
-
-    seen.add(item.item);
-    return true;
-  });
 }
 
 function buildSchemaGraph({ canonicalUrl, title, description, customNodes = [] }) {
@@ -319,18 +317,6 @@ function buildRoutes(tools) {
           `${SITE_NAME} Home`,
           `${tools.SITE_TOOL_COUNT} free online tools including calculators, converters, generators, and utilities.`,
         ),
-        createItemListSchema(
-          uniqueItemsByUrl(tools.DISPLAY_TOOL_CATEGORIES.slice(0, 8).map((category) => ({
-            name: `${category.name} Tools`,
-            item: `${SITE_URL}/category/${category.id}`,
-          }))),
-        ),
-        createItemListSchema(
-          uniqueItemsByUrl(homepageTools.slice(0, 20).map((tool) => ({
-            name: tool.title,
-            item: `${SITE_URL}${tools.getCanonicalToolPath(tool.slug)}`,
-          }))).slice(0, 12),
-        ),
       ],
     }),
   });
@@ -354,12 +340,6 @@ function buildRoutes(tools) {
             { name: "Home", item: SITE_URL },
             { name: category.name, item: canonicalUrl },
           ]),
-          createItemListSchema(
-            uniqueItemsByUrl(category.tools.map((tool) => ({
-              name: tool.title,
-              item: `${SITE_URL}${tools.getCanonicalToolPath(tool.slug)}`,
-            }))),
-          ),
         ],
       }),
     });

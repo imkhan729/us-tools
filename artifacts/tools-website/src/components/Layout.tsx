@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
 import { DISPLAY_TOOL_CATEGORIES, getCanonicalToolPath } from "@/data/tools";
 import {
@@ -140,48 +139,43 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
 
       {/* Mobile Nav Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            id="mobile-site-navigation"
-            className="md:hidden fixed top-16 left-0 right-0 z-40 bg-background border-b-2 border-border shadow-lg"
-          >
-            <div className="px-4 py-6 space-y-4">
-              {primaryLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.path}
-                  className="block text-xl font-bold uppercase tracking-wider text-foreground hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+      {isMobileMenuOpen ? (
+        <div
+          id="mobile-site-navigation"
+          className="md:hidden fixed top-16 left-0 right-0 z-40 bg-background border-b-2 border-border shadow-lg"
+        >
+          <div className="px-4 py-6 space-y-4">
+            {primaryLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.path}
+                className="block text-xl font-bold uppercase tracking-wider text-foreground hover:text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
 
-              {moreLinks.length > 0 ? (
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-muted-foreground mb-3">More Categories</p>
-                  <div className="space-y-3">
-                    {moreLinks.map((link) => (
-                      <Link
-                        key={link.path}
-                        href={link.path}
-                        className="block text-lg font-bold uppercase tracking-wider text-foreground hover:text-primary"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {link.name}
-                      </Link>
-                    ))}
-                  </div>
+            {moreLinks.length > 0 ? (
+              <div className="pt-2 border-t border-border">
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-muted-foreground mb-3">More Categories</p>
+                <div className="space-y-3">
+                  {moreLinks.map((link) => (
+                    <Link
+                      key={link.path}
+                      href={link.path}
+                      className="block text-lg font-bold uppercase tracking-wider text-foreground hover:text-primary"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
                 </div>
-              ) : null}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
 
       <main className="flex-1 flex flex-col relative z-10">
         {children}
