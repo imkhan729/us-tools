@@ -7,23 +7,23 @@ import { lazy, Suspense, useEffect } from "react";
 import { getCanonicalToolPath, getToolBySlug } from "./data/tools";
 
 // Core Pages
-import About from "./pages/About";
 import Home from "./pages/Home";
-import CategoryPage from "./pages/CategoryPage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import NotFound from "./pages/not-found";
+const About = lazy(() => import("./pages/About"));
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const NotFound = lazy(() => import("./pages/not-found"));
 
 // Fully implemented tools
-import PercentageCalculator from "./pages/PercentageCalculator";
-import PasswordGenerator from "./pages/PasswordGenerator";
-import WordCounter from "./pages/WordCounter";
-import AgeCalculator from "./pages/AgeCalculator";
-import ColorConverter from "./pages/ColorConverter";
-import BmiCalculator from "./pages/BmiCalculator";
-import DiscountCalculator from "./pages/DiscountCalculator";
-import RandomNumberGenerator from "./pages/RandomNumberGenerator";
-import TemperatureConverter from "./pages/TemperatureConverter";
+const PercentageCalculator = lazy(() => import("./pages/PercentageCalculator"));
+const PasswordGenerator = lazy(() => import("./pages/PasswordGenerator"));
+const WordCounter = lazy(() => import("./pages/WordCounter"));
+const AgeCalculator = lazy(() => import("./pages/AgeCalculator"));
+const ColorConverter = lazy(() => import("./pages/ColorConverter"));
+const BmiCalculator = lazy(() => import("./pages/BmiCalculator"));
+const DiscountCalculator = lazy(() => import("./pages/DiscountCalculator"));
+const RandomNumberGenerator = lazy(() => import("./pages/RandomNumberGenerator"));
+const TemperatureConverter = lazy(() => import("./pages/TemperatureConverter"));
 
 // New tool pages
 const CompoundInterestCalculator = lazy(() => import("./pages/tools/CompoundInterestCalculator"));
@@ -425,7 +425,11 @@ function ToolSlugRedirect() {
   }, [safeDestination, setLocation]);
 
   if (!tool || hasCategoryMismatch) {
-    return <NotFound />;
+    return (
+      <LazyWrap>
+        <NotFound />
+      </LazyWrap>
+    );
   }
 
   return (
@@ -478,26 +482,26 @@ function Router() {
       <ScrollToTopOnRouteChange />
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/privacy-policy" component={PrivacyPolicy} />
-        <Route path="/terms-of-service" component={TermsOfService} />
+        <Route path="/about">{() => <LazyWrap><About /></LazyWrap>}</Route>
+        <Route path="/privacy-policy">{() => <LazyWrap><PrivacyPolicy /></LazyWrap>}</Route>
+        <Route path="/terms-of-service">{() => <LazyWrap><TermsOfService /></LazyWrap>}</Route>
 
       {/* Category pages */}
-      <Route path="/category/:id" component={CategoryPage} />
+      <Route path="/category/:id">{() => <LazyWrap><CategoryPage /></LazyWrap>}</Route>
 
       {/* Legacy /tools/ routes (redirect-friendly) */}
-      <Route path="/tools/percentage-calculator" component={PercentageCalculator} />
+      <Route path="/tools/percentage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
       <Route path="/tools/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/security/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
-      <Route path="/security/online-password-generator" component={PasswordGenerator} />
-      <Route path="/tools/word-counter" component={WordCounter} />
-      <Route path="/tools/age-calculator" component={AgeCalculator} />
-      <Route path="/tools/color-converter" component={ColorConverter} />
-      <Route path="/tools/bmi-calculator" component={BmiCalculator} />
-      <Route path="/tools/tip-calculator" component={TipCalculator} />
-      <Route path="/tools/discount-calculator" component={DiscountCalculator} />
-      <Route path="/tools/random-number-generator" component={RandomNumberGenerator} />
-      <Route path="/tools/temperature-converter" component={TemperatureConverter} />
+      <Route path="/security/online-password-generator">{() => <LazyWrap><PasswordGenerator /></LazyWrap>}</Route>
+      <Route path="/tools/word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
+      <Route path="/tools/age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/color-converter">{() => <LazyWrap><ColorConverter /></LazyWrap>}</Route>
+      <Route path="/tools/bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/tip-calculator">{() => <LazyWrap><TipCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/discount-calculator">{() => <LazyWrap><DiscountCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/random-number-generator">{() => <LazyWrap><RandomNumberGenerator /></LazyWrap>}</Route>
+      <Route path="/tools/temperature-converter">{() => <LazyWrap><TemperatureConverter /></LazyWrap>}</Route>
       <Route path="/tools/cube-root-calculator">{() => <LazyWrap><CubeRootCalculator /></LazyWrap>}</Route>
       <Route path="/tools/power-calculator">{() => <LazyWrap><PowerCalculator /></LazyWrap>}</Route>
       <Route path="/tools/logarithm-calculator">{() => <LazyWrap><LogarithmCalculator /></LazyWrap>}</Route>
@@ -520,23 +524,23 @@ function Router() {
 
       {/* New SEO-friendly /:category/:tool routes — existing tools */}
       <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
-      <Route path="/math/online-percentage-calculator" component={PercentageCalculator} />
+      <Route path="/math/online-percentage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
       <Route path="/productivity/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/productivity/online-password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
-      <Route path="/productivity/word-counter" component={WordCounter} />
-      <Route path="/productivity/online-word-counter" component={WordCounter} />
+      <Route path="/productivity/word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
+      <Route path="/productivity/online-word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
       <Route path="/productivity/hashtag-generator">{() => <LazyWrap><HashtagGenerator /></LazyWrap>}</Route>
       <Route path="/productivity/word-frequency-counter">{() => <LazyWrap><WordFrequencyCounter /></LazyWrap>}</Route>
-      <Route path="/time-date/age-calculator" component={AgeCalculator} />
-      <Route path="/time-date/online-age-calculator" component={AgeCalculator} />
-      <Route path="/conversion/color-converter" component={ColorConverter} />
-      <Route path="/health/bmi-calculator" component={BmiCalculator} />
-      <Route path="/health/online-bmi-calculator" component={BmiCalculator} />
-      <Route path="/finance/tip-calculator" component={TipCalculator} />
-      <Route path="/finance/discount-calculator" component={DiscountCalculator} />
-      <Route path="/math/random-number-generator" component={RandomNumberGenerator} />
-      <Route path="/conversion/temperature-converter" component={TemperatureConverter} />
-      <Route path="/conversion/online-temperature-converter" component={TemperatureConverter} />
+      <Route path="/time-date/age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
+      <Route path="/time-date/online-age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
+      <Route path="/conversion/color-converter">{() => <LazyWrap><ColorConverter /></LazyWrap>}</Route>
+      <Route path="/health/bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
+      <Route path="/health/online-bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/tip-calculator">{() => <LazyWrap><TipCalculator /></LazyWrap>}</Route>
+      <Route path="/finance/discount-calculator">{() => <LazyWrap><DiscountCalculator /></LazyWrap>}</Route>
+      <Route path="/math/random-number-generator">{() => <LazyWrap><RandomNumberGenerator /></LazyWrap>}</Route>
+      <Route path="/conversion/temperature-converter">{() => <LazyWrap><TemperatureConverter /></LazyWrap>}</Route>
+      <Route path="/conversion/online-temperature-converter">{() => <LazyWrap><TemperatureConverter /></LazyWrap>}</Route>
 
       {/* New tool pages */}
       <Route path="/finance/compound-interest-calculator">{() => <StaticPathRedirect to="/finance/online-compound-interest-calculator" />}</Route>
@@ -1346,7 +1350,7 @@ function Router() {
       <Route path="/tools/color-contrast-checker">{() => <LazyWrap><ColorContrastChecker /></LazyWrap>}</Route>
         <Route path="/tools/:slug" component={ToolSlugRedirect} />
         <Route path="/:categoryId/:slug" component={ToolSlugRedirect} />
-        <Route component={NotFound} />
+        <Route>{() => <LazyWrap><NotFound /></LazyWrap>}</Route>
       </Switch>
     </>
   );

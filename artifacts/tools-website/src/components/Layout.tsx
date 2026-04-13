@@ -128,6 +128,9 @@ export function Layout({ children }: { children: ReactNode }) {
               <button 
                 className="p-2 text-foreground border-2 border-border rounded-xl hover:border-primary hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-controls="mobile-site-navigation"
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5"/> : <Menu className="w-5 h-5"/>}
               </button>
@@ -143,6 +146,7 @@ export function Layout({ children }: { children: ReactNode }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            id="mobile-site-navigation"
             className="md:hidden fixed top-16 left-0 right-0 z-40 bg-background border-b-2 border-border shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
@@ -185,6 +189,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <footer className="w-full mt-24 bg-[#111111] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <h2 className="sr-only">Footer navigation</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="col-span-1 md:col-span-1">
               <div className="flex items-center gap-2.5 mb-6">
@@ -207,7 +212,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
             
             <div>
-              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Top Tools</h4>
+              <h3 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Top Tools</h3>
               <ul className="space-y-3 font-medium">
                 <li><Link href={getCanonicalToolPath("percentage-calculator")} className="text-gray-300 hover:text-primary transition-colors">Percentage Calculator</Link></li>
                 <li><Link href={getCanonicalToolPath("password-generator")} className="text-gray-300 hover:text-primary transition-colors">Password Generator</Link></li>
@@ -216,7 +221,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
 
             <div>
-              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Categories</h4>
+              <h3 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Categories</h3>
               <ul className="space-y-3 font-medium">
                 <li><Link href="/category/math" className="text-gray-300 hover:text-primary transition-colors">Math & Calculators</Link></li>
                 <li><Link href="/category/finance" className="text-gray-300 hover:text-primary transition-colors">Finance & Cost</Link></li>
@@ -228,7 +233,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
 
             <div>
-              <h4 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Company</h4>
+              <h3 className="font-bold text-primary uppercase tracking-wider mb-6 text-lg">Company</h3>
               <ul className="space-y-3 font-medium">
                 <li><Link href="/about" className="text-gray-300 hover:text-primary transition-colors">About Us</Link></li>
                 <li><Link href="/privacy-policy" className="text-gray-300 hover:text-primary transition-colors">Privacy Policy</Link></li>

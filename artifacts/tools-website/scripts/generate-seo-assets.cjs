@@ -82,7 +82,7 @@ function buildHtaccess(redirects) {
     .map(([from, to]) => `RewriteRule ^${from.replace(/^\//, "").replace(/\//g, "\\/")}\\/?$ ${to} [R=301,L]`)
     .join("\n");
 
-  return `Options -Indexes\n\nRewriteEngine On\n\n# Force HTTPS\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n# Canonical page redirects\n${redirectRules}\n\n# SPA fallback for client-side routing\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^ /index.html [L]\n`;
+  return `Options -Indexes\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^index\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n# Canonical page redirects\n${redirectRules}\n\n# SPA fallback for client-side routing\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^ /index.html [L]\n`;
 }
 
 function main() {
