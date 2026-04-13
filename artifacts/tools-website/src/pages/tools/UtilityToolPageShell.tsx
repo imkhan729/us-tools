@@ -17,6 +17,13 @@ import {
   Smartphone,
   Zap,
 } from "lucide-react";
+import {
+  SITE_URL,
+  createBreadcrumbSchema,
+  createFAQSchema,
+  createHowToSchema,
+  createWebApplicationSchema,
+} from "@/lib/seo";
 
 interface HowStep {
   title: string;
@@ -126,36 +133,27 @@ export default function UtilityToolPageShell({
   const resolvedSeoTitle = /\bonline\b/i.test(seoTitle) ? seoTitle : `Online ${seoTitle}`;
 
   const schema = useMemo(
-    () => ({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebApplication",
+    () =>
+      [
+        createWebApplicationSchema({
           name: pageHeading,
-          url: canonical,
+          canonicalUrl: canonical,
           description: seoDescription,
-          applicationCategory: "UtilityApplication",
-          operatingSystem: "Any",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD",
-          },
-        },
-        {
-          "@type": "FAQPage",
-          mainEntity: faqs.map((item) => ({
-            "@type": "Question",
-            name: item.q,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: item.a,
-            },
-          })),
-        },
-      ],
-    }),
-    [canonical, faqs, pageHeading, seoDescription],
+        }),
+        createBreadcrumbSchema([
+          { name: "Home", item: SITE_URL },
+          { name: categoryName, item: `${SITE_URL}${categoryHref}` },
+          { name: pageHeading, item: canonical },
+        ]),
+        createHowToSchema({
+          name: `How to use ${pageHeading}`,
+          description: seoDescription,
+          canonicalUrl: canonical,
+          steps: howSteps,
+        }),
+        createFAQSchema(faqs),
+      ].filter((item): item is Record<string, unknown> => item !== null),
+    [canonical, categoryHref, categoryName, faqs, howSteps, pageHeading, seoDescription],
   );
 
   const onThisPageItems = [

@@ -1,13 +1,30 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
+import { SITE_URL, createBreadcrumbSchema } from "@/lib/seo";
 
 export default function About() {
+  const schema = [
+    {
+      "@type": "AboutPage",
+      name: "About US Online Tools",
+      url: `${SITE_URL}/about`,
+      description:
+        "Learn what US Online Tools is, how the site works, and why the calculators, converters, and generators are built for fast browser-based use.",
+    },
+    createBreadcrumbSchema([
+      { name: "Home", item: SITE_URL },
+      { name: "About", item: `${SITE_URL}/about` },
+    ]),
+  ];
+
   return (
     <Layout>
       <SEO
         title="About US Online Tools"
         description="Learn what US Online Tools is, how the site works, and why the calculators, converters, and generators are built for fast browser-based use."
+        canonical="/about"
+        schema={schema}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

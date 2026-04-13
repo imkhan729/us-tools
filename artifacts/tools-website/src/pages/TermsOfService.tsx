@@ -1,12 +1,29 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { SITE_URL, createBreadcrumbSchema } from "@/lib/seo";
 
 export default function TermsOfService() {
+  const schema = [
+    {
+      "@type": "WebPage",
+      name: "Terms of Service",
+      url: `${SITE_URL}/terms-of-service`,
+      description:
+        "Review the terms of service for using US Online Tools, including acceptable use, informational disclaimers, and site availability limitations.",
+    },
+    createBreadcrumbSchema([
+      { name: "Home", item: SITE_URL },
+      { name: "Terms of Service", item: `${SITE_URL}/terms-of-service` },
+    ]),
+  ];
+
   return (
     <Layout>
       <SEO
         title="Terms of Service"
         description="Review the terms of service for using US Online Tools, including acceptable use, informational disclaimers, and site availability limitations."
+        canonical="/terms-of-service"
+        schema={schema}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

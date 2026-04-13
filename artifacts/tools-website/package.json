@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
     "generate:seo": "node ./scripts/generate-seo-assets.cjs",
-    "build": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts",
-    "build:hostinger": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts && node ./scripts/export-static-for-hostinger.cjs",
+    "build": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts && node ./scripts/build-static-seo-pages.cjs",
+    "build:hostinger": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts && node ./scripts/build-static-seo-pages.cjs && node ./scripts/export-static-for-hostinger.cjs",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

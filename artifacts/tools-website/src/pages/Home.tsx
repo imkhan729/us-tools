@@ -25,6 +25,11 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { DISPLAY_TOOL_CATEGORIES, SITE_TOOL_COUNT, getCanonicalToolPath, getToolPath, type Tool } from "@/data/tools";
+import {
+  SITE_URL,
+  createCollectionPageSchema,
+  createItemListSchema,
+} from "@/lib/seo";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "math": <Calculator className="w-7 h-7" />,
@@ -85,9 +90,6 @@ const CATEGORY_ICON_BY_ID: Record<string, React.ReactNode> = {
 
 const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "percentage-calculator": <Percent className="w-4 h-4" />,
-  "percentage-increase-calculator": <TrendingUp className="w-4 h-4" />,
-  "percentage-decrease-calculator": <TrendingUp className="w-4 h-4 rotate-180" />,
-  "percentage-difference-calculator": <Divide className="w-4 h-4" />,
   "fraction-to-decimal-calculator": <Divide className="w-4 h-4" />,
   "decimal-to-fraction-calculator": <Divide className="w-4 h-4" />,
   "ratio-calculator": <Scale className="w-4 h-4" />,
@@ -698,21 +700,29 @@ export default function Home() {
   const totalTools = homepageTools.length;
   const displayCount = SITE_TOOL_COUNT;
   const liveTools = homepageTools.filter(t => t.implemented).length;
+  const featuredSchemaTools = Array.from(
+    new Map(
+      homepageTools.map((tool) => [`${SITE_URL}${getCanonicalToolPath(tool.slug)}`, tool] as const),
+    ).values(),
+  ).slice(0, 12);
   const homeSchema = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: "US Online Tools",
-      url: "https://usonlinetools.com",
+    createCollectionPageSchema({
+      canonicalUrl: SITE_URL,
+      name: "US Online Tools Home",
       description: `${displayCount} free online tools including calculators, converters, generators, and utilities.`,
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "US Online Tools",
-      url: "https://usonlinetools.com",
-      logo: "https://usonlinetools.com/favicon.svg",
-    },
+    }),
+    createItemListSchema(
+      homepageCategories.slice(0, 8).map((category) => ({
+        name: `${category.name} Tools`,
+        item: `${SITE_URL}/category/${category.id}`,
+      })),
+    ),
+    createItemListSchema(
+      featuredSchemaTools.map((tool) => ({
+        name: tool.title,
+        item: `${SITE_URL}${getCanonicalToolPath(tool.slug)}`,
+      })),
+    ),
   ];
 
   return (

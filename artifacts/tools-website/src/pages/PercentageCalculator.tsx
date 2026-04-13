@@ -6,7 +6,7 @@ import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight, ChevronDown, Percent, Calculator, ArrowRight,
-  Zap, CheckCircle2, Smartphone, Shield, Clock, TrendingUp,
+  Zap, CheckCircle2, Smartphone, Shield, Clock,
   DollarSign, Scale, BarChart3, Lightbulb, Copy, Check,
   BadgeCheck, Lock, Star,
 } from "lucide-react";
@@ -148,12 +148,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ── Related Tools ──
 const RELATED_TOOLS = [
-  { title: "Percentage Increase Calculator", slug: "percentage-increase-calculator", icon: <TrendingUp className="w-5 h-5" />, color: 152, benefit: "Find exact growth between two values" },
-  { title: "Percentage Decrease Calculator", slug: "percentage-decrease-calculator", icon: <TrendingUp className="w-5 h-5 rotate-180" />, color: 340, benefit: "Calculate drops, markdowns, and losses" },
+  { title: "Percentage Error Calculator", slug: "percentage-error-calculator", icon: <Percent className="w-5 h-5" />, color: 152, benefit: "Compare measured and expected values" },
   { title: "Discount Calculator", slug: "discount-calculator", icon: <DollarSign className="w-5 h-5" />, color: 25, benefit: "See final price after any % off" },
   { title: "Ratio Calculator", slug: "ratio-calculator", icon: <Scale className="w-5 h-5" />, color: 265, benefit: "Simplify and compare ratios instantly" },
   { title: "Average Calculator", slug: "average-calculator", icon: <BarChart3 className="w-5 h-5" />, color: 217, benefit: "Mean, median, mode in one tool" },
-  { title: "Percentage Difference Calculator", slug: "percentage-difference-calculator", icon: <Percent className="w-5 h-5" />, color: 45, benefit: "Compare two values symmetrically" },
+  { title: "Scientific Calculator", slug: "online-scientific-calculator", icon: <Calculator className="w-5 h-5" />, color: 45, benefit: "Handle broader calculations in one place" },
 ];
 
 // ── Main Component ──

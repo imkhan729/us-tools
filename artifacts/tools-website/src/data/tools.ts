@@ -25,9 +25,6 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     bgColor: "from-blue-500 to-cyan-400",
     tools: [
       { slug: "percentage-calculator", title: "Percentage Calculator", description: "Calculate percentages, increases, and decreases instantly.", metaDescription: "Free online percentage calculator. Find what percent X is of Y, percentage increase, decrease, and more.", category: "Math & Calculators", implemented: true },
-      { slug: "percentage-increase-calculator", title: "Percentage Increase Calculator", description: "Calculate the percentage increase between two numbers.", metaDescription: "Calculate percentage increase between any two values. Simple free online tool.", category: "Math & Calculators", implemented: true },
-      { slug: "percentage-decrease-calculator", title: "Percentage Decrease Calculator", description: "Find the percentage decrease from one value to another.", metaDescription: "Calculate percentage decrease between two numbers quickly and accurately.", category: "Math & Calculators", implemented: true },
-      { slug: "percentage-difference-calculator", title: "Percentage Difference Calculator", description: "Compute the percentage difference between two values.", metaDescription: "Find the percentage difference between two numbers with this free online calculator.", category: "Math & Calculators", implemented: true },
       { slug: "fraction-to-decimal-calculator", title: "Fraction to Decimal Calculator", description: "Convert any fraction to its decimal equivalent instantly.", metaDescription: "Convert fractions to decimals easily. Free fraction to decimal converter online.", category: "Math & Calculators", implemented: true },
       { slug: "decimal-to-fraction-calculator", title: "Decimal to Fraction Calculator", description: "Convert decimals to simplified fractions in one click.", metaDescription: "Convert decimal numbers to fractions. Free online decimal to fraction calculator.", category: "Math & Calculators", implemented: true },
       { slug: "ratio-calculator", title: "Ratio Calculator", description: "Simplify ratios and solve ratio proportions easily.", metaDescription: "Calculate, simplify, and solve ratios with this free online ratio calculator.", category: "Math & Calculators", implemented: true },
@@ -56,7 +53,6 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "modulo-calculator", title: "Modulo Calculator", description: "Calculate the remainder of division between two numbers.", metaDescription: "Free modulo calculator. Find remainder of any division online.", category: "Math & Calculators", implemented: true },
       { slug: "proportion-calculator", title: "Proportion Calculator", description: "Solve proportions and find the missing value.", metaDescription: "Free proportion calculator. Solve for unknown in proportions online.", category: "Math & Calculators", implemented: true },
       { slug: "percentage-error-calculator", title: "Percentage Error Calculator", description: "Calculate the percentage error between observed and true values.", metaDescription: "Free online percentage error calculator.", category: "Math & Calculators", implemented: true },
-      { slug: "percentage-change-calculator", title: "Percentage Change Calculator", description: "Calculate the percentage increase, decrease, or difference between two numbers.", metaDescription: "Free online percentage change calculator. Calculate increase, decrease, or difference.", category: "Math & Calculators", implemented: true },
     ]
   },
   {
@@ -807,7 +803,6 @@ export function getCanonicalToolPath(slug: string): string {
   const canonicalSlug = getCanonicalSlug(preferredTool.slug);
   return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
 }
-
 
 
 

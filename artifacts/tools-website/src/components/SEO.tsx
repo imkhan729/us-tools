@@ -1,6 +1,18 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
 import { getCanonicalToolPath, getToolBySlug } from "@/data/tools";
+import {
+  DEFAULT_ROBOTS,
+  SITE_LOGO,
+  SITE_NAME,
+  SITE_OG_IMAGE,
+  SITE_TWITTER_HANDLE,
+  SITE_URL,
+  createOrganizationSchema,
+  createWebPageSchema,
+  createWebsiteSchema,
+  toAbsoluteUrl,
+} from "@/lib/seo";
 
 interface SEOProps {
   title: string;
@@ -10,13 +22,9 @@ interface SEOProps {
   noindex?: boolean;
 }
 
-const siteName = "US Online Tools";
-const siteUrl = "https://usonlinetools.com";
-const ogImage = `${siteUrl}/opengraph.jpg`;
-const twitterSite = "@usonlinetools";
+const ogImage = SITE_OG_IMAGE;
 const ogImageWidth = 1200;
 const ogImageHeight = 630;
-const siteLogo = `${siteUrl}/favicon.svg`;
 
 function normalizePath(pathname: string): string {
   if (!pathname || pathname === "/") {
@@ -25,16 +33,6 @@ function normalizePath(pathname: string): string {
 
   return pathname.replace(/[?#].*$/, "").replace(/\/+$/, "") || "/";
 }
-
-function toAbsoluteUrl(pathOrUrl: string): string {
-  if (/^https?:\/\//i.test(pathOrUrl)) {
-    return pathOrUrl;
-  }
-
-  const normalizedPath = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
-  return `${siteUrl}${normalizedPath}`;
-}
-
 function getCanonicalPathFromLocation(pathname: string): string {
   const normalizedPath = normalizePath(pathname);
   const segments = normalizedPath.split("/").filter(Boolean);
@@ -79,7 +77,7 @@ function normalizeSchemaInput(schema?: Record<string, unknown> | Array<Record<st
 export function SEO({ title, description, canonical, schema, noindex = false }: SEOProps) {
   const [location] = useLocation();
   const pathname = normalizePath(location);
-  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const canonicalUrl = canonical
     ? toAbsoluteUrl(canonical)
     : toAbsoluteUrl(getCanonicalPathFromLocation(pathname));
@@ -87,34 +85,15 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
     normalizePath(pathname) !== normalizePath(new URL(canonicalUrl).pathname);
   const robots = noindex || isCanonicalMismatch
     ? "noindex, follow"
-    : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    : DEFAULT_ROBOTS;
   const baseSchemaGraph = [
-    {
-      "@type": "WebSite",
-      "@id": `${siteUrl}/#website`,
-      url: siteUrl,
-      name: siteName,
-      inLanguage: "en-US",
-    },
-    {
-      "@type": "Organization",
-      "@id": `${siteUrl}/#organization`,
-      name: siteName,
-      url: siteUrl,
-      logo: {
-        "@type": "ImageObject",
-        url: siteLogo,
-      },
-    },
-    {
-      "@type": "WebPage",
-      "@id": `${canonicalUrl}#webpage`,
-      url: canonicalUrl,
+    createWebsiteSchema(),
+    createOrganizationSchema(),
+    createWebPageSchema({
+      canonicalUrl,
       name: fullTitle,
       description,
-      isPartOf: { "@id": `${siteUrl}/#website` },
-      inLanguage: "en-US",
-    },
+    }),
   ];
   const customSchema = normalizeSchemaInput(schema);
   const mergedSchema = { "@context": "https://schema.org", "@graph": [...baseSchemaGraph, ...customSchema] };
@@ -125,12 +104,12 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
       <meta name="robots" content={robots} />
       <meta name="googlebot" content={robots} />
       <meta name="description" content={description} />
-      <meta name="author" content={siteName} />
-      <meta name="application-name" content={siteName} />
+      <meta name="author" content={SITE_NAME} />
+      <meta name="application-name" content={SITE_NAME} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={siteName} />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={ogImage} />
@@ -138,13 +117,17 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
       <meta property="og:image:width" content={String(ogImageWidth)} />
       <meta property="og:image:height" content={String(ogImageHeight)} />
       <meta property="og:image:type" content="image/jpeg" />
-      <meta property="og:image:alt" content={`${siteName} preview image`} />
+      <meta property="og:image:alt" content={`${SITE_NAME} preview image`} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content={twitterSite} />
+      <meta name="twitter:site" content={SITE_TWITTER_HANDLE} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content={`${SITE_NAME} preview image`} />
       <meta name="twitter:url" content={canonicalUrl} />
+      <meta name="theme-color" content="#ff6b35" />
+      <meta name="color-scheme" content="light dark" />
+      <link rel="icon" type="image/svg+xml" href={SITE_LOGO} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       {canonicalUrl && <link rel="alternate" hrefLang="en-us" href={canonicalUrl} />}
       {canonicalUrl && <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />}

@@ -139,7 +139,6 @@ const InflationCalculator = lazy(() => import("./pages/tools/InflationCalculator
 const AreaConverter = lazy(() => import("./pages/tools/AreaConverter"));
 const VolumeConverter = lazy(() => import("./pages/tools/VolumeConverter"));
 const SpeedConverter = lazy(() => import("./pages/tools/SpeedConverter"));
-const PercentageChangeCalculator = lazy(() => import("./pages/tools/PercentageChangeCalculator"));
 const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToDecimalCalculator"));
 const DecimalToFractionCalculator = lazy(() => import("./pages/tools/DecimalToFractionCalculator"));
 const ScientificCalculator = lazy(() => import("./pages/tools/ScientificCalculator"));

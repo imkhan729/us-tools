@@ -17,6 +17,13 @@ import {
   Smartphone,
   Zap,
 } from "lucide-react";
+import {
+  SITE_URL,
+  createBreadcrumbSchema,
+  createFAQSchema,
+  createHowToSchema,
+  createWebApplicationSchema,
+} from "@/lib/seo";
 
 interface HowStep {
   title: string;
@@ -140,36 +147,28 @@ export default function ConstructionToolPageShell({
 }: ConstructionToolPageShellProps) {
 
   const schema = useMemo(
-    () => ({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebApplication",
+    () =>
+      [
+        createWebApplicationSchema({
           name: title,
-          url: canonical,
+          canonicalUrl: canonical,
           description: seoDescription,
-          applicationCategory: "UtilitiesApplication",
-          operatingSystem: "Any",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD",
-          },
-        },
-        {
-          "@type": "FAQPage",
-          mainEntity: faqs.map((item) => ({
-            "@type": "Question",
-            name: item.q,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: item.a,
-            },
-          })),
-        },
-      ],
-    }),
-    [canonical, faqs, seoDescription, title],
+          category: "UtilitiesApplication",
+        }),
+        createBreadcrumbSchema([
+          { name: "Home", item: SITE_URL },
+          { name: "Construction & DIY", item: `${SITE_URL}/category/construction` },
+          { name: title, item: canonical },
+        ]),
+        createHowToSchema({
+          name: howToTitle,
+          description: howToIntro,
+          canonicalUrl: canonical,
+          steps: howSteps,
+        }),
+        createFAQSchema(faqs),
+      ].filter((item): item is Record<string, unknown> => item !== null),
+    [canonical, faqs, howSteps, howToIntro, howToTitle, seoDescription, title],
   );
 
   const onThisPageItems = [

@@ -1,12 +1,29 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
+import { SITE_URL, createBreadcrumbSchema } from "@/lib/seo";
 
 export default function PrivacyPolicy() {
+  const schema = [
+    {
+      "@type": "WebPage",
+      name: "Privacy Policy",
+      url: `${SITE_URL}/privacy-policy`,
+      description:
+        "Read the privacy policy for US Online Tools, including how browser-based tools process data and what limited information may be collected by hosting infrastructure.",
+    },
+    createBreadcrumbSchema([
+      { name: "Home", item: SITE_URL },
+      { name: "Privacy Policy", item: `${SITE_URL}/privacy-policy` },
+    ]),
+  ];
+
   return (
     <Layout>
       <SEO
         title="Privacy Policy"
         description="Read the privacy policy for US Online Tools, including how browser-based tools process data and what limited information may be collected by hosting infrastructure."
+        canonical="/privacy-policy"
+        schema={schema}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

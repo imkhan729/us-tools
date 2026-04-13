@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight, ChevronDown, Target, ArrowRight,
   Zap, Smartphone, Shield, Lightbulb, Copy, Check,
-  BadgeCheck, Lock, TrendingUp, Calculator, BarChart3, BookOpen
+  BadgeCheck, Lock, Calculator, BarChart3, BookOpen
 } from "lucide-react";
 
 function calcPercentError(experimental: number, theoretical: number, absolute: boolean) {
@@ -45,7 +45,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 const RELATED = [
   { title: "Percentage Calculator",    slug: "percentage-calculator",    cat: "math",      icon: <Calculator className="w-5 h-5" />,  color: 217, benefit: "Calculate any percentage" },
-  { title: "Percentage Change",        slug: "percentage-change-calculator", cat: "math",  icon: <TrendingUp className="w-5 h-5" />,  color: 152, benefit: "Calculate % increase or decrease" },
+  { title: "Ratio Calculator",         slug: "ratio-calculator",         cat: "math",      icon: <Calculator className="w-5 h-5" />,  color: 152, benefit: "Compare values and proportions" },
   { title: "Standard Deviation",       slug: "online-standard-deviation-calculator", cat: "math", icon: <BarChart3 className="w-5 h-5" />,   color: 25,  benefit: "Calculate statistical spread" },
   { title: "Average Calculator",       slug: "average-calculator",       cat: "math",      icon: <BookOpen className="w-5 h-5" />,    color: 265, benefit: "Find mean, median, mode" },
 ];

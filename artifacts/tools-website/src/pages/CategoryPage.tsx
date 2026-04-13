@@ -3,11 +3,17 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { DISPLAY_TOOL_CATEGORIES, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, getCanonicalToolPath, type Tool } from "@/data/tools";
+import {
+  SITE_URL,
+  createBreadcrumbSchema,
+  createCollectionPageSchema,
+  createItemListSchema,
+} from "@/lib/seo";
 import { ChevronRight, ArrowRight,
   Calculator, DollarSign, Ruler, Clock, Heart, HardHat, Type, BookOpen, Gamepad2,
   Percent, TrendingUp, CreditCard, PiggyBank, ReceiptText, Landmark, BarChart3, Scale, Hash,
-  Divide, Sigma, Infinity, FlaskConical, Dices, AlignLeft, FileText, Globe, Thermometer,
+  Sigma, Infinity, FlaskConical, Dices, AlignLeft, FileText, Globe, Thermometer,
   Weight, Timer, AlarmClock, BicepsFlexed, Apple, Droplets, Activity, Building2,
   PaintBucket, Grid3x3, SquareStack, Swords, Trophy, Zap, Shuffle, ListOrdered,
   Binary, Link2, QrCode, KeyRound, Wrench, Lock, Palette, Car, Plug, Sun,
@@ -64,8 +70,6 @@ const CATEGORY_ICONS_LG: Record<string, React.ReactNode> = {
 
 const TOOL_ICON_MAP: Record<string, React.ReactNode> = {
   "percentage-calculator": <Percent className="w-4 h-4" />,
-  "percentage-increase-calculator": <TrendingUp className="w-4 h-4" />,
-  "percentage-decrease-calculator": <TrendingUp className="w-4 h-4 rotate-180" />,
   "ratio-calculator": <Scale className="w-4 h-4" />,
   "average-calculator": <BarChart3 className="w-4 h-4" />,
   "scientific-calculator": <FlaskConical className="w-4 h-4" />,
@@ -530,37 +534,28 @@ export default function CategoryPage() {
   const colors = CATEGORY_COLORS[catId] ?? CATEGORY_COLORS["math"];
   const liveCount = category.tools.filter(t => t.implemented).length;
   const otherCategories = DISPLAY_TOOL_CATEGORIES.filter(c => c.id !== catId);
+  const categoryUrl = `${SITE_URL}/category/${catId}`;
+  const categorySchemaTools = Array.from(
+    new Map(
+      category.tools.map((tool) => [`${SITE_URL}${getCanonicalToolPath(tool.slug)}`, tool] as const),
+    ).values(),
+  );
   const categorySchema = [
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
+    createCollectionPageSchema({
+      canonicalUrl: categoryUrl,
       name: `${category.name} Tools`,
-      url: `https://usonlinetools.com/category/${catId}`,
       description: `${category.description}. ${category.tools.length} free online tools.`,
-      isPartOf: {
-        "@type": "WebSite",
-        name: "US Online Tools",
-        url: "https://usonlinetools.com",
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://usonlinetools.com/",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: category.name,
-          item: `https://usonlinetools.com/category/${catId}`,
-        },
-      ],
-    },
+    }),
+    createBreadcrumbSchema([
+      { name: "Home", item: SITE_URL },
+      { name: category.name, item: categoryUrl },
+    ]),
+    createItemListSchema(
+      categorySchemaTools.map((tool) => ({
+        name: tool.title,
+        item: `${SITE_URL}${getCanonicalToolPath(tool.slug)}`,
+      })),
+    ),
   ];
 
   return (
