@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useState } from "react";
@@ -15,29 +15,7 @@ import {
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-  const moreMenuCloseTimerRef = useRef<number | null>(null);
-
-  const clearMoreMenuCloseTimer = () => {
-    if (moreMenuCloseTimerRef.current !== null) {
-      window.clearTimeout(moreMenuCloseTimerRef.current);
-      moreMenuCloseTimerRef.current = null;
-    }
-  };
-
-  const openMoreMenu = () => {
-    clearMoreMenuCloseTimer();
-    setIsMoreMenuOpen(true);
-  };
-
-  const scheduleCloseMoreMenu = () => {
-    clearMoreMenuCloseTimer();
-    moreMenuCloseTimerRef.current = window.setTimeout(() => {
-      setIsMoreMenuOpen(false);
-      moreMenuCloseTimerRef.current = null;
-    }, 140);
-  };
 
   const formatNavLabel = (value: string) => value.replace(/\s+Tools$/i, "").replace(/\s*&\s*/g, " & ").trim();
 
@@ -99,13 +77,10 @@ export function Layout({ children }: { children: ReactNode }) {
               })}
 
               {moreLinks.length > 0 ? (
-                <DropdownMenu open={isMoreMenuOpen} onOpenChange={setIsMoreMenuOpen}>
+                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      onMouseEnter={openMoreMenu}
-                      onMouseLeave={scheduleCloseMoreMenu}
-                      onFocus={openMoreMenu}
                       className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 inline-flex items-center gap-2 ${
                         location.startsWith("/category/") && !primaryLinks.some((link) => location.startsWith(link.path))
                           ? "text-primary border-b-2 border-primary pb-1"
@@ -119,8 +94,6 @@ export function Layout({ children }: { children: ReactNode }) {
                   <DropdownMenuContent
                     align="end"
                     sideOffset={10}
-                    onMouseEnter={openMoreMenu}
-                    onMouseLeave={scheduleCloseMoreMenu}
                     className="min-w-56 border-2 border-border bg-background/98 text-foreground shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/85"
                   >
                     {moreLinks.map((link) => (

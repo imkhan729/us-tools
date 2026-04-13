@@ -461,13 +461,26 @@ function StaticPathRedirect({ to }: { to: string }) {
   );
 }
 
+function ScrollToTopOnRouteChange() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    if (location.includes("#")) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location]);
+
+  return null;
+}
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/terms-of-service" component={TermsOfService} />
+    <>
+      <ScrollToTopOnRouteChange />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/terms-of-service" component={TermsOfService} />
 
       {/* Category pages */}
       <Route path="/category/:id" component={CategoryPage} />
@@ -1331,10 +1344,11 @@ function Router() {
       <Route path="/tools/csv-to-json-converter">{() => <LazyWrap><CsvToJsonConverter /></LazyWrap>}</Route>
       <Route path="/css-design/color-contrast-checker">{() => <LazyWrap><ColorContrastChecker /></LazyWrap>}</Route>
       <Route path="/tools/color-contrast-checker">{() => <LazyWrap><ColorContrastChecker /></LazyWrap>}</Route>
-      <Route path="/tools/:slug" component={ToolSlugRedirect} />
-      <Route path="/:categoryId/:slug" component={ToolSlugRedirect} />
-      <Route component={NotFound} />
-    </Switch>
+        <Route path="/tools/:slug" component={ToolSlugRedirect} />
+        <Route path="/:categoryId/:slug" component={ToolSlugRedirect} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 

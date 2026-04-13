@@ -13,6 +13,7 @@ import {
   CircleDashed,
   Code2,
   Copy,
+  Download,
   FileText,
   HelpCircle,
   Package,
@@ -25,7 +26,7 @@ import {
   Zap,
 } from "lucide-react";
 
-type SchemaType = "Article" | "FAQPage" | "LocalBusiness" | "Product";
+type SchemaType = "Article" | "FAQPage" | "LocalBusiness" | "Product" | "WebApplication" | "Organization" | "BreadcrumbList" | "Event";
 
 type FaqDraft = {
   id: number;
@@ -135,6 +136,8 @@ const RELATED_TOOLS = [
 export default function SchemaMarkupGenerator() {
   const [schemaType, setSchemaType] = useState<SchemaType>("Article");
   const [copied, setCopied] = useState(false);
+  const [jsonCopied, setJsonCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   const [articleHeadline, setArticleHeadline] = useState("Schema Markup Generator for Technical SEO");
@@ -189,6 +192,43 @@ export default function SchemaMarkupGenerator() {
   const [productUrl, setProductUrl] = useState("https://utilityhub.example/services/seo-audit");
   const [productImage, setProductImage] = useState("https://utilityhub.example/images/seo-audit.jpg");
 
+  const [appName, setAppName] = useState("US Online Tools");
+  const [appDescription, setAppDescription] = useState("A free collection of online tools that run 100% in the browser.");
+  const [appUrl, setAppUrl] = useState("https://usonlinetools.com/");
+  const [appCategory, setAppCategory] = useState("UtilityApplication");
+  const [appOperatingSystem, setAppOperatingSystem] = useState("Any");
+  const [appPrice, setAppPrice] = useState("0");
+  const [appPriceCurrency, setAppPriceCurrency] = useState("USD");
+
+  const [orgName, setOrgName] = useState("US Online Tools");
+  const [orgUrl, setOrgUrl] = useState("https://usonlinetools.com/");
+  const [orgLogo, setOrgLogo] = useState("https://usonlinetools.com/favicon.svg");
+  const [orgSameAs, setOrgSameAs] = useState("");
+
+  const [businessLat, setBusinessLat] = useState("25.2854");
+  const [businessLng, setBusinessLng] = useState("51.5310");
+  const [businessMapUrl, setBusinessMapUrl] = useState("");
+
+  const [breadcrumbPageUrl, setBreadcrumbPageUrl] = useState("https://usonlinetools.com/seo/schema-markup-generator");
+  const [breadcrumb1Name, setBreadcrumb1Name] = useState("Home");
+  const [breadcrumb1Url, setBreadcrumb1Url] = useState("https://usonlinetools.com/");
+  const [breadcrumb2Name, setBreadcrumb2Name] = useState("SEO Tools");
+  const [breadcrumb2Url, setBreadcrumb2Url] = useState("https://usonlinetools.com/category/seo");
+  const [breadcrumb3Name, setBreadcrumb3Name] = useState("Schema Markup Generator");
+  const [breadcrumb3Url, setBreadcrumb3Url] = useState("https://usonlinetools.com/seo/schema-markup-generator");
+
+  const [eventName, setEventName] = useState("SEO Workshop - Structured Data Basics");
+  const [eventDescription, setEventDescription] = useState("A beginner-friendly workshop covering JSON-LD, FAQ schema, and local business markup.");
+  const [eventUrl, setEventUrl] = useState("https://utilityhub.example/events/structured-data-basics");
+  const [eventStart, setEventStart] = useState("2026-06-05T18:00:00+03:00");
+  const [eventEnd, setEventEnd] = useState("2026-06-05T20:00:00+03:00");
+  const [eventLocationName, setEventLocationName] = useState("Utility Hub");
+  const [eventLocationStreet, setEventLocationStreet] = useState("West Bay Tower 3");
+  const [eventLocationCity, setEventLocationCity] = useState("Doha");
+  const [eventLocationRegion, setEventLocationRegion] = useState("Doha");
+  const [eventLocationPostal, setEventLocationPostal] = useState("00000");
+  const [eventLocationCountry, setEventLocationCountry] = useState("QA");
+
   const faqMainEntity = faqItems
     .filter((item) => item.question.trim() && item.answer.trim())
     .map((item) => ({
@@ -238,8 +278,52 @@ export default function SchemaMarkupGenerator() {
           { label: "Availability", value: productAvailability, required: true },
           { label: "Product URL", value: productUrl, required: true },
         ];
+      case "WebApplication":
+        return [
+          { label: "App name", value: appName, required: true },
+          { label: "Description", value: appDescription, required: true },
+          { label: "App URL", value: appUrl, required: true },
+          { label: "Category", value: appCategory, required: true },
+          { label: "Operating system", value: appOperatingSystem, required: true },
+          { label: "Price", value: appPrice, required: true },
+          { label: "Currency", value: appPriceCurrency, required: true },
+        ];
+      case "Organization":
+        return [
+          { label: "Organization name", value: orgName, required: true },
+          { label: "Organization URL", value: orgUrl, required: true },
+          { label: "Logo URL", value: orgLogo, required: true },
+        ];
+      case "BreadcrumbList":
+        return [
+          { label: "Page URL", value: breadcrumbPageUrl, required: true },
+          { label: "Breadcrumb 1 name", value: breadcrumb1Name, required: true },
+          { label: "Breadcrumb 1 URL", value: breadcrumb1Url, required: true },
+          { label: "Breadcrumb 2 name", value: breadcrumb2Name, required: true },
+          { label: "Breadcrumb 2 URL", value: breadcrumb2Url, required: true },
+          { label: "Breadcrumb 3 name", value: breadcrumb3Name, required: true },
+          { label: "Breadcrumb 3 URL", value: breadcrumb3Url, required: true },
+        ];
+      case "Event":
+        return [
+          { label: "Event name", value: eventName, required: true },
+          { label: "Description", value: eventDescription, required: true },
+          { label: "Event URL", value: eventUrl, required: true },
+          { label: "Start date/time", value: eventStart, required: true },
+          { label: "End date/time", value: eventEnd, required: true },
+          { label: "Location name", value: eventLocationName, required: true },
+          { label: "City", value: eventLocationCity, required: true },
+          { label: "Country code", value: eventLocationCountry, required: true },
+        ];
     }
   }, [
+    appCategory,
+    appDescription,
+    appName,
+    appOperatingSystem,
+    appPrice,
+    appPriceCurrency,
+    appUrl,
     articleAuthor,
     articleDescription,
     articleHeadline,
@@ -255,8 +339,26 @@ export default function SchemaMarkupGenerator() {
     businessPhone,
     businessStreet,
     businessUrl,
+    breadcrumb1Name,
+    breadcrumb1Url,
+    breadcrumb2Name,
+    breadcrumb2Url,
+    breadcrumb3Name,
+    breadcrumb3Url,
+    breadcrumbPageUrl,
+    eventDescription,
+    eventEnd,
+    eventLocationCity,
+    eventLocationCountry,
+    eventLocationName,
+    eventName,
+    eventStart,
+    eventUrl,
     faqMainEntity.length,
     faqUrl,
+    orgLogo,
+    orgName,
+    orgUrl,
     productAvailability,
     productBrand,
     productCurrency,
@@ -304,6 +406,15 @@ export default function SchemaMarkupGenerator() {
           telephone: businessPhone,
           openingHours: businessHours,
           priceRange: businessPriceRange,
+          geo:
+            businessLat.trim() && businessLng.trim()
+              ? {
+                  "@type": "GeoCoordinates",
+                  latitude: businessLat,
+                  longitude: businessLng,
+                }
+              : undefined,
+          hasMap: businessMapUrl,
           address: {
             "@type": "PostalAddress",
             streetAddress: businessStreet,
@@ -334,8 +445,73 @@ export default function SchemaMarkupGenerator() {
                 }
               : undefined,
         });
+      case "WebApplication":
+        return cleanValue({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: appName,
+          description: appDescription,
+          url: appUrl,
+          applicationCategory: appCategory,
+          operatingSystem: appOperatingSystem,
+          offers: appPrice && appPriceCurrency ? { "@type": "Offer", price: appPrice, priceCurrency: appPriceCurrency } : undefined,
+        });
+      case "Organization":
+        return cleanValue({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: orgName,
+          url: orgUrl,
+          logo: orgLogo ? { "@type": "ImageObject", url: orgLogo } : undefined,
+          sameAs: orgSameAs
+            ? orgSameAs
+                .split(/[\n,]+/g)
+                .map((value) => value.trim())
+                .filter(Boolean)
+            : undefined,
+        });
+      case "BreadcrumbList":
+        return cleanValue({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: breadcrumb1Name, item: breadcrumb1Url },
+            { "@type": "ListItem", position: 2, name: breadcrumb2Name, item: breadcrumb2Url },
+            { "@type": "ListItem", position: 3, name: breadcrumb3Name, item: breadcrumb3Url },
+          ],
+          url: breadcrumbPageUrl,
+        });
+      case "Event":
+        return cleanValue({
+          "@context": "https://schema.org",
+          "@type": "Event",
+          name: eventName,
+          description: eventDescription,
+          url: eventUrl,
+          startDate: eventStart,
+          endDate: eventEnd,
+          location: {
+            "@type": "Place",
+            name: eventLocationName,
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: eventLocationStreet,
+              addressLocality: eventLocationCity,
+              addressRegion: eventLocationRegion,
+              postalCode: eventLocationPostal,
+              addressCountry: eventLocationCountry,
+            },
+          },
+        });
     }
   }, [
+    appCategory,
+    appDescription,
+    appName,
+    appOperatingSystem,
+    appPrice,
+    appPriceCurrency,
+    appUrl,
     articleAuthor,
     articleDescription,
     articleHeadline,
@@ -349,6 +525,9 @@ export default function SchemaMarkupGenerator() {
     businessDescription,
     businessHours,
     businessImage,
+    businessLat,
+    businessLng,
+    businessMapUrl,
     businessName,
     businessPhone,
     businessPostal,
@@ -356,8 +535,30 @@ export default function SchemaMarkupGenerator() {
     businessRegion,
     businessStreet,
     businessUrl,
+    breadcrumb1Name,
+    breadcrumb1Url,
+    breadcrumb2Name,
+    breadcrumb2Url,
+    breadcrumb3Name,
+    breadcrumb3Url,
+    breadcrumbPageUrl,
+    eventDescription,
+    eventEnd,
+    eventLocationCity,
+    eventLocationCountry,
+    eventLocationName,
+    eventLocationPostal,
+    eventLocationRegion,
+    eventLocationStreet,
+    eventName,
+    eventStart,
+    eventUrl,
     faqMainEntity,
     faqUrl,
+    orgLogo,
+    orgName,
+    orgSameAs,
+    orgUrl,
     productAvailability,
     productBrand,
     productCurrency,
@@ -382,8 +583,16 @@ export default function SchemaMarkupGenerator() {
         : schemaType === "FAQPage"
           ? [faqUrl]
           : schemaType === "LocalBusiness"
-            ? [businessUrl, businessImage]
-            : [productUrl, productImage];
+            ? [businessUrl, businessImage, businessMapUrl]
+            : schemaType === "Product"
+              ? [productUrl, productImage]
+              : schemaType === "WebApplication"
+                ? [appUrl]
+                : schemaType === "Organization"
+                  ? [orgUrl, orgLogo]
+                  : schemaType === "BreadcrumbList"
+                    ? [breadcrumbPageUrl, breadcrumb1Url, breadcrumb2Url, breadcrumb3Url]
+                    : [eventUrl];
 
     if (schemaType === "FAQPage" && faqMainEntity.length === 0) {
       notes.push("Add at least one complete question-and-answer pair before publishing FAQPage schema.");
@@ -394,20 +603,43 @@ export default function SchemaMarkupGenerator() {
     if (schemaType === "Product" && !/^[A-Z]{3}$/.test(productCurrency.trim())) {
       notes.push("Use a 3-letter ISO currency code such as USD, EUR, or QAR.");
     }
+    if (schemaType === "WebApplication" && !/^[A-Z]{3}$/.test(appPriceCurrency.trim())) {
+      notes.push("Use a 3-letter ISO currency code for the app offer such as USD, EUR, or QAR.");
+    }
     if (schemaType === "Article" && articlePublished && articleModified && articleModified < articlePublished) {
       notes.push("The modified date should not be earlier than the published date.");
+    }
+    if (schemaType === "LocalBusiness") {
+      const lat = Number(businessLat);
+      const lng = Number(businessLng);
+      const hasAnyGeo = businessLat.trim() || businessLng.trim();
+      if (hasAnyGeo && (!Number.isFinite(lat) || !Number.isFinite(lng))) {
+        notes.push("Latitude and longitude should be numeric if you include geo coordinates.");
+      }
     }
 
     return notes;
   }, [
+    appPriceCurrency,
+    appUrl,
     articleImage,
     articleModified,
     articlePublished,
     articleUrl,
     businessImage,
+    businessLat,
+    businessLng,
+    businessMapUrl,
     businessUrl,
+    breadcrumb1Url,
+    breadcrumb2Url,
+    breadcrumb3Url,
+    breadcrumbPageUrl,
+    eventUrl,
     faqMainEntity.length,
     faqUrl,
+    orgLogo,
+    orgUrl,
     productCurrency,
     productImage,
     productUrl,
@@ -445,6 +677,26 @@ export default function SchemaMarkupGenerator() {
     navigator.clipboard.writeText(generatedScript);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+  };
+
+  const copyJson = () => {
+    navigator.clipboard.writeText(generatedJson);
+    setJsonCopied(true);
+    window.setTimeout(() => setJsonCopied(false), 1800);
+  };
+
+  const downloadSchema = () => {
+    const blob = new Blob([generatedJson], { type: "application/ld+json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "schema.json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+    window.setTimeout(() => setDownloaded(false), 1800);
   };
 
   const copyPageLink = () => {
@@ -513,8 +765,12 @@ export default function SchemaMarkupGenerator() {
                         <select value={schemaType} onChange={(event) => setSchemaType(event.target.value as SchemaType)} className="tool-calc-input w-full">
                           <option value="Article">Article</option>
                           <option value="FAQPage">FAQPage</option>
+                          <option value="WebApplication">WebApplication</option>
+                          <option value="Organization">Organization</option>
                           <option value="LocalBusiness">LocalBusiness</option>
                           <option value="Product">Product</option>
+                          <option value="BreadcrumbList">BreadcrumbList</option>
+                          <option value="Event">Event</option>
                         </select>
                       </div>
 
@@ -570,6 +826,11 @@ export default function SchemaMarkupGenerator() {
                             <input value={businessUrl} onChange={(event) => setBusinessUrl(event.target.value)} placeholder="Page URL" className="tool-calc-input w-full" />
                             <input value={businessImage} onChange={(event) => setBusinessImage(event.target.value)} placeholder="Image URL" className="tool-calc-input w-full" />
                           </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                            <input value={businessLat} onChange={(event) => setBusinessLat(event.target.value)} placeholder="Latitude (optional)" className="tool-calc-input w-full" />
+                            <input value={businessLng} onChange={(event) => setBusinessLng(event.target.value)} placeholder="Longitude (optional)" className="tool-calc-input w-full" />
+                            <input value={businessMapUrl} onChange={(event) => setBusinessMapUrl(event.target.value)} placeholder="Map URL (optional)" className="tool-calc-input w-full" />
+                          </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <input value={businessStreet} onChange={(event) => setBusinessStreet(event.target.value)} placeholder="Street address" className="tool-calc-input w-full" />
                             <input value={businessCity} onChange={(event) => setBusinessCity(event.target.value)} placeholder="City" className="tool-calc-input w-full" />
@@ -612,9 +873,143 @@ export default function SchemaMarkupGenerator() {
                           </div>
                         </div>
                       )}
+
+                      {schemaType === "WebApplication" && (
+                        <div className="space-y-5">
+                          <input value={appName} onChange={(event) => setAppName(event.target.value)} placeholder="App name" className="tool-calc-input w-full" />
+                          <textarea value={appDescription} onChange={(event) => setAppDescription(event.target.value)} placeholder="Description" className="tool-calc-input w-full min-h-[110px] resize-y" />
+                          <input value={appUrl} onChange={(event) => setAppUrl(event.target.value)} placeholder="App URL" className="tool-calc-input w-full" />
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={appCategory} onChange={(event) => setAppCategory(event.target.value)} placeholder="Application category (UtilityApplication)" className="tool-calc-input w-full" />
+                            <input value={appOperatingSystem} onChange={(event) => setAppOperatingSystem(event.target.value)} placeholder="Operating system (Any)" className="tool-calc-input w-full" />
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={appPrice} onChange={(event) => setAppPrice(event.target.value)} placeholder="Price (0)" className="tool-calc-input w-full" />
+                            <input value={appPriceCurrency} onChange={(event) => setAppPriceCurrency(event.target.value.toUpperCase())} placeholder="Currency (USD)" className="tool-calc-input w-full" />
+                          </div>
+                        </div>
+                      )}
+
+                      {schemaType === "Organization" && (
+                        <div className="space-y-5">
+                          <input value={orgName} onChange={(event) => setOrgName(event.target.value)} placeholder="Organization name" className="tool-calc-input w-full" />
+                          <input value={orgUrl} onChange={(event) => setOrgUrl(event.target.value)} placeholder="Organization URL" className="tool-calc-input w-full" />
+                          <input value={orgLogo} onChange={(event) => setOrgLogo(event.target.value)} placeholder="Logo URL" className="tool-calc-input w-full" />
+                          <textarea
+                            value={orgSameAs}
+                            onChange={(event) => setOrgSameAs(event.target.value)}
+                            placeholder="SameAs URLs (optional) — comma or newline separated"
+                            className="tool-calc-input w-full min-h-[110px] resize-y"
+                          />
+                        </div>
+                      )}
+
+                      {schemaType === "BreadcrumbList" && (
+                        <div className="space-y-5">
+                          <input value={breadcrumbPageUrl} onChange={(event) => setBreadcrumbPageUrl(event.target.value)} placeholder="Page URL" className="tool-calc-input w-full" />
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={breadcrumb1Name} onChange={(event) => setBreadcrumb1Name(event.target.value)} placeholder="Crumb 1 name" className="tool-calc-input w-full" />
+                            <input value={breadcrumb1Url} onChange={(event) => setBreadcrumb1Url(event.target.value)} placeholder="Crumb 1 URL" className="tool-calc-input w-full" />
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={breadcrumb2Name} onChange={(event) => setBreadcrumb2Name(event.target.value)} placeholder="Crumb 2 name" className="tool-calc-input w-full" />
+                            <input value={breadcrumb2Url} onChange={(event) => setBreadcrumb2Url(event.target.value)} placeholder="Crumb 2 URL" className="tool-calc-input w-full" />
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={breadcrumb3Name} onChange={(event) => setBreadcrumb3Name(event.target.value)} placeholder="Crumb 3 name" className="tool-calc-input w-full" />
+                            <input value={breadcrumb3Url} onChange={(event) => setBreadcrumb3Url(event.target.value)} placeholder="Crumb 3 URL" className="tool-calc-input w-full" />
+                          </div>
+                        </div>
+                      )}
+
+                      {schemaType === "Event" && (
+                        <div className="space-y-5">
+                          <input value={eventName} onChange={(event) => setEventName(event.target.value)} placeholder="Event name" className="tool-calc-input w-full" />
+                          <textarea value={eventDescription} onChange={(event) => setEventDescription(event.target.value)} placeholder="Description" className="tool-calc-input w-full min-h-[110px] resize-y" />
+                          <input value={eventUrl} onChange={(event) => setEventUrl(event.target.value)} placeholder="Event URL" className="tool-calc-input w-full" />
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <input value={eventStart} onChange={(event) => setEventStart(event.target.value)} placeholder="Start (ISO 8601)" className="tool-calc-input w-full" />
+                            <input value={eventEnd} onChange={(event) => setEventEnd(event.target.value)} placeholder="End (ISO 8601)" className="tool-calc-input w-full" />
+                          </div>
+                          <div className="rounded-2xl border border-border bg-muted/20 p-4 space-y-3">
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Location</p>
+                            <input value={eventLocationName} onChange={(event) => setEventLocationName(event.target.value)} placeholder="Venue name" className="tool-calc-input w-full" />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                              <input value={eventLocationStreet} onChange={(event) => setEventLocationStreet(event.target.value)} placeholder="Street" className="tool-calc-input w-full" />
+                              <input value={eventLocationCity} onChange={(event) => setEventLocationCity(event.target.value)} placeholder="City" className="tool-calc-input w-full" />
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                              <input value={eventLocationRegion} onChange={(event) => setEventLocationRegion(event.target.value)} placeholder="Region" className="tool-calc-input w-full" />
+                              <input value={eventLocationPostal} onChange={(event) => setEventLocationPostal(event.target.value)} placeholder="Postal" className="tool-calc-input w-full" />
+                              <input value={eventLocationCountry} onChange={(event) => setEventLocationCountry(event.target.value)} placeholder="Country code" className="tool-calc-input w-full" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-4">
+                      <div className="rounded-2xl border border-border bg-background p-5">
+                        <div className="flex items-center justify-between gap-4 mb-4">
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Generated JSON-LD</p>
+                            <p className="text-sm text-muted-foreground">Ready-to-paste script output.</p>
+                          </div>
+                          <div className="flex items-center gap-2 flex-wrap justify-end">
+                            <button
+                              type="button"
+                              onClick={downloadSchema}
+                              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                                downloaded ? "bg-emerald-500 text-white" : "border border-border bg-background text-foreground hover:bg-muted"
+                              }`}
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              {downloaded ? "Downloaded" : "Download JSON"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={copyJson}
+                              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                                jsonCopied ? "bg-emerald-500 text-white" : "border border-border bg-background text-foreground hover:bg-muted"
+                              }`}
+                            >
+                              {jsonCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                              {jsonCopied ? "Copied JSON" : "Copy JSON"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={copyCode}
+                              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                                copied ? "bg-emerald-500 text-white" : "bg-lime-500 text-zinc-950 hover:bg-lime-400"
+                              }`}
+                            >
+                              {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                              {copied ? "Copied" : "Copy Snippet"}
+                            </button>
+                          </div>
+                        </div>
+                        <textarea readOnly value={generatedScript} className="w-full h-[360px] rounded-xl bg-zinc-950 text-lime-400 p-4 text-sm font-mono resize-none outline-none" />
+                      </div>
+
+                      <div className="rounded-2xl border border-border bg-card p-5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Validation Notes</p>
+                        <div className="space-y-3">
+                          {validationNotes.length === 0 ? (
+                            <div className="flex items-start gap-3">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                              <p className="text-sm text-muted-foreground">No immediate issues detected in the current draft. Keep the markup synchronized with visible page content.</p>
+                            </div>
+                          ) : (
+                            validationNotes.map((note) => (
+                              <div key={note} className="flex items-start gap-3">
+                                <HelpCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm text-muted-foreground">{note}</p>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+
                       <div className="rounded-2xl border border-lime-500/20 bg-lime-500/5 p-5">
                         <div className="flex items-center justify-between gap-4 mb-4">
                           <div>
@@ -641,39 +1036,6 @@ export default function SchemaMarkupGenerator() {
                               </div>
                             </div>
                           ))}
-                        </div>
-                      </div>
-
-                      <div className="rounded-2xl border border-border bg-background p-5">
-                        <div className="flex items-center justify-between gap-4 mb-4">
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Generated JSON-LD</p>
-                            <p className="text-sm text-muted-foreground">Ready-to-paste script output.</p>
-                          </div>
-                          <button onClick={copyCode} className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors ${copied ? "bg-emerald-500 text-white" : "bg-lime-500 text-zinc-950 hover:bg-lime-400"}`}>
-                            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                            {copied ? "Copied" : "Copy Snippet"}
-                          </button>
-                        </div>
-                        <textarea readOnly value={generatedScript} className="w-full h-[360px] rounded-xl bg-zinc-950 text-lime-400 p-4 text-sm font-mono resize-none outline-none" />
-                      </div>
-
-                      <div className="rounded-2xl border border-border bg-card p-5">
-                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Validation Notes</p>
-                        <div className="space-y-3">
-                          {validationNotes.length === 0 ? (
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                              <p className="text-sm text-muted-foreground">No immediate issues detected in the current draft. Keep the markup synchronized with visible page content.</p>
-                            </div>
-                          ) : (
-                            validationNotes.map((note) => (
-                              <div key={note} className="flex items-start gap-3">
-                                <HelpCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                                <p className="text-sm text-muted-foreground">{note}</p>
-                              </div>
-                            ))
-                          )}
                         </div>
                       </div>
                     </div>

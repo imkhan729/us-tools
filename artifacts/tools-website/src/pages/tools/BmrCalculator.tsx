@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { getCanonicalToolPath } from "@/data/tools";
 import {
   ChevronRight, ChevronDown, Check, ArrowRight,
   Zap, Smartphone, Shield, Copy, Ruler, Weight, User,
@@ -79,6 +80,33 @@ export default function BmrCalculator() {
     return Math.max(0, Math.round(result));
   }, [unitPath, gender, kg, cm, lbs, ft, inVal, age]);
 
+  const canonical = `https://usonlinetools.com${getCanonicalToolPath("online-bmr-calculator")}`;
+
+  const schema = useMemo(
+    () => ({
+      "@type": "WebApplication",
+      name: "BMR Calculator",
+      url: canonical,
+      description:
+        "Free BMR calculator using the Mifflin-St Jeor equation. Estimate calories your body burns at rest and use it to plan daily intake targets.",
+      applicationCategory: "HealthApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    }),
+    [canonical],
+  );
+
+  const tdeeEstimates = useMemo(() => {
+    if (!bmr) return null;
+    const multipliers = [
+      { label: "Sedentary (little exercise)", value: 1.2 },
+      { label: "Lightly active (1–3 days/week)", value: 1.375 },
+      { label: "Moderately active (3–5 days/week)", value: 1.55 },
+      { label: "Very active (6–7 days/week)", value: 1.725 },
+    ];
+    return multipliers.map((m) => ({ ...m, calories: Math.round(bmr * m.value) }));
+  }, [bmr]);
+
   const copyResult = () => {
     if (!bmr) return;
     navigator.clipboard.writeText(`My Basal Metabolic Rate (BMR) resting is: ${bmr} calories/day.`);
@@ -88,8 +116,10 @@ export default function BmrCalculator() {
   return (
     <Layout>
       <SEO
-        title="BMR Calculator – Find Your Basal Metabolic Rate Online"
-        description="Free BMR Calculator using the highly-accurate Mifflin-St Jeor equation. Find out exactly how many calories your body burns at rest to optimize diet plans."
+        title="BMR Calculator (Basal Metabolic Rate) – Mifflin-St Jeor Equation"
+        description="Free BMR calculator using the Mifflin-St Jeor equation. Estimate your basal metabolic rate (calories burned at rest) and use it to plan maintenance, cut, or bulk calorie targets."
+        canonical={canonical}
+        schema={schema}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
@@ -121,7 +151,7 @@ export default function BmrCalculator() {
           <div className="lg:col-span-3 space-y-10">
 
             {/* TOOL WIDGET */}
-            <section>
+            <section id="calculator">
               <div className="rounded-2xl overflow-hidden border border-rose-500/20 shadow-lg shadow-rose-500/5">
                 <div className="h-1.5 w-full bg-gradient-to-r from-rose-500 to-red-600" />
                 <div className="bg-card p-6 md:p-8 space-y-5">
@@ -218,6 +248,24 @@ export default function BmrCalculator() {
                           <button onClick={copyResult} className="w-full py-4 bg-rose-600 text-white font-bold text-sm rounded-xl hover:bg-rose-700 transition-colors flex items-center justify-center gap-2">
                             {copied ? <><Check className="w-4 h-4" /> Result Copied!</> : <><Copy className="w-4 h-4" /> Copy Output</>}
                           </button>
+
+                          {tdeeEstimates ? (
+                            <div className="rounded-2xl border border-border bg-muted/30 p-5">
+                              <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Estimated maintenance calories (TDEE)</p>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {tdeeEstimates.map((row) => (
+                                  <div key={row.label} className="rounded-xl border border-border bg-background p-4">
+                                    <p className="text-xs font-bold text-muted-foreground">{row.label}</p>
+                                    <p className="mt-2 text-2xl font-black text-rose-600 dark:text-rose-400">{row.calories.toLocaleString()}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">calories/day</p>
+                                  </div>
+                                ))}
+                              </div>
+                              <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                                These are quick estimates. For best results, track weight change over 2–3 weeks and adjust intake by ~100–200 calories at a time.
+                              </p>
+                            </div>
+                          ) : null}
                         </motion.div>
                       ) : (
                         <div className="text-center py-8 opacity-50">
@@ -238,6 +286,16 @@ export default function BmrCalculator() {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Your BMR represents the exact number of baseline calories your organs require to keep you completely alive if you were strictly resting in bed all day long (breathing, blood circulation, cell generation). It represents about 60–75% of your total daily burn.
               </p>
+              <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-5 mb-8">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Formula used (Mifflin-St Jeor)</p>
+                <div className="space-y-2 text-sm font-mono text-foreground">
+                  <p>Men: \(10×kg + 6.25×cm − 5×age + 5\)</p>
+                  <p>Women: \(10×kg + 6.25×cm − 5×age − 161\)</p>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3">
+                  We use metric inputs internally. Imperial values are converted to kg/cm before calculating.
+                </p>
+              </div>
               <ol className="space-y-5 mb-8">
                 <li className="flex gap-4">
                   <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
@@ -253,7 +311,42 @@ export default function BmrCalculator() {
                     <p className="text-muted-foreground text-sm leading-relaxed">BMR only calculates RESTING calories. Any conscious physical movement you make during the day (typing, standing up, pacing, doing dishes) requires multiplying your resting BMR by an Activity Multiplier (creating your TDEE).</p>
                   </div>
                 </li>
+                <li className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
+                  <div>
+                    <p className="font-bold text-foreground mb-1">BMR vs RMR (resting metabolic rate)</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      People often use BMR and RMR interchangeably. Technically, RMR is measured under less strict lab conditions and is usually slightly higher than BMR. For planning calories, the difference is small—consistency and real-world tracking matter more.
+                    </p>
+                  </div>
+                </li>
               </ol>
+            </section>
+
+            <section className="bg-card border border-border rounded-2xl p-6 md:p-8" id="result-interpretation">
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">How to Use Your BMR Result</h2>
+              <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
+                Your BMR is a baseline. To plan calories for maintenance, cutting, or bulking, convert BMR to an estimated TDEE (total daily energy expenditure), then apply a small surplus or deficit.
+              </p>
+              <div className="space-y-3">
+                <div className="p-4 rounded-xl border bg-emerald-500/5 border-emerald-500/20">
+                  <p className="font-bold text-foreground mb-1">Maintenance (hold weight)</p>
+                  <p className="text-sm text-muted-foreground">Start near your estimated TDEE. Adjust after 2–3 weeks of real weigh-ins.</p>
+                </div>
+                <div className="p-4 rounded-xl border bg-amber-500/5 border-amber-500/20">
+                  <p className="font-bold text-foreground mb-1">Cut (lose fat)</p>
+                  <p className="text-sm text-muted-foreground">Try \(−250\) to \(−500\) calories/day from TDEE for a sustainable deficit.</p>
+                </div>
+                <div className="p-4 rounded-xl border bg-cyan-500/5 border-cyan-500/20">
+                  <p className="font-bold text-foreground mb-1">Bulk (gain weight)</p>
+                  <p className="text-sm text-muted-foreground">Try \(+150\) to \(+300\) calories/day from TDEE to minimize unnecessary fat gain.</p>
+                </div>
+              </div>
+              <div className="mt-6 p-4 rounded-xl bg-muted/40 border border-border">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  If you have a medical condition, are pregnant, under 18, or have a history of disordered eating, consider speaking with a clinician or registered dietitian before making aggressive calorie targets.
+                </p>
+              </div>
             </section>
 
             {/* QUICK EXAMPLES */}
@@ -279,6 +372,9 @@ export default function BmrCalculator() {
                 <FaqItem q="Is BMR the same exact thing as BMI?" a="No, BMI (Body Mass Index) evaluates physical size mass-ratios used to mathematically classify obesity or under-weight scales. BMR directly measures calorie output to keep cells functioning." />
                 <FaqItem q="Why does gender impact my BMR calculation?" a="At any given parallel weight, men biologically carry a significantly higher proportion of lean muscle mass (and drastically less body fat percentage) than females. Muscle tissue inherently burns substantially more resting calories per square inch than fat tissue does." />
                 <FaqItem q="Should I consume calories equal to my BMR?" a="No. You should generally target consuming calories matching your Total Daily Energy Expenditure (your BMR multiplied by your Activity Level from the chart above). Eating at or directly below your strict BMR consistently is medically dangerous for organ health." />
+                <FaqItem q="How accurate is this BMR calculator?" a="This calculator uses the Mifflin-St Jeor equation, which is commonly recommended for estimating BMR in adults. It is still an estimate—real metabolism varies with body composition, hormones, sleep, stress, and day-to-day activity. Use it as a starting point, then adjust based on real progress." />
+                <FaqItem q="What inputs change BMR the most?" a="Weight and height strongly influence the estimate. Age reduces estimated BMR slightly over time. Sex affects the constant used in the formula. The biggest real-world driver is lean mass—strength training and higher muscle mass generally increase resting calorie needs." />
+                <FaqItem q="How do I turn BMR into a calorie goal?" a="Estimate your TDEE using an activity multiplier, then set a small deficit (cut) or surplus (bulk). Track your 7-day average weight and adjust in 100–200 calorie steps every 2–3 weeks." />
               </div>
             </section>
           </div>
@@ -301,9 +397,16 @@ export default function BmrCalculator() {
               <div className="bg-card border border-border rounded-2xl p-4">
                 <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
                 <div className="space-y-0.5">
-                  {["Vitals Input Form","How to Read Target", "Activity Modifiers", "FAQ"].map(label => (
-                    <a key={label} href={`#${label.toLowerCase().replace(/\s/g,"-")}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-rose-500 font-medium py-1.5 transition-colors">
-                      <div className="w-1 h-1 rounded-full bg-rose-500/40 flex-shrink-0" />{label}
+                  {[
+                    { label: "Calculator", href: "#calculator" },
+                    { label: "Understanding BMR", href: "#how-to-use" },
+                    { label: "Use Your Result", href: "#result-interpretation" },
+                    { label: "Activity Multipliers", href: "#quick-examples" },
+                    { label: "FAQ", href: "#faq" },
+                  ].map((item) => (
+                    <a key={item.href} href={item.href} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-rose-500 font-medium py-1.5 transition-colors">
+                      <div className="w-1 h-1 rounded-full bg-rose-500/40 flex-shrink-0" />
+                      {item.label}
                     </a>
                   ))}
                 </div>

@@ -566,12 +566,7 @@ RewriteRule ^tools\/yaml-to-json\/?$ /developer/yaml-to-json [R=301,L]
 RewriteRule ^tools\/youtube-thumbnail-checker\/?$ /social-media/youtube-thumbnail-checker [R=301,L]
 RewriteRule ^tools\/zodiac-sign-calculator\/?$ /time-date/zodiac-sign-calculator [R=301,L]
 
-# SPA fallback for client-side routing (required on Hostinger Apache for deep links)
+# SPA fallback for client-side routing
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ /index.html [L]
-
-# --- Subdirectory installs only ---
-# If the site lives at https://example.com/myapp/ (not the domain root), uncomment ONE line:
-# RewriteBase /myapp/
-# Then rebuild with: BASE_PATH=/myapp/ pnpm --filter @workspace/tools-website build

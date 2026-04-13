@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   CircleDashed,
   Copy,
+  Download,
   FileText,
   Globe,
   Plus,
@@ -43,6 +44,7 @@ export default function RobotsTxtGenerator() {
   const [crawlDelay, setCrawlDelay] = useState("");
   const [rules, setRules] = useState<RuleRow[]>(STARTER_RULES);
   const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
 
   const sitemapUrl = useMemo(() => {
     const trimmed = siteUrl.trim().replace(/\/+$/, "");
@@ -163,6 +165,20 @@ export default function RobotsTxtGenerator() {
     await navigator.clipboard.writeText(robotsText);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+  };
+
+  const downloadOutput = () => {
+    const blob = new Blob([robotsText], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "robots.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+    window.setTimeout(() => setDownloaded(false), 1800);
   };
 
   const updateRule = (id: string, key: keyof RuleRow, value: string) => {
@@ -288,9 +304,21 @@ export default function RobotsTxtGenerator() {
                 <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Generated robots.txt</p>
                 <p className="text-sm text-muted-foreground">Copy this output into the root-level `robots.txt` file.</p>
               </div>
-              <button onClick={copyOutput} className="text-xs font-bold text-blue-600 hover:text-blue-700">
-                {copied ? "Copied" : "Copy"}
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={downloadOutput}
+                  disabled={!robotsText.trim()}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 disabled:opacity-60"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  {downloaded ? "Downloaded" : "Download"}
+                </button>
+                <button type="button" onClick={copyOutput} className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700">
+                  <Copy className="h-3.5 w-3.5" />
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
             </div>
 
             <textarea readOnly value={robotsText} spellCheck={false} className="min-h-[260px] w-full resize-y rounded-2xl border border-border bg-slate-950 p-4 font-mono text-sm leading-relaxed text-slate-100 outline-none" />

@@ -12,8 +12,21 @@ function joinAssetPath(basePath: string, filename: string) {
   return `${normalized.replace(/\/+$/, "")}/${filename}`;
 }
 
+function normalizeSiteUrl(input: string) {
+  const trimmed = input.trim();
+  if (!trimmed) return "";
+  try {
+    const candidate = trimmed.includes("://") ? trimmed : `https://${trimmed}`;
+    const parsed = new URL(candidate);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return "";
+  }
+}
+
 export default function FaviconCodeGenerator() {
   const [siteName, setSiteName] = useState("Example Site");
+  const [siteUrl, setSiteUrl] = useState("https://example.com");
   const [basePath, setBasePath] = useState("/");
   const [themeColor, setThemeColor] = useState("#0f172a");
   const [maskIconColor, setMaskIconColor] = useState("#0f172a");
@@ -76,14 +89,41 @@ export default function FaviconCodeGenerator() {
     () =>
       [
         `Site name: ${siteName}`,
+        `Site URL: ${siteUrl}`,
         `Base path: ${basePath}`,
         `Theme color: ${themeColor}`,
         `Apple touch icon: ${includeAppleTouch ? "Included" : "Skipped"}`,
         `Manifest file: ${includeManifest ? "Included" : "Skipped"}`,
         `Mask icon color: ${maskIconColor}`,
       ].join("\n"),
-    [basePath, includeAppleTouch, includeManifest, maskIconColor, siteName, themeColor],
+    [basePath, includeAppleTouch, includeManifest, maskIconColor, siteName, siteUrl, themeColor],
   );
+
+  const normalizedSiteUrl = useMemo(() => normalizeSiteUrl(siteUrl), [siteUrl]);
+
+  const faviconCheck = useMemo(() => {
+    if (!siteUrl.trim()) {
+      return {
+        status: "Missing site URL",
+        detail: "Enter your site URL to validate and preview final favicon file URLs.",
+        sampleUrl: "",
+      };
+    }
+
+    if (!normalizedSiteUrl) {
+      return {
+        status: "Invalid URL format",
+        detail: "Use a valid domain like https://example.com or example.com.",
+        sampleUrl: "",
+      };
+    }
+
+    return {
+      status: "URL looks valid",
+      detail: "Use the sample URL below to quickly test whether your favicon is publicly reachable.",
+      sampleUrl: `${normalizedSiteUrl}${joinAssetPath(basePath, "favicon.ico")}`,
+    };
+  }, [basePath, normalizedSiteUrl, siteUrl]);
 
   const copyValue = async (label: string, value: string) => {
     await navigator.clipboard.writeText(value);
@@ -97,39 +137,42 @@ export default function FaviconCodeGenerator() {
         <button
           onClick={() => {
             setSiteName("Example Site");
+            setSiteUrl("https://example.com");
             setBasePath("/");
             setThemeColor("#0f172a");
             setMaskIconColor("#0f172a");
             setIncludeManifest(true);
             setIncludeAppleTouch(true);
           }}
-          className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+          className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:border-blue-500/40 hover:bg-muted transition-colors"
         >
           Root Site Preset
         </button>
         <button
           onClick={() => {
             setSiteName("Docs Portal");
+            setSiteUrl("https://docs.example.com");
             setBasePath("/docs");
             setThemeColor("#2563eb");
             setMaskIconColor("#111827");
             setIncludeManifest(true);
             setIncludeAppleTouch(true);
           }}
-          className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+          className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:border-blue-500/40 hover:bg-muted transition-colors"
         >
           Subfolder Preset
         </button>
         <button
           onClick={() => {
             setSiteName("Landing Page");
+            setSiteUrl("https://campaign.example.com");
             setBasePath("/");
             setThemeColor("#16a34a");
             setMaskIconColor("#16a34a");
             setIncludeManifest(false);
             setIncludeAppleTouch(true);
           }}
-          className="rounded-full border border-border bg-card px-3 py-2 text-xs font-bold text-foreground hover:border-blue-500/40 hover:bg-muted"
+          className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:border-blue-500/40 hover:bg-muted transition-colors"
         >
           Marketing Preset
         </button>
@@ -150,6 +193,10 @@ export default function FaviconCodeGenerator() {
               <div>
                 <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Site Name</label>
                 <input value={siteName} onChange={(event) => setSiteName(event.target.value)} spellCheck={false} className="tool-calc-input w-full" placeholder="Site name" />
+              </div>
+              <div>
+                <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Site URL</label>
+                <input value={siteUrl} onChange={(event) => setSiteUrl(event.target.value)} spellCheck={false} className="tool-calc-input w-full font-mono" placeholder="https://example.com" />
               </div>
               <div>
                 <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">Asset Base Path</label>
@@ -188,6 +235,15 @@ export default function FaviconCodeGenerator() {
               <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Manifest</p><p className="mt-2 text-xl font-black text-foreground">{includeManifest ? "On" : "Off"}</p></div>
               <div className="rounded-xl border border-border bg-card p-4"><p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Theme</p><p className="mt-2 text-xl font-black text-foreground">{themeColor.toUpperCase()}</p></div>
             </div>
+
+            <div className="mt-4 rounded-xl border border-blue-500/20 bg-background p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">URL Check</p>
+                <span className={`text-xs font-bold ${faviconCheck.status === "URL looks valid" ? "text-emerald-600" : "text-amber-600"}`}>{faviconCheck.status}</span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">{faviconCheck.detail}</p>
+              {faviconCheck.sampleUrl ? <p className="mt-2 font-mono text-xs text-foreground break-all">{faviconCheck.sampleUrl}</p> : null}
+            </div>
           </div>
 
           <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5">
@@ -196,7 +252,8 @@ export default function FaviconCodeGenerator() {
                 <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Head Tag Output</p>
                 <p className="text-sm text-muted-foreground">Paste these tags into the document head of your site or framework layout.</p>
               </div>
-              <button onClick={() => copyValue("head", headCode)} className="text-xs font-bold text-blue-600">
+              <button onClick={() => copyValue("head", headCode)} className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-3 py-2 text-xs font-bold text-foreground hover:bg-muted">
+                <Copy className="h-3.5 w-3.5" />
                 {copied === "head" ? "Copied" : "Copy"}
               </button>
             </div>
@@ -209,7 +266,8 @@ export default function FaviconCodeGenerator() {
                 <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground">Manifest JSON</p>
                 <p className="text-sm text-muted-foreground">Use this as `site.webmanifest` when you want installable or Android-friendly favicon metadata.</p>
               </div>
-              <button onClick={() => copyValue("manifest", manifestJson)} disabled={!includeManifest} className="text-xs font-bold text-blue-600 disabled:text-muted-foreground">
+              <button onClick={() => copyValue("manifest", manifestJson)} disabled={!includeManifest} className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-3 py-2 text-xs font-bold text-foreground hover:bg-muted disabled:opacity-50">
+                <Copy className="h-3.5 w-3.5" />
                 {copied === "manifest" ? "Copied" : "Copy"}
               </button>
             </div>
