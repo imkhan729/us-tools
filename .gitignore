@@ -3,6 +3,7 @@
 # compiled output
 dist
 hostinger-public
+.deploy-hostinger
 tmp
 out-tsc
 *.tsbuildinfo
