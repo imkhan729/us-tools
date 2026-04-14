@@ -149,12 +149,6 @@ const CARD_BADGES = [
 ];
 
 const HOMEPAGE_CATEGORY_PREVIEW_LIMIT = 4;
-const HOMEPAGE_NEW_TOOL_SLUGS = [
-  "snow-day-calculator",
-  "love-calculator",
-  "time-calculator",
-  "fraction-calculator",
-] as const;
 const OFFSCREEN_SECTION_STYLE = {
   contentVisibility: "auto",
   containIntrinsicSize: "900px",
@@ -207,7 +201,13 @@ function ToolCard({ tool, colorIndex }: { tool: Tool; colorIndex: number }) {
 
 
 export default function Home() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(() => {
+    if (typeof window === "undefined") {
+      return "";
+    }
+
+    return new URLSearchParams(window.location.search).get("q") ?? "";
+  });
   const [activeCategory, setActiveCategory] = useState("all");
   const [showDeferredSections, setShowDeferredSections] = useState(false);
 
@@ -217,13 +217,6 @@ export default function Home() {
     () => homepageCategories.flatMap((category) => category.tools),
     [homepageCategories],
   );
-
-  const newTools = useMemo(() => {
-    const toolBySlug = new Map(homepageTools.map((tool) => [tool.slug, tool] as const));
-    return HOMEPAGE_NEW_TOOL_SLUGS
-      .map((slug) => toolBySlug.get(slug))
-      .filter((tool): tool is Tool => Boolean(tool));
-  }, [homepageTools]);
 
   const filteredTools = useMemo(() => {
     const raw = search.trim();
@@ -282,6 +275,31 @@ export default function Home() {
     const timeoutId = globalThis.setTimeout(loadDeferredSections, 350);
     return () => globalThis.clearTimeout(timeoutId);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const nextValue = search.trim();
+    const currentUrl = new URL(window.location.href);
+    const currentValue = currentUrl.searchParams.get("q") ?? "";
+
+    if (nextValue) {
+      currentUrl.searchParams.set("q", nextValue);
+    } else {
+      currentUrl.searchParams.delete("q");
+    }
+
+    const nextSearch = currentUrl.searchParams.toString();
+    const currentSearch = window.location.search.replace(/^\?/, "");
+    if (currentValue === nextValue && nextSearch === currentSearch) {
+      return;
+    }
+
+    const nextUrl = `${currentUrl.pathname}${nextSearch ? `?${nextSearch}` : ""}${currentUrl.hash}`;
+    window.history.replaceState({}, "", nextUrl);
+  }, [search]);
 
   return (
     <Layout>
@@ -352,35 +370,6 @@ export default function Home() {
         </div>
       </section>
 
-      {newTools.length > 0 ? (
-        <section className="py-14 bg-muted/30 border-b-2 border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-8">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/25 font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-4">
-                  <Star className="w-3.5 h-3.5" />
-                  New On The Homepage
-                </div>
-                <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground">
-                  Recently Added Tools
-                </h2>
-                <p className="text-muted-foreground font-medium mt-2">
-                  Your latest tools are now surfaced directly on the homepage instead of being hidden inside category previews.
-                </p>
-              </div>
-              <a href="#all-tools" className="inline-flex items-center gap-2 text-sm font-bold text-primary uppercase tracking-wider hover:underline">
-                Explore All {displayCount} Tools <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-              {newTools.map((tool, index) => (
-                <ToolCard key={tool.slug} tool={tool} colorIndex={index} />
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
 
       {/* ── SEARCH + FILTERS ── */}
       <section id="all-tools" className="relative py-16 bg-background overflow-hidden">

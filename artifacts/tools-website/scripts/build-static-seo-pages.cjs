@@ -181,6 +181,11 @@ function createWebsiteSchema(description) {
     publisher: {
       "@id": `${SITE_URL}/#organization`,
     },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 
@@ -304,6 +309,7 @@ function renderHtml({
   schemaGraph,
   assetTags,
   bodyContent,
+  robots = DEFAULT_ROBOTS,
 }) {
   const serializedSchema = JSON.stringify(schemaGraph).replace(/</g, "\\u003c");
 
@@ -313,8 +319,8 @@ function renderHtml({
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(title)}</title>
-    <meta name="robots" content="${DEFAULT_ROBOTS}" />
-    <meta name="googlebot" content="${DEFAULT_ROBOTS}" />
+    <meta name="robots" content="${robots}" />
+    <meta name="googlebot" content="${robots}" />
     <meta name="description" content="${escapeHtml(description)}" />
     <meta name="author" content="${SITE_NAME}" />
     <meta name="application-name" content="${SITE_NAME}" />
@@ -359,6 +365,8 @@ function writeRouteHtml(routePath, html) {
   const targetPath =
     normalized === "/"
       ? templatePath
+      : /\.[a-z0-9]+$/i.test(normalized)
+        ? path.join(distPublicDir, normalized.replace(/^\//, ""))
       : path.join(distPublicDir, normalized.replace(/^\//, ""), "index.html");
 
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
@@ -476,6 +484,13 @@ function buildRoutes(tools) {
         ]),
       ],
     },
+    {
+      path: "/404.html",
+      title: `404 - Page Not Found | ${SITE_NAME}`,
+      description: "The requested page could not be found on US Online Tools.",
+      robots: "noindex, follow",
+      customNodes: [],
+    },
   ];
 
   for (const page of staticPages) {
@@ -484,6 +499,7 @@ function buildRoutes(tools) {
       path: page.path,
       title: page.title,
       description: page.description,
+      robots: page.robots,
       canonicalUrl,
       schemaGraph: buildSchemaGraph({
         canonicalUrl,
@@ -566,6 +582,7 @@ function main() {
       schemaGraph: route.schemaGraph,
       assetTags,
       bodyContent,
+      robots: route.robots,
     });
 
     writeRouteHtml(route.path, html);
