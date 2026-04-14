@@ -73,7 +73,7 @@ function buildSitemap(routes) {
 }
 
 function buildRobots() {
-  return `User-agent: *\nAllow: /\n\nUser-agent: Googlebot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nHost: usonlinetools.com\nSitemap: ${siteUrl}/sitemap.xml\n`;
+  return `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
 }
 
 function buildHtaccess(redirects) {
@@ -82,7 +82,7 @@ function buildHtaccess(redirects) {
     .map(([from, to]) => `RewriteRule ^${from.replace(/^\//, "").replace(/\//g, "\\/")}\\/?$ ${to} [R=301,L]`)
     .join("\n");
 
-  return `Options -Indexes\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^index\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n# Canonical page redirects\n${redirectRules}\n\n# SPA fallback for client-side routing\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^ /index.html [L]\n`;
+  return `Options -Indexes\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^(?:index|404)\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n# Canonical page redirects\n${redirectRules}\n\n# Serve existing files and directories directly\nRewriteCond %{REQUEST_FILENAME} -f [OR]\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteRule ^ - [L]\n\n# Return a real 404 for unknown paths instead of a soft-404 SPA fallback\nRewriteRule ^ - [R=404,L]\n`;
 }
 
 function main() {

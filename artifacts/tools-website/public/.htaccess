@@ -1,4 +1,6 @@
 Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
   <FilesMatch "\.(?:css|js|mjs)$">
@@ -13,7 +15,7 @@ Options -Indexes
   <FilesMatch "^(?:robots\.txt|sitemap\.xml)$">
     Header set Cache-Control "public, max-age=3600"
   </FilesMatch>
-  <FilesMatch "^index\.html$">
+  <FilesMatch "^(?:index|404)\.html$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
 </IfModule>
@@ -579,7 +581,10 @@ RewriteRule ^tools\/yaml-to-json\/?$ /developer/yaml-to-json [R=301,L]
 RewriteRule ^tools\/youtube-thumbnail-checker\/?$ /social-media/youtube-thumbnail-checker [R=301,L]
 RewriteRule ^tools\/zodiac-sign-calculator\/?$ /time-date/zodiac-sign-calculator [R=301,L]
 
-# SPA fallback for client-side routing
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ /index.html [L]
+# Serve existing files and directories directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Return a real 404 for unknown paths instead of a soft-404 SPA fallback
+RewriteRule ^ - [R=404,L]

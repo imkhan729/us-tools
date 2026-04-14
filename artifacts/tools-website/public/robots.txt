@@ -1,11 +1,4 @@
 User-agent: *
 Allow: /
 
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-Host: usonlinetools.com
 Sitemap: https://usonlinetools.com/sitemap.xml
