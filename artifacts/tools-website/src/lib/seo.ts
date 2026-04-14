@@ -16,6 +16,75 @@ export interface BreadcrumbItem {
   item: string;
 }
 
+function normalizeSchemaTypes(typeValue: unknown): string[] {
+  if (Array.isArray(typeValue)) {
+    return typeValue.filter((item): item is string => typeof item === "string");
+  }
+
+  return typeof typeValue === "string" ? [typeValue] : [];
+}
+
+function getBreadcrumbTarget(node: SchemaNode): string | null {
+  const itemListElement = Array.isArray(node.itemListElement) ? node.itemListElement : [];
+  const lastItem = itemListElement.at(-1);
+
+  if (!lastItem || typeof lastItem !== "object") {
+    return null;
+  }
+
+  const item = (lastItem as SchemaNode).item;
+  return typeof item === "string" ? item : null;
+}
+
+function getSchemaNodeKey(node: SchemaNode): string {
+  const types = normalizeSchemaTypes(node["@type"]);
+  const url = typeof node.url === "string" ? node.url : null;
+  const id = typeof node["@id"] === "string" ? node["@id"] : null;
+  const entityKey = url ?? (id ? id.replace(/#.*$/, "") : null);
+
+  if (types.includes("WebSite")) {
+    return `website:${entityKey ?? SITE_URL}`;
+  }
+
+  if (types.includes("Organization")) {
+    return `organization:${entityKey ?? SITE_URL}`;
+  }
+
+  if (types.includes("WebPage")) {
+    return `webpage:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("CollectionPage")) {
+    return `collection:${entityKey ?? "collection"}`;
+  }
+
+  if (types.includes("AboutPage")) {
+    return `about:${entityKey ?? "about"}`;
+  }
+
+  if (types.includes("BreadcrumbList")) {
+    return `breadcrumb:${getBreadcrumbTarget(node) ?? entityKey ?? "page"}`;
+  }
+
+  if (types.includes("FAQPage")) {
+    return `faq:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("HowTo")) {
+    return `howto:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("SoftwareApplication") || types.includes("WebApplication")) {
+    return `app:${entityKey ?? (typeof node.name === "string" ? node.name : "page")}`;
+  }
+
+  if (id) {
+    return `id:${id}`;
+  }
+
+  return `node:${types.sort().join("|")}:${entityKey ?? ""}:${typeof node.name === "string" ? node.name : ""}`;
+}
+
 export function toAbsoluteUrl(pathOrUrl: string): string {
   if (/^https?:\/\//i.test(pathOrUrl)) {
     return pathOrUrl;
@@ -163,7 +232,7 @@ export function createWebApplicationSchema({
   category?: string;
 }): SchemaNode {
   return {
-    "@type": "WebApplication",
+    "@type": ["SoftwareApplication", "WebApplication"],
     "@id": `${canonicalUrl}#webapplication`,
     name,
     url: canonicalUrl,
@@ -174,6 +243,9 @@ export function createWebApplicationSchema({
     image: SITE_OG_IMAGE,
     publisher: {
       "@id": `${SITE_URL}/#organization`,
+    },
+    mainEntityOfPage: {
+      "@id": `${canonicalUrl}#webpage`,
     },
     isPartOf: {
       "@id": `${SITE_URL}/#website`,
@@ -217,5 +289,26 @@ export function createHowToSchema({
       name: step.title,
       text: step.description,
     })),
+  };
+}
+
+export function dedupeSchemaNodes(nodes: SchemaNode[]): SchemaNode[] {
+  const deduped = new Map<string, SchemaNode>();
+
+  for (const node of nodes) {
+    if (!node || typeof node !== "object" || Object.keys(node).length === 0) {
+      continue;
+    }
+
+    deduped.set(getSchemaNodeKey(node), node);
+  }
+
+  return Array.from(deduped.values());
+}
+
+export function createSchemaGraph(nodes: SchemaNode[]): SchemaNode {
+  return {
+    "@context": "https://schema.org",
+    "@graph": dedupeSchemaNodes(nodes),
   };
 }

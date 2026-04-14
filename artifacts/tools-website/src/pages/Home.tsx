@@ -255,15 +255,19 @@ export default function Home() {
   ];
 
   useEffect(() => {
+    const hostWindow = window as Window & {
+      requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
     const loadDeferredSections = () => setShowDeferredSections(true);
 
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(loadDeferredSections, { timeout: 1200 });
-      return () => window.cancelIdleCallback(idleId);
+    if (typeof hostWindow.requestIdleCallback === "function") {
+      const idleId = hostWindow.requestIdleCallback(loadDeferredSections, { timeout: 1200 });
+      return () => hostWindow.cancelIdleCallback?.(idleId);
     }
 
-    const timeoutId = window.setTimeout(loadDeferredSections, 350);
-    return () => window.clearTimeout(timeoutId);
+    const timeoutId = globalThis.setTimeout(loadDeferredSections, 350);
+    return () => globalThis.clearTimeout(timeoutId);
   }, []);
 
   return (

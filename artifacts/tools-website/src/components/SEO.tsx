@@ -1,6 +1,12 @@
 import { Helmet } from "react-helmet-async";
+import { useEffect, useMemo } from "react";
 import { useLocation } from "wouter";
-import { getCanonicalToolPath, getToolBySlug } from "@/data/tools";
+import {
+  DISPLAY_TOOL_CATEGORIES,
+  getCanonicalToolPath,
+  getCategoryIdBySlug,
+  getToolBySlug,
+} from "@/data/tools";
 import {
   DEFAULT_ROBOTS,
   SITE_LOGO,
@@ -8,7 +14,10 @@ import {
   SITE_OG_IMAGE,
   SITE_TWITTER_HANDLE,
   SITE_URL,
+  createBreadcrumbSchema,
+  createSchemaGraph,
   createOrganizationSchema,
+  createWebApplicationSchema,
   createWebPageSchema,
   createWebsiteSchema,
   toAbsoluteUrl,
@@ -74,6 +83,96 @@ function normalizeSchemaInput(schema?: Record<string, unknown> | Array<Record<st
   return normalized;
 }
 
+function getToolHeading(title: string): string {
+  return /^online\b/i.test(title) ? title : `Online ${title}`;
+}
+
+function getToolApplicationCategory(categoryId: string): string {
+  switch (categoryId) {
+    case "education":
+      return "EducationalApplication";
+    case "health":
+      return "HealthApplication";
+    case "image":
+      return "MultimediaApplication";
+    case "pdf":
+      return "UtilitiesApplication";
+    default:
+      return "UtilityApplication";
+  }
+}
+
+function getAutoSchemaNodes({
+  pathname,
+  canonicalUrl,
+  description,
+}: {
+  pathname: string;
+  canonicalUrl: string;
+  description: string;
+}) {
+  const nodes: Record<string, unknown>[] = [];
+  const segments = pathname.split("/").filter(Boolean);
+  const slug = segments.at(-1);
+  const tool = slug ? getToolBySlug(slug) : undefined;
+
+  if (tool && segments.length >= 2) {
+    const categoryId = getCategoryIdBySlug(tool.slug);
+    const category = DISPLAY_TOOL_CATEGORIES.find((entry) => entry.id === categoryId);
+    const pageHeading = getToolHeading(tool.title);
+
+    nodes.push(
+      createWebApplicationSchema({
+        name: pageHeading,
+        canonicalUrl,
+        description,
+        category: getToolApplicationCategory(categoryId),
+      }),
+      createBreadcrumbSchema([
+        { name: "Home", item: SITE_URL },
+        ...(category ? [{ name: category.name, item: `${SITE_URL}/category/${category.id}` }] : []),
+        { name: pageHeading, item: canonicalUrl },
+      ]),
+    );
+
+    return nodes;
+  }
+
+  if (pathname.startsWith("/category/")) {
+    const categoryId = segments[1];
+    const category = DISPLAY_TOOL_CATEGORIES.find((entry) => entry.id === categoryId);
+
+    if (category) {
+      nodes.push(
+        createBreadcrumbSchema([
+          { name: "Home", item: SITE_URL },
+          { name: category.name, item: canonicalUrl },
+        ]),
+      );
+    }
+
+    return nodes;
+  }
+
+  const staticBreadcrumbLabels: Record<string, string> = {
+    "/about": "About",
+    "/privacy-policy": "Privacy Policy",
+    "/terms-of-service": "Terms of Service",
+  };
+  const staticLabel = staticBreadcrumbLabels[pathname];
+
+  if (staticLabel) {
+    nodes.push(
+      createBreadcrumbSchema([
+        { name: "Home", item: SITE_URL },
+        { name: staticLabel, item: canonicalUrl },
+      ]),
+    );
+  }
+
+  return nodes;
+}
+
 export function SEO({ title, description, canonical, schema, noindex = false }: SEOProps) {
   const [location] = useLocation();
   const pathname = normalizePath(location);
@@ -86,17 +185,50 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
   const robots = noindex || isCanonicalMismatch
     ? "noindex, follow"
     : DEFAULT_ROBOTS;
-  const baseSchemaGraph = [
-    createWebsiteSchema(),
-    createOrganizationSchema(),
-    createWebPageSchema({
-      canonicalUrl,
-      name: fullTitle,
-      description,
-    }),
-  ];
-  const customSchema = normalizeSchemaInput(schema);
-  const mergedSchema = { "@context": "https://schema.org", "@graph": [...baseSchemaGraph, ...customSchema] };
+  const mergedSchema = useMemo(() => {
+    const baseSchemaNodes = [
+      createWebsiteSchema(),
+      createOrganizationSchema(),
+      createWebPageSchema({
+        canonicalUrl,
+        name: fullTitle,
+        description,
+      }),
+    ];
+    const autoSchemaNodes =
+      noindex || isCanonicalMismatch
+        ? []
+        : getAutoSchemaNodes({
+            pathname: normalizePath(new URL(canonicalUrl).pathname),
+            canonicalUrl,
+            description,
+          });
+    const customSchemaNodes = normalizeSchemaInput(schema);
+
+    return createSchemaGraph([
+      ...baseSchemaNodes,
+      ...autoSchemaNodes,
+      ...customSchemaNodes,
+    ]);
+  }, [canonicalUrl, description, fullTitle, isCanonicalMismatch, noindex, schema]);
+  const serializedSchema = useMemo(
+    () => JSON.stringify(mergedSchema).replace(/</g, "\\u003c"),
+    [mergedSchema],
+  );
+
+  useEffect(() => {
+    const selector = 'script[data-schema-graph="primary"]';
+    const existingScript = document.head.querySelector<HTMLScriptElement>(selector);
+    const schemaScript = existingScript ?? document.createElement("script");
+
+    schemaScript.type = "application/ld+json";
+    schemaScript.setAttribute("data-schema-graph", "primary");
+    schemaScript.textContent = serializedSchema;
+
+    if (!existingScript) {
+      document.head.appendChild(schemaScript);
+    }
+  }, [serializedSchema]);
 
   return (
     <Helmet>
@@ -131,7 +263,6 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       {canonicalUrl && <link rel="alternate" hrefLang="en-us" href={canonicalUrl} />}
       {canonicalUrl && <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />}
-      <script type="application/ld+json">{JSON.stringify(mergedSchema)}</script>
     </Helmet>
   );
 }

@@ -74,6 +74,88 @@ function toAbsoluteUrl(pathOrUrl) {
   return `${SITE_URL}${normalizedPath}`;
 }
 
+function normalizeSchemaTypes(typeValue) {
+  if (Array.isArray(typeValue)) {
+    return typeValue.filter((item) => typeof item === "string");
+  }
+
+  return typeof typeValue === "string" ? [typeValue] : [];
+}
+
+function getBreadcrumbTarget(node) {
+  const itemListElement = Array.isArray(node.itemListElement) ? node.itemListElement : [];
+  const lastItem = itemListElement.at(-1);
+
+  if (!lastItem || typeof lastItem !== "object") {
+    return null;
+  }
+
+  return typeof lastItem.item === "string" ? lastItem.item : null;
+}
+
+function getSchemaNodeKey(node) {
+  const types = normalizeSchemaTypes(node["@type"]);
+  const url = typeof node.url === "string" ? node.url : null;
+  const id = typeof node["@id"] === "string" ? node["@id"] : null;
+  const entityKey = url ?? (id ? id.replace(/#.*$/, "") : null);
+
+  if (types.includes("WebSite")) {
+    return `website:${entityKey ?? SITE_URL}`;
+  }
+
+  if (types.includes("Organization")) {
+    return `organization:${entityKey ?? SITE_URL}`;
+  }
+
+  if (types.includes("WebPage")) {
+    return `webpage:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("CollectionPage")) {
+    return `collection:${entityKey ?? "collection"}`;
+  }
+
+  if (types.includes("AboutPage")) {
+    return `about:${entityKey ?? "about"}`;
+  }
+
+  if (types.includes("BreadcrumbList")) {
+    return `breadcrumb:${getBreadcrumbTarget(node) ?? entityKey ?? "page"}`;
+  }
+
+  if (types.includes("FAQPage")) {
+    return `faq:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("HowTo")) {
+    return `howto:${entityKey ?? "page"}`;
+  }
+
+  if (types.includes("SoftwareApplication") || types.includes("WebApplication")) {
+    return `app:${entityKey ?? (typeof node.name === "string" ? node.name : "page")}`;
+  }
+
+  if (id) {
+    return `id:${id}`;
+  }
+
+  return `node:${types.sort().join("|")}:${entityKey ?? ""}:${typeof node.name === "string" ? node.name : ""}`;
+}
+
+function dedupeSchemaNodes(nodes) {
+  const deduped = new Map();
+
+  for (const node of nodes) {
+    if (!node || typeof node !== "object" || Object.keys(node).length === 0) {
+      continue;
+    }
+
+    deduped.set(getSchemaNodeKey(node), node);
+  }
+
+  return Array.from(deduped.values());
+}
+
 function createOrganizationSchema() {
   return {
     "@type": "Organization",
@@ -163,7 +245,7 @@ function createCollectionPageSchema(canonicalUrl, name, description) {
 
 function createWebApplicationSchema(name, canonicalUrl, description, category) {
   return {
-    "@type": "WebApplication",
+    "@type": ["SoftwareApplication", "WebApplication"],
     "@id": `${canonicalUrl}#webapplication`,
     name,
     url: canonicalUrl,
@@ -174,6 +256,9 @@ function createWebApplicationSchema(name, canonicalUrl, description, category) {
     image: SITE_OG_IMAGE,
     publisher: {
       "@id": `${SITE_URL}/#organization`,
+    },
+    mainEntityOfPage: {
+      "@id": `${canonicalUrl}#webpage`,
     },
     isPartOf: {
       "@id": `${SITE_URL}/#website`,
@@ -191,12 +276,12 @@ function createWebApplicationSchema(name, canonicalUrl, description, category) {
 function buildSchemaGraph({ canonicalUrl, title, description, customNodes = [] }) {
   return {
     "@context": "https://schema.org",
-    "@graph": [
+    "@graph": dedupeSchemaNodes([
       createWebsiteSchema(SITE_DESCRIPTION),
       createOrganizationSchema(),
       createWebPageSchema(canonicalUrl, title, description),
       ...customNodes,
-    ],
+    ]),
   };
 }
 
@@ -258,7 +343,7 @@ function renderHtml({
     <link rel="alternate" hrefLang="en-us" href="${canonicalUrl}" />
     <link rel="alternate" hrefLang="x-default" href="${canonicalUrl}" />
     <link rel="icon" type="image/svg+xml" href="${SITE_LOGO}" />
-    <script type="application/ld+json">${serializedSchema}</script>
+    <script type="application/ld+json" data-schema-graph="primary">${serializedSchema}</script>
     ${assetTags}
   </head>
   <body>
@@ -284,6 +369,8 @@ function getToolApplicationCategory(categoryId) {
   switch (categoryId) {
     case "education":
       return "EducationalApplication";
+    case "health":
+      return "HealthApplication";
     case "image":
       return "MultimediaApplication";
     case "pdf":
