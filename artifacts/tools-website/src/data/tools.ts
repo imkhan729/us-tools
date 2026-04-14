@@ -53,6 +53,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "modulo-calculator", title: "Modulo Calculator", description: "Calculate the remainder of division between two numbers.", metaDescription: "Free modulo calculator. Find remainder of any division online.", category: "Math & Calculators", implemented: true },
       { slug: "proportion-calculator", title: "Proportion Calculator", description: "Solve proportions and find the missing value.", metaDescription: "Free proportion calculator. Solve for unknown in proportions online.", category: "Math & Calculators", implemented: true },
       { slug: "percentage-error-calculator", title: "Percentage Error Calculator", description: "Calculate the percentage error between observed and true values.", metaDescription: "Free online percentage error calculator.", category: "Math & Calculators", implemented: true },
+      { slug: "fraction-calculator", title: "Fraction Calculator", description: "Simplify, compare, and calculate with fractions instantly.", metaDescription: "Free online fraction calculator. Simplify fractions and perform fraction addition, subtraction, multiplication, and division.", category: "Math & Calculators", implemented: true },
     ]
   },
   {
@@ -177,6 +178,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "hourly-time-calculator", title: "Hourly Time Calculator", description: "Calculate pay and hours on an hourly basis.", metaDescription: "Free online Hourly Time Calculator. Calculate pay and hours on an hourly basis. No signup required.", category: "Time & Date", implemented: true },
       { slug: "shift-hours-calculator", title: "Shift Hours Calculator", description: "Calculate total hours worked across shifts.", metaDescription: "Free online Shift Hours Calculator. Calculate total hours worked across shifts. No signup required.", category: "Time & Date", implemented: true },
       { slug: "time-tracking-calculator", title: "Time Tracking Calculator", description: "Track time spent on tasks and projects.", metaDescription: "Free online Time Tracking Calculator. Track time spent on tasks and projects. No signup required.", category: "Time & Date", implemented: true },
+      { slug: "time-calculator", title: "Time Calculator", description: "Calculate time differences, add or subtract hours, and convert decimal hours.", metaDescription: "Free online time calculator. Find the time between two times, add or subtract time, and convert decimal hours instantly.", category: "Time & Date", implemented: true },
       { slug: "online-military-time-converter", title: "Military Time Converter", description: "Convert between 12-hour and 24-hour time formats.", metaDescription: "Free online Military Time Converter. Convert between 12-hour and 24-hour time formats. No signup required.", category: "Time & Date", implemented: true },
       { slug: "era-calculator", title: "Era Calculator", description: "Convert dates between different calendar eras and epochs.", metaDescription: "Free era calculator. Convert between calendar eras, epochs, and dating systems online.", category: "Time & Date", implemented: true },
       { slug: "zodiac-sign-calculator", title: "Zodiac Sign Calculator", description: "Find your zodiac sign based on your birth date.", metaDescription: "Free zodiac sign calculator. Find your star sign from birth date online.", category: "Time & Date", implemented: true },
@@ -303,6 +305,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "uuid-generator", title: "UUID Generator", description: "Generate unique UUIDs (v4) for software development.", metaDescription: "Free UUID generator. Generate random UUIDs online.", category: "Productivity & Text", implemented: true },
       { slug: "json-formatter", title: "JSON Formatter", description: "Format, validate, and beautify JSON data instantly.", metaDescription: "Free JSON formatter. Validate and beautify JSON data online.", category: "Productivity & Text", implemented: true },
       { slug: "base64-encoder-decoder", title: "Base64 Encoder Decoder", description: "Encode or decode text and data using Base64.", metaDescription: "Free Base64 encoder decoder. Convert to and from Base64 online.", category: "Productivity & Text", implemented: true },
+      { slug: "love-calculator", title: "Love Calculator", description: "Generate a fun compatibility score and ship name from two names.", metaDescription: "Free online love calculator. Enter two names to get a fun compatibility score, match band, and ship name instantly.", category: "Productivity & Text", implemented: true },
     ]
   },
   {
@@ -342,6 +345,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "typing-speed-test", title: "Typing Speed Test", description: "Test your typing speed in words per minute.", metaDescription: "Free typing speed test. Measure your WPM typing speed online.", category: "Student & Education", implemented: true },
       { slug: "scholarship-calculator", title: "Scholarship Calculator", description: "Calculate potential scholarship savings for college.", metaDescription: "Free scholarship calculator. Estimate college scholarship amounts online.", category: "Student & Education", implemented: true },
       { slug: "college-gpa-calculator", title: "College GPA Calculator", description: "Calculate your college GPA with weighted credits.", metaDescription: "Free college GPA calculator. Calculate weighted GPA for college courses.", category: "Student & Education", implemented: true },
+      { slug: "snow-day-calculator", title: "Snow Day Calculator", description: "Estimate the chance of a snow day from weather and road conditions.", metaDescription: "Free online snow day calculator. Estimate school closure probability from snowfall, ice, temperature, wind, and road conditions.", category: "Student & Education", implemented: true },
     ]
   },
   {
@@ -803,6 +807,5 @@ export function getCanonicalToolPath(slug: string): string {
   const canonicalSlug = getCanonicalSlug(preferredTool.slug);
   return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
 }
-
 
 

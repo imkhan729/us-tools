@@ -139,6 +139,7 @@ const InflationCalculator = lazy(() => import("./pages/tools/InflationCalculator
 const AreaConverter = lazy(() => import("./pages/tools/AreaConverter"));
 const VolumeConverter = lazy(() => import("./pages/tools/VolumeConverter"));
 const SpeedConverter = lazy(() => import("./pages/tools/SpeedConverter"));
+const FractionCalculator = lazy(() => import("./pages/tools/FractionCalculator"));
 const FractionToDecimalCalculator = lazy(() => import("./pages/tools/FractionToDecimalCalculator"));
 const DecimalToFractionCalculator = lazy(() => import("./pages/tools/DecimalToFractionCalculator"));
 const ScientificCalculator = lazy(() => import("./pages/tools/ScientificCalculator"));
@@ -245,6 +246,7 @@ const SleepCalculator = lazy(() => import("./pages/tools/SleepCalculator"));
 const IdealWeightCalculator = lazy(() => import("./pages/tools/IdealWeightCalculator"));
 // Pair 4: Time & Date
 const CountdownTimer = lazy(() => import("./pages/tools/CountdownTimer"));
+const TimeCalculator = lazy(() => import("./pages/tools/TimeCalculator"));
 const TimeDurationCalculator = lazy(() => import("./pages/tools/TimeDurationCalculator"));
 const HalfBirthdayCalculator = lazy(() => import("./pages/tools/HalfBirthdayCalculator"));
 const WeekNumberCalculator = lazy(() => import("./pages/tools/WeekNumberCalculator"));
@@ -290,6 +292,7 @@ const DiceRoller = lazy(() => import("./pages/tools/DiceRoller"));
 // Pair 6: Time & Productivity
 const BusinessDaysCalculator = lazy(() => import("./pages/tools/BusinessDaysCalculator"));
 const RandomNameGenerator = lazy(() => import("./pages/tools/RandomNameGenerator"));
+const LoveCalculator = lazy(() => import("./pages/tools/LoveCalculator"));
 // New productivity tools
 const UsernameGenerator = lazy(() => import("./pages/tools/UsernameGenerator"));
 const RandomColorGenerator = lazy(() => import("./pages/tools/RandomColorGenerator"));
@@ -339,6 +342,7 @@ const ExamCountdownTimer = lazy(() => import("./pages/tools/ExamCountdownTimer")
 const ExamScorePredictor = lazy(() => import("./pages/tools/ExamScorePredictor"));
 const StudyHoursTracker = lazy(() => import("./pages/tools/StudyHoursTracker"));
 const LearningTimeCalculator = lazy(() => import("./pages/tools/LearningTimeCalculator"));
+const SnowDayCalculator = lazy(() => import("./pages/tools/SnowDayCalculator"));
 const ScholarshipCalculator = lazy(() => import("./pages/tools/ScholarshipCalculator"));
 const SemesterPlannerTool = lazy(() => import("./pages/tools/SemesterPlannerTool"));
 const FlashcardTimerTool = lazy(() => import("./pages/tools/FlashcardTimerTool"));
@@ -781,6 +785,8 @@ function Router() {
       <Route path="/math/percentage-increase-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
       <Route path="/math/percentage-decrease-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
       <Route path="/math/percentage-difference-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
+      <Route path="/math/fraction-calculator">{() => <LazyWrap><FractionCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/fraction-calculator">{() => <LazyWrap><FractionCalculator /></LazyWrap>}</Route>
       <Route path="/math/fraction-to-decimal-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
       <Route path="/math/decimal-to-fraction-calculator">{() => <LazyWrap><DecimalToFractionCalculator /></LazyWrap>}</Route>
       <Route path="/math/scientific-calculator">{() => <StaticPathRedirect to="/math/online-scientific-calculator" />}</Route>
@@ -1015,6 +1021,8 @@ function Router() {
       <Route path="/tools/week-number-calculator">{() => <LazyWrap><WeekNumberCalculator /></LazyWrap>}</Route>
       <Route path="/time-date/overtime-calculator">{() => <LazyWrap><OvertimeCalculator /></LazyWrap>}</Route>
       <Route path="/tools/overtime-calculator">{() => <LazyWrap><OvertimeCalculator /></LazyWrap>}</Route>
+      <Route path="/time-date/time-calculator">{() => <LazyWrap><TimeCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/time-calculator">{() => <LazyWrap><TimeCalculator /></LazyWrap>}</Route>
       <Route path="/time-date/time-addition-calculator">{() => <LazyWrap><TimeAdditionCalculator /></LazyWrap>}</Route>
       <Route path="/tools/time-addition-calculator">{() => <LazyWrap><TimeAdditionCalculator /></LazyWrap>}</Route>
       <Route path="/time-date/time-subtraction-calculator">{() => <LazyWrap><TimeSubtractionCalculator /></LazyWrap>}</Route>
@@ -1104,6 +1112,8 @@ function Router() {
       <Route path="/tools/text-reverser">{() => <LazyWrap><TextReverser /></LazyWrap>}</Route>
       <Route path="/productivity/random-name-generator">{() => <LazyWrap><RandomNameGenerator /></LazyWrap>}</Route>
       <Route path="/tools/random-name-generator">{() => <LazyWrap><RandomNameGenerator /></LazyWrap>}</Route>
+      <Route path="/productivity/love-calculator">{() => <LazyWrap><LoveCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/love-calculator">{() => <LazyWrap><LoveCalculator /></LazyWrap>}</Route>
       <Route path="/productivity/coin-flip">{() => <LazyWrap><CoinFlip /></LazyWrap>}</Route>
       <Route path="/tools/coin-flip">{() => <LazyWrap><CoinFlip /></LazyWrap>}</Route>
       <Route path="/productivity/dice-roller">{() => <LazyWrap><DiceRoller /></LazyWrap>}</Route>
@@ -1203,6 +1213,8 @@ function Router() {
       <Route path="/tools/study-hours-tracker">{() => <LazyWrap><StudyHoursTracker /></LazyWrap>}</Route>
       <Route path="/education/learning-time-calculator">{() => <LazyWrap><LearningTimeCalculator /></LazyWrap>}</Route>
       <Route path="/tools/learning-time-calculator">{() => <LazyWrap><LearningTimeCalculator /></LazyWrap>}</Route>
+      <Route path="/education/snow-day-calculator">{() => <LazyWrap><SnowDayCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/snow-day-calculator">{() => <LazyWrap><SnowDayCalculator /></LazyWrap>}</Route>
       <Route path="/education/scholarship-calculator">{() => <LazyWrap><ScholarshipCalculator /></LazyWrap>}</Route>
       <Route path="/tools/scholarship-calculator">{() => <LazyWrap><ScholarshipCalculator /></LazyWrap>}</Route>
       <Route path="/education/semester-planner-tool">{() => <LazyWrap><SemesterPlannerTool /></LazyWrap>}</Route>
