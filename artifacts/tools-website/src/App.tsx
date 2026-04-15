@@ -526,8 +526,9 @@ function Router() {
       <Route path="/tools/combination-calculator">{() => <LazyWrap><CombinationCalculator /></LazyWrap>}</Route>
 
       {/* New SEO-friendly /:category/:tool routes — existing tools */}
-      <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
-      <Route path="/math/online-percentage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percantage-calculator" />}</Route>
+      <Route path="/math/online-percentage-calculator">{() => <StaticPathRedirect to="/math/online-percantage-calculator" />}</Route>
+      <Route path="/math/online-percantage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
       <Route path="/productivity/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/productivity/online-password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/productivity/word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>

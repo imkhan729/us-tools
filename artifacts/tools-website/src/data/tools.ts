@@ -668,7 +668,7 @@ const CANONICAL_SLUG_OVERRIDES: Record<string, string> = {
   "percentage-decrease-calculator": "percentage-calculator",
   "percentage-difference-calculator": "percentage-calculator",
   "percentage-increase-calculator": "percentage-calculator",
-  "percentage-calculator": "online-percentage-calculator",
+  "percentage-calculator": "online-percantage-calculator",
   // Image tools
   "image-resizer": "online-image-resizer",
   "image-compressor": "online-image-compressor",
@@ -734,16 +734,16 @@ export function resolveToolSlug(slug: string): string | undefined {
     return undefined;
   }
 
-  const canonicalAlias = SLUG_ALIAS_TO_TOOL_SLUG[normalizedSlug];
-
-  if (canonicalAlias) {
-    return canonicalAlias;
-  }
-
   const exactTool = getToolByExactSlug(normalizedSlug);
 
   if (exactTool) {
     return exactTool.slug;
+  }
+
+  const canonicalAlias = SLUG_ALIAS_TO_TOOL_SLUG[normalizedSlug];
+
+  if (canonicalAlias) {
+    return canonicalAlias;
   }
 
   const legacyCandidate = normalizedSlug.startsWith("online-")
