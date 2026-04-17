@@ -316,6 +316,7 @@ function renderHtml({
   return `<!DOCTYPE html>
 <html lang="${SITE_LANGUAGE}">
   <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6438644207209483" crossorigin="anonymous"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(title)}</title>
