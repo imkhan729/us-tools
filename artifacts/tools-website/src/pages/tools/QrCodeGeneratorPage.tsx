@@ -6,56 +6,56 @@ export default function QrCodeGeneratorPage() {
   return (
     <ImageToolPageShell
       title="QR Code Generator"
-      seoTitle="QR Code Generator - Create Scan-Ready QR Codes Online"
-      seoDescription="Free online QR code generator with live preview, PNG and SVG download, and support for URL, text, Wi-Fi, email, and contact payloads."
-      canonical="https://usonlinetools.com/image/qr-code-generator"
-      heroDescription="Build scan-ready QR codes for links, text, guest Wi-Fi, email actions, and contact cards in one browser-based page. The preview updates instantly and the page uses the same content-first image-tool layout as the stronger tools in the site."
+      seoTitle="QR Code Generator - Free QR Code Generator No Sign Up"
+      seoDescription="Use this free QR code generator to create QR codes for links, text, WiFi, email, and contact cards. Download PNG or SVG. No signup."
+      canonical="https://usonlinetools.com/image/online-qr-code-generator"
+      heroDescription="Create scan-ready QR codes for URLs, plain text, guest WiFi, email actions, and contact cards with this free QR code generator. The live preview updates instantly, and you can download a PNG or SVG QR code without signup."
       heroIcon={<QrCode className="w-3.5 h-3.5" />}
       calculatorLabel="QR Builder"
       calculatorDescription="Choose a payload type, tune output settings, and export PNG or SVG files without leaving the page."
       calculator={<QrCodeGeneratorCalculator />}
       howToTitle="How to Use the QR Code Generator"
-      howToIntro="This generator is built for practical scan workflows, not just basic link encoding. You can switch between common payload types, confirm the live preview, and adjust export settings before downloading the final asset."
+      howToIntro="This online QR code generator is built for practical scan workflows, not just basic link encoding. You can switch between common payload types, confirm the live preview, and adjust export settings before downloading the final QR code image."
       howSteps={[
         {
           title: "Choose the payload mode",
-          description: "Use URL for landing pages and menus, text for notes, Wi-Fi for guest access, email for reply prompts, and contact for scan-to-save vCard details.",
+          description: "Use URL for websites, landing pages, menus, and forms. Use text for notes, WiFi for guest network access, email for reply prompts, and contact for scan-to-save vCard details.",
         },
         {
           title: "Fill the fields and verify the preview",
-          description: "The QR code regenerates as you type so you can catch invalid content, overly long payloads, or formatting mistakes before export.",
+          description: "The QR code regenerates as you type so you can catch invalid links, overly long payloads, WiFi password mistakes, or formatting issues before export.",
         },
         {
           title: "Adjust export reliability",
-          description: "Set recovery level, quiet zone, and PNG size based on where the code will live. Higher correction is usually better for print, posters, and public signage.",
+          description: "Set error correction, quiet zone, and PNG size based on where the code will be used. Higher correction is usually better for print, posters, labels, and public signage.",
         },
       ]}
       formulaTitle="QR Output Rules"
-      formulaIntro="QR reliability depends on more than whether the image renders. Payload length, error-correction level, and export size all affect real-world scanning performance."
+      formulaIntro="QR reliability depends on more than whether the image renders. Payload length, error correction level, quiet zone, contrast, and export size all affect real-world scanning performance."
       formulaCards={[
         {
           label: "Payload Density",
           formula: "More characters -> larger matrix",
-          detail: "Longer links, Wi-Fi credentials, and contact cards produce denser QR modules and usually need larger export dimensions.",
+          detail: "Long links, WiFi credentials, and contact cards produce denser QR modules and usually need larger export dimensions.",
         },
         {
           label: "Error Correction",
           formula: "L < M < Q < H",
-          detail: "Higher recovery tolerates more damage or visual noise, but it also increases code density, so the final image may need more space.",
+          detail: "Higher recovery tolerates more damage or visual noise, but it can increase code density, so the final image may need more space.",
         },
       ]}
       examplesTitle="QR Code Generator Examples"
-      examplesIntro="Most QR use cases are operational. These examples show where live preview and export control matter more than a bare minimum encoder."
+      examplesIntro="Most QR code use cases are operational. These examples show where live preview, payload choice, and PNG or SVG export control matter more than a bare minimum encoder."
       examples={[
         {
           title: "Restaurant Menu",
           value: "URL QR",
-          detail: "Send diners to a live menu or ordering page without printing long links on tables or packaging.",
+          detail: "Create a URL QR code that sends diners to a live menu or ordering page without printing long links on tables or packaging.",
         },
         {
           title: "Guest Network Access",
-          value: "Wi-Fi QR",
-          detail: "Let visitors join a network by scanning once instead of manually typing a password at reception or events.",
+          value: "WiFi QR",
+          detail: "Create a WiFi QR code so visitors can join a network by scanning once instead of manually typing a password at reception or events.",
         },
         {
           title: "Sales Or Support Handoff",
@@ -63,35 +63,50 @@ export default function QrCodeGeneratorPage() {
           detail: "Share a save-ready contact card on business cards, decks, booths, or printed leave-behinds.",
         },
       ]}
-      contentTitle="Why This QR Code Generator Is Useful"
-      contentIntro="A QR generator becomes genuinely useful when it covers the real payloads people need and explains the settings that affect scan quality. This page does both while keeping the workflow fast and browser-side."
+      contentTitle="Why This Free QR Code Generator Is Useful"
+      contentIntro="A QR generator becomes useful when it covers the real payloads people search for and explains the settings that affect scan quality. This page supports URL QR codes, text QR codes, WiFi QR codes, email QR codes, and contact QR codes while keeping the workflow fast and browser based."
       contentSections={[
         {
           title: "Built for multiple real payloads",
           paragraphs: [
-            "This page supports links, text, Wi-Fi, email, and contact cards instead of forcing everything into one generic text box.",
-            "That makes it useful for hospitality, events, internal operations, printed collateral, and day-to-day support workflows.",
+            "This page supports links, text, WiFi, email, and contact cards instead of forcing everything into one generic text box.",
+            "That makes it useful for restaurants, events, offices, real estate signs, business cards, printed collateral, customer support, and day-to-day operations.",
           ],
         },
         {
-          title: "Export choices match publishing needs",
+          title: "PNG and SVG exports match publishing needs",
           paragraphs: [
-            "PNG is convenient for fast sharing and standard asset drops, while SVG is the better choice for print and layout work that needs sharp scaling.",
-            "The live preview plus matrix and version feedback helps catch oversized or overly dense codes before you publish them.",
+            "PNG is convenient for fast sharing, web uploads, and standard asset drops, while SVG is the better choice for print and layout work that needs sharp scaling.",
+            "The live preview plus matrix and version feedback helps catch oversized, low-contrast, or overly dense QR codes before you publish them.",
           ],
         },
         {
           title: "Fast browser-side generation",
           paragraphs: [
-            "The code is generated locally, so testing different payloads and settings stays immediate with no server round-trip.",
-            "That is also better for privacy-sensitive internal links, Wi-Fi credentials, and other one-off operational QR tasks.",
+            "The QR code is generated locally in the browser, so testing different payloads and settings stays immediate with no server round trip.",
+            "That is useful for internal links, WiFi credentials, event pages, draft campaigns, and other one-off operational QR tasks.",
+          ],
+        },
+        {
+          title: "Tips for creating QR codes that scan",
+          paragraphs: [
+            "Keep the destination URL as short as practical, use strong contrast between the foreground and background, and leave enough quiet zone around the QR code.",
+            "For printed materials, test the code on more than one phone before publishing. If the code will be small, increase the PNG size, use SVG, or reduce the amount of encoded text.",
           ],
         },
       ]}
       faqs={[
         {
-          q: "Can this generate Wi-Fi QR codes that phones can join from?",
-          a: "Yes. Choose the Wi-Fi mode, enter the network details, and export the generated code. Modern phones can usually interpret that payload directly from the camera.",
+          q: "What is a QR code generator?",
+          a: "A QR code generator is an online tool that turns a URL, text, WiFi login, email action, or contact card into a scannable QR code. This page lets you preview the QR code and download it as PNG or SVG.",
+        },
+        {
+          q: "Is this QR code generator free?",
+          a: "Yes. This free QR code generator does not require signup for normal use. You can create QR codes for links, text, WiFi, email, and contact details directly in your browser.",
+        },
+        {
+          q: "Can this generate WiFi QR codes that phones can join from?",
+          a: "Yes. Choose the WiFi mode, enter the network details, and export the generated code. Modern phones can usually interpret that payload directly from the camera.",
         },
         {
           q: "What is the difference between PNG and SVG?",
@@ -104,6 +119,14 @@ export default function QrCodeGeneratorPage() {
         {
           q: "Does the preview update automatically?",
           a: "Yes. The QR preview refreshes whenever you change the payload or styling, so there is no separate generate button for normal use.",
+        },
+        {
+          q: "Can I create a QR code for a website link?",
+          a: "Yes. Choose URL mode, paste the website link, review the live preview, and download the final QR code as PNG or SVG.",
+        },
+        {
+          q: "How do I make a QR code easier to scan?",
+          a: "Use a clear foreground and background contrast, keep enough white space around the QR code, avoid very long payloads, and test the code at the final printed or displayed size.",
         },
       ]}
       relatedTools={[

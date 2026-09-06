@@ -2654,23 +2654,23 @@ function getVariant(slug: string): Variant {
 
   if (slug === "image-filter-editor") {
     return {
-      hero: "Adjust brightness, contrast, blur, grayscale, saturation, and other filters for quick browser-side visual styling before export.",
-      label: "Filter Editing Workflow",
-      workflow: ["Upload the image.", "Adjust one or more visual sliders.", "Review the styled result and export the final file."],
-      intro: "A filter editor is ideal when the goal is quick visual treatment rather than deep retouching, especially for social, content, and mockup work.",
+      hero: "Apply photo filters online with live before-and-after preview, browser-side processing, export formats, and copyable CSS filter output for social images, product visuals, blog graphics, and quick creative edits.",
+      label: "Photo Filter Workflow",
+      workflow: ["Upload the photo or graphic.", "Choose a preset or tune brightness, contrast, saturation, blur, sepia, grayscale, and hue.", "Preview the filtered result, copy the CSS filter, or export PNG, JPG, or WebP."],
+      intro: "A photo filter editor is ideal when the goal is fast visual polish rather than deep retouching. It helps creators apply image effects, improve contrast, test color mood, and export web-ready visuals without a heavy photo editor.",
       concepts: [
-        { label: "Filter Stack", formula: "Filter A + Filter B + Filter C", detail: "Multiple visual adjustments can be layered to create a stronger final look." },
-        { label: "Intensity", formula: "Higher Value = Stronger Effect", detail: "Fine-tuning usually matters more than pushing every setting to an extreme." },
+        { label: "Filter Stack", formula: "Brightness + Contrast + Saturation + Effects", detail: "Multiple CSS-style image filters can be layered to create a stronger final look." },
+        { label: "Intensity", formula: "Higher Value = Stronger Effect", detail: "Fine-tuning usually matters more than pushing every setting to an extreme, especially for portraits and product photos." },
       ],
       examples: [
-        { title: "Social Visuals", value: "Fast Styling", detail: "Apply quick moods and visual polish to campaign assets." },
-        { title: "Mockups", value: "Preview Looks", detail: "Test alternate presentations without a full editor." },
-        { title: "Content Sets", value: "Unified Tone", detail: "Bring a set of images closer to one visual style." },
+        { title: "Social Visuals", value: "Fast Styling", detail: "Apply quick moods, photo effects, and visual polish before publishing to Instagram, TikTok, Pinterest, or blog posts." },
+        { title: "Product Photos", value: "Cleaner Contrast", detail: "Improve brightness, contrast, and saturation before uploading ecommerce or marketplace images." },
+        { title: "Design Mockups", value: "Reusable CSS", detail: "Copy the generated CSS filter string when you want the same effect in a front-end prototype." },
       ],
       facts: [
-        { label: "Best For", value: "Quick Styling", detail: "Ideal for fast mood, contrast, and clarity changes." },
-        { label: "Core Controls", value: "Brightness to Blur", detail: "Common filters cover the most requested visual adjustments." },
-        { label: "Workflow Type", value: "Preview First", detail: "Useful when teams want to test a look before export." },
+        { label: "Best For", value: "Photo Effects", detail: "Ideal for quick filters, contrast correction, and creative image styling." },
+        { label: "Core Controls", value: "Brightness to Hue", detail: "Common filters cover the most requested online photo adjustments." },
+        { label: "Privacy", value: "Browser Based", detail: "Images are processed locally in the browser session." },
       ],
       icon: <Wand2 className="w-3.5 h-3.5" />,
     };
@@ -2941,7 +2941,7 @@ export default function ImageCategoryToolPage() {
       : isCollageMaker
         ? "Upload multiple images, choose a layout preset, set spacing and canvas size, then export a ready-to-share collage PNG."
       : isFilterEditor
-        ? "Upload an image, tune brightness, contrast, saturation, blur, and color effects, then export the filtered result."
+        ? "Upload an image, apply free online photo filters, tune brightness, contrast, saturation, blur, sepia, grayscale, and hue, then export the filtered result."
       : isPixelCounter
         ? "Upload an image to inspect exact dimensions, total pixels, megapixels, aspect ratio, and print-size estimates."
       : isRotateFlip
@@ -3034,12 +3034,13 @@ export default function ImageCategoryToolPage() {
       ]
     : isFilterEditor
       ? [
-          { q: "What filters can I control here?", a: "The editor supports brightness, contrast, saturation, blur, grayscale, sepia, and hue rotation so you can handle both correction and stylized looks." },
+          { q: "What photo filters can I control here?", a: "The editor supports brightness, contrast, saturation, blur, grayscale, sepia, and hue rotation so you can handle both correction and stylized looks." },
           { q: "Does the preview update automatically?", a: "Yes. The filtered image is regenerated in the browser whenever you change a slider, preset, or export format." },
           { q: "Why does the output look slightly cropped or different than CSS filters in the browser?", a: "The tool renders the effect into a canvas export. The overall look should stay close, but small differences can happen between browser rendering paths and exported files." },
           { q: "Which preset should I start with?", a: "Start with Punchy for product shots, Soft Glow for softer lifestyle images, and Noir when you want a high-contrast monochrome treatment." },
           { q: "Can I reuse the effect in CSS?", a: "Yes. The page shows the generated CSS filter string so you can copy the same effect into front-end work or prototypes." },
           { q: "What format should I export?", a: "PNG is safest for crisp graphics, JPG is usually best for photos and lighter files, and WebP is useful when you want smaller web-ready assets." },
+          { q: "Is this a free online photo filter editor?", a: "Yes. You can upload an image, apply filters, preview the result, and export the edited file without creating an account." },
           { q: "Does this send my image anywhere?", a: "No. The image is processed and exported locally in the browser." },
         ]
     : isPixelCounter
@@ -3252,21 +3253,21 @@ export default function ImageCategoryToolPage() {
           {
             title: "Why this workflow matters",
             paragraphs: [
-              "A filter editor is useful when the image itself is already correct and only needs visual polish, mood adjustment, or a quick style pass before publishing.",
-              "This browser-side workflow handles common tuning jobs without forcing users into a full editing suite for simple corrections.",
+              "A photo filter editor is useful when the image itself is already correct and only needs visual polish, mood adjustment, or a quick style pass before publishing.",
+              "This browser-side workflow handles common online photo filter jobs without forcing users into a full editing suite for simple corrections.",
             ],
           },
           {
             title: "How the controls affect the result",
             paragraphs: [
               "Brightness, contrast, and saturation are the main correction controls for making dull or flat assets feel more usable.",
-              "Blur, grayscale, sepia, and hue rotation are more stylized controls, and they work best in moderation unless the visual effect is intentionally dramatic.",
+              "Blur, grayscale, sepia, and hue rotation are more stylized photo effects, and they work best in moderation unless the visual effect is intentionally dramatic.",
             ],
           },
           {
             title: "How to export the right version",
             paragraphs: [
-              "PNG is safer for UI graphics, screenshots, and crisp edges, while JPG usually works better for photographic content where file size matters more than transparency.",
+              "PNG is safer for UI graphics, screenshots, and crisp edges, while JPG usually works better for photographic content where file size matters more than transparency. WebP is useful when the image will be used on a website.",
               "The CSS filter string can also be copied when you want the same visual treatment in a front-end prototype without baking the effect into a file.",
             ],
           },

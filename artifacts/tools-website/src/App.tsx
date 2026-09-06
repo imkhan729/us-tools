@@ -16,6 +16,16 @@ const NotFound = lazy(() => import("./pages/not-found"));
 
 // Fully implemented tools
 const PercentageCalculator = lazy(() => import("./pages/PercentageCalculator"));
+const TurkishPercentageCalculator = lazy(() => import("./pages/TurkishPercentageCalculator"));
+const ArabicAgeCalculator = lazy(() => import("./pages/ArabicAgeCalculator"));
+const ArabicDateConverter = lazy(() => import("./pages/ArabicDateConverter"));
+const PortugueseCompoundInterestCalculator = lazy(() => import("./pages/PortugueseCompoundInterestCalculator"));
+const IndonesianAgeCalculator = lazy(() => import("./pages/IndonesianAgeCalculator"));
+const TurkishVatCalculator = lazy(() => import("./pages/TurkishVatCalculator"));
+const PortugueseTerminationCalculator = lazy(() => import("./pages/PortugueseTerminationCalculator"));
+const PortugueseVacationCalculator = lazy(() => import("./pages/PortugueseVacationCalculator"));
+const TurkishSeveranceCalculator = lazy(() => import("./pages/TurkishSeveranceCalculator"));
+const PolishVatCalculator = lazy(() => import("./pages/PolishVatCalculator"));
 const PasswordGenerator = lazy(() => import("./pages/PasswordGenerator"));
 const WordCounter = lazy(() => import("./pages/WordCounter"));
 const AgeCalculator = lazy(() => import("./pages/AgeCalculator"));
@@ -493,14 +503,14 @@ function Router() {
       <Route path="/category/:id">{() => <LazyWrap><CategoryPage /></LazyWrap>}</Route>
 
       {/* Legacy /tools/ routes (redirect-friendly) */}
-      <Route path="/tools/percentage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
       <Route path="/tools/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/security/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/security/online-password-generator">{() => <LazyWrap><PasswordGenerator /></LazyWrap>}</Route>
-      <Route path="/tools/word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
-      <Route path="/tools/age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/word-counter">{() => <StaticPathRedirect to="/productivity/online-word-counter" />}</Route>
+      <Route path="/tools/age-calculator">{() => <StaticPathRedirect to="/time-date/online-age-calculator" />}</Route>
       <Route path="/tools/color-converter">{() => <LazyWrap><ColorConverter /></LazyWrap>}</Route>
-      <Route path="/tools/bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
+      <Route path="/tools/bmi-calculator">{() => <StaticPathRedirect to="/health/online-bmi-calculator" />}</Route>
       <Route path="/tools/tip-calculator">{() => <LazyWrap><TipCalculator /></LazyWrap>}</Route>
       <Route path="/tools/discount-calculator">{() => <LazyWrap><DiscountCalculator /></LazyWrap>}</Route>
       <Route path="/tools/random-number-generator">{() => <LazyWrap><RandomNumberGenerator /></LazyWrap>}</Route>
@@ -526,19 +536,29 @@ function Router() {
       <Route path="/tools/combination-calculator">{() => <LazyWrap><CombinationCalculator /></LazyWrap>}</Route>
 
       {/* New SEO-friendly /:category/:tool routes — existing tools */}
-      <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percantage-calculator" />}</Route>
-      <Route path="/math/online-percentage-calculator">{() => <StaticPathRedirect to="/math/online-percantage-calculator" />}</Route>
-      <Route path="/math/online-percantage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
+      <Route path="/math/percentage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
+      <Route path="/math/online-percantage-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator" />}</Route>
+      <Route path="/math/online-percentage-calculator">{() => <LazyWrap><PercentageCalculator /></LazyWrap>}</Route>
+      <Route path="/yuzde-hesaplama">{() => <LazyWrap><TurkishPercentageCalculator /></LazyWrap>}</Route>
+      <Route path="/ar/hesab-alomr">{() => <LazyWrap><ArabicAgeCalculator /></LazyWrap>}</Route>
+      <Route path="/ar/tahweel-altareekh">{() => <LazyWrap><ArabicDateConverter /></LazyWrap>}</Route>
+      <Route path="/calculadora-juros-compostos">{() => <LazyWrap><PortugueseCompoundInterestCalculator /></LazyWrap>}</Route>
+      <Route path="/kalkulator-umur">{() => <LazyWrap><IndonesianAgeCalculator /></LazyWrap>}</Route>
+      <Route path="/kdv-hesaplama">{() => <LazyWrap><TurkishVatCalculator /></LazyWrap>}</Route>
+      <Route path="/calculo-rescisao">{() => <LazyWrap><PortugueseTerminationCalculator /></LazyWrap>}</Route>
+      <Route path="/calculo-ferias">{() => <LazyWrap><PortugueseVacationCalculator /></LazyWrap>}</Route>
+      <Route path="/kidem-tazminati-hesaplama">{() => <LazyWrap><TurkishSeveranceCalculator /></LazyWrap>}</Route>
+      <Route path="/kalkulator-vat">{() => <LazyWrap><PolishVatCalculator /></LazyWrap>}</Route>
       <Route path="/productivity/password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
       <Route path="/productivity/online-password-generator">{() => <StaticPathRedirect to="/security/online-password-generator" />}</Route>
-      <Route path="/productivity/word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
+      <Route path="/productivity/word-counter">{() => <StaticPathRedirect to="/productivity/online-word-counter" />}</Route>
       <Route path="/productivity/online-word-counter">{() => <LazyWrap><WordCounter /></LazyWrap>}</Route>
       <Route path="/productivity/hashtag-generator">{() => <LazyWrap><HashtagGenerator /></LazyWrap>}</Route>
       <Route path="/productivity/word-frequency-counter">{() => <LazyWrap><WordFrequencyCounter /></LazyWrap>}</Route>
-      <Route path="/time-date/age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
+      <Route path="/time-date/age-calculator">{() => <StaticPathRedirect to="/time-date/online-age-calculator" />}</Route>
       <Route path="/time-date/online-age-calculator">{() => <LazyWrap><AgeCalculator /></LazyWrap>}</Route>
       <Route path="/conversion/color-converter">{() => <LazyWrap><ColorConverter /></LazyWrap>}</Route>
-      <Route path="/health/bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
+      <Route path="/health/bmi-calculator">{() => <StaticPathRedirect to="/health/online-bmi-calculator" />}</Route>
       <Route path="/health/online-bmi-calculator">{() => <LazyWrap><BmiCalculator /></LazyWrap>}</Route>
       <Route path="/finance/tip-calculator">{() => <LazyWrap><TipCalculator /></LazyWrap>}</Route>
       <Route path="/finance/discount-calculator">{() => <LazyWrap><DiscountCalculator /></LazyWrap>}</Route>
@@ -782,10 +802,10 @@ function Router() {
       <Route path="/conversion/online-volume-converter">{() => <LazyWrap><VolumeConverter /></LazyWrap>}</Route>
       <Route path="/conversion/speed-converter">{() => <LazyWrap><SpeedConverter /></LazyWrap>}</Route>
       <Route path="/conversion/online-speed-converter">{() => <LazyWrap><SpeedConverter /></LazyWrap>}</Route>
-      <Route path="/math/percentage-change-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
-      <Route path="/math/percentage-increase-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
-      <Route path="/math/percentage-decrease-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
-      <Route path="/math/percentage-difference-calculator">{() => <StaticPathRedirect to="/math/percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-change-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-increase-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-decrease-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator#calculator" />}</Route>
+      <Route path="/math/percentage-difference-calculator">{() => <StaticPathRedirect to="/math/online-percentage-calculator#calculator" />}</Route>
       <Route path="/math/fraction-calculator">{() => <LazyWrap><FractionCalculator /></LazyWrap>}</Route>
       <Route path="/tools/fraction-calculator">{() => <LazyWrap><FractionCalculator /></LazyWrap>}</Route>
       <Route path="/math/fraction-to-decimal-calculator">{() => <LazyWrap><FractionToDecimalCalculator /></LazyWrap>}</Route>
@@ -1078,8 +1098,10 @@ function Router() {
       <Route path="/tools/pregnancy-due-date-calculator">{() => <LazyWrap><PregnancyDueDateCalculator /></LazyWrap>}</Route>
       <Route path="/health/body-type-calculator">{() => <LazyWrap><BodyTypeCalculator /></LazyWrap>}</Route>
       <Route path="/tools/body-type-calculator">{() => <LazyWrap><BodyTypeCalculator /></LazyWrap>}</Route>
-      <Route path="/health/ovulation-calculator">{() => <LazyWrap><OvulationCalculator /></LazyWrap>}</Route>
-      <Route path="/tools/ovulation-calculator">{() => <LazyWrap><OvulationCalculator /></LazyWrap>}</Route>
+      <Route path="/calculators/ovulation-calculator/">{() => <LazyWrap><OvulationCalculator /></LazyWrap>}</Route>
+      <Route path="/calculators/ovulation-calculator">{() => <StaticPathRedirect to="/calculators/ovulation-calculator/" />}</Route>
+      <Route path="/health/ovulation-calculator">{() => <StaticPathRedirect to="/calculators/ovulation-calculator/" />}</Route>
+      <Route path="/tools/ovulation-calculator">{() => <StaticPathRedirect to="/calculators/ovulation-calculator/" />}</Route>
       <Route path="/health/fitness-age-calculator">{() => <LazyWrap><FitnessAgeCalculator /></LazyWrap>}</Route>
       <Route path="/tools/fitness-age-calculator">{() => <LazyWrap><FitnessAgeCalculator /></LazyWrap>}</Route>
       <Route path="/health/fat-intake-calculator">{() => <LazyWrap><FatIntakeCalculator /></LazyWrap>}</Route>

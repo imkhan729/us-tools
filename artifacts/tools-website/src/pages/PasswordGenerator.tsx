@@ -1,58 +1,261 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronRight, ChevronDown, Shield, KeyRound, Copy, RefreshCw, Check,
-  ArrowRight, Zap, Smartphone, BadgeCheck, Lock, Type, Hash,
-  Calculator, Star, Lightbulb, Eye, EyeOff
+  ArrowRight,
+  BadgeCheck,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Eye,
+  EyeOff,
+  Hash,
+  KeyRound,
+  Lock,
+  RefreshCw,
+  Shield,
+  Smartphone,
+  Type,
+  Zap,
 } from "lucide-react";
 
-// ── FAQ Item Component ──
-function FaqItem({ q, a }: { q: string; a: string }) {
+const CANONICAL_URL = "https://usonlinetools.com/security/online-password-generator";
+const SEO_TITLE = "Password Generator - Free Secure Random Password Generator";
+const SEO_DESCRIPTION =
+  "Use this free password generator to create strong, secure random passwords with numbers, symbols, uppercase, and lowercase letters. No signup.";
+
+const SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+const RELATED_TOOLS = [
+  {
+    title: "Password Strength Checker",
+    slug: "password-strength-checker",
+    icon: Shield,
+    text: "Test whether a password is weak, fair, good, or strong.",
+  },
+  {
+    title: "Random Number Generator",
+    slug: "random-number-generator",
+    icon: Hash,
+    text: "Generate random numbers for quick decisions and testing.",
+  },
+  {
+    title: "Hash Generator",
+    slug: "hash-generator",
+    icon: KeyRound,
+    text: "Create MD5, SHA, and other text hashes online.",
+  },
+  {
+    title: "Base64 Encoder",
+    slug: "base64-encoder",
+    icon: Type,
+    text: "Encode and decode Base64 text in your browser.",
+  },
+  {
+    title: "UUID Generator",
+    slug: "uuid-generator",
+    icon: Zap,
+    text: "Create unique identifiers for apps and databases.",
+  },
+];
+
+const FAQS = [
+  {
+    question: "What is a password generator?",
+    answer:
+      "A password generator is an online tool that creates random passwords using the length and character types you choose. This password generator can include uppercase letters, lowercase letters, numbers, and symbols so you can create stronger passwords for online accounts.",
+  },
+  {
+    question: "Is this password generator free?",
+    answer:
+      "Yes. This free password generator works in your browser and does not require signup for normal use. You can generate, refresh, show, hide, and copy passwords without creating an account.",
+  },
+  {
+    question: "Are passwords created by this tool stored?",
+    answer:
+      "No. The generated password is created in your browser for the current session. Do not paste sensitive passwords into unknown websites, and store any password you decide to use in a trusted password manager.",
+  },
+  {
+    question: "How long should a strong password be?",
+    answer:
+      "For most accounts, a password of at least 14 to 16 characters is a practical starting point. For important accounts such as email, banking, cloud storage, and password manager master passwords, consider 20 or more characters if the service allows it.",
+  },
+  {
+    question: "Should I include symbols in a password?",
+    answer:
+      "Use symbols when the website or app allows them. Symbols increase the character pool and make a random password harder to guess. If a website rejects symbols, use a longer password with uppercase letters, lowercase letters, and numbers.",
+  },
+  {
+    question: "What is the best random password generator setting?",
+    answer:
+      "A strong default setting is 16 or more characters with uppercase letters, lowercase letters, numbers, and symbols enabled. Longer passwords are usually better, especially when stored in a password manager.",
+  },
+  {
+    question: "Can I use this secure password generator for WiFi?",
+    answer:
+      "Yes, if your router supports the selected length and characters. A long random WiFi password is usually safer than a short word, address, phone number, or predictable phrase.",
+  },
+  {
+    question: "Can a password generator make a password impossible to crack?",
+    answer:
+      "No tool can promise that a password is impossible to crack. A random password generator can make stronger passwords, but security also depends on the website, password storage, two-factor authentication, breach exposure, and whether you reuse passwords.",
+  },
+];
+
+function addSchema() {
+  return [
+    {
+      "@type": "WebApplication",
+      name: "Password Generator",
+      url: CANONICAL_URL,
+      applicationCategory: "SecurityApplication",
+      operatingSystem: "Any",
+      description:
+        "A free secure password generator for creating strong random passwords with uppercase letters, lowercase letters, numbers, symbols, and custom length options.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "US Online Tools",
+        url: "https://usonlinetools.com/",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://usonlinetools.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Security Tools",
+          item: "https://usonlinetools.com/category/security",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Password Generator",
+          item: CANONICAL_URL,
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    },
+  ];
+}
+
+function createRandomPassword(length: number, sets: string[]) {
+  const charset = sets.join("");
+  if (!charset) return "";
+
+  const randomValues = new Uint32Array(length);
+  window.crypto.getRandomValues(randomValues);
+
+  const requiredCharacters = sets.map((set) => {
+    const random = new Uint32Array(1);
+    window.crypto.getRandomValues(random);
+    return set[random[0] % set.length];
+  });
+
+  const passwordCharacters = Array.from(randomValues, (value) => charset[value % charset.length]);
+  for (let index = 0; index < requiredCharacters.length && index < passwordCharacters.length; index += 1) {
+    passwordCharacters[index] = requiredCharacters[index];
+  }
+
+  for (let index = passwordCharacters.length - 1; index > 0; index -= 1) {
+    const random = new Uint32Array(1);
+    window.crypto.getRandomValues(random);
+    const swapIndex = random[0] % (index + 1);
+    [passwordCharacters[index], passwordCharacters[swapIndex]] = [
+      passwordCharacters[swapIndex],
+      passwordCharacters[index],
+    ];
+  }
+
+  return passwordCharacters.join("");
+}
+
+function getStrength({
+  length,
+  characterTypes,
+}: {
+  length: number;
+  characterTypes: number;
+}) {
+  const score = length + characterTypes * 4;
+
+  if (score < 18) {
+    return {
+      label: "Weak",
+      bar: "w-1/4 bg-red-500",
+      text: "text-red-600 dark:text-red-400",
+      note: "Use a longer password with more character types.",
+    };
+  }
+
+  if (score < 28) {
+    return {
+      label: "Fair",
+      bar: "w-1/2 bg-amber-500",
+      text: "text-amber-600 dark:text-amber-400",
+      note: "Good for low-risk accounts, but longer is better.",
+    };
+  }
+
+  if (score < 38) {
+    return {
+      label: "Strong",
+      bar: "w-3/4 bg-secondary",
+      text: "text-secondary",
+      note: "A practical setting for most online accounts.",
+    };
+  }
+
+  return {
+    label: "Very Strong",
+    bar: "w-full bg-primary",
+    text: "text-primary",
+    note: "Best used with a trusted password manager.",
+  };
+}
+
+function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card hover:border-blue-500/40 transition-colors">
+    <div className="rounded-lg border border-border bg-card">
       <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
       >
-        <span className="text-base font-bold text-foreground leading-snug">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0 text-blue-500">
-          <ChevronDown className="w-5 h-5" />
-        </motion.span>
+        <span className="font-semibold text-foreground">{question}</span>
+        <ChevronDown className={`h-5 w-5 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="answer"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-5 text-muted-foreground leading-relaxed border-t border-border pt-4">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open ? <p className="border-t border-border px-5 pb-5 pt-4 text-sm leading-7 text-muted-foreground">{answer}</p> : null}
     </div>
   );
 }
 
-// ── Related Tools ──
-const RELATED_TOOLS = [
-  { title: "Random Number Generator", slug: "random-number-generator", icon: <Hash className="w-4 h-4" />, color: 275, benefit: "Generate random numbers in any range" },
-  { title: "UUID Generator", slug: "uuid-generator", icon: <KeyRound className="w-4 h-4" />, color: 217, benefit: "Generate unique identifiers" },
-  { title: "Hash Generator", slug: "hash-generator", icon: <Shield className="w-4 h-4" />, color: 152, benefit: "Hash text with MD5, SHA-256 & more" },
-  { title: "Word Counter", slug: "word-counter", icon: <Type className="w-4 h-4" />, color: 45, benefit: "Count words and characters" },
-  { title: "Base64 Encoder", slug: "base64-encoder", icon: <Calculator className="w-4 h-4" />, color: 340, benefit: "Encode and decode Base64 strings" },
-  { title: "IP Address Lookup", slug: "ip-address-lookup", icon: <Zap className="w-4 h-4" />, color: 25, benefit: "Find your public IP address" },
-];
-
-// ── Main Component ──
 export default function PasswordGenerator() {
   const [password, setPassword] = useState("");
   const [length, setLength] = useState(16);
@@ -61,607 +264,398 @@ export default function PasswordGenerator() {
   const [numbers, setNumbers] = useState(true);
   const [symbols, setSymbols] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [linkCopied, setLinkCopied] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const characterSets = useMemo(() => {
+    const sets: string[] = [];
+    if (uppercase) sets.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    if (lowercase) sets.push("abcdefghijklmnopqrstuvwxyz");
+    if (numbers) sets.push("0123456789");
+    if (symbols) sets.push(SYMBOLS);
+    return sets;
+  }, [lowercase, numbers, symbols, uppercase]);
+
+  const strength = getStrength({
+    length,
+    characterTypes: characterSets.length,
+  });
 
   const generatePassword = () => {
-    let charset = "";
-    if (uppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if (lowercase) charset += "abcdefghijklmnopqrstuvwxyz";
-    if (numbers) charset += "0123456789";
-    if (symbols) charset += "!@#$%^&*()_+-=[]{}|;:,.<>?";
-
-    if (!charset) {
-      setPassword("");
-      return;
-    }
-
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += charset.charAt(Math.floor(Math.random() * charset.length));
-    }
-    setPassword(result);
+    setPassword(createRandomPassword(length, characterSets));
   };
 
   useEffect(() => {
     generatePassword();
-  }, [length, uppercase, lowercase, numbers, symbols]);
+  }, [characterSets, length]);
 
-  const copyToClipboard = () => {
+  const copyPassword = async () => {
     if (!password) return;
-    navigator.clipboard.writeText(password);
+    await navigator.clipboard.writeText(password);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    window.setTimeout(() => setCopied(false), 1800);
   };
 
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
     setLinkCopied(true);
-    setTimeout(() => setLinkCopied(false), 2000);
+    window.setTimeout(() => setLinkCopied(false), 1800);
   };
-
-  const getStrength = () => {
-    const typesCount = [uppercase, lowercase, numbers, symbols].filter(Boolean).length;
-    if (!password || length < 8 || typesCount < 2) {
-      return { label: "Weak", color: "bg-red-500", textColor: "text-red-500", width: "25%" };
-    }
-    if (length < 12 || typesCount < 3) {
-      return { label: "Fair", color: "bg-yellow-500", textColor: "text-yellow-500", width: "50%" };
-    }
-    if (length < 16 || typesCount < 4) {
-      return { label: "Good", color: "bg-blue-500", textColor: "text-blue-500", width: "75%" };
-    }
-    return { label: "Strong", color: "bg-emerald-500", textColor: "text-emerald-500", width: "100%" };
-  };
-
-  const strength = getStrength();
 
   return (
     <Layout>
       <SEO
-        title="Online Password Generator – Create Strong, Secure Random Passwords Free | US Online Tools"
-        description="Free secure password generator. Create strong random passwords up to 64 characters with uppercase, lowercase, numbers, and symbols. Passwords generated in your browser — never stored."
+        title={SEO_TITLE}
+        description={SEO_DESCRIPTION}
+        canonical={CANONICAL_URL}
+        schema={addSchema()}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-
-        {/* ── BREADCRUMB ── */}
-        <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">
-          <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
-          <Link href="/category/security" className="text-muted-foreground hover:text-foreground transition-colors">Security &amp; Privacy</Link>
-          <ChevronRight className="w-4 h-4 mx-2 text-blue-500" strokeWidth={3} />
-          <span className="text-foreground">Online Password Generator</span>
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
+          <Link href="/" className="hover:text-foreground">Home</Link>
+          <ChevronRight className="h-4 w-4 text-primary" />
+          <Link href="/category/security" className="hover:text-foreground">Security Tools</Link>
+          <ChevronRight className="h-4 w-4 text-primary" />
+          <span className="text-foreground">Password Generator</span>
         </nav>
 
-        {/* ── HERO SECTION (Full Width) ── */}
-        <section className="rounded-2xl overflow-hidden border border-blue-500/15 bg-gradient-to-br from-blue-500/5 via-card to-cyan-500/5 px-8 md:px-12 py-10 md:py-14 mb-10">
-          {/* Category pill */}
-          <div className="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
-            <Shield className="w-3.5 h-3.5" />
-            Security &amp; Privacy
+        <section className="mb-8 overflow-hidden rounded-lg border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-secondary/10 p-6 md:p-10">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+            <Shield className="h-4 w-4" />
+            Free Security Tool
           </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.05] mb-4 max-w-3xl">
-            Online Password Generator
+          <h1 className="max-w-4xl text-4xl font-black tracking-tight text-foreground md:text-6xl">
+            Password Generator
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-2xl">
-            Generate strong, random passwords instantly. Customize length up to 64 characters, choose character types, and copy with one click. All passwords are generated in your browser — never stored or transmitted.
+          <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">
+            Use this free password generator to create strong, secure random passwords for email, banking, WiFi,
+            work apps, social media, and password managers. Choose the password length, include numbers and
+            symbols, then copy a new random password instantly with no signup.
           </p>
-
-          {/* Badges */}
-          <div className="flex flex-wrap gap-2 mb-5">
-            <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-500/20">
-              <BadgeCheck className="w-3.5 h-3.5" /> 100% Free
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs px-3 py-1.5 rounded-full border border-blue-500/20">
-              <Shield className="w-3.5 h-3.5" /> Never Stored
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs px-3 py-1.5 rounded-full border border-slate-500/20">
-              <Lock className="w-3.5 h-3.5" /> No Signup
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold text-xs px-3 py-1.5 rounded-full border border-violet-500/20">
-              <KeyRound className="w-3.5 h-3.5" /> Up to 64 Chars
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold text-xs px-3 py-1.5 rounded-full border border-cyan-500/20">
-              <Smartphone className="w-3.5 h-3.5" /> Mobile Ready
-            </span>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {[
+              ["Secure random password generator", BadgeCheck],
+              ["No signup", Lock],
+              ["Numbers and symbols", Hash],
+              ["Mobile friendly", Smartphone],
+            ].map(([label, Icon]) => {
+              const BadgeIcon = Icon as typeof Shield;
+              return (
+                <span key={label as string} className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1.5 text-xs font-bold text-foreground">
+                  <BadgeIcon className="h-4 w-4 text-secondary" />
+                  {label as string}
+                </span>
+              );
+            })}
           </div>
-
-          {/* Meta */}
-          <p className="text-xs text-muted-foreground/60 font-medium">
-            Category: Security &amp; Privacy &nbsp;·&nbsp; Last updated: March 2026
-          </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          {/* ── LEFT COLUMN (Main Content) ── */}
-          <div className="lg:col-span-3 space-y-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="space-y-8">
+            <section id="generator" className="rounded-lg border border-border bg-card shadow-sm">
+              <div className="border-b border-border bg-muted/30 px-5 py-4 md:px-6">
+                <h2 className="text-xl font-black tracking-tight text-foreground">Free Secure Password Generator</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Adjust the settings below. A new password is generated automatically.
+                </p>
+              </div>
 
-            {/* ── 2. TOOL WIDGET ── */}
-            <section className="space-y-5">
-              <div className="rounded-2xl overflow-hidden border border-blue-500/20 shadow-lg shadow-blue-500/5">
-                <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 to-cyan-400" />
-                <div className="bg-card p-6 md:p-8 space-y-6">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Secure Password Generator</p>
-                      <p className="text-sm text-muted-foreground">Password regenerates automatically as you adjust settings.</p>
-                    </div>
-                  </div>
-
-                  {/* Password Display */}
-                  <div className="bg-muted/40 rounded-2xl p-5 flex items-center justify-between border border-border">
+              <div className="space-y-6 p-5 md:p-6">
+                <div className="rounded-lg border border-border bg-background p-4">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center">
                     <p
-                      className="font-mono text-xl md:text-2xl text-foreground tracking-wider break-all mr-4 flex-1 transition-all duration-200"
-                      style={{ filter: showPassword ? "none" : "blur(6px)", userSelect: showPassword ? "auto" : "none" }}
+                      className="min-h-10 flex-1 break-all font-mono text-xl font-semibold tracking-wide text-foreground md:text-2xl"
+                      style={{
+                        filter: showPassword ? "none" : "blur(7px)",
+                        userSelect: showPassword ? "auto" : "none",
+                      }}
                     >
-                      {password || <span className="text-muted-foreground text-base font-sans not-italic">Select at least one character type</span>}
+                      {password || "Select at least one character type"}
                     </p>
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                    <div className="flex shrink-0 flex-wrap gap-2">
                       <button
-                        onClick={() => setShowPassword(v => !v)}
-                        className="p-2 rounded-xl bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-all"
-                        title={showPassword ? "Hide password" : "Show password"}
+                        type="button"
+                        onClick={() => setShowPassword((value) => !value)}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
                       <button
+                        type="button"
                         onClick={generatePassword}
-                        className="p-2 rounded-xl bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-all"
-                        title="Generate new password"
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground"
+                        aria-label="Generate another password"
                       >
-                        <RefreshCw className="w-4 h-4" />
+                        <RefreshCw className="h-5 w-5" />
                       </button>
                       <button
-                        onClick={copyToClipboard}
+                        type="button"
+                        onClick={copyPassword}
                         disabled={!password}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-sm font-bold hover:-translate-y-0.5 active:translate-y-0 transition-transform disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                        className="inline-flex h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copied ? "Copied" : "Copy"}
                       </button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Strength Meter */}
-                  {password && (
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Password Strength</p>
-                        <span className={`text-xs font-bold ${strength.textColor}`}>{strength.label}</span>
-                      </div>
-                      <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${strength.color} transition-all duration-500`}
-                          style={{ width: strength.width }}
+                <div>
+                  <div className="mb-2 flex items-center justify-between gap-4">
+                    <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Password strength</p>
+                    <p className={`text-sm font-black ${strength.text}`}>{strength.label}</p>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div className={`h-full rounded-full transition-all ${strength.bar}`} />
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">{strength.note}</p>
+                </div>
+
+                <div>
+                  <div className="mb-3 flex items-center justify-between gap-4">
+                    <label htmlFor="password-length" className="text-sm font-bold text-foreground">
+                      Password length
+                    </label>
+                    <span className="rounded-md bg-primary/10 px-2 py-1 text-sm font-black text-primary">
+                      {length} characters
+                    </span>
+                  </div>
+                  <input
+                    id="password-length"
+                    type="range"
+                    min={6}
+                    max={64}
+                    value={length}
+                    onChange={(event) => setLength(Number(event.target.value))}
+                    className="w-full accent-primary"
+                  />
+                  <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                    <span>6</span>
+                    <span>16 recommended</span>
+                    <span>64</span>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="mb-3 text-sm font-bold text-foreground">Include character types</p>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {[
+                      ["Uppercase letters", "A-Z", uppercase, setUppercase],
+                      ["Lowercase letters", "a-z", lowercase, setLowercase],
+                      ["Numbers", "0-9", numbers, setNumbers],
+                      ["Symbols", "!@#$", symbols, setSymbols],
+                    ].map(([label, example, value, setter]) => (
+                      <label
+                        key={label as string}
+                        className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background p-4 transition hover:border-primary/40"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={value as boolean}
+                          onChange={(event) => (setter as (value: boolean) => void)(event.target.checked)}
+                          className="h-5 w-5 accent-primary"
                         />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Length Slider */}
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-sm font-bold text-foreground">Password Length</label>
-                      <span className="text-sm font-black text-blue-500 tabular-nums">{length} characters</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={6}
-                      max={64}
-                      value={length}
-                      onChange={e => setLength(Number(e.target.value))}
-                      className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-1.5">
-                      <span>6</span>
-                      <span>16 (recommended)</span>
-                      <span>64</span>
-                    </div>
-                  </div>
-
-                  {/* Character Type Options */}
-                  <div>
-                    <p className="text-sm font-bold text-foreground mb-3">Character Types</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {[
-                        { label: "Uppercase A–Z", value: uppercase, setter: setUppercase, example: "ABC…XYZ" },
-                        { label: "Lowercase a–z", value: lowercase, setter: setLowercase, example: "abc…xyz" },
-                        { label: "Numbers 0–9", value: numbers, setter: setNumbers, example: "0123456789" },
-                        { label: "Symbols !@#$", value: symbols, setter: setSymbols, example: "!@#$%^&*()" },
-                      ].map(({ label, value, setter, example }) => (
-                        <label
-                          key={label}
-                          className="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors select-none"
-                        >
-                          <div className="relative flex-shrink-0">
-                            <input
-                              type="checkbox"
-                              checked={value}
-                              onChange={e => setter(e.target.checked)}
-                              className="peer appearance-none w-5 h-5 border-2 border-border rounded checked:bg-blue-500 checked:border-blue-500 transition-all cursor-pointer"
-                            />
-                            <Check className="absolute inset-0 w-full h-full p-0.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-foreground leading-none mb-0.5">{label}</p>
-                            <p className="text-xs text-muted-foreground font-mono">{example}</p>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
+                        <span>
+                          <span className="block text-sm font-semibold text-foreground">{label as string}</span>
+                          <span className="block font-mono text-xs text-muted-foreground">{example as string}</span>
+                        </span>
+                      </label>
+                    ))}
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* ── 3. HOW TO USE ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">How to Use the Password Generator</h2>
+            <section className="grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  title: "Quick Answer: What is a strong password?",
+                  text: "A strong password is long, random, unique, and hard to guess. For most accounts, use 16 or more characters with a mix of letters, numbers, and symbols.",
+                },
+                {
+                  title: "Quick Answer: Is this a random password generator?",
+                  text: "Yes. This tool creates random passwords from the character sets you select, including uppercase, lowercase, numbers, and symbols.",
+                },
+                {
+                  title: "Quick Answer: Can I reuse one strong password?",
+                  text: "No. Use a different strong password for every account. Reusing a password can expose multiple accounts after one breach.",
+                },
+              ].map((item) => (
+                <article key={item.title} className="rounded-lg border border-border bg-card p-5">
+                  <h2 className="text-base font-black leading-snug text-foreground">{item.title}</h2>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.text}</p>
+                </article>
+              ))}
+            </section>
 
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Generating a secure password takes seconds. This tool automatically creates a new password whenever you adjust settings, so you always see a fresh result without having to click a button. Here's exactly how to get the most secure password for your needs.
+            <section id="how-to-use" className="rounded-lg border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black tracking-tight text-foreground">How to Use This Password Generator</h2>
+              <p className="mt-4 leading-8 text-muted-foreground">
+                This online password generator is built for people who need a quick secure password without installing
+                software. It is useful for new account signups, WiFi passwords, admin logins, temporary credentials,
+                and password manager entries.
               </p>
-
-              <ol className="space-y-5 mb-8">
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">1</div>
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Adjust the length slider (12+ recommended for security)</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Drag the slider between 6 and 64 characters. The default is 16, which provides a strong balance between security and usability. For critical accounts — banking, email, cloud storage — consider 20 or more characters. Password length is the single most important factor in password strength; each additional character exponentially increases the number of possible combinations an attacker must test.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">2</div>
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Select character types: uppercase, lowercase, numbers, symbols</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Toggle the checkboxes to include or exclude character sets. Using all four types — uppercase, lowercase, numbers, and symbols — creates the maximum character pool, making brute-force attacks computationally impractical. Some websites restrict certain characters (e.g., no symbols), so adjust accordingly. At least two character types are recommended for any password.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">3</div>
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Password auto-generates as you change settings — click refresh for a new one</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Every time you move the slider or toggle a checkbox, a brand-new password is generated instantly using your browser's built-in random number capabilities. If you don't like the current password, click the refresh button to generate another with the same settings. You can repeat this as many times as you like — there's no rate limit.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 font-bold text-sm mt-0.5">4</div>
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Click Copy to save to clipboard</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Hit the Copy button to send the password directly to your clipboard, then paste it into your password manager or registration form. The button briefly shows "Copied!" to confirm the action. Use the eye icon to toggle visibility if you're in a public space. We strongly recommend saving generated passwords in a reputable password manager rather than writing them down.
-                    </p>
-                  </div>
-                </li>
+              <ol className="mt-6 space-y-4">
+                {[
+                  "Choose the password length. Longer passwords are usually harder to guess.",
+                  "Keep uppercase letters, lowercase letters, numbers, and symbols enabled for the strongest result.",
+                  "Click refresh if you want another random password with the same settings.",
+                  "Use the copy button and save the password inside a trusted password manager.",
+                  "Avoid reusing the same generated password on more than one website.",
+                ].map((step, index) => (
+                  <li key={step} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-black text-primary">
+                      {index + 1}
+                    </span>
+                    <p className="pt-1 leading-7 text-muted-foreground">{step}</p>
+                  </li>
+                ))}
               </ol>
-
-              <div className="p-5 rounded-xl bg-muted/60 border border-border">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Password Strength Guide</p>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 text-sm">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <span className="font-semibold text-foreground">Weak</span>
-                      <span className="text-muted-foreground"> — Less than 8 characters or only 1 character type — easily cracked in seconds</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 text-sm">
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <span className="font-semibold text-foreground">Fair</span>
-                      <span className="text-muted-foreground"> — 8–11 characters with 2 types — guessable with brute force over hours or days</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 text-sm">
-                    <div className="w-2.5 h-2.5 rounded-full bg-blue-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <span className="font-semibold text-foreground">Good</span>
-                      <span className="text-muted-foreground"> — 12–15 characters with 3 types — reasonable for low-risk accounts</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 text-sm">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <span className="font-semibold text-foreground">Strong</span>
-                      <span className="text-muted-foreground"> — 16+ characters using all 4 types — recommended for all accounts</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </section>
 
-            {/* ── 4. RESULT INTERPRETATION ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Understanding Password Strength Levels</h2>
-              <p className="text-muted-foreground text-sm mb-6">How each strength rating maps to real-world security risk:</p>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-red-500/5 border border-red-500/20">
-                  <div className="w-3 h-3 rounded-full bg-red-500 flex-shrink-0 mt-1.5" />
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Weak — Less than 8 characters or only one character type</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">Weak passwords can be cracked in milliseconds using dictionary attacks or brute-force tools that run billions of guesses per second on modern hardware. A password like "password" or "12345678" will appear in every attacker's first attempt. Even a random 6-character lowercase string has only about 300 million combinations — trivial for automated tools. Never use weak passwords for any account that holds sensitive data.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                  <div className="w-3 h-3 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Fair — 8–11 characters with 2 character types</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">Fair passwords offer modest protection — perhaps enough for low-stakes accounts like forum registrations or trial service logins. However, with 2 character types and 8–11 characters, a determined attacker using cloud-based cracking can still break these within hours to days. If you're using 2-factor authentication (2FA), a fair password may be acceptable. Without 2FA, upgrade to at least Good strength.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                  <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0 mt-1.5" />
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Good — 12–15 characters with 3 character types</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Good passwords strike a practical balance. At 12+ characters with mixed case and numbers, the keyspace exceeds 10²¹ combinations — beyond the practical reach of brute-force attacks with current technology when hashed properly. This tier is suitable for streaming services, social media, and any account that doesn't hold financial or medical data. Consider enabling 2FA alongside a Good-strength password for best results.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5" />
-                  <div>
-                    <p className="font-bold text-foreground mb-1">Strong — 16+ characters using all 4 character types</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">Strong passwords are the gold standard for account security. At 16 characters using uppercase, lowercase, numbers, and symbols, the search space exceeds 10³⁰ — completely impractical to crack even with future computing advances over the next several decades. Use Strong passwords for email accounts (which can reset all other passwords), banking, cloud storage, password managers themselves, and any account containing PII or financial data.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-muted/30 border border-border">
-                <div className="flex gap-2 items-start">
-                  <Lightbulb className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-muted-foreground leading-relaxed">The strength meter is a practical heuristic based on length and character diversity. Actual cracking resistance also depends on the hashing algorithm the website uses to store passwords — a Strong password stored as plain text is still vulnerable to a server breach. Always prefer services that use modern hashing (bcrypt, Argon2) and enable 2FA wherever available.</p>
-                </div>
-              </div>
-            </section>
-
-            {/* ── 5. QUICK EXAMPLES ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Quick Examples</h2>
-
-              <div className="overflow-x-auto rounded-xl border border-border mb-6">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-muted/60">
-                      <th className="text-left px-4 py-3 font-bold text-foreground">Length</th>
-                      <th className="text-left px-4 py-3 font-bold text-foreground">Character Types</th>
-                      <th className="text-left px-4 py-3 font-bold text-foreground">Strength</th>
-                      <th className="text-left px-4 py-3 font-bold text-foreground hidden sm:table-cell">Best For</th>
+            <section id="best-settings" className="rounded-lg border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black tracking-tight text-foreground">Best Password Generator Settings</h2>
+              <p className="mt-4 leading-8 text-muted-foreground">
+                Searchers often ask for the best password generator settings because many websites have different
+                password rules. The safest practical choice is usually a long random password with all character types
+                enabled. If a website blocks symbols, increase the length and keep letters and numbers enabled.
+              </p>
+              <div className="mt-6 overflow-hidden rounded-lg border border-border">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-3">Use case</th>
+                      <th className="px-4 py-3">Recommended setting</th>
+                      <th className="hidden px-4 py-3 md:table-cell">Reason</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    <tr className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-mono text-foreground">8</td>
-                      <td className="px-4 py-3 text-muted-foreground">Lowercase only</td>
-                      <td className="px-4 py-3 font-bold text-red-600 dark:text-red-400">Weak</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">"password" style — avoid for any real account</td>
+                    <tr>
+                      <td className="px-4 py-3 font-semibold text-foreground">Everyday accounts</td>
+                      <td className="px-4 py-3 text-muted-foreground">16 characters, all types</td>
+                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">Strong balance of security and compatibility.</td>
                     </tr>
-                    <tr className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-mono text-foreground">12</td>
-                      <td className="px-4 py-3 text-muted-foreground">Upper + lower + numbers</td>
-                      <td className="px-4 py-3 font-bold text-blue-600 dark:text-blue-400">Good</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Social media, streaming accounts</td>
+                    <tr>
+                      <td className="px-4 py-3 font-semibold text-foreground">Email or banking</td>
+                      <td className="px-4 py-3 text-muted-foreground">20 to 24 characters, all types</td>
+                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">Primary accounts deserve a larger security margin.</td>
                     </tr>
-                    <tr className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-mono text-foreground">16</td>
-                      <td className="px-4 py-3 text-muted-foreground">All 4 types</td>
-                      <td className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">Strong</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Recommended default for all accounts</td>
+                    <tr>
+                      <td className="px-4 py-3 font-semibold text-foreground">WiFi password</td>
+                      <td className="px-4 py-3 text-muted-foreground">18 to 32 characters</td>
+                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">Long random WiFi passwords are harder to guess.</td>
                     </tr>
-                    <tr className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-mono text-foreground">24</td>
-                      <td className="px-4 py-3 text-muted-foreground">All 4 types</td>
-                      <td className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">Very Strong</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Banking, email, cloud storage, critical accounts</td>
-                    </tr>
-                    <tr className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-mono text-foreground">64</td>
-                      <td className="px-4 py-3 text-muted-foreground">All 4 types</td>
-                      <td className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">Maximum</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">Maximum security — use with a password manager</td>
+                    <tr>
+                      <td className="px-4 py-3 font-semibold text-foreground">Sites that block symbols</td>
+                      <td className="px-4 py-3 text-muted-foreground">20+ letters and numbers</td>
+                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">Length helps compensate for fewer character types.</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
-                <p>
-                  <strong className="text-foreground">8-character lowercase password:</strong> This is the type of password that many older websites enforced as a "minimum" — and it's dramatically insufficient by modern standards. Tools like Hashcat running on a consumer GPU can exhaust the entire lowercase-only 8-character keyspace in under a minute. If you're still using passwords of this style anywhere, replace them immediately with at least a 12-character mixed password.
-                </p>
-                <p>
-                  <strong className="text-foreground">12-character with three character types:</strong> This configuration — uppercase, lowercase, and digits — is good for everyday accounts like social media, streaming platforms, and forum logins. With roughly 3.2 trillion possible combinations at this length and character diversity, an offline brute-force attack would take years on typical hardware. Combined with 2FA, this is sufficient for most consumer accounts.
-                </p>
-                <p>
-                  <strong className="text-foreground">16-character with all four types (recommended default):</strong> A 16-character password using all character types (roughly 92 possible characters per position) produces a keyspace of 92¹⁶ — approximately 4.4 × 10³¹ combinations. Even at a trillion guesses per second, cracking this would take longer than the age of the universe. This is the right choice for email, work accounts, and password manager master passwords.
-                </p>
-                <p>
-                  <strong className="text-foreground">24+ characters for critical accounts:</strong> For accounts that serve as "skeleton keys" — your primary email, iCloud or Google account, or anything tied to financial or medical records — use 24 or more characters. The additional length provides a massive safety margin against any near-future improvements in cracking technology, including theoretical quantum computing advances in the coming decades.
-                </p>
-                <p>
-                  <strong className="text-foreground">64-character maximum-length password:</strong> Some password managers and security-conscious applications support very long passwords. Generating a 64-character password with all four character types is essentially uncrackable by any conceivable technology. The practical limit is that you'll never type this manually — it must live in a password manager. That's a good thing: storing it in a manager is far more secure than memorizing a short, predictable password.
-                </p>
-              </div>
-
-              {/* Testimonial */}
-              <div className="mt-6 p-5 rounded-xl bg-blue-500/5 border border-blue-500/15">
-                <div className="flex gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
-                </div>
-                <p className="text-sm text-foreground/80 italic leading-relaxed">"I use this every time I create a new account. The one-click copy and instant regeneration make it so fast — I never use weak passwords anymore."</p>
-                <p className="text-xs text-muted-foreground mt-2">— User feedback, 2025</p>
-              </div>
             </section>
 
-            {/* ── 6. WHY CHOOSE THIS ── */}
-            <section className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-5">Why Choose This Password Generator?</h2>
-
-              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+            <section id="why-strong-passwords-matter" className="rounded-lg border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black tracking-tight text-foreground">Why Strong Random Passwords Matter</h2>
+              <div className="mt-4 space-y-4 leading-8 text-muted-foreground">
                 <p>
-                  <strong className="text-foreground">Completely free — no registration, no ads, no limits.</strong> Many password generators hide advanced options behind a paywall or force you to sign up before generating passwords. This tool has no paywalls, no advertisements interrupting your workflow, and no account required. Generate as many passwords as you need, at any length, with any character configuration — always free.
+                  Weak passwords are easy to guess because they use common words, names, dates, keyboard patterns, or
+                  short number strings. A secure password generator avoids those patterns by creating a random password
+                  that is not based on your personal information.
                 </p>
                 <p>
-                  <strong className="text-foreground">Your passwords are never transmitted or stored.</strong> Every password is generated entirely within your browser using JavaScript. No password value, no settings, and no usage data is ever sent to any server. When you close the tab, the password is gone. This is critical: a password generator that transmits your password to a server has already compromised your security before you even use it.
+                  The most important rule is uniqueness. Even a strong password becomes risky if you reuse it across
+                  multiple accounts. If one website is breached, attackers may try the same email and password on other
+                  services. Generate a new password for every account and keep it in a password manager.
                 </p>
                 <p>
-                  <strong className="text-foreground">One-click copy for a frictionless workflow.</strong> The Copy button places your password directly on the clipboard in a single click, with a clear visual confirmation. No selecting text, no right-click menus, no accidental partial selections. On mobile, this eliminates the frustrating experience of trying to precisely select a long string of random characters from a small screen.
-                </p>
-                <p>
-                  <strong className="text-foreground">Flexible customization without the complexity.</strong> Four simple toggles and one slider give you precise control over the output without overwhelming you with options. You can disable character types that a specific website doesn't support, increase length for high-security accounts, and regenerate instantly until you get a password you're satisfied with. The strength meter updates in real time so you always know what you're creating.
-                </p>
-                <p>
-                  <strong className="text-foreground">Part of a 400+ tool ecosystem.</strong> This generator is one tool in a growing suite of over 400 free online utilities covering security, developer tools, finance calculators, text processing, unit converters, and more. Every tool shares the same clean interface, dark/light mode support, and mobile-optimized layout — making your whole toolkit consistent and accessible from any device.
-                </p>
-              </div>
-
-              {/* Note / Limitation */}
-              <div className="mt-6 p-4 rounded-xl border border-border bg-muted/30">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  <strong className="text-foreground">Note:</strong> This tool is designed for generating user account passwords and is not suitable for cryptographic key generation, token minting, or security-sensitive programmatic use cases. For maximum security, use a hardware random number generator or the Web Crypto API. Always store generated passwords in a reputable password manager — never reuse passwords across accounts.
+                  A password generator is only one layer of account security. For important accounts, also enable
+                  two-factor authentication, keep recovery email addresses updated, avoid phishing links, and change a
+                  password quickly if a service reports a breach.
                 </p>
               </div>
             </section>
 
-            {/* ── 7. FAQ ── */}
-            <section>
-              <h2 className="text-2xl font-black text-foreground tracking-tight mb-6">Frequently Asked Questions</h2>
-              <div className="space-y-3">
-                <FaqItem
-                  q="What makes a password strong?"
-                  a="Password strength comes from two factors: length and character diversity. Length is the most important — each additional character multiplies the number of possible combinations an attacker must try. Character diversity (using uppercase, lowercase, numbers, and symbols) increases the size of the pool each character can be drawn from, which compounds the effect of length. A 16-character password using all four character types has approximately 92¹⁶ possible combinations — a number so large that even a trillion-guess-per-second attack would take longer than the age of the universe. Avoid dictionary words, personal information like birthdays or names, and sequential patterns like '1234' or 'abcd' — these are the first things attackers try."
-                />
-                <FaqItem
-                  q="Are my generated passwords stored anywhere?"
-                  a="No — absolutely not. Every password is generated locally in your browser using JavaScript. No password value, no configuration settings, and no usage data is ever sent to any server. There is no backend, no database, and no logging. When you close the tab or navigate away, the password exists only on your clipboard (if you copied it) or in your memory. This is by design: the only secure password generator is one that never transmits your password over any network."
-                />
-                <FaqItem
-                  q="How long should a password be?"
-                  a="For most accounts, 16 characters is the recommended minimum — this is the default setting in this tool. For critical accounts like your primary email, banking login, or password manager master password, use 20–24 characters or more. Shorter passwords (under 12 characters) are increasingly vulnerable to brute-force attacks as computing power improves year over year. The good news is that with a password manager, you never need to remember or type these passwords — so there's no practical reason to use anything shorter than 16 characters for any account."
-                />
-                <FaqItem
-                  q="Should I use symbols in my password?"
-                  a="Yes, whenever a website permits them. Including symbols (like !@#$%^&*) expands the character pool from 62 (letters and digits only) to roughly 92+ characters, which significantly increases the number of possible combinations for each character position. Some websites restrict certain symbols due to poor input sanitization — if a site rejects your password, try disabling the symbols option and generating a new one. A longer all-alphanumeric password is preferable to a short password that forces symbols — prioritize length first."
-                />
-                <FaqItem
-                  q="What is the difference between a passphrase and a password?"
-                  a="A password is typically a random string of characters — like the output of this generator. A passphrase is a sequence of random words (e.g., 'correct-horse-battery-staple'), which can be easier to remember while still being very long. Both approaches can achieve equivalent security: a 4-word passphrase with common words achieves roughly the same entropy as a 10-character random password. This generator focuses on traditional random character passwords, which are ideal for use with a password manager. If you need a memorable password you'll type frequently (like a computer login), a passphrase may be more practical."
-                />
-                <FaqItem
-                  q="How often should I change my passwords?"
-                  a="Modern security guidance has shifted away from mandatory periodic password changes — forcing regular changes often leads users to make predictable incremental modifications (e.g., 'Password1' → 'Password2') that are easier to crack than the original. Current NIST guidelines recommend changing a password only when: (1) you suspect it has been compromised, (2) the service announces a data breach, or (3) you've shared it with someone who no longer needs access. Instead of rotating passwords on a schedule, focus on using unique, strong passwords for every account and enabling 2-factor authentication wherever available."
-                />
-                <FaqItem
-                  q="Can I use this for WiFi passwords?"
-                  a="Yes — this is an excellent use case. WiFi passwords (WPA2/WPA3 pre-shared keys) support up to 63 characters and benefit from all four character types. A 16–20 character random password is far more secure than the typical router default (which is often based on the device's serial number or MAC address — both potentially discoverable). After generating and setting your WiFi password, store it in your password manager so you can retrieve it when connecting new devices. Your router's admin panel will show a QR code option in many cases, which makes sharing with guests easier without revealing the password string."
-                />
-                <FaqItem
-                  q="Is this tool safe to use at work?"
-                  a="Yes. Because all generation happens locally in your browser, there is no network traffic associated with password creation — corporate firewalls, IT monitoring systems, and network logs will not capture your generated passwords. The tool requires no plugins, no downloads, and no software installation. However, always consult your organization's IT security policy before using any external password generator for work-related credentials. For enterprise environments, a company-approved password manager (such as 1Password Teams, Bitwarden Business, or Dashlane for Business) may be the preferred solution."
-                />
-              </div>
-            </section>
-
-            {/* ── 8. FINAL CTA ── */}
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 p-8 text-white">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <h2 className="text-2xl font-black tracking-tight mb-2">Need More Security Tools?</h2>
-                <p className="text-white/80 mb-6 max-w-lg">
-                  Explore 400+ free tools including hash generators, UUID generators, encoders, developer utilities, and more — all free, all instant, all private.
-                </p>
-                <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 font-bold rounded-xl hover:-translate-y-0.5 transition-transform"
-                >
-                  Explore All Tools <ArrowRight className="w-4 h-4" />
-                </Link>
+            <section id="faq" className="rounded-lg border border-border bg-card p-6 md:p-8">
+              <h2 className="text-2xl font-black tracking-tight text-foreground">Password Generator FAQ</h2>
+              <div className="mt-6 space-y-3">
+                {FAQS.map((faq) => (
+                  <FaqItem key={faq.question} question={faq.question} answer={faq.answer} />
+                ))}
               </div>
             </section>
           </div>
 
-          {/* ── RIGHT SIDEBAR ── */}
-          <div className="space-y-6">
-            <div className="sticky top-28 space-y-6">
-
-              {/* Related Tools */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
-                <div className="space-y-0.5">
-                  {RELATED_TOOLS.map((tool) => (
+          <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h2 className="text-sm font-black uppercase tracking-wide text-foreground">Related Tools</h2>
+              <div className="mt-4 space-y-2">
+                {RELATED_TOOLS.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
                     <Link
                       key={tool.slug}
                       href={getCanonicalToolPath(tool.slug)}
-                      className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
+                      className="group flex gap-3 rounded-lg p-2 transition hover:bg-muted"
                     >
-                      <div
-                        className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5"
-                        style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}
-                      >
-                        {tool.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors truncate">{tool.title}</p>
-                        <p className="text-[10px] text-muted-foreground/60 truncate">{tool.benefit}</p>
-                      </div>
-                      <ChevronRight className="w-3 h-3 text-muted-foreground group-hover:text-blue-500 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-semibold text-foreground group-hover:text-primary">{tool.title}</span>
+                        <span className="block text-xs leading-5 text-muted-foreground">{tool.text}</span>
+                      </span>
                     </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Share Card */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-1.5">Share This Tool</h3>
-                <p className="text-xs text-muted-foreground mb-3">Help others generate secure passwords easily.</p>
-                <button
-                  onClick={copyLink}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-sm font-bold rounded-xl hover:-translate-y-0.5 active:translate-y-0 transition-transform"
-                >
-                  {linkCopied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
-                </button>
-              </div>
-
-              {/* On This Page */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <h3 className="text-sm font-black text-foreground tracking-tight uppercase mb-3">On This Page</h3>
-                <div className="space-y-0.5">
-                  {[
-                    "Generator",
-                    "How to Use",
-                    "Result Interpretation",
-                    "Quick Examples",
-                    "Why Choose This",
-                    "FAQ",
-                  ].map((label) => (
-                    <a
-                      key={label}
-                      href={`#${label.toLowerCase().replace(/\s/g, "-")}`}
-                      className="flex items-center gap-2 text-xs text-muted-foreground hover:text-blue-500 font-medium py-1.5 transition-colors"
-                    >
-                      <div className="w-1 h-1 rounded-full bg-blue-500/40 flex-shrink-0" />
-                      {label}
-                    </a>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
-          </div>
-        </div>
 
-      </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h2 className="text-sm font-black uppercase tracking-wide text-foreground">On This Page</h2>
+              <div className="mt-4 grid gap-2 text-sm">
+                {[
+                  ["Generator", "#generator"],
+                  ["How to use", "#how-to-use"],
+                  ["Best settings", "#best-settings"],
+                  ["Why strong passwords matter", "#why-strong-passwords-matter"],
+                  ["FAQ", "#faq"],
+                ].map(([label, href]) => (
+                  <a key={href} href={href} className="text-muted-foreground hover:text-primary">
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h2 className="text-sm font-black uppercase tracking-wide text-foreground">Share This Tool</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Share the free password generator with someone who needs a strong random password.
+              </p>
+              <button
+                type="button"
+                onClick={copyLink}
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-secondary px-4 py-3 text-sm font-bold text-secondary-foreground hover:bg-secondary/90"
+              >
+                {linkCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {linkCopied ? "Link copied" : "Copy link"}
+              </button>
+            </div>
+
+            <div className="rounded-lg border border-primary/20 bg-primary/10 p-5">
+              <h2 className="text-sm font-black uppercase tracking-wide text-foreground">Security Note</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                This tool helps create stronger passwords, but it does not replace a password manager, two-factor
+                authentication, or good account recovery practices.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </main>
     </Layout>
   );
 }

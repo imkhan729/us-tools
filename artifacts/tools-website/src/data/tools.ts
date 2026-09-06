@@ -24,7 +24,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-blue-500",
     bgColor: "from-blue-500 to-cyan-400",
     tools: [
-      { slug: "percentage-calculator", title: "Percentage Calculator", description: "Calculate percentages, increases, and decreases instantly.", metaDescription: "Free online percentage calculator. Find what percent X is of Y, percentage increase, decrease, and more.", category: "Math & Calculators", implemented: true },
+      { slug: "percentage-calculator", title: "Percentage Calculator", description: "Calculate percent of a number, percentage increase, percentage decrease, percentage change, and percent difference.", metaDescription: "Use this free percentage calculator to calculate percent of a number, percentage increase, percentage decrease, and percent difference.", category: "Math & Calculators", implemented: true },
       { slug: "fraction-to-decimal-calculator", title: "Fraction to Decimal Calculator", description: "Convert any fraction to its decimal equivalent instantly.", metaDescription: "Convert fractions to decimals easily. Free fraction to decimal converter online.", category: "Math & Calculators", implemented: true },
       { slug: "decimal-to-fraction-calculator", title: "Decimal to Fraction Calculator", description: "Convert decimals to simplified fractions in one click.", metaDescription: "Convert decimal numbers to fractions. Free online decimal to fraction calculator.", category: "Math & Calculators", implemented: true },
       { slug: "ratio-calculator", title: "Ratio Calculator", description: "Simplify ratios and solve ratio proportions easily.", metaDescription: "Calculate, simplify, and solve ratios with this free online ratio calculator.", category: "Math & Calculators", implemented: true },
@@ -88,7 +88,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "cost-per-unit-calculator", title: "Cost Per Unit Calculator", description: "Calculate the cost per unit for any quantity.", metaDescription: "Free online Cost Per Unit Calculator. Calculate the cost per unit for any quantity. No signup required.", category: "Finance & Cost", implemented: true },
       { slug: "price-per-unit-calculator", title: "Price Per Unit Calculator", description: "Compare prices per unit across different products.", metaDescription: "Free online Price Per Unit Calculator. Compare prices per unit across different products. No signup required.", category: "Finance & Cost", implemented: true },
       { slug: "payback-period-calculator", title: "Payback Period Calculator", description: "Calculate how long it takes to recoup an investment.", metaDescription: "Free online Payback Period Calculator. Calculate how long it takes to recoup an investment. No signup required.", category: "Finance & Cost", implemented: true },
-      { slug: "loan-interest-calculator", title: "Loan Interest Calculator", description: "Calculate total interest paid on any loan.", metaDescription: "Free online Loan Interest Calculator. Calculate total interest paid on any loan. No signup required.", category: "Finance & Cost", implemented: true },
+      { slug: "loan-interest-calculator", title: "Loan Interest Calculator", description: "Calculate loan interest, monthly payment, APR-style borrowing cost, and total repayment.", metaDescription: "Free online loan interest calculator and interest rate calculator. Estimate monthly payment, total interest, total repayment, and loan cost with no signup.", category: "Finance & Cost", implemented: true },
       { slug: "savings-goal-calculator", title: "Savings Goal Calculator", description: "Plan savings needed to reach a financial goal.", metaDescription: "Free online Savings Goal Calculator. Plan savings needed to reach a financial goal. No signup required.", category: "Finance & Cost", implemented: true },
       { slug: "revenue-calculator", title: "Revenue Calculator", description: "Estimate total revenue from price and volume.", metaDescription: "Free online Revenue Calculator. Estimate total revenue from price and volume. No signup required.", category: "Finance & Cost", implemented: true },
       { slug: "cost-split-calculator", title: "Cost Split Calculator", description: "Split costs evenly or proportionally among people.", metaDescription: "Free online Cost Split Calculator. Split costs evenly or proportionally among people. No signup required.", category: "Finance & Cost", implemented: true },
@@ -153,7 +153,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-orange-500",
     bgColor: "from-orange-500 to-amber-400",
     tools: [
-      { slug: "online-age-calculator", title: "Age Calculator", description: "Calculate exact age in years, months, and days from birthdate.", metaDescription: "Calculate your exact age from date of birth. Free online age calculator with days, months, years.", category: "Time & Date", implemented: true },
+      { slug: "online-age-calculator", title: "Age Calculator", description: "Calculate exact age from date of birth in years, months, days, total days, and next birthday.", metaDescription: "Use this free age calculator to calculate exact age from date of birth in years, months, days, total days, and next birthday.", category: "Time & Date", implemented: true },
       { slug: "date-difference-calculator", title: "Date Difference Calculator", description: "Find the exact number of days between any two dates.", metaDescription: "Calculate the difference between two dates in days, weeks, months, and years.", category: "Time & Date", implemented: true },
       { slug: "online-countdown-timer", title: "Countdown Timer", description: "Set a countdown to any event, deadline, or date.", metaDescription: "Free online countdown timer. Count down to any event, meeting, or deadline.", category: "Time & Date", implemented: true },
       { slug: "time-duration-calculator", title: "Time Duration Calculator", description: "Calculate the duration between two times of day.", metaDescription: "Calculate time duration between two times. Free online time duration calculator.", category: "Time & Date", implemented: true },
@@ -174,7 +174,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "deadline-calculator", title: "Deadline Calculator", description: "Calculate deadlines based on start date and duration.", metaDescription: "Free online Deadline Calculator. Calculate deadlines based on start date and duration. No signup required.", category: "Time & Date", implemented: true },
       { slug: "study-time-calculator", title: "Study Time Calculator", description: "Plan study sessions based on exam dates and topics.", metaDescription: "Free online Study Time Calculator. Plan study sessions based on exam dates and topics. No signup required.", category: "Time & Date", implemented: true },
       { slug: "reading-time-calculator", title: "Reading Time Calculator", description: "Estimate how long it takes to read any text.", metaDescription: "Free online Reading Time Calculator. Estimate how long it takes to read any text. No signup required.", category: "Time & Date", implemented: true },
-      { slug: "event-countdown-timer", title: "Event Countdown Timer", description: "Create countdown timers for upcoming events.", metaDescription: "Free online Event Countdown Timer. Create countdown timers for upcoming events. No signup required.", category: "Time & Date", implemented: true },
+      { slug: "event-countdown-timer", title: "Event Countdown Timer", description: "Create a free online countdown timer for events, launches, weddings, birthdays, and deadlines.", metaDescription: "Free online event countdown timer. Create a shareable countdown clock for weddings, launches, birthdays, exams, trips, and deadlines with no signup.", category: "Time & Date", implemented: true },
       { slug: "hourly-time-calculator", title: "Hourly Time Calculator", description: "Calculate pay and hours on an hourly basis.", metaDescription: "Free online Hourly Time Calculator. Calculate pay and hours on an hourly basis. No signup required.", category: "Time & Date", implemented: true },
       { slug: "shift-hours-calculator", title: "Shift Hours Calculator", description: "Calculate total hours worked across shifts.", metaDescription: "Free online Shift Hours Calculator. Calculate total hours worked across shifts. No signup required.", category: "Time & Date", implemented: true },
       { slug: "time-tracking-calculator", title: "Time Tracking Calculator", description: "Track time spent on tasks and projects.", metaDescription: "Free online Time Tracking Calculator. Track time spent on tasks and projects. No signup required.", category: "Time & Date", implemented: true },
@@ -194,7 +194,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-red-500",
     bgColor: "from-red-500 to-rose-400",
     tools: [
-      { slug: "online-bmi-calculator", title: "BMI Calculator", implemented: true, description: "Calculate your Body Mass Index from height and weight.", metaDescription: "Free BMI calculator online. Calculate Body Mass Index using metric or imperial units.", category: "Health & Fitness" },
+      { slug: "online-bmi-calculator", title: "BMI Calculator", implemented: true, description: "Calculate body mass index from height and weight with metric or imperial units and adult BMI categories.", metaDescription: "Use this free BMI calculator to calculate body mass index with metric or imperial units and see adult BMI categories.", category: "Health & Fitness" },
       { slug: "online-bmr-calculator", title: "BMR Calculator", description: "Find your Basal Metabolic Rate (calories at rest).", metaDescription: "Calculate your BMR (Basal Metabolic Rate). Free online BMR calculator.", category: "Health & Fitness", implemented: true },
       { slug: "online-body-surface-area-calculator", title: "Body Surface Area Calculator", description: "Estimate body surface area (BSA) using height and weight.", metaDescription: "Free online body surface area calculator. Estimate BSA with the Mosteller formula.", category: "Health & Fitness", implemented: true },
       { slug: "online-tdee-calculator", title: "TDEE Calculator", description: "Calculate Total Daily Energy Expenditure for your body.", metaDescription: "Calculate TDEE (Total Daily Energy Expenditure). Free online TDEE calculator.", category: "Health & Fitness", implemented: true },
@@ -207,7 +207,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "heart-rate-calculator", title: "Heart Rate Calculator", description: "Find your target heart rate zones for exercise.", metaDescription: "Calculate target heart rate zones. Free online heart rate zone calculator.", category: "Health & Fitness", implemented: true },
       { slug: "sleep-calculator", title: "Sleep Calculator", description: "Find the best bedtime or wake-up time for good sleep.", metaDescription: "Calculate when to sleep or wake up based on sleep cycles. Free sleep calculator.", category: "Health & Fitness", implemented: true },
       { slug: "pregnancy-due-date-calculator", title: "Pregnancy Due Date Calculator", description: "Calculate your expected due date from the last period.", metaDescription: "Calculate pregnancy due date. Free online pregnancy due date calculator.", category: "Health & Fitness", implemented: true },
-      { slug: "ovulation-calculator", title: "Ovulation Calculator", description: "Predict your ovulation dates and fertile window.", metaDescription: "Calculate ovulation dates and fertile window. Free online ovulation calculator.", category: "Health & Fitness", implemented: true },
+      { slug: "ovulation-calculator", title: "Ovulation Calculator", description: "Estimate your ovulation date, fertile window, and best days to try to conceive based on last period date and cycle length.", metaDescription: "Use this free ovulation calculator to estimate your ovulation date, fertile window, and best days to try to conceive based on your cycle.", category: "Health & Fitness", implemented: true },
       { slug: "calorie-deficit-calculator", title: "Calorie Deficit Calculator", description: "Calculate the calorie deficit needed to lose weight.", metaDescription: "Calculate calorie deficit for weight loss. Free online calorie deficit calculator.", category: "Health & Fitness", implemented: true },
       { slug: "cat-age-calculator", title: "Cat Age Calculator", description: "Convert your cat's age to human years equivalently.", metaDescription: "Calculate your cat's age in human years. Free cat age calculator.", category: "Health & Fitness", implemented: true },
       { slug: "dog-age-calculator", title: "Dog Age Calculator", description: "Convert your dog's age to equivalent human years.", metaDescription: "Calculate your dog's age in human years. Free dog age calculator.", category: "Health & Fitness", implemented: true },
@@ -280,7 +280,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-teal-500",
     bgColor: "from-teal-500 to-cyan-400",
     tools: [
-      { slug: "online-word-counter", title: "Word Counter", description: "Count words, characters, sentences, and reading time.", metaDescription: "Count words and characters in text. Free online word counter with reading time estimate.", category: "Productivity & Text", implemented: true },
+      { slug: "online-word-counter", title: "Word Counter", description: "Count words, characters, sentences, paragraphs, lines, reading time, and speaking time in pasted text.", metaDescription: "Use this free word counter to count words, characters, sentences, paragraphs, and reading time online. Paste text and get instant results.", category: "Productivity & Text", implemented: true },
       { slug: "random-name-generator", title: "Random Name Generator", description: "Generate random first, last, or full names for any use.", metaDescription: "Generate random names online. Free random name generator for characters, projects, and more.", category: "Productivity & Text", implemented: true },
       { slug: "username-generator", title: "Username Generator", description: "Create unique, catchy usernames for any platform.", metaDescription: "Generate unique usernames online. Free username generator tool.", category: "Productivity & Text", implemented: true },
       { slug: "dice-roller", title: "Dice Roller", description: "Roll one or multiple dice with any number of sides.", metaDescription: "Roll virtual dice online. Free dice roller for any number of sides.", category: "Productivity & Text", implemented: true },
@@ -389,14 +389,14 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "image-rotate-flip", title: "Image Rotate & Flip", description: "Rotate images by any angle or flip horizontally and vertically.", metaDescription: "Free online image rotate and flip tool. Rotate and mirror images in your browser.", category: "Image Tools", implemented: true },
       { slug: "image-color-picker", title: "Image Color Picker", description: "Pick any color from an uploaded image and get HEX, RGB, HSL values.", metaDescription: "Free image color picker. Extract colors from any image with HEX, RGB, and HSL values.", category: "Image Tools", implemented: true },
       { slug: "image-watermark", title: "Image Watermark Tool", description: "Add text or image watermarks to your photos.", metaDescription: "Free online image watermark tool. Add text or image watermarks to photos.", category: "Image Tools", implemented: true },
-      { slug: "image-filter-editor", title: "Image Filter Editor", description: "Apply image filters with live preview, presets, and browser-side export.", metaDescription: "Free online image filter editor. Apply brightness, contrast, blur, grayscale, and more filters in your browser.", category: "Image Tools", implemented: true },
+      { slug: "image-filter-editor", title: "Image Filter Editor", description: "Apply photo filters online with live preview, presets, CSS filter output, and browser-side export.", metaDescription: "Free photo filters online and image filter editor. Apply brightness, contrast, saturation, blur, sepia, grayscale, and hue effects in your browser.", category: "Image Tools", implemented: true },
       { slug: "image-to-png", title: "Image to PNG Converter", description: "Convert any image format to PNG with transparency support.", metaDescription: "Free image to PNG converter. Convert JPG, WebP, BMP to PNG online.", category: "Image Tools", implemented: true },
       { slug: "image-to-jpg", title: "Image to JPG Converter", description: "Convert any image format to JPG with quality control.", metaDescription: "Free image to JPG converter. Convert PNG, WebP, BMP to JPG online.", category: "Image Tools", implemented: true },
       { slug: "png-to-webp", title: "PNG to WebP Converter", description: "Convert PNG images to modern WebP format for smaller files.", metaDescription: "Free PNG to WebP converter. Convert PNG to WebP for faster web pages.", category: "Image Tools", implemented: true },
       { slug: "svg-to-png", title: "SVG to PNG Converter", description: "Convert SVG vector graphics to PNG raster images.", metaDescription: "Free SVG to PNG converter. Convert SVG files to PNG images online.", category: "Image Tools", implemented: true },
       { slug: "image-background-remover", title: "Background Remover", description: "Remove simple image backgrounds in your browser with live preview and transparent PNG export.", metaDescription: "Free image background remover. Remove simple backgrounds from photos in your browser with live preview and PNG export.", category: "Image Tools", implemented: true },
       { slug: "image-collage-maker", title: "Image Collage Maker", description: "Build image collages with layout presets, spacing controls, and browser-side PNG export.", metaDescription: "Free image collage maker. Create photo collages with custom layouts, spacing, and PNG export online.", category: "Image Tools", implemented: true },
-      { slug: "qr-code-generator", title: "QR Code Generator", description: "Generate QR codes for URLs, text, Wi-Fi, and more.", metaDescription: "Free QR code generator. Create QR codes for links, text, and Wi-Fi online.", category: "Image Tools", implemented: true },
+      { slug: "qr-code-generator", title: "QR Code Generator", description: "Create QR codes for URLs, text, WiFi, email, and contact cards with live preview plus PNG and SVG downloads.", metaDescription: "Use this free QR code generator to create QR codes for links, text, WiFi, email, and contact cards. Download PNG or SVG. No signup.", category: "Image Tools", implemented: true },
       { slug: "meme-generator", title: "Meme Generator", description: "Add text captions to images to create memes.", metaDescription: "Free meme generator. Add top and bottom text to any image online.", category: "Image Tools", implemented: true },
       { slug: "favicon-generator", title: "Favicon Generator", description: "Generate favicons in multiple sizes from any image.", metaDescription: "Free favicon generator. Create favicon.ico and PNG favicons from any image.", category: "Image Tools", implemented: true },
       { slug: "image-pixel-counter", title: "Image Pixel Counter", description: "Inspect exact image dimensions, total pixels, megapixels, and aspect ratio in your browser.", metaDescription: "Free image pixel counter. Get dimensions, megapixels, aspect ratio, and pixel count online.", category: "Image Tools", implemented: true },
@@ -494,7 +494,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { slug: "tailwind-color-generator", title: "Tailwind CSS Color Generator", description: "Generate custom Tailwind CSS color shade scales.", metaDescription: "Free Tailwind color generator. Create custom color scales for Tailwind CSS.", category: "CSS & Design Tools", implemented: true },
       { slug: "glassmorphism-generator", title: "Glassmorphism Generator", description: "Create frosted glass CSS effects with visual controls.", metaDescription: "Free glassmorphism CSS generator. Create glass-effect UI components.", category: "CSS & Design Tools", implemented: true },
       { slug: "neumorphism-generator", title: "Neumorphism Generator", description: "Generate soft UI (neumorphic) CSS shadow effects.", metaDescription: "Free neumorphism CSS generator. Create soft UI shadow effects online.", category: "CSS & Design Tools", implemented: true },
-      { slug: "css-triangle-generator", title: "CSS Triangle Generator", description: "Create CSS triangles using borders with size and direction controls.", metaDescription: "Free CSS triangle generator. Create CSS triangles with custom sizes.", category: "CSS & Design Tools", implemented: true },
+      { slug: "css-triangle-generator", title: "CSS Triangle Generator", description: "Generate CSS triangles, tooltip arrows, chevrons, ribbon points, and border-based triangle code.", metaDescription: "Free CSS triangle generator with live preview. Create border triangle CSS, tooltip arrows, chevrons, ribbons, and Tailwind-style triangle hints.", category: "CSS & Design Tools", implemented: true },
     ]
   },
   {
@@ -526,7 +526,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-amber-500",
     bgColor: "from-amber-500 to-yellow-400",
     tools: [
-      { slug: "online-password-generator", title: "Online Password Generator", description: "Generate strong, secure passwords with custom length and complexity.", metaDescription: "Free online password generator. Create strong and secure passwords instantly.", category: "Security & Encryption", implemented: true },
+      { slug: "online-password-generator", title: "Password Generator", description: "Create strong random passwords with custom length, uppercase letters, lowercase letters, numbers, and symbols.", metaDescription: "Use this free password generator to create strong, secure random passwords with numbers, symbols, uppercase, and lowercase letters. No signup.", category: "Security & Encryption", implemented: true },
       { slug: "password-strength-checker", title: "Password Strength Checker", description: "Check how strong your password is and get improvement suggestions.", metaDescription: "Free password strength checker. Test your password security online.", category: "Security & Encryption", implemented: true },
       { slug: "md5-hash-generator", title: "MD5 Hash Generator", description: "Generate MD5 hashes from any text input.", metaDescription: "Free MD5 hash generator. Generate MD5 checksums from text online.", category: "Security & Encryption", implemented: true },
       { slug: "sha256-hash-generator", title: "SHA-256 Hash Generator", description: "Generate SHA-256 hashes from any text input.", metaDescription: "Free SHA-256 hash generator. Generate SHA-256 hashes online.", category: "Security & Encryption", implemented: true },
@@ -668,7 +668,7 @@ const CANONICAL_SLUG_OVERRIDES: Record<string, string> = {
   "percentage-decrease-calculator": "percentage-calculator",
   "percentage-difference-calculator": "percentage-calculator",
   "percentage-increase-calculator": "percentage-calculator",
-  "percentage-calculator": "online-percantage-calculator",
+  "percentage-calculator": "online-percentage-calculator",
   // Image tools
   "image-resizer": "online-image-resizer",
   "image-compressor": "online-image-compressor",
@@ -711,6 +711,11 @@ const CANONICAL_SLUG_OVERRIDES: Record<string, string> = {
 const SLUG_ALIAS_TO_TOOL_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(CANONICAL_SLUG_OVERRIDES).map(([legacySlug, canonicalSlug]) => [canonicalSlug, legacySlug]),
 );
+
+const CANONICAL_PATH_OVERRIDES: Record<string, string> = {
+  "online-percentage-calculator": "/math/online-percentage-calculator",
+  "ovulation-calculator": "/calculators/ovulation-calculator/",
+};
 
 function getToolByExactSlug(slug: string): Tool | undefined {
   const preferredCategoryId = PREFERRED_CATEGORY_BY_SLUG[slug];
@@ -793,6 +798,9 @@ function getCanonicalSlug(slug: string): string {
 
 export function getToolPath(slug: string): string {
   const canonicalSlug = getCanonicalSlug(slug);
+  if (CANONICAL_PATH_OVERRIDES[canonicalSlug]) {
+    return CANONICAL_PATH_OVERRIDES[canonicalSlug];
+  }
   return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
 }
 
@@ -805,6 +813,9 @@ export function getCanonicalToolPath(slug: string): string {
 
   const preferredTool = DISPLAY_TOOL_BY_KEY.get(getToolDisplayKey(tool)) ?? tool;
   const canonicalSlug = getCanonicalSlug(preferredTool.slug);
+  if (CANONICAL_PATH_OVERRIDES[canonicalSlug]) {
+    return CANONICAL_PATH_OVERRIDES[canonicalSlug];
+  }
   return `/${getCategoryIdBySlug(canonicalSlug)}/${canonicalSlug}`;
 }
 

@@ -63,13 +63,22 @@ function escapeXml(value) {
     .replace(/'/g, "&apos;");
 }
 
-function buildSitemap(routes) {
+function buildUrlSet(routes) {
   const urls = Array.from(routes)
     .sort((a, b) => a.localeCompare(b))
     .map((pathname) => `  <url><loc>${escapeXml(toUrl(pathname))}</loc><lastmod>${today}</lastmod></url>`)
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+}
+
+function buildSitemapIndex(sitemaps) {
+  const entries = sitemaps
+    .sort((a, b) => a.localeCompare(b))
+    .map((pathname) => `  <sitemap><loc>${escapeXml(toUrl(pathname))}</loc><lastmod>${today}</lastmod></sitemap>`)
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</sitemapindex>\n`;
 }
 
 function buildRobots() {
@@ -79,10 +88,14 @@ function buildRobots() {
 function buildHtaccess(redirects) {
   const redirectRules = Array.from(redirects.entries())
     .sort(([left], [right]) => left.localeCompare(right))
-    .map(([from, to]) => `RewriteRule ^${from.replace(/^\//, "").replace(/\//g, "\\/")}\\/?$ ${to} [R=301,L]`)
+    .map(([from, to]) => {
+      const sourcePattern = from.replace(/^\//, "").replace(/\//g, "\\/");
+      const suffix = to.endsWith("/") ? "$" : "\\/?$";
+      return `RewriteRule ^${sourcePattern}${suffix} ${to} [R=301,L]`;
+    })
     .join("\n");
 
-  return `Options -Indexes\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^(?:index|404)\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n# Canonical page redirects\n${redirectRules}\n\n# Serve existing files and directories directly\nRewriteCond %{REQUEST_FILENAME} -f [OR]\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteRule ^ - [L]\n\n# Return a real 404 for unknown paths instead of a soft-404 SPA fallback\nRewriteRule ^ - [R=404,L]\n`;
+  return `Options -Indexes\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap(?:-[a-z0-9-]+)?\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^(?:index|404)\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS and the non-www canonical host.\nRewriteCond %{HTTPS} !=on [OR]\nRewriteCond %{HTTP_HOST} ^www\\.usonlinetools\\.com$ [NC]\nRewriteRule ^ https://usonlinetools.com%{REQUEST_URI} [L,R=301]\n\n# Use one canonical URL format for indexed pages.\n# Most canonical tags use no trailing slash, except selected slash-canonical pages.\nRewriteCond %{REQUEST_URI} !^/calculators/ovulation-calculator/$ [NC]\nRewriteCond %{REQUEST_URI} .+/$\nRewriteRule ^(.+)/$ /$1 [R=301,L]\n\n# Canonical page redirects\n${redirectRules}\n\n# Serve prerendered clean URLs without requiring Apache's directory slash redirect.\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.+)$ $1/index.html [L]\n\n# Serve existing files directly\nRewriteCond %{REQUEST_FILENAME} -f\nRewriteRule ^ - [L]\n\n# Return a real 404 for unknown paths instead of a soft-404 SPA fallback\nRewriteRule ^ - [R=404,L]\n`;
 }
 
 function main() {
@@ -97,16 +110,68 @@ function main() {
     ...tools.DISPLAY_ALL_TOOLS
       .filter((tool) => tool.implemented !== false)
       .map((tool) => tools.getCanonicalToolPath(tool.slug)),
+    "/yuzde-hesaplama",
+    "/ar/hesab-alomr",
+    "/ar/tahweel-altareekh",
+    "/calculadora-juros-compostos",
+    "/kalkulator-umur",
+    "/kdv-hesaplama",
+    "/calculo-rescisao",
+    "/calculo-ferias",
+    "/kidem-tazminati-hesaplama",
+    "/kalkulator-vat",
   ]);
+  const staticAndCategoryRoutes = new Set([
+    "/",
+    "/about",
+    "/privacy-policy",
+    "/terms-of-service",
+    ...tools.DISPLAY_TOOL_CATEGORIES.map((category) => `/category/${category.id}`),
+  ]);
+  const toolRoutesByCategory = new Map(
+    tools.DISPLAY_TOOL_CATEGORIES.map((category) => [category.id, new Set()]),
+  );
+
+  for (const tool of tools.DISPLAY_ALL_TOOLS.filter((entry) => entry.implemented !== false)) {
+    const canonicalPath = tools.getCanonicalToolPath(tool.slug);
+    const categoryId = tools.getCategoryIdBySlug(canonicalPath.split("/").filter(Boolean).at(-1) ?? tool.slug);
+    if (!toolRoutesByCategory.has(categoryId)) {
+      toolRoutesByCategory.set(categoryId, new Set());
+    }
+    toolRoutesByCategory.get(categoryId).add(canonicalPath);
+  }
+
+  // Localized landing page maintained outside the English tool registry.
+  toolRoutesByCategory.get("math").add("/yuzde-hesaplama");
+  toolRoutesByCategory.get("time-date").add("/ar/hesab-alomr");
+  toolRoutesByCategory.get("time-date").add("/ar/tahweel-altareekh");
+  toolRoutesByCategory.get("time-date").add("/kalkulator-umur");
+  toolRoutesByCategory.get("finance").add("/calculadora-juros-compostos");
+  toolRoutesByCategory.get("finance").add("/kdv-hesaplama");
+  toolRoutesByCategory.get("finance").add("/calculo-rescisao");
+  toolRoutesByCategory.get("finance").add("/calculo-ferias");
+  toolRoutesByCategory.get("finance").add("/kidem-tazminati-hesaplama");
+  toolRoutesByCategory.get("finance").add("/kalkulator-vat");
 
   const redirects = new Map();
 
   for (const tool of tools.ALL_TOOLS) {
     const canonicalPath = tools.getCanonicalToolPath(tool.slug);
     const legacyToolsPath = `/tools/${tool.slug}`;
+    const categoryLegacyPath = `/${tools.getCategoryIdBySlug(tool.slug)}/${tool.slug}`;
+    const canonicalSlug = canonicalPath.split("/").filter(Boolean).at(-1);
+    const canonicalSlugToolsPath = canonicalSlug ? `/tools/${canonicalSlug}` : null;
 
     if (legacyToolsPath !== canonicalPath) {
       redirects.set(legacyToolsPath, canonicalPath);
+    }
+
+    if (categoryLegacyPath !== canonicalPath) {
+      redirects.set(categoryLegacyPath, canonicalPath);
+    }
+
+    if (canonicalSlugToolsPath && canonicalSlugToolsPath !== canonicalPath) {
+      redirects.set(canonicalSlugToolsPath, canonicalPath);
     }
   }
 
@@ -131,7 +196,20 @@ function main() {
     }
   }
 
-  fs.writeFileSync(path.join(publicDir, "sitemap.xml"), buildSitemap(canonicalRoutes));
+  const sitemapPaths = ["/sitemap-pages.xml"];
+  fs.writeFileSync(path.join(publicDir, "sitemap-pages.xml"), buildUrlSet(staticAndCategoryRoutes));
+
+  for (const [categoryId, routes] of toolRoutesByCategory.entries()) {
+    if (!routes.size) {
+      continue;
+    }
+
+    const filename = `sitemap-tools-${categoryId}.xml`;
+    sitemapPaths.push(`/${filename}`);
+    fs.writeFileSync(path.join(publicDir, filename), buildUrlSet(routes));
+  }
+
+  fs.writeFileSync(path.join(publicDir, "sitemap.xml"), buildSitemapIndex(sitemapPaths));
   fs.writeFileSync(path.join(publicDir, "robots.txt"), buildRobots());
   fs.writeFileSync(path.join(publicDir, ".htaccess"), buildHtaccess(redirects));
 }

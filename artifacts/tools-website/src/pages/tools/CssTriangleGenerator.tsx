@@ -226,12 +226,12 @@ export default function CssTriangleGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Triangle Generator"
-      seoTitle="CSS Triangle Generator - Free Visual CSS Triangle Builder"
-      seoDescription="Free CSS triangle generator with live preview, direction controls, size presets, and copyable border-based CSS output. Build tooltip arrows, chevrons, ribbons, and graphic pointers instantly."
+      seoTitle="CSS Triangle Generator - Free Border Triangle and Tooltip Arrow Builder"
+      seoDescription="Free CSS triangle generator with live preview, direction controls, size presets, Tailwind-style hints, and copyable border triangle CSS for tooltip arrows, chevrons, ribbons, speech bubbles, and UI pointers."
       canonical="https://usonlinetools.com/css-design/css-triangle-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"
-      heroDescription="Create CSS triangles visually instead of rebuilding border tricks from memory every time. Choose the direction, width, height, and color, preview the shape on different surfaces, and copy clean border-based CSS for tooltip arrows, chevrons, ribbons, speech bubbles, badges, dividers, and directional UI accents."
+      heroDescription="Create CSS triangles visually instead of rebuilding the border trick from memory. Choose the direction, base width, height, and color, preview the arrow on light, dark, or gradient surfaces, then copy clean CSS for tooltip arrows, popover pointers, chevrons, ribbon ends, speech bubbles, badges, dividers, and directional UI accents."
       heroIcon={<Play className="w-3.5 h-3.5" />}
       calculatorLabel="Triangle Builder"
       calculatorDescription="Preview border-based triangles live, tune direction and size, and export production-ready CSS instantly."
@@ -394,7 +394,7 @@ export default function CssTriangleGenerator() {
       howSteps={[
         {
           title: "Choose the direction first",
-          description: "Direction determines which border becomes visible, so start there before refining the exact base width and height.",
+          description: "Direction determines which border becomes visible, so start there before refining the exact base width and height for your tooltip arrow, ribbon point, or chevron.",
         },
         {
           title: "Set the triangle width and height",
@@ -402,11 +402,11 @@ export default function CssTriangleGenerator() {
         },
         {
           title: "Preview on the target surface",
-          description: "Triangles used as tooltip arrows or chevrons need to read clearly against the real background they will sit on.",
+          description: "Triangles used as tooltip arrows, dropdown pointers, or popover notches need to read clearly against the real background they will sit on.",
         },
         {
           title: "Copy the border-based CSS",
-          description: "Once the shape feels right, copy the output directly into your tooltip, ribbon, divider, badge, or pseudo-element styles.",
+          description: "Once the shape feels right, copy the output directly into a class, pseudo-element, tooltip, ribbon, divider, badge, or component stylesheet.",
         },
       ]}
       interpretationCards={[
@@ -416,11 +416,11 @@ export default function CssTriangleGenerator() {
         },
         {
           title: "Small triangles behave like pointers",
-          description: "Compact dimensions work best for speech bubbles, dropdown pointers, tabs, and helper UI where the triangle is functional rather than decorative.",
+          description: "Compact dimensions work best for speech bubbles, dropdown pointers, tabs, popovers, and helper UI where the triangle is functional rather than decorative.",
         },
         {
           title: "Larger triangles become graphic accents",
-          description: "As width and height increase, the shape stops reading like a pointer and starts behaving more like a banner notch, divider, or section treatment.",
+          description: "As width and height increase, the shape stops reading like a pointer and starts behaving more like a banner notch, divider, ribbon tail, or section treatment.",
           className: "border-cyan-500/30 bg-cyan-500/5",
         },
       ]}
@@ -442,10 +442,11 @@ export default function CssTriangleGenerator() {
         },
       ]}
       whyChoosePoints={[
-        "Generate border-based CSS triangles without re-deriving the border math from scratch.",
-        "Preview direction, size, and color visually before dropping the shape into a tooltip or badge.",
-        "Use presets as a fast starting point for arrows, ribbons, chevrons, and decorative accents.",
-        "Copy clean CSS or a Tailwind-style hint immediately after tuning the final shape.",
+        "Generate border-based CSS triangles without re-deriving transparent border math from scratch.",
+        "Preview direction, size, color, and surface contrast before dropping the shape into a tooltip, popover, or badge.",
+        "Use presets as a fast starting point for tooltip arrows, ribbon points, chevrons, hero dividers, and decorative accents.",
+        "Copy clean CSS or a Tailwind-style arbitrary-value hint immediately after tuning the final shape.",
+        "Use the page as a quick reference for up, down, left, and right triangles when you are building UI pointers or CSS-only shapes.",
       ]}
       faqs={[
         {
@@ -454,7 +455,15 @@ export default function CssTriangleGenerator() {
         },
         {
           q: "Can I use this for tooltip arrows?",
-          a: "Yes. Small down, up, left, or right triangles are one of the most common uses for this technique, especially on pseudo-elements like ::before and ::after.",
+          a: "Yes. Small down, up, left, or right triangles are one of the most common uses for this technique, especially on tooltip, dropdown, and popover pseudo-elements like ::before and ::after.",
+        },
+        {
+          q: "How do I make a CSS triangle point upward or downward?",
+          a: "Use a zero-width, zero-height element, make the side borders transparent, then color the opposite border. An upward triangle uses a colored bottom border; a downward triangle uses a colored top border.",
+        },
+        {
+          q: "Can CSS triangles have a visible border?",
+          a: "A basic border triangle is itself made from borders, so outlining it takes an extra wrapper or pseudo-element behind the first triangle. Use the generator for the main shape, then layer a slightly larger triangle behind it for the outline.",
         },
         {
           q: "Should I use clip-path instead of border triangles?",
