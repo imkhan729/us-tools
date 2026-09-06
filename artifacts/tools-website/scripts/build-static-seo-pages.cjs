@@ -1265,6 +1265,133 @@ function buildRoutes(tools) {
 
     const localizedFinancePages = [
         {
+            path: "/yuzde-hesaplama",
+            heading: "Yüzde Hesaplama",
+            title: `Yüzde Hesaplama | ${SITE_NAME}`,
+            description:
+                "Türkçe yüzde hesaplama aracıyla yüzde bulma, yüzde artış, yüzde azalış, oran ve değişim hesaplarını hızlıca yapın.",
+            explainer:
+                "Bu sayfa Türkçe yüzde hesaplama işlemleri için tasarlanmıştır. Yüzde oranını, bir sayının yüzdesini, yüzde artış ve yüzde azalış sonuçlarını tarayıcıda hızlıca hesaplayabilirsiniz.",
+            faqs: [
+                { question: "Yüzde nasıl hesaplanır?", answer: "Bir sayının yüzdesi, sayı × yüzde / 100 formülüyle hesaplanır." },
+                { question: "Yüzde artış nasıl bulunur?", answer: "Yeni değer ile eski değer arasındaki fark eski değere bölünür ve 100 ile çarpılır." },
+                { question: "Hesaplama ücretsiz mi?", answer: "Evet, araç ücretsizdir ve kayıt gerektirmez." },
+            ],
+            links: [
+                { label: "Matematik Araçları", href: "/category/math" },
+            ],
+            language: "tr",
+            categoryLabel: "Matematik",
+            categoryHref: "/category/math",
+            appCategory: "UtilitiesApplication",
+        },
+        {
+            path: "/ar/hesab-alomr",
+            heading: "حاسبة العمر",
+            title: `حاسبة العمر | ${SITE_NAME}`,
+            description:
+                "احسب العمر بالسنوات والأشهر والأيام من تاريخ الميلاد، مع نتيجة عربية واضحة تعمل مباشرة في المتصفح.",
+            explainer:
+                "تساعدك حاسبة العمر العربية على معرفة العمر من تاريخ الميلاد حتى اليوم أو حتى تاريخ تختاره، مع عرض السنوات والأشهر والأيام بصيغة سهلة القراءة.",
+            faqs: [
+                { question: "كيف يتم حساب العمر؟", answer: "يتم حساب الفرق بين تاريخ الميلاد والتاريخ المختار بالسنوات ثم الأشهر ثم الأيام." },
+                { question: "هل تدعم الحاسبة تاريخاً مخصصاً؟", answer: "نعم، يمكن استخدام تاريخ اليوم أو اختيار تاريخ آخر للحساب." },
+                { question: "هل تحفظ الحاسبة تاريخ الميلاد؟", answer: "لا، الحساب يتم داخل المتصفح ولا يتطلب حساباً." },
+            ],
+            links: [
+                { label: "أدوات الوقت والتاريخ", href: "/category/time-date" },
+            ],
+            language: "ar",
+            categoryLabel: "الوقت والتاريخ",
+            categoryHref: "/category/time-date",
+            appCategory: "UtilitiesApplication",
+        },
+        {
+            path: "/ar/tahweel-altareekh",
+            heading: "تحويل التاريخ الهجري والميلادي",
+            title: `تحويل التاريخ الهجري والميلادي | ${SITE_NAME}`,
+            description:
+                "حوّل التاريخ بين الهجري والميلادي بواجهة عربية واتجاه RTL، مع نتيجة فورية داخل المتصفح.",
+            explainer:
+                "هذه الأداة تساعد على تحويل التاريخ من الميلادي إلى الهجري أو من الهجري إلى الميلادي لأغراض التخطيط والمراجعة اليومية. قد تختلف الرؤية الشرعية أو التقويم المحلي في بعض الدول.",
+            faqs: [
+                { question: "هل التحويل الهجري دقيق دائماً؟", answer: "التحويل يعطي نتيجة حسابية تقريبية، وقد تختلف بعض التواريخ حسب الرؤية المحلية." },
+                { question: "هل يمكن التحويل في الاتجاهين؟", answer: "نعم، يمكن التحويل من الميلادي إلى الهجري ومن الهجري إلى الميلادي." },
+                { question: "هل الأداة مجانية؟", answer: "نعم، الأداة مجانية وتعمل في المتصفح." },
+            ],
+            links: [
+                { label: "أدوات الوقت والتاريخ", href: "/category/time-date" },
+            ],
+            language: "ar",
+            categoryLabel: "الوقت والتاريخ",
+            categoryHref: "/category/time-date",
+            appCategory: "UtilitiesApplication",
+        },
+        {
+            path: "/calculadora-juros-compostos",
+            heading: "Calculadora de Juros Compostos",
+            title: `Calculadora de Juros Compostos | ${SITE_NAME}`,
+            description:
+                "Calcule juros compostos com aporte inicial, aportes mensais, taxa, prazo e memória de cálculo em português do Brasil.",
+            explainer:
+                "Esta calculadora mostra a evolução de um investimento com juros compostos, separando valor investido, juros acumulados e saldo final. Use como simulação matemática, não como recomendação financeira.",
+            faqs: [
+                { question: "Como calcular juros compostos?", answer: "Use a fórmula montante = capital × (1 + taxa)^tempo, somando aportes quando existirem." },
+                { question: "A calculadora aceita aportes mensais?", answer: "Sim, ela considera aporte inicial, aportes recorrentes, taxa e prazo." },
+                { question: "O resultado é recomendação de investimento?", answer: "Não. É uma simulação matemática para planejamento." },
+            ],
+            links: [
+                { label: "Ferramentas de Finanças", href: "/category/finance" },
+            ],
+            language: "pt-BR",
+            categoryLabel: "Finanças",
+            categoryHref: "/category/finance",
+            appCategory: "FinanceApplication",
+        },
+        {
+            path: "/kalkulator-umur",
+            heading: "Kalkulator Umur",
+            title: `Kalkulator Umur | ${SITE_NAME}`,
+            description:
+                "Hitung umur dalam tahun, bulan, dan hari dari tanggal lahir dengan kalkulator umur bahasa Indonesia.",
+            explainer:
+                "Kalkulator umur ini menghitung selisih antara tanggal lahir dan tanggal acuan, lalu menampilkan umur dalam tahun, bulan, hari, total hari, dan ringkasan yang mudah dibaca.",
+            faqs: [
+                { question: "Bagaimana cara menghitung umur?", answer: "Umur dihitung dari selisih tanggal lahir sampai tanggal acuan dalam tahun, bulan, dan hari." },
+                { question: "Apakah bisa memakai tanggal acuan selain hari ini?", answer: "Ya, gunakan tanggal acuan khusus jika ingin menghitung umur pada tanggal tertentu." },
+                { question: "Apakah tanggal lahir disimpan?", answer: "Tidak, perhitungan dilakukan di browser." },
+            ],
+            links: [
+                { label: "Alat waktu dan tanggal", href: "/category/time-date" },
+            ],
+            language: "id",
+            categoryLabel: "Waktu dan Tanggal",
+            categoryHref: "/category/time-date",
+            appCategory: "UtilitiesApplication",
+        },
+        {
+            path: "/kdv-hesaplama",
+            heading: "KDV Hesaplama",
+            title: `KDV Hesaplama | ${SITE_NAME}`,
+            description:
+                "KDV dahil, KDV hariç ve KDV tutarından matrah hesaplamalarını Türkçe olarak %20, %10, %1 veya özel oranla yapın.",
+            explainer:
+                "Bu Türkçe KDV hesaplama aracı, KDV hariç tutardan KDV dahil toplamı, KDV dahil tutardan matrahı ve yalnız KDV tutarından vergi matrahını hesaplar.",
+            faqs: [
+                { question: "KDV nasıl hesaplanır?", answer: "KDV hariç tutar oranla çarpılır ve 100'e bölünür." },
+                { question: "KDV dahil tutardan KDV nasıl çıkarılır?", answer: "Dahil tutarı 1 + oran/100 değerine bölerek matrahı bulun, sonra toplamdan çıkarın." },
+                { question: "Özel oran kullanabilir miyim?", answer: "Evet, eski dönem veya özel hesaplamalar için manuel oran girebilirsiniz." },
+            ],
+            links: [
+                { label: "Finans Araçları", href: "/category/finance" },
+                { label: "Yüzde Hesaplama", href: "/yuzde-hesaplama" },
+            ],
+            language: "tr",
+            categoryLabel: "Finans",
+            categoryHref: "/category/finance",
+            appCategory: "FinanceApplication",
+        },
+        {
             path: "/calculo-rescisao",
             heading: "Calculadora de Rescisão Trabalhista CLT",
             title: `Calculadora de Rescisão CLT 2026 | ${SITE_NAME}`,
@@ -1343,7 +1470,7 @@ function buildRoutes(tools) {
     for (const page of localizedFinancePages) {
         const canonicalUrl = `${SITE_URL}${page.path}`;
         const pageLanguage = page.language ?? "pt-BR";
-        const steps = pageLanguage === "tr" ? [
+        const steps = page.steps ?? (pageLanguage === "tr" ? [
             { title: "Ücret ve tarih bilgilerini girin", text: "Brüt ücretinizi, düzenli yan hakları, işe giriş ve fesih tarihlerini ekleyin." },
             { title: "Tavan ve kesintiyi kontrol edin", text: "Fesih tarihine göre seçilen kıdem tavanını, hizmet gününü, brüt kıdemi ve damga vergisini inceleyin." },
             { title: "Resmî işlemden önce doğrulayın", text: "Sonucu tahmin olarak kullanın; bordro kayıtları, fesih nedeni ve güncel mevzuatla ayrıca kontrol edin." },
@@ -1355,7 +1482,7 @@ function buildRoutes(tools) {
             { title: "Informe o salário e os dados do contrato", text: "Use valores brutos e selecione as opções aplicáveis ao cálculo trabalhista." },
             { title: "Revise o resultado", text: "Confira os componentes, impostos, descontos e memória de cálculo exibidos na página." },
             { title: "Valide casos formais", text: "Use o resultado como estimativa e confirme a folha oficial com RH, contador, sindicato ou profissional habilitado." },
-        ];
+        ]);
         routes.push({
             path: page.path,
             title: page.title,
@@ -1369,6 +1496,10 @@ function buildRoutes(tools) {
                     "Türkçe hesaplama aracı; ücret ve tarih bilgileri tarayıcıda işlenir, kimlik numarası veya üyelik gerekmez." :
                     pageLanguage === "pl" ?
                         "Polski kalkulator VAT działa w przeglądarce; nie wymaga NIP, numeru faktury, e-maila ani konta." :
+                        pageLanguage === "ar" ?
+                            "الأداة تعمل داخل المتصفح ولا تتطلب حساباً أو بريداً إلكترونياً." :
+                            pageLanguage === "id" ?
+                                "Kalkulator berjalan di browser dan tidak memerlukan akun atau email." :
                         "Calculadora em português do Brasil, com dados inseridos no navegador e sem necessidade de CPF, e-mail ou cadastro.",
                 explainer: page.explainer,
                 steps,
@@ -1393,10 +1524,10 @@ function buildRoutes(tools) {
                 title: page.title,
                 description: page.description,
                 customNodes: [
-                    createWebApplicationSchema(page.heading, canonicalUrl, page.description, "FinanceApplication", page.priceCurrency ?? "USD"),
+                    createWebApplicationSchema(page.heading, canonicalUrl, page.description, page.appCategory ?? "FinanceApplication", page.priceCurrency ?? "USD"),
                     createBreadcrumbSchema([
                         { name: pageLanguage === "tr" ? "Ana Sayfa" : pageLanguage === "pl" ? "Strona główna" : "Home", item: SITE_URL },
-                        { name: pageLanguage === "tr" ? "Finans" : pageLanguage === "pl" ? "Finanse" : "Finanças", item: `${SITE_URL}/category/finance` },
+                        { name: page.categoryLabel ?? (pageLanguage === "tr" ? "Finans" : pageLanguage === "pl" ? "Finanse" : "Finanças"), item: `${SITE_URL}${page.categoryHref ?? "/category/finance"}` },
                         { name: page.heading, item: canonicalUrl },
                     ]),
                     createHowToSchema(canonicalUrl, `${pageLanguage === "tr" ? "Nasıl kullanılır" : pageLanguage === "pl" ? "Jak używać" : "Como usar"} ${page.heading}`, steps),
