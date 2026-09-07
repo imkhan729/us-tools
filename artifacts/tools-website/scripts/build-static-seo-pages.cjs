@@ -713,6 +713,7 @@ function createFaqSchema(canonicalUrl, faqs) {
     return {
         "@type": "FAQPage",
         "@id": `${canonicalUrl}#faq`,
+        inLanguage: SITE_LANGUAGE,
         mainEntity: faqs.map((faq) => ({
             "@type": "Question",
             name: faq.question,
@@ -728,6 +729,7 @@ function createHowToSchema(canonicalUrl, name, steps) {
     return {
         "@type": "HowTo",
         "@id": `${canonicalUrl}#howto`,
+        inLanguage: SITE_LANGUAGE,
         name,
         step: steps.map((step, index) => ({
             "@type": "HowToStep",
@@ -830,12 +832,30 @@ function renderHtml({
     bodyContent,
     robots = DEFAULT_ROBOTS,
     language = SITE_LANGUAGE,
+    alternates = [],
 }) {
     const serializedSchema = JSON.stringify(schemaGraph).replace(/</g, "\\u003c");
+    const ogLocale =
+        language === "pt-BR" ? "pt_BR" :
+        language === "tr" ? "tr_TR" :
+        language === "pl" ? "pl_PL" :
+        language === "ar" ? "ar_AR" :
+        language === "id" ? "id_ID" :
+        "en_US";
+    const alternateTags = alternates
+        .map((alternate) => `<link rel="alternate" hrefLang="${escapeHtml(alternate.language)}" href="${escapeHtml(alternate.href)}" />`)
+        .join("\n    ");
+    const htmlDir = language === "ar" ? ' dir="rtl"' : "";
 
     return `<!DOCTYPE html>
-<html lang="${language}">
+<html lang="${language}"${htmlDir}>
   <head>
+    <script>document.documentElement.classList.add("js-enabled");</script>
+    <style>
+      .js-enabled .seo-prerender {
+        display: none !important;
+      }
+    </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6438644207209483" crossorigin="anonymous"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -851,7 +871,7 @@ function renderHtml({
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${SITE_NAME}" />
-    <meta property="og:locale" content="${language === "pt-BR" ? "pt_BR" : language === "tr" ? "tr_TR" : language === "pl" ? "pl_PL" : "en_US"}" />
+    <meta property="og:locale" content="${ogLocale}" />
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:image" content="${SITE_OG_IMAGE}" />
     <meta property="og:image:secure_url" content="${SITE_OG_IMAGE}" />
@@ -867,8 +887,7 @@ function renderHtml({
     <meta name="twitter:image:alt" content="${SITE_NAME} preview image" />
     <meta name="twitter:url" content="${canonicalUrl}" />
     <link rel="canonical" href="${canonicalUrl}" />
-    <link rel="alternate" hrefLang="${language.toLowerCase()}" href="${canonicalUrl}" />
-    <link rel="alternate" hrefLang="x-default" href="${canonicalUrl}" />
+    ${alternateTags}
     <link rel="icon" type="image/svg+xml" href="${SITE_LOGO}" />
     <script type="application/ld+json" data-schema-graph="primary">${serializedSchema}</script>
     ${assetTags}
@@ -1267,18 +1286,33 @@ function buildRoutes(tools) {
         {
             path: "/yuzde-hesaplama",
             heading: "Yüzde Hesaplama",
-            title: `Yüzde Hesaplama | ${SITE_NAME}`,
+            title: `Yüzde Hesaplama - Online Yüzde Hesaplayıcı | ${SITE_NAME}`,
             description:
-                "Türkçe yüzde hesaplama aracıyla yüzde bulma, yüzde artış, yüzde azalış, oran ve değişim hesaplarını hızlıca yapın.",
+                "Bir sayının yüzdesini, yüzde artış ve azalışını, indirimli fiyatı veya iki sayı arasındaki yüzde oranını saniyeler içinde hesaplayın.",
             explainer:
-                "Bu sayfa Türkçe yüzde hesaplama işlemleri için tasarlanmıştır. Yüzde oranını, bir sayının yüzdesini, yüzde artış ve yüzde azalış sonuçlarını tarayıcıda hızlıca hesaplayabilirsiniz.",
+                "Bu yüzde hesaplayıcı, bir sayının yüzdesini, bir değerin toplam içindeki oranını, yüzde artış ve azalışı, indirim veya zam sonrası tutarı ve indirimli fiyattan eski fiyatı hesaplar. Temel formüller sayı x yüzde / 100, parça / toplam x 100 ve (yeni - eski) / eski x 100 şeklindedir. Örneğin 2.000 TL ürüne %25 indirim uygulanırsa yeni fiyat 1.500 TL olur; 8.000 TL maaş 9.000 TL'ye çıkarsa artış oranı %12,5'tir. Sonuçları alışveriş indirimi, zam oranı, komisyon, kar oranı, not yüzdesi ve yaklaşık vergi kontrolleri için kullanabilirsiniz. Toplam veya başlangıç değeri sıfırsa göreli yüzde değişimi tanımsızdır. Vergi, maaş, resmi beyan ve sözleşme hesaplarında sonuçları tahmin olarak kullanın ve resmi kaynaklarla doğrulayın.",
+            steps: [
+                { title: "Hesaplama türünü seçin", text: "Bir sayının yüzdesi, toplam içindeki oran, yüzde artış, yüzde azalış, indirim veya eski fiyat seçeneklerinden birini kullanın." },
+                { title: "Sayıları girin", text: "TL, adet, puan veya başka birimlerle çalışabilirsiniz; virgüllü ondalık değerler desteklenir." },
+                { title: "Sonucu ve formülü kontrol edin", text: "Hesaplanan değer, kullanılan işlem türü ve ilgili formül sayfada görünür." },
+                { title: "Gerekirse sonucu kopyalayın", text: "Sonucu rapor, teklif, alışveriş karşılaştırması veya kişisel notlarınız için kopyalayabilirsiniz." },
+            ],
             faqs: [
-                { question: "Yüzde nasıl hesaplanır?", answer: "Bir sayının yüzdesi, sayı × yüzde / 100 formülüyle hesaplanır." },
-                { question: "Yüzde artış nasıl bulunur?", answer: "Yeni değer ile eski değer arasındaki fark eski değere bölünür ve 100 ile çarpılır." },
-                { question: "Hesaplama ücretsiz mi?", answer: "Evet, araç ücretsizdir ve kayıt gerektirmez." },
+                { question: "Yüzde hesaplama nasıl yapılır?", answer: "Bir sayının yüzdesini bulmak için sayı x yüzde / 100 formülünü kullanın. Örneğin 500'ün %20'si 100'dür." },
+                { question: "Bir sayının yüzde 20'si nasıl bulunur?", answer: "Sayıyı 20 ile çarpıp 100'e bölün. 750 x 20 / 100 = 150 sonucu elde edilir." },
+                { question: "İki sayı arasındaki yüzde farkı nasıl hesaplanır?", answer: "İki sayı arasındaki mutlak farkı sayıların ortalamasına bölüp 100 ile çarpın. Başlangıç değeri belliyse yüzde değişim formülü daha uygundur." },
+                { question: "Yüzde artış nasıl hesaplanır?", answer: "Yeni değerden eski değeri çıkarın, farkı eski değere bölün ve 100 ile çarpın: (yeni - eski) / eski x 100." },
+                { question: "Yüzde azalış nasıl hesaplanır?", answer: "Eski değerden yeni değeri çıkarın, farkı eski değere bölün ve 100 ile çarpın: (eski - yeni) / eski x 100." },
+                { question: "İndirim yüzdesi nasıl hesaplanır?", answer: "İndirim tutarını başlangıç fiyatına bölüp 100 ile çarpın. İndirimli fiyat için başlangıç fiyatından indirim tutarını çıkarın." },
+                { question: "Zam oranı nasıl hesaplanır?", answer: "Zam tutarını eski maaş veya fiyata bölüp 100 ile çarpın. Yeni tutar, eski tutar x (1 + zam oranı / 100) şeklinde bulunur." },
+                { question: "Yüzde puan ile yüzde değişim aynı şey mi?", answer: "Hayır. %10'dan %15'e çıkmak 5 yüzde puanlık artıştır; göreli yüzde değişim ise %50'dir." },
+                { question: "Bu yüzde hesaplayıcı ücretsiz mi?", answer: "Evet. Yüzde hesaplama aracı ücretsizdir, kayıt gerektirmez ve telefon ile bilgisayarda çalışır." },
+                { question: "İndirimli fiyattan eski fiyat bulunabilir mi?", answer: "Evet. İndirimli fiyatı 1 - indirim oranı değerine bölün. 680 TL %20 indirimli fiyat ise 680 / 0,80 = 850 TL'dir." },
             ],
             links: [
                 { label: "Matematik Araçları", href: "/category/math" },
+                { label: "KDV Hesaplama", href: "/kdv-hesaplama" },
+                { label: "Kıdem Tazminatı Hesaplama", href: "/kidem-tazminati-hesaplama" },
             ],
             language: "tr",
             categoryLabel: "Matematik",
@@ -1287,18 +1321,32 @@ function buildRoutes(tools) {
         },
         {
             path: "/ar/hesab-alomr",
-            heading: "حاسبة العمر",
-            title: `حاسبة العمر | ${SITE_NAME}`,
+            heading: "حساب العمر بالهجري والميلادي",
+            title: `حساب العمر بالهجري والميلادي - حاسبة العمر الدقيقة | ${SITE_NAME}`,
             description:
-                "احسب العمر بالسنوات والأشهر والأيام من تاريخ الميلاد، مع نتيجة عربية واضحة تعمل مباشرة في المتصفح.",
+                "احسب عمرك بالسنوات والشهور والأيام بالتقويمين الميلادي والهجري، واعرف إجمالي الأيام والأسابيع وموعد عيد ميلادك القادم مجاناً.",
             explainer:
-                "تساعدك حاسبة العمر العربية على معرفة العمر من تاريخ الميلاد حتى اليوم أو حتى تاريخ تختاره، مع عرض السنوات والأشهر والأيام بصيغة سهلة القراءة.",
+                "تساعدك حاسبة العمر العربية على معرفة العمر من تاريخ الميلاد حتى اليوم أو حتى تاريخ تختاره. تعرض الأداة العمر بالسنوات والشهور والأيام، العمر الهجري عند توفر تقويم أم القرى في المتصفح، إجمالي الأيام، إجمالي الأسابيع، إجمالي الأشهر، يوم الميلاد، وموعد عيد الميلاد القادم. المنهجية لا تطرح سنة الميلاد من السنة الحالية فقط؛ بل تحسب الفرق الفعلي بين تاريخ الميلاد وتاريخ الحساب مع مراعاة أطوال الأشهر والسنوات الكبيسة. مثال: إذا كان تاريخ الميلاد 10 يناير 2000 وتاريخ الحساب 6 سبتمبر 2026، فالنتيجة تكون 26 سنة و7 أشهر و27 يوماً تقريباً حسب التقويم الميلادي، مع إظهار عدد الأيام الكاملة. التاريخ الهجري قد يختلف بيوم بحسب الرؤية أو الإعلان الرسمي في بلدك، لذلك استخدم النتيجة كمرجع عام لا كبديل عن السجلات الرسمية.",
+            steps: [
+                { title: "اختر نوع تاريخ الميلاد", text: "استخدم التبويب الميلادي أو الهجري حسب التاريخ المتوفر لديك." },
+                { title: "أدخل تاريخ الميلاد", text: "اكتب اليوم والشهر والسنة، أو اختر التاريخ من حقل التاريخ الميلادي." },
+                { title: "حدد تاريخ الحساب", text: "اتركه على تاريخ اليوم لحساب العمر الحالي، أو اختر تاريخاً آخر لمعرفة العمر في ذلك اليوم." },
+                { title: "راجع تفاصيل النتيجة", text: "تحقق من العمر، إجمالي الأيام والأسابيع، العمر الهجري، وموعد عيد الميلاد القادم." },
+            ],
             faqs: [
-                { question: "كيف يتم حساب العمر؟", answer: "يتم حساب الفرق بين تاريخ الميلاد والتاريخ المختار بالسنوات ثم الأشهر ثم الأيام." },
-                { question: "هل تدعم الحاسبة تاريخاً مخصصاً؟", answer: "نعم، يمكن استخدام تاريخ اليوم أو اختيار تاريخ آخر للحساب." },
-                { question: "هل تحفظ الحاسبة تاريخ الميلاد؟", answer: "لا، الحساب يتم داخل المتصفح ولا يتطلب حساباً." },
+                { question: "كيف أحسب عمري بالضبط؟", answer: "أدخل تاريخ ميلادك في حاسبة العمر واختر تاريخ الحساب. ستظهر النتيجة بالسنوات والشهور والأيام مع تفاصيل إضافية مثل إجمالي الأيام وموعد عيد الميلاد القادم." },
+                { question: "كيف أعرف عمري بالميلادي؟", answer: "اختر تبويب التاريخ الميلادي، أدخل يوم وشهر وسنة الميلاد، ثم اضغط احسب عمري." },
+                { question: "كيف أحسب عمري بالهجري؟", answer: "اختر التبويب الهجري وأدخل تاريخ ميلادك الهجري. تستخدم الأداة تقويم أم القرى المتاح في المتصفح لتحويل التاريخ وحساب العمر." },
+                { question: "لماذا عمري بالهجري أكبر من عمري بالميلادي؟", answer: "لأن السنة الهجرية أقصر من السنة الميلادية بنحو 10 إلى 11 يوماً تقريباً، ولذلك يمر عدد أكبر من السنوات الهجرية خلال نفس الفترة الزمنية." },
+                { question: "هل يمكن حساب العمر حتى تاريخ مستقبلي؟", answer: "نعم. اختر تاريخاً في حقل احسب العمر حتى تاريخ، بشرط أن يكون بعد تاريخ الميلاد." },
+                { question: "هل يمكن معرفة كم يوم عشت؟", answer: "نعم. تعرض الحاسبة إجمالي الأيام بين تاريخ ميلادك وتاريخ الحساب." },
+                { question: "هل تحسب الأداة السنوات الكبيسة؟", answer: "نعم. تعتمد الحاسبة على تواريخ تقويمية فعلية، لذلك تراعي السنوات الكبيسة وأطوال الأشهر المختلفة عند حساب العمر الميلادي." },
+                { question: "هل التاريخ الهجري دقيق 100%؟", answer: "يحسب التاريخ الهجري وفق تقويم أم القرى عند توفره، وقد تختلف بداية الشهر الهجري بيوم بحسب الرؤية أو الإعلان الرسمي في بلدك." },
+                { question: "ماذا يحدث إذا أدخلت تاريخ ميلاد في المستقبل؟", answer: "تظهر رسالة خطأ واضحة لأن تاريخ الميلاد لا يمكن أن يكون بعد تاريخ الحساب." },
+                { question: "هل تحفظ الأداة تاريخ ميلادي؟", answer: "تتم عملية الحساب داخل متصفحك ولا نحتاج إلى حفظ تاريخ ميلادك." },
             ],
             links: [
+                { label: "تحويل التاريخ الهجري والميلادي", href: "/ar/tahweel-altareekh" },
                 { label: "أدوات الوقت والتاريخ", href: "/category/time-date" },
             ],
             language: "ar",
@@ -1309,17 +1357,33 @@ function buildRoutes(tools) {
         {
             path: "/ar/tahweel-altareekh",
             heading: "تحويل التاريخ الهجري والميلادي",
-            title: `تحويل التاريخ الهجري والميلادي | ${SITE_NAME}`,
+            title: `تحويل التاريخ الهجري والميلادي - محول أم القرى | ${SITE_NAME}`,
             description:
-                "حوّل التاريخ بين الهجري والميلادي بواجهة عربية واتجاه RTL، مع نتيجة فورية داخل المتصفح.",
+                "حوّل التاريخ من هجري إلى ميلادي أو من ميلادي إلى هجري مع يوم الأسبوع والصيغة الرقمية والنصية وفق تقويم أم القرى.",
             explainer:
-                "هذه الأداة تساعد على تحويل التاريخ من الميلادي إلى الهجري أو من الهجري إلى الميلادي لأغراض التخطيط والمراجعة اليومية. قد تختلف الرؤية الشرعية أو التقويم المحلي في بعض الدول.",
+                "محول التاريخ يساعدك على إدخال تاريخ ميلادي مثل 5 سبتمبر 2026 للحصول على التاريخ الهجري الموافق، أو إدخال تاريخ هجري مثل 23 ربيع الأول 1448 هـ للحصول على التاريخ الميلادي الموافق. تعرض الأداة النتيجة النصية، الصيغة الرقمية، يوم الأسبوع، والأيام القريبة من التاريخ المختار. تعتمد المنهجية على تقويم أم القرى عندما يكون مدعومًا في المتصفح وداخل النطاق المتاح، لذلك لا تستخدم قاعدة تقريبية ثابتة بين التقويمين. قد تختلف بداية بعض الأشهر الهجرية بيوم واحد حسب رؤية الهلال أو الإعلان الرسمي المحلي، ولهذا يجب اعتبار النتيجة مساعدة عملية وليست مرجعًا نهائيًا للوثائق الحكومية أو المعاملات الحساسة.",
+            steps: [
+                { title: "اختر اتجاه التحويل", text: "استخدم ميلادي إلى هجري إذا كان التاريخ المدخل ميلاديًا، أو هجري إلى ميلادي إذا كان التاريخ المدخل هجريًا." },
+                { title: "أدخل التاريخ", text: "اكتب اليوم والشهر والسنة المطلوبة، أو استخدم زر تاريخ اليوم لتعبئة تاريخ اليوم بسرعة." },
+                { title: "راجع النتيجة", text: "اقرأ التاريخ الموافق مع يوم الأسبوع والصيغتين النصية والرقمية." },
+                { title: "تحقق عند الاستخدام الرسمي", text: "إذا كان التاريخ مطلوبًا لوثيقة رسمية أو معاملة حكومية، قارنه مع التاريخ المعتمد لدى الجهة المختصة." },
+            ],
             faqs: [
-                { question: "هل التحويل الهجري دقيق دائماً؟", answer: "التحويل يعطي نتيجة حسابية تقريبية، وقد تختلف بعض التواريخ حسب الرؤية المحلية." },
-                { question: "هل يمكن التحويل في الاتجاهين؟", answer: "نعم، يمكن التحويل من الميلادي إلى الهجري ومن الهجري إلى الميلادي." },
-                { question: "هل الأداة مجانية؟", answer: "نعم، الأداة مجانية وتعمل في المتصفح." },
+                { question: "كيف أحول التاريخ من هجري إلى ميلادي؟", answer: "اختر هجري إلى ميلادي، ثم أدخل اليوم والشهر والسنة الهجرية واضغط تحويل التاريخ. ستظهر النتيجة الميلادية مع يوم الأسبوع والصيغة الرقمية." },
+                { question: "كيف أحول التاريخ من ميلادي إلى هجري؟", answer: "اختر ميلادي إلى هجري، أدخل التاريخ الميلادي، ثم حوّل التاريخ. ستظهر النتيجة باليوم والشهر والسنة الهجرية." },
+                { question: "هل محول التاريخ مجاني؟", answer: "نعم. الأداة مجانية ولا تحتاج إلى إنشاء حساب." },
+                { question: "هل يعتمد التحويل على تقويم أم القرى؟", answer: "نعم، عندما يكون التاريخ داخل النطاق المدعوم وكان المتصفح يوفر تقويم أم القرى عبر JavaScript Intl. تعرض الصفحة تنبيهًا إذا لم يكن هذا الدعم متاحًا." },
+                { question: "لماذا يختلف التاريخ الهجري في بعض المواقع؟", answer: "قد تستخدم المواقع أنواعًا مختلفة من التقويم الهجري، كما قد تختلف بداية الشهر حسب الرؤية أو الإعلان الرسمي المحلي. لذلك يمكن أن يظهر اختلاف يوم واحد في بعض الحالات." },
+                { question: "هل يمكن تحويل تاريخ الميلاد؟", answer: "نعم. يمكنك تحويل تاريخ الميلاد من الهجري إلى الميلادي أو العكس باستخدام نفس المحول." },
+                { question: "هل يمكن معرفة يوم الأسبوع من التاريخ؟", answer: "نعم. تعرض النتيجة اسم يوم الأسبوع الموافق للتاريخ المحول." },
+                { question: "هل يمكن استخدام النتيجة للوثائق الرسمية؟", answer: "يمكن استخدام الأداة للمساعدة في التحويل، لكن إذا كان التاريخ جزءًا من معاملة حكومية أو وثيقة رسمية حساسة، استخدم التاريخ المسجل أو المعتمد لدى الجهة الرسمية كمرجع نهائي." },
+                { question: "كم عدد أيام السنة الهجرية؟", answer: "السنة الهجرية تكون عادة 354 أو 355 يومًا." },
+                { question: "كم عدد أيام السنة الميلادية؟", answer: "السنة الميلادية تكون عادة 365 يومًا، وتصبح 366 يومًا في السنة الكبيسة." },
+                { question: "هل يمكن أن يختلف التاريخ الهجري بيوم؟", answer: "نعم. قد يظهر اختلاف يوم واحد بسبب اختلاف منهج التقويم أو ثبوت رؤية الهلال أو الإعلان الرسمي المحلي." },
+                { question: "هل تحفظ الأداة التواريخ التي أدخلها؟", answer: "تتم عملية التحويل داخل متصفحك ولا نحتاج إلى حفظ التاريخ الذي تدخله." },
             ],
             links: [
+                { label: "حساب العمر بالهجري والميلادي", href: "/ar/hesab-alomr" },
                 { label: "أدوات الوقت والتاريخ", href: "/category/time-date" },
             ],
             language: "ar",
@@ -1330,17 +1394,39 @@ function buildRoutes(tools) {
         {
             path: "/calculadora-juros-compostos",
             heading: "Calculadora de Juros Compostos",
-            title: `Calculadora de Juros Compostos | ${SITE_NAME}`,
+            title: `Calculadora de Juros Compostos com Aportes | ${SITE_NAME}`,
             description:
-                "Calcule juros compostos com aporte inicial, aportes mensais, taxa, prazo e memória de cálculo em português do Brasil.",
+                "Calcule juros compostos com valor inicial, aportes mensais, taxa mensal ou anual e prazo. Veja patrimônio final, total investido e juros acumulados.",
             explainer:
-                "Esta calculadora mostra a evolução de um investimento com juros compostos, separando valor investido, juros acumulados e saldo final. Use como simulação matemática, não como recomendação financeira.",
+                "Esta calculadora de juros compostos simula o crescimento de um valor inicial com ou sem aportes mensais, usando taxa mensal ou taxa anual equivalente. A fórmula base sem aportes é M = C × (1+i)^n, em que M é o montante final, C é o capital inicial, i é a taxa por período e n é o número de períodos. Com aportes, a ferramenta soma o valor futuro dos depósitos recorrentes e permite escolher se o aporte acontece no início ou no fim do mês, pois isso muda por quantos períodos cada depósito rende. Exemplo: R$ 10.000,00 iniciais, R$ 500,00 por mês, 1% ao mês e 10 anos resultam em cerca de R$ 148.023,21, sendo R$ 70.000,00 investidos e R$ 78.023,21 de juros acumulados. Os resultados são uma projeção matemática nominal; impostos, inflação, custos, riscos e variação real de rentabilidade não são descontados automaticamente.",
+            steps: [
+                { title: "Informe o valor inicial", text: "Digite quanto você já tem hoje para investir; o campo também aceita zero." },
+                { title: "Defina o aporte mensal", text: "No modo de simulação, informe o valor que será adicionado a cada mês ou use zero se não houver aportes." },
+                { title: "Escolha taxa e prazo", text: "Digite a taxa mensal ou anual e o prazo em anos ou meses, mantendo as premissas realistas para o seu cenário." },
+                { title: "Leia a projeção", text: "Compare patrimônio final, total investido, juros acumulados, taxa equivalente e evolução no tempo." },
+                { title: "Use o modo meta", text: "Se quiser descobrir quanto investir por mês, selecione Calcular aporte para uma meta e informe o objetivo financeiro." },
+            ],
             faqs: [
-                { question: "Como calcular juros compostos?", answer: "Use a fórmula montante = capital × (1 + taxa)^tempo, somando aportes quando existirem." },
-                { question: "A calculadora aceita aportes mensais?", answer: "Sim, ela considera aporte inicial, aportes recorrentes, taxa e prazo." },
-                { question: "O resultado é recomendação de investimento?", answer: "Não. É uma simulação matemática para planejamento." },
+                { question: "O que são juros compostos?", answer: "Juros compostos são juros calculados sobre o capital inicial e também sobre os juros acumulados. Por isso são conhecidos como juros sobre juros." },
+                { question: "Qual é a fórmula dos juros compostos?", answer: "Sem aportes, a fórmula é M = C × (1+i)^n, em que M é o montante, C é o capital inicial, i é a taxa por período e n é o número de períodos." },
+                { question: "Como calcular juros compostos com aporte mensal?", answer: "Além do crescimento do capital inicial, é preciso calcular o valor futuro dos aportes recorrentes. A calculadora faz isso automaticamente e permite escolher se os aportes ocorrem no início ou no fim do mês." },
+                { question: "Posso usar uma taxa anual?", answer: "Sim. Se você selecionar % ao ano, a ferramenta converte a taxa para a taxa mensal equivalente antes de calcular os períodos mensais." },
+                { question: "Para converter uma taxa anual em mensal basta dividir por 12?", answer: "Não. Em juros compostos, use a taxa equivalente: (1 + taxa anual)^(1/12) − 1." },
+                { question: "Quanto equivale 1% ao mês por ano?", answer: "1% ao mês equivale a aproximadamente 12,6825% ao ano em capitalização composta." },
+                { question: "O que significa total investido?", answer: "É a soma do valor inicial com todos os aportes realizados. Os juros acumulados são apresentados separadamente." },
+                { question: "A calculadora desconta imposto de renda?", answer: "Não. A simulação é bruta e matemática. Impostos e custos dependem do investimento real." },
+                { question: "A calculadora considera inflação?", answer: "Não. O resultado apresentado é nominal." },
+                { question: "Posso começar com valor inicial zero?", answer: "Sim. Você pode definir o valor inicial como zero e simular apenas aportes mensais." },
+                { question: "Posso fazer a simulação sem aporte mensal?", answer: "Sim. Informe aporte mensal igual a zero." },
+                { question: "O que acontece se a taxa for 0%?", answer: "O patrimônio final será a soma do valor inicial com os aportes, sem rendimento." },
+                { question: "Quanto preciso investir por mês para atingir uma meta?", answer: "Use o modo Calcular aporte para uma meta e informe objetivo, valor inicial, taxa e prazo. A calculadora retorna o aporte mensal necessário segundo essas premissas." },
+                { question: "O resultado é garantido?", answer: "Não. A ferramenta faz uma projeção matemática com taxa constante. Investimentos reais podem variar e podem ter impostos, custos e riscos." },
+                { question: "Meus valores são enviados para o servidor?", answer: "Não. Os cálculos são realizados no seu navegador e os valores informados não precisam ser armazenados." },
             ],
             links: [
+                { label: "Calculadora de poupança", href: "/finance/savings-calculator" },
+                { label: "Calculadora de meta de economia", href: "/finance/savings-goal-calculator" },
+                { label: "Calculadora de retorno sobre investimento", href: "/finance/online-roi-calculator" },
                 { label: "Ferramentas de Finanças", href: "/category/finance" },
             ],
             language: "pt-BR",
@@ -1351,17 +1437,37 @@ function buildRoutes(tools) {
         {
             path: "/kalkulator-umur",
             heading: "Kalkulator Umur",
-            title: `Kalkulator Umur | ${SITE_NAME}`,
+            title: `Kalkulator Umur - Hitung Usia Tahun, Bulan & Hari | ${SITE_NAME}`,
             description:
-                "Hitung umur dalam tahun, bulan, dan hari dari tanggal lahir dengan kalkulator umur bahasa Indonesia.",
+                "Hitung umur dari tanggal lahir secara otomatis dalam tahun, bulan, hari, total minggu dan hari. Cek juga umur pada tanggal tertentu dan ulang tahun berikutnya.",
             explainer:
-                "Kalkulator umur ini menghitung selisih antara tanggal lahir dan tanggal acuan, lalu menampilkan umur dalam tahun, bulan, hari, total hari, dan ringkasan yang mudah dibaca.",
+                "Kalkulator umur ini menghitung selisih kalender antara tanggal lahir dan tanggal hitung. Hasil utama ditampilkan sebagai tahun penuh, bulan penuh, dan sisa hari, bukan sekadar tahun sekarang dikurangi tahun lahir. Metodenya memperhitungkan jumlah hari aktual dalam setiap bulan, tahun kabisat, total hari, total minggu, hari lahir, ulang tahun berikutnya, dan sisa hari menuju ulang tahun. Contoh: tanggal lahir 15 Maret 2000 dan tanggal hitung 23 Agustus 2026 menghasilkan 26 tahun 5 bulan 8 hari. Untuk kebutuhan resmi seperti pendaftaran, dokumen, atau kelayakan program, gunakan hasil ini sebagai bantuan perhitungan dan ikuti aturan instansi terkait.",
+            steps: [
+                { title: "Masukkan tanggal lahir", text: "Pilih tanggal lahir pada kolom utama." },
+                { title: "Pilih mode perhitungan", text: "Gunakan Umur sekarang untuk menghitung usia hari ini, atau Umur pada tanggal tertentu untuk tanggal target khusus." },
+                { title: "Baca hasil umur", text: "Lihat umur dalam tahun, bulan, hari, total hari, total minggu, dan hari lahir." },
+                { title: "Periksa ulang tahun berikutnya", text: "Gunakan informasi sisa hari menuju ulang tahun untuk perencanaan acara atau pengingat." },
+                { title: "Verifikasi untuk keperluan resmi", text: "Jika hasil dipakai untuk dokumen atau pendaftaran, pastikan aturan tanggal batas dari instansi yang bersangkutan." },
+            ],
             faqs: [
-                { question: "Bagaimana cara menghitung umur?", answer: "Umur dihitung dari selisih tanggal lahir sampai tanggal acuan dalam tahun, bulan, dan hari." },
-                { question: "Apakah bisa memakai tanggal acuan selain hari ini?", answer: "Ya, gunakan tanggal acuan khusus jika ingin menghitung umur pada tanggal tertentu." },
-                { question: "Apakah tanggal lahir disimpan?", answer: "Tidak, perhitungan dilakukan di browser." },
+                { question: "Bagaimana cara menghitung umur dari tanggal lahir?", answer: "Masukkan tanggal lahir ke kalkulator. Alat akan menghitung selisih kalender antara tanggal lahir dan tanggal hari ini dalam tahun, bulan, dan hari." },
+                { question: "Bagaimana cara mengetahui umur saya sekarang?", answer: "Pilih Umur sekarang, masukkan tanggal lahir, lalu tekan Hitung Umur. Hasil akan menampilkan umur lengkap dan statistik tanggal tambahan." },
+                { question: "Apakah kalkulator menampilkan umur dalam tahun, bulan, dan hari?", answer: "Ya. Hasil utama ditampilkan dalam format tahun, bulan, dan hari." },
+                { question: "Bisakah menghitung umur pada tanggal tertentu?", answer: "Bisa. Pilih mode Umur pada tanggal tertentu, lalu masukkan tanggal target yang ingin digunakan." },
+                { question: "Bisakah menghitung total hari sejak lahir?", answer: "Bisa. Kalkulator menampilkan jumlah hari kalender dari tanggal lahir sampai tanggal hitung." },
+                { question: "Bagaimana cara menghitung umur dalam minggu?", answer: "Total hari dibagi 7. Kalkulator menampilkan jumlah minggu penuh dan sisa harinya." },
+                { question: "Apakah kalkulator memperhitungkan tahun kabisat?", answer: "Ya. Perhitungan kalender mempertimbangkan Februari 29 hari pada tahun kabisat." },
+                { question: "Bagaimana jika saya lahir 29 Februari?", answer: "Umur tetap dihitung berdasarkan tanggal kalender sebenarnya. Untuk ulang tahun pada tahun non-kabisat, alat menggunakan 28 Februari sebagai konvensi tampilan; aturan resmi dapat berbeda sesuai keperluan." },
+                { question: "Bisakah mengetahui hari apa saya lahir?", answer: "Ya. Kalkulator dapat menampilkan nama hari dalam minggu berdasarkan tanggal lahir." },
+                { question: "Bisakah mengetahui berapa hari lagi menuju ulang tahun?", answer: "Ya. Hasil menampilkan tanggal ulang tahun berikutnya dan jumlah hari yang tersisa." },
+                { question: "Apakah kalkulator ini menggunakan kalender Hijriah?", answer: "Tidak. Tool ini menggunakan kalender Masehi atau Gregorian." },
+                { question: "Apakah saya perlu membuat akun?", answer: "Tidak. Kalkulator dapat digunakan tanpa pendaftaran." },
+                { question: "Apakah tanggal lahir saya disimpan?", answer: "Tidak. Perhitungan dilakukan di browser dan tanggal lahir yang Anda masukkan tidak perlu dikirim atau disimpan di server." },
+                { question: "Apakah hasil bisa digunakan untuk menentukan kelayakan persyaratan resmi?", answer: "Kalkulator menghitung usia berdasarkan tanggal yang Anda masukkan. Untuk menentukan kelayakan program, pendaftaran, atau dokumen resmi, selalu ikuti ketentuan dari instansi terkait." },
             ],
             links: [
+                { label: "Kalkulator umur Hijriah", href: "/ar/hesab-alomr" },
+                { label: "Konverter tanggal Hijriah dan Masehi", href: "/ar/tahweel-altareekh" },
                 { label: "Alat waktu dan tanggal", href: "/category/time-date" },
             ],
             language: "id",
@@ -1372,19 +1478,38 @@ function buildRoutes(tools) {
         {
             path: "/kdv-hesaplama",
             heading: "KDV Hesaplama",
-            title: `KDV Hesaplama | ${SITE_NAME}`,
+            title: `KDV Hesaplama – KDV Dahil, Hariç ve Matrah | ${SITE_NAME}`,
             description:
-                "KDV dahil, KDV hariç ve KDV tutarından matrah hesaplamalarını Türkçe olarak %20, %10, %1 veya özel oranla yapın.",
+                "KDV dahil veya hariç tutarı, KDV miktarını ve matrahı anında hesaplayın. Güncel %1, %10, %20 oranlarını seçin veya özel KDV oranı girin.",
             explainer:
-                "Bu Türkçe KDV hesaplama aracı, KDV hariç tutardan KDV dahil toplamı, KDV dahil tutardan matrahı ve yalnız KDV tutarından vergi matrahını hesaplar.",
+                "Bu KDV hesaplama aracı üç farklı işlem yapar: KDV hariç tutardan KDV dahil toplamı bulur, KDV dahil tutardan matrahı ve KDV tutarını ayırır, yalnız KDV tutarından matrahı hesaplar. Temel formül KDV = Matrah × Oran ÷ 100 şeklindedir. Örneğin 1.000 TL matrah ve %20 oran için KDV 200 TL, KDV dahil toplam 1.200 TL olur. KDV dahil tutardan geriye giderken 1.200 TL'nin doğrudan %20'sini almak yanlıştır; doğru işlem 1.200 ÷ 1,20 = 1.000 TL matrah ve 200 TL KDV'dir. Türkiye'de son kontrol edilen temel oranlar %1, %10 ve %20'dir; ancak hangi oranın uygulanacağı işlemin niteliğine ve güncel mevzuata göre değişir. Bu araç matematiksel hesaplama yapar, hukuki veya mali sınıflandırma yapmaz.",
+            steps: [
+                { title: "Hesaplama türünü seçin", text: "KDV hariçten dahil toplama, KDV dahilden hariç tutara veya KDV tutarından matraha geçebilirsiniz." },
+                { title: "Tutarı girin", text: "Seçtiğiniz moda göre matrahı, KDV dahil toplamı veya yalnız KDV tutarını yazın." },
+                { title: "KDV oranını seçin", text: "%20, %10, %1 seçeneklerinden birini kullanın veya özel oran girin." },
+                { title: "Sonucu kontrol edin", text: "KDV hariç tutarı, KDV tutarını, KDV dahil toplamı ve formülü birlikte okuyun." },
+                { title: "Resmi kullanımda oranı doğrulayın", text: "Ürün veya hizmet için geçerli oranı GİB kaynaklarından veya mali müşavirinizden kontrol edin." },
+            ],
             faqs: [
-                { question: "KDV nasıl hesaplanır?", answer: "KDV hariç tutar oranla çarpılır ve 100'e bölünür." },
-                { question: "KDV dahil tutardan KDV nasıl çıkarılır?", answer: "Dahil tutarı 1 + oran/100 değerine bölerek matrahı bulun, sonra toplamdan çıkarın." },
-                { question: "Özel oran kullanabilir miyim?", answer: "Evet, eski dönem veya özel hesaplamalar için manuel oran girebilirsiniz." },
+                { question: "KDV nasıl hesaplanır?", answer: "KDV hariç tutarı KDV oranıyla çarpıp 100'e bölün. 1.000 TL'nin %20 KDV'si 200 TL'dir." },
+                { question: "KDV dahil fiyat nasıl hesaplanır?", answer: "KDV hariç fiyatı 1 + oran/100 ile çarpın." },
+                { question: "KDV dahil tutardan KDV nasıl çıkarılır?", answer: "Dahil tutarı 1 + oran/100 değerine bölerek matrahı bulun; ardından matrahı toplamdan çıkarın." },
+                { question: "1.200 TL %20 KDV dahil ise KDV kaçtır?", answer: "200 TL. Matrah 1.000 TL'dir." },
+                { question: "Matrah nasıl hesaplanır?", answer: "Dahil tutardan: toplam ÷ (1 + oran/100). Yalnız KDV biliniyorsa: KDV × 100 ÷ oran." },
+                { question: "Türkiye'de güncel KDV oranları nedir?", answer: "Son resmi kontrolde temel oranlar %1, %10 ve %20'dir. Uygulanacak oran işlemin mevzuattaki sınıflandırmasına göre değişebilir." },
+                { question: "Genel KDV oranı kaçtır?", answer: "İndirimli oran listeleri dışında kalan vergiye tabi işlemler için genel oran %20'dir." },
+                { question: "%18 ve %8 güncel standart oranlar mı?", answer: "Hayır. Bunlar 10 Temmuz 2023 öncesindeki temel oranlardı. Geçmiş dönem hesaplamaları için özel oran alanı kullanılabilir." },
+                { question: "Özel KDV oranı girebilir miyim?", answer: "Evet. Özel oran alanına pozitif bir oran girerek eski dönem veya özel hesaplamalar yapabilirsiniz." },
+                { question: "KDV dahil tutarın %20'sini almak neden yanlış olabilir?", answer: "Çünkü %20 net matrah üzerinden hesaplanmıştır, final brüt toplam üzerinden değil." },
+                { question: "1 kuruş fark neden olabilir?", answer: "Fatura ve muhasebe yazılımları satır bazında veya farklı aşamalarda yuvarlama yapabilir." },
+                { question: "Araç hangi ürünün oranını belirler mi?", answer: "Hayır. Araç yalnızca seçtiğiniz oran üzerinden matematiksel hesaplama yapar." },
+                { question: "Hesaplama ücretsiz mi?", answer: "Evet. KDV hesaplama aracı ücretsizdir ve kayıt gerektirmez." },
+                { question: "Tutarlar kaydediliyor mu?", answer: "Hayır. Hesaplama tarayıcınızda yapılır ve tutarın sunucuya gönderilmesi gerekmez." },
             ],
             links: [
-                { label: "Finans Araçları", href: "/category/finance" },
                 { label: "Yüzde Hesaplama", href: "/yuzde-hesaplama" },
+                { label: "Kıdem tazminatı hesaplama", href: "/kidem-tazminati-hesaplama" },
+                { label: "Finans araçları", href: "/category/finance" },
             ],
             language: "tr",
             categoryLabel: "Finans",
@@ -1399,14 +1524,25 @@ function buildRoutes(tools) {
                 "Calcule rescisão trabalhista CLT com salário, datas, aviso prévio, 13º, férias, INSS, IRRF e multa do FGTS separada.",
             explainer:
                 "Esta página estima verbas de rescisão CLT no Brasil e separa o pagamento líquido feito pela empresa da multa do FGTS. A calculadora cobre dispensa sem justa causa, pedido de demissão, acordo trabalhista do art. 484-A e justa causa, com memória de cálculo para saldo de salário, aviso prévio, 13º proporcional, férias, INSS, IRRF, descontos e FGTS.",
+            steps: [
+                { title: "Informe salário e datas", text: "Digite o último salário bruto, a data de admissão e a data de desligamento para definir saldo de salário, tempo de serviço e avos proporcionais." },
+                { title: "Escolha o tipo de rescisão", text: "Selecione dispensa sem justa causa, pedido de demissão, acordo trabalhista ou justa causa para aplicar as verbas compatíveis com cada cenário." },
+                { title: "Revise aviso prévio e FGTS", text: "Ajuste o aviso prévio e informe a base total de depósitos do FGTS quando quiser estimar a multa separada do pagamento da empresa." },
+                { title: "Use campos avançados se necessário", text: "Inclua adicionais habituais, médias, férias vencidas, dependentes, descontos e adiantamentos quando esses itens existirem na folha." },
+                { title: "Confira a memória de cálculo", text: "Leia o líquido estimado, proventos, descontos, multa do FGTS e observações antes de usar o resultado em conferência trabalhista." },
+            ],
             faqs: [
                 { question: "A calculadora mostra o valor líquido da rescisão?", answer: "Ela estima o pagamento líquido feito pela empresa depois de INSS, IRRF e descontos informados. A multa do FGTS fica separada porque normalmente não é paga junto no TRCT." },
-                { question: "Como o aviso prévio é calculado?", answer: "A ferramenta usa 30 dias e acrescenta 3 dias por ano completo trabalhado, limitado a 90 dias. No acordo trabalhista, o aviso indenizado entra pela metade." },
-                { question: "Pedido de demissão tem multa de 40% do FGTS?", answer: "Não. Em regra, pedido de demissão não gera multa de 40% nem saque integral do FGTS." },
+                { question: "Qual base devo informar para a multa do FGTS?", answer: "Informe a base total dos depósitos de FGTS do contrato, não apenas o saldo atual da conta. Se deixar em branco, a multa não é calculada para evitar uma estimativa enganosa." },
+                { question: "Como o aviso prévio é calculado?", answer: "A ferramenta usa 30 dias e acrescenta 3 dias por ano completo trabalhado, limitado a 90 dias, conforme a Lei 12.506/2011. No acordo do art. 484-A, o aviso indenizado entra pela metade." },
+                { question: "Pedido de demissão tem multa de 40% do FGTS?", answer: "Não. Em regra, pedido de demissão não gera multa de 40% nem saque integral do FGTS. Se o aviso não for cumprido, pode haver desconto conforme a situação." },
+                { question: "Justa causa recebe 13º e férias proporcionais?", answer: "A estimativa trata justa causa de forma conservadora: saldo de salário e férias vencidas com 1/3 quando informadas, sem aviso, 13º proporcional, férias proporcionais ou multa do FGTS." },
+                { question: "INSS e IRRF estão atualizados para 2026?", answer: "Esta página usa as tabelas configuradas para 2026 e revisão em 6 de setembro de 2026. Confirme alterações legais, acordos coletivos e regras internas antes de usar o valor em decisão formal." },
             ],
             links: [
-                { label: "Calculadora de Férias", href: "/calculo-ferias" },
-                { label: "Ferramentas de Finanças", href: "/category/finance" },
+                { label: "Calculadora de férias CLT", href: "/calculo-ferias" },
+                { label: "Calculadora de juros compostos", href: "/calculadora-juros-compostos" },
+                { label: "Ferramentas financeiras", href: "/category/finance" },
             ],
         },
         {
@@ -1417,14 +1553,31 @@ function buildRoutes(tools) {
                 "Calcule férias CLT com 1/3, abono pecuniário, INSS, IRRF, dependentes, redução 2026, férias proporcionais e memória de cálculo.",
             explainer:
                 "Esta página estima férias gozadas durante contrato ativo no Brasil. O cálculo mostra férias, adicional constitucional de 1/3, abono pecuniário, 1/3 sobre abono, INSS, IRRF, redução mensal de 2026, adiantamento opcional do 13º e memória de cálculo. Férias indenizadas na rescisão devem ser tratadas separadamente.",
+            steps: [
+                { title: "Informe a remuneração", text: "Digite o salário bruto mensal e inclua médias ou adicionais habituais nos campos avançados quando eles fizerem parte da base de férias." },
+                { title: "Escolha o cenário", text: "Use férias gozadas para pagamento durante contrato ativo ou estimativa proporcional para calcular meses acumulados." },
+                { title: "Revise faltas e dias", text: "Selecione a faixa de faltas injustificadas, informe os dias de férias e, se for o caso, os dias convertidos em abono pecuniário." },
+                { title: "Confira impostos e adicionais", text: "Revise INSS, IRRF, dependentes, redução de 2026, 1/3 constitucional e eventual adiantamento da primeira parcela do 13º." },
+                { title: "Leia a memória de cálculo", text: "Use a tabela para conferir base diária, férias, abono, descontos e alertas antes de comparar com o recibo da empresa." },
+            ],
             faqs: [
                 { question: "Como calcular férias?", answer: "Para férias integrais de 30 dias, some o salário ao adicional de 1/3 e depois aplique INSS e IRRF quando devidos." },
+                { question: "Quanto recebo de férias com salário de R$ 3.000?", answer: "Antes dos descontos, 30 dias integrais correspondem a R$ 3.000,00 + R$ 1.000,00 de 1/3 = R$ 4.000,00." },
+                { question: "Como calcular 1/3 de férias?", answer: "Divida o valor das férias por 3. Se a remuneração das férias é R$ 3.000,00, o terço é R$ 1.000,00." },
                 { question: "Posso vender 10 dias de férias?", answer: "Se você tiver direito a 30 dias, pode converter até um terço, ou seja, 10 dias, em abono pecuniário." },
+                { question: "Se eu tiver direito a menos de 30 dias, posso vender 10?", answer: "Não necessariamente. O limite acompanha um terço do período a que você tem direito: 24 dias permitem até 8, 18 permitem até 6 e 12 permitem até 4." },
+                { question: "Abono pecuniário paga INSS?", answer: "Nesta estimativa, o principal do abono é tratado como indenizatório e fica fora da base de INSS. O 1/3 do abono é separado para evitar simplificação indevida." },
+                { question: "Abono pecuniário paga IRRF?", answer: "O principal do abono não entra na base de IRRF. O 1/3 relacionado ao abono é tratado separadamente e pode compor a tributação do IRRF." },
+                { question: "Férias têm desconto de INSS?", answer: "Férias gozadas e o 1/3 correspondente entram na base previdenciária conforme as regras operacionais aplicáveis." },
+                { question: "Férias têm desconto de Imposto de Renda?", answer: "Podem ter. O IRRF das férias é calculado separadamente de outros rendimentos pagos no mês." },
+                { question: "Quando a empresa deve pagar as férias?", answer: "O pagamento das férias e do abono, quando houver, deve ocorrer até 2 dias antes do início do período." },
                 { question: "Esta calculadora serve para férias na rescisão?", answer: "Esta página é para férias gozadas durante o contrato. Para férias indenizadas no desligamento, use a calculadora de rescisão." },
+                { question: "Meus valores são armazenados?", answer: "Não. O cálculo é feito no navegador; a página não precisa de CPF, nome, empresa, e-mail ou telefone." },
             ],
             links: [
-                { label: "Calculadora de Rescisão", href: "/calculo-rescisao" },
-                { label: "Ferramentas de Finanças", href: "/category/finance" },
+                { label: "Calculadora de rescisão CLT", href: "/calculo-rescisao" },
+                { label: "Calculadora de juros compostos", href: "/calculadora-juros-compostos" },
+                { label: "Ferramentas financeiras", href: "/category/finance" },
             ],
         },
         {
@@ -1435,14 +1588,30 @@ function buildRoutes(tools) {
                 "İşe giriş-çıkış tarihi, brüt maaş, yol, yemek ve ikramiye ile kıdem tazminatını 2026 tarih bazlı tavan ve damga vergisiyle hesaplayın.",
             explainer:
                 "Bu sayfa Türkiye için standart 1475 sayılı İş Kanunu m.14 çerçevesinde kıdem tazminatı tahmini yapar. Hesaplama işe giriş ve fesih tarihinden toplam kıdem gününü bulur, çıplak brüt ücret ile düzenli yan haklardan giydirilmiş brüt ücreti oluşturur, fesih tarihindeki kıdem tavanını seçer, brüt kıdemi ve binde 7,59 damga vergisi sonrası net kıdemi gösterir.",
+            steps: [
+                { title: "Fesih nedenini seçin", text: "Kıdem hakkı doğuran bir sona erme nedeni olup olmadığını ve ayrılış nedenini seçin." },
+                { title: "Ücret ve tarihleri girin", text: "Son çıplak brüt ücreti, işe giriş tarihini ve işten ayrılış/fesih tarihini yazın." },
+                { title: "Yan hakları ekleyin", text: "Düzenli yol, yemek, aylık yan hak ve yıllık düzenli ikramiye gibi giydirilmiş ücrete girebilecek tutarları ekleyin." },
+                { title: "Tavan ve hizmet süresini kontrol edin", text: "Fesih tarihine göre seçilen kıdem tavanını, hizmet gününü ve kıdeme esas 30 günlük ücreti inceleyin." },
+                { title: "Net tahmini okuyun", text: "Brüt kıdem, damga vergisi ve net kıdem sonucunu hesaptaki uyarılarla birlikte değerlendirin." },
+            ],
             faqs: [
-                { question: "Kıdem tazminatı nasıl hesaplanır?", answer: "Brüt kıdem = min(giydirilmiş brüt ücret, fesih tarihindeki kıdem tavanı) × toplam kıdem günü ÷ 365. Brüt tutardan standart olarak binde 7,59 damga vergisi düşülür." },
+                { question: "Kıdem tazminatı nasıl hesaplanır?", answer: "Giydirilmiş brüt ücret ile fesih tarihindeki kıdem tavanından düşük olan tutar alınır ve toplam kıdem günü/365 ile çarpılır. Brüt tutardan damga vergisi düşülerek net tahmin bulunur." },
+                { question: "Kıdem tazminatı için en az kaç yıl çalışmak gerekir?", answer: "Standart koşul aynı işverene bağlı en az 1 yıllık çalışmadır." },
+                { question: "Bir yıldan az çalışan kıdem tazminatı alabilir mi?", answer: "Standart 1475 m.14 hesabında 1 yıllık asgari kıdem koşulu sağlanmadığında kıdem tazminatı hakkı oluşmaz." },
                 { question: "2026 kıdem tazminatı tavanı ne kadar?", answer: "2026'nın ilk yarısında ₺64.948,77, 1 Temmuz–31 Aralık döneminde ₺73.729,87'dir. Fesih tarihindeki tavan uygulanır." },
-                { question: "Kıdem tazminatından hangi kesinti yapılır?", answer: "Standart kanuni kıdem tazminatından yalnız damga vergisi kesintisi gösterilir." },
+                { question: "Giydirilmiş brüt ücret ne demek?", answer: "Çıplak brüt maaşa düzenli ve para ile ölçülebilen uygun yan hakların eklenmesiyle oluşan kıdeme esas brüt ücrettir." },
+                { question: "Yemek ve yol yardımı kıdeme dahil edilir mi?", answer: "Düzenli ve para ile ölçülebilen yemek/yol yardımı uygun koşullarda giydirilmiş ücrete dahil edilebilir." },
+                { question: "Fazla mesai kıdeme dahil mi?", answer: "Bakanlık rehberinde fazla çalışma ücreti standart kıdem hesabına dahil edilmeyen ödeme örnekleri arasındadır." },
+                { question: "Kıdem tazminatından gelir vergisi kesilir mi?", answer: "Standart kanuni kıdem tazminatında gelir vergisi ve SGK primi yerine yalnız damga vergisi kesintisi gösterilir. Kanuni kıdem dışındaki ek ödemeler farklı vergilendirilebilir." },
+                { question: "Damga vergisi ne kadar?", answer: "Araçta standart kıdem için binde 7,59, yani %0,759 oranı kullanılır." },
+                { question: "Tavan toplam kıdem tutarını mı sınırlar?", answer: "Hayır. Tavan her hizmet yılı için kullanılan 30 günlük ücret esasını sınırlar; toplam kıdem birden fazla yıllık tavan tutarını aşabilir." },
+                { question: "Verilerim kaydediliyor mu?", answer: "Hayır. Hesaplama tarayıcınızda yapılır; T.C. kimlik numarası, işveren adı, e-posta veya telefon istenmez." },
             ],
             links: [
-                { label: "Yüzde Hesaplama", href: "/yuzde-hesaplama" },
-                { label: "Finans Araçları", href: "/category/finance" },
+                { label: "KDV hesaplama", href: "/kdv-hesaplama" },
+                { label: "Yüzde hesaplama", href: "/yuzde-hesaplama" },
+                { label: "Finans araçları", href: "/category/finance" },
             ],
             language: "tr",
         },
@@ -1454,12 +1623,34 @@ function buildRoutes(tools) {
                 "Oblicz VAT, kwotę netto i brutto dla stawek 23%, 8%, 5% lub 0%. Przelicz netto na brutto, brutto na netto albo wylicz kwoty z samego VAT.",
             explainer:
                 "Ta strona oblicza VAT dla Polski w trzech kierunkach: netto na brutto, brutto na netto oraz kwota VAT na netto i brutto. Obsługuje główne stawki 23%, 8%, 5%, 0%, osobne oznaczenie ZW oraz własną stawkę do obliczeń historycznych lub specjalnych. Kalkulator nie ustala, jaka stawka prawnie pasuje do konkretnego towaru albo usługi.",
+            steps: [
+                { title: "Wybierz kierunek obliczenia", text: "Ustal, czy przeliczasz netto na brutto, brutto na netto, czy samą kwotę VAT na podstawę i brutto." },
+                { title: "Wpisz kwotę", text: "Podaj kwotę netto, brutto albo VAT, używając polskiego przecinka dziesiętnego, jeśli potrzebujesz groszy." },
+                { title: "Wybierz stawkę VAT", text: "Zaznacz 23%, 8%, 5%, 0%, ZW albo własną stawkę do czysto matematycznego przeliczenia." },
+                { title: "Sprawdź netto, VAT i brutto", text: "Porównaj wynik, zastosowany wzór i zaokrąglenie do grosza z fakturą albo własnymi danymi." },
+                { title: "Zweryfikuj stawkę podatkową", text: "Przed rozliczeniem sprawdź, czy wybrana stawka lub zwolnienie pasuje do konkretnego towaru, usługi i daty transakcji." },
+            ],
             faqs: [
                 { question: "Jak obliczyć VAT od kwoty netto?", answer: "Pomnóż netto przez stawkę VAT. Dla 1 000 zł i 23% podatek wynosi 230 zł." },
+                { question: "Jak obliczyć brutto z netto?", answer: "Pomnóż netto przez 1 + stawka/100. Przy 23% użyj mnożnika 1,23." },
                 { question: "Jak obliczyć netto z brutto?", answer: "Podziel brutto przez 1 + stawka/100. Dla 23% dziel przez 1,23." },
+                { question: "Jak obliczyć VAT z kwoty brutto?", answer: "Najpierw oblicz netto albo użyj wzoru Brutto × stawka / (100 + stawka)." },
+                { question: "Czy z kwoty brutto mogę po prostu odjąć 23%?", answer: "Nie. 23% jest liczone od netto, więc kwotę netto z brutto należy wyliczyć przez dzielenie przez 1,23." },
+                { question: "1 000 zł netto ile to brutto przy VAT 23%?", answer: "1 230 zł brutto." },
+                { question: "1 230 zł brutto ile to netto przy VAT 23%?", answer: "1 000 zł netto, a VAT wynosi 230 zł." },
+                { question: "Jakie są główne stawki VAT w Polsce?", answer: "Obecnie podstawowa stawka to 23%, a główne stawki obniżone to 8% i 5%. W określonych przypadkach stosuje się 0% albo zwolnienie." },
                 { question: "Czym różni się 0% od ZW?", answer: "0% jest stawką VAT, natomiast ZW oznacza zwolnienie z podatku. Skutki podatkowe nie są takie same." },
+                { question: "Czy kalkulator ustali właściwą stawkę VAT dla produktu?", answer: "Nie. Narzędzie liczy na podstawie wybranej stawki. Klasyfikację należy sprawdzić w aktualnych przepisach lub oficjalnych źródłach." },
+                { question: "Czy mogę wpisać własną stawkę?", answer: "Tak. Wybierz Inna i podaj procent." },
+                { question: "Czy stawka VAT może być czasowo zmieniona?", answer: "Tak. Przepisy mogą wprowadzać czasowe preferencje dla określonych towarów lub okresów. Historyczne transakcje należy sprawdzać według daty." },
+                { question: "Dlaczego wynik może różnić się o 1 grosz od faktury?", answer: "Systemy fakturowe mogą zaokrąglać wartości dla poszczególnych pozycji i sum dokumentu w różnej kolejności." },
+                { question: "Czy wynik ma wartość prawną?", answer: "Nie. Kalkulator wykonuje obliczenie matematyczne. Poprawność stawki i sposób rozliczenia zależy od przepisów i konkretnej transakcji." },
+                { question: "Czy kalkulator jest darmowy?", answer: "Tak." },
+                { question: "Czy wpisane kwoty są zapisywane?", answer: "Nie. Obliczenia są wykonywane w przeglądarce i podane kwoty nie muszą być wysyłane na serwer." },
             ],
             links: [
+                { label: "Kalkulator KDV (VAT w Turcji)", href: "/kdv-hesaplama" },
+                { label: "Kalkulator procentów", href: "/yuzde-hesaplama" },
                 { label: "Narzędzia finansowe", href: "/category/finance" },
             ],
             language: "pl",
@@ -1511,6 +1702,12 @@ function buildRoutes(tools) {
                     details: "Bu araç hakkında",
                     faq: "Sık sorulan sorular",
                     related: "İlgili araçlar",
+                } : pageLanguage === "ar" ? {
+                    trust: "ملاحظة الخصوصية",
+                    howTo: "كيفية استخدام هذه الأداة",
+                    details: "حول هذه الأداة",
+                    faq: "الأسئلة الشائعة",
+                    related: "أدوات مرتبطة",
                 } : pageLanguage === "pl" ? {
                     trust: "Informacja o prywatności",
                     howTo: "Jak używać tego narzędzia",
@@ -1530,7 +1727,7 @@ function buildRoutes(tools) {
                         { name: page.categoryLabel ?? (pageLanguage === "tr" ? "Finans" : pageLanguage === "pl" ? "Finanse" : "Finanças"), item: `${SITE_URL}${page.categoryHref ?? "/category/finance"}` },
                         { name: page.heading, item: canonicalUrl },
                     ]),
-                    createHowToSchema(canonicalUrl, `${pageLanguage === "tr" ? "Nasıl kullanılır" : pageLanguage === "pl" ? "Jak używać" : "Como usar"} ${page.heading}`, steps),
+                    createHowToSchema(canonicalUrl, `${pageLanguage === "tr" ? "Nasıl kullanılır" : pageLanguage === "pl" ? "Jak używać" : pageLanguage === "ar" ? "كيفية استخدام" : pageLanguage === "id" ? "Cara menggunakan" : "Como usar"} ${page.heading}`, steps),
                     createFaqSchema(canonicalUrl, page.faqs),
                 ],
             }), pageLanguage),

@@ -29,6 +29,8 @@ interface SEOProps {
   canonical?: string;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
   noindex?: boolean;
+  ogLocale?: string;
+  alternates?: Array<{ language: string; href: string }>;
 }
 
 const ogImage = SITE_OG_IMAGE;
@@ -173,7 +175,7 @@ function getAutoSchemaNodes({
   return nodes;
 }
 
-export function SEO({ title, description, canonical, schema, noindex = false }: SEOProps) {
+export function SEO({ title, description, canonical, schema, noindex = false, ogLocale, alternates = [] }: SEOProps) {
   const [location] = useLocation();
   const pathname = normalizePath(location);
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
@@ -242,7 +244,7 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:locale" content="en_US" />
+      {ogLocale && <meta property="og:locale" content={ogLocale} />}
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
@@ -261,8 +263,7 @@ export function SEO({ title, description, canonical, schema, noindex = false }: 
       <meta name="color-scheme" content="light dark" />
       <link rel="icon" type="image/svg+xml" href={SITE_LOGO} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      {canonicalUrl && <link rel="alternate" hrefLang="en-us" href={canonicalUrl} />}
-      {canonicalUrl && <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />}
+      {alternates.map((alternate) => <link key={alternate.language} rel="alternate" hrefLang={alternate.language} href={toAbsoluteUrl(alternate.href)} />)}
     </Helmet>
   );
 }

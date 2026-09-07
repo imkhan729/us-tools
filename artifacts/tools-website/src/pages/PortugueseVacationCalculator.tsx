@@ -24,6 +24,20 @@ const faqs = [
   ["Meus valores são armazenados?", "Não. O cálculo é feito no navegador; a página não precisa de CPF, nome, empresa, e-mail ou telefone."],
 ];
 
+const howToSteps = [
+  ["Informe a remuneração", "Digite o salário bruto mensal e inclua médias ou adicionais habituais nos campos avançados quando eles fizerem parte da base de férias."],
+  ["Escolha o cenário", "Use férias gozadas para pagamento durante contrato ativo ou estimativa proporcional para calcular meses acumulados."],
+  ["Revise faltas e dias", "Selecione a faixa de faltas injustificadas, informe os dias de férias e, se for o caso, os dias convertidos em abono pecuniário."],
+  ["Confira impostos e adicionais", "Revise INSS, IRRF, dependentes, redução de 2026, 1/3 constitucional e eventual adiantamento da primeira parcela do 13º."],
+  ["Leia a memória de cálculo", "Use a tabela para conferir base diária, férias, abono, descontos e alertas antes de comparar com o recibo da empresa."],
+];
+
+const relatedTools = [
+  { href: "/calculo-rescisao", label: "Calculadora de rescisão CLT" },
+  { href: "/calculadora-juros-compostos", label: "Calculadora de juros compostos" },
+  { href: "/category/finance", label: "Ferramentas financeiras" },
+];
+
 const brl = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const numberFmt = (value: number) => value.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
 
@@ -226,6 +240,7 @@ export default function PortugueseVacationCalculator() {
     { "@context": "https://schema.org", "@type": "WebApplication", name: "Calculadora de Férias CLT", url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", inLanguage: "pt-BR", description: "Calculadora de férias CLT com 1/3, abono pecuniário, INSS, IRRF e redução do imposto de renda em 2026." },
     { "@context": "https://schema.org", "@type": "WebPage", name: "Calculadora de Férias CLT 2026", url: canonical, inLanguage: "pt-BR", dateModified: "2026-09-06", isAccessibleForFree: true },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Início", item: "https://usonlinetools.com/" }, { "@type": "ListItem", position: 2, name: "Finanças", item: "https://usonlinetools.com/category/finance" }, { "@type": "ListItem", position: 3, name: "Calculadora de Férias", item: canonical }] },
+    { "@context": "https://schema.org", "@type": "HowTo", name: "Como usar a calculadora de férias CLT", inLanguage: "pt-BR", step: howToSteps.map(([name, text], index) => ({ "@type": "HowToStep", position: index + 1, name, text })) },
     { "@context": "https://schema.org", "@type": "FAQPage", inLanguage: "pt-BR", mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) },
   ];
 
@@ -252,7 +267,7 @@ export default function PortugueseVacationCalculator() {
 
   return (
     <Layout>
-      <SEO title="Calculadora de Férias CLT 2026 | Cálculo de Férias" description="Calcule férias CLT com 1/3, abono pecuniário, INSS, IRRF, dependentes, redução 2026, férias proporcionais e memória de cálculo." canonical={canonical} schema={schema} />
+      <SEO title="Calculadora de Férias CLT 2026 | US Online Tools" description="Calcule férias CLT com 1/3, abono pecuniário, INSS, IRRF, dependentes, redução 2026, férias proporcionais e memória de cálculo." canonical={canonical} schema={schema} />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-muted-foreground"><Link href="/" className="hover:text-primary">Início</Link><span>/</span><Link href="/category/finance" className="hover:text-primary">Finanças</Link><span>/</span><span>Cálculo de férias</span></nav>
 
@@ -290,11 +305,23 @@ export default function PortugueseVacationCalculator() {
           <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead><tr className="border-b border-border text-muted-foreground"><th className="py-3 pr-4">Linha</th><th className="py-3 pr-4">Valor</th><th className="py-3">Como entra no cálculo</th></tr></thead><tbody>{rows.map(([label, value, note]) => <tr key={label} className="border-b border-border/60"><td className="py-3 pr-4 font-bold">{label}</td><td className="py-3 pr-4">{value}</td><td className="py-3 text-muted-foreground">{note}</td></tr>)}</tbody></table></div>
         </section>
 
-        <section className="mt-8 grid gap-6 lg:grid-cols-2">
+        <section className="mt-8 grid min-w-0 gap-6 lg:grid-cols-2 [&>article]:min-w-0">
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Como calcular férias com 1/3</h2><p className="mt-4 leading-8 text-muted-foreground">Para salário mensal, a base diária usual é a remuneração de férias dividida por 30. Multiplique pelos dias gozados e acrescente o adicional constitucional de 1/3. Com salário de R$ 3.000,00 e 30 dias, o bruto antes dos descontos é R$ 3.000,00 + R$ 1.000,00 = R$ 4.000,00.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Abono pecuniário sem dupla contagem</h2><p className="mt-4 leading-8 text-muted-foreground">O abono permite converter até um terço das férias em dinheiro. A calculadora limita o máximo conforme o direito total: 30 dias permitem 10, 24 permitem 8, 18 permitem 6 e 12 permitem 4. O principal do abono e o 1/3 sobre abono aparecem em linhas separadas.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">INSS, IRRF e redução de 2026</h2><p className="mt-4 leading-8 text-muted-foreground">O INSS é calculado de forma progressiva. O IRRF das férias é calculado separadamente dos outros rendimentos do mês, com comparação entre deduções legais e desconto simplificado, dependentes e redução mensal de 2026.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Faltas, prazo e fracionamento</h2><p className="mt-4 leading-8 text-muted-foreground">A CLT usa faixas de faltas injustificadas: até 5 faltas mantêm 30 dias; 6 a 14 reduzem para 24; 15 a 23 para 18; 24 a 32 para 12; mais de 32 perde o direito no período. O pagamento deve ocorrer até 2 dias antes do início das férias. O fracionamento exige atenção aos períodos mínimos legais.</p></article>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">Como usar a calculadora</h2>
+          <ol className="mt-5 grid gap-4 md:grid-cols-2">
+            {howToSteps.map(([title, text]) => (
+              <li key={title} className="rounded-xl border border-border bg-background p-4">
+                <h3 className="font-black">{title}</h3>
+                <p className="mt-2 leading-7 text-muted-foreground">{text}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-card p-6">
@@ -306,6 +333,17 @@ export default function PortugueseVacationCalculator() {
           <h2 className="text-2xl font-black">Importante</h2>
           <p className="mt-4 leading-8 text-muted-foreground">Esta calculadora fornece uma estimativa de férias CLT com base nos dados informados e nas regras/tabelas implementadas. Folhas reais podem variar por médias de remuneração variável, divisão entre competências, convenções coletivas, pensão, descontos específicos e critérios de folha. Para férias pagas em rescisão, utilize o cálculo rescisório, pois o tratamento tributário é diferente.</p>
           <p className="mt-3 leading-8 text-muted-foreground">Dados revisados em {brazilLaborTax2026.lastVerified}. Valores exibidos são arredondados para centavos; cálculos internos preservam maior precisão.</p>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">Ferramentas relacionadas</h2>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {relatedTools.map((tool) => (
+              <Link key={tool.href} href={tool.href} className="rounded-xl border border-border bg-background p-4 font-bold text-primary underline-offset-4 hover:underline">
+                {tool.label}
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-card p-6">

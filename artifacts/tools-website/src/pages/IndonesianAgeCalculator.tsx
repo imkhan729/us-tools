@@ -366,6 +366,7 @@ export default function IndonesianAgeCalculator() {
     },
     {
       "@type": "FAQPage",
+      inLanguage: "id",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
@@ -380,6 +381,7 @@ export default function IndonesianAgeCalculator() {
         title="Kalkulator Umur – Hitung Usia Tahun, Bulan & Hari | US Online Tools"
         description="Hitung umur dari tanggal lahir secara otomatis dalam tahun, bulan, hari, total minggu dan hari. Cek juga umur pada tanggal tertentu dan ulang tahun berikutnya."
         canonical={canonical}
+        ogLocale="id_ID"
         schema={schema}
       />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8" lang="id">
@@ -494,7 +496,7 @@ export default function IndonesianAgeCalculator() {
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6">
+        <section className="mt-10 grid min-w-0 gap-6 [&>article]:min-w-0">
           <article className="rounded-lg border border-border bg-card p-6">
             <h2 className="text-2xl font-black">Bagaimana kalkulator ini menghitung umur?</h2>
             <p className="mt-4 leading-8 text-muted-foreground">
@@ -610,6 +612,21 @@ export default function IndonesianAgeCalculator() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </article>
+
+          <article className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-black">Alat terkait</h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/ar/hesab-alomr" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Kalkulator umur Hijriah
+              </Link>
+              <Link href="/ar/tahweel-altareekh" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Konverter tanggal Hijriah dan Masehi
+              </Link>
+              <Link href="/category/time-date" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Alat waktu dan tanggal
+              </Link>
             </div>
           </article>
 

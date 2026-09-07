@@ -207,6 +207,7 @@ export default function TurkishVatCalculator() {
     },
     {
       "@type": "FAQPage",
+      inLanguage: "tr",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
@@ -221,6 +222,7 @@ export default function TurkishVatCalculator() {
         title="KDV Hesaplama – KDV Dahil, Hariç ve Matrah | US Online Tools"
         description="KDV dahil veya hariç tutarı, KDV miktarını ve matrahı anında hesaplayın. Güncel %1, %10, %20 oranlarını seçin veya özel KDV oranı girin."
         canonical={canonical}
+        ogLocale="tr_TR"
         schema={schema}
       />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8" lang="tr">
@@ -331,7 +333,7 @@ export default function TurkishVatCalculator() {
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6">
+        <section className="mt-10 grid min-w-0 gap-6 [&>article]:min-w-0">
           <article className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-6">
             <h2 className="text-2xl font-black">Bilgilendirme</h2>
             <p className="mt-4 leading-8 text-muted-foreground">
@@ -438,7 +440,11 @@ export default function TurkishVatCalculator() {
 
           <article className="rounded-lg border border-border bg-card p-6">
             <h2 className="text-2xl font-black">İlgili Araçlar</h2>
-            <Link href="/yuzde-hesaplama" className="mt-4 inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">yüzde hesaplama</Link>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/yuzde-hesaplama" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">Yüzde hesaplama</Link>
+              <Link href="/kidem-tazminati-hesaplama" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">Kıdem tazminatı hesaplama</Link>
+              <Link href="/category/finance" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">Finans araçları</Link>
+            </div>
           </article>
 
           <article className="rounded-lg border border-border bg-card p-6">

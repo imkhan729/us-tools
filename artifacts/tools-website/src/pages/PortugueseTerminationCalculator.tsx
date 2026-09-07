@@ -29,6 +29,20 @@ const faqs = [
   ["INSS e IRRF estão atualizados para 2026?", `Esta página usa as tabelas configuradas para 2026 e revisão em ${laborConfig.lastVerified}. Confirme alterações legais, acordos coletivos e regras internas antes de usar o valor em decisão formal.`],
 ];
 
+const howToSteps = [
+  ["Informe salário e datas", "Digite o último salário bruto, a data de admissão e a data de desligamento para definir saldo de salário, tempo de serviço e avos proporcionais."],
+  ["Escolha o tipo de rescisão", "Selecione dispensa sem justa causa, pedido de demissão, acordo trabalhista ou justa causa para aplicar as verbas compatíveis com cada cenário."],
+  ["Revise aviso prévio e FGTS", "Ajuste o aviso prévio e informe a base total de depósitos do FGTS quando quiser estimar a multa separada do pagamento da empresa."],
+  ["Use campos avançados se necessário", "Inclua adicionais habituais, médias, férias vencidas, dependentes, descontos e adiantamentos quando esses itens existirem na folha."],
+  ["Confira a memória de cálculo", "Leia o líquido estimado, proventos, descontos, multa do FGTS e observações antes de usar o resultado em conferência trabalhista."],
+];
+
+const relatedTools = [
+  { href: "/calculo-ferias", label: "Calculadora de férias CLT" },
+  { href: "/calculadora-juros-compostos", label: "Calculadora de juros compostos" },
+  { href: "/category/finance", label: "Ferramentas financeiras" },
+];
+
 const brl = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const numberFmt = (value: number) => value.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
 
@@ -326,6 +340,7 @@ export default function PortugueseTerminationCalculator() {
     { "@context": "https://schema.org", "@type": "WebApplication", name: "Calculadora de Rescisão Trabalhista CLT", url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", inLanguage: "pt-BR", description: "Calculadora brasileira de rescisão CLT com aviso prévio, 13º, férias, INSS, IRRF e multa do FGTS separada." },
     { "@context": "https://schema.org", "@type": "WebPage", name: "Calculadora de Rescisão CLT 2026", url: canonical, inLanguage: "pt-BR", dateModified: "2026-09-06", isAccessibleForFree: true },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Início", item: "https://usonlinetools.com/" }, { "@type": "ListItem", position: 2, name: "Finanças", item: "https://usonlinetools.com/category/finance" }, { "@type": "ListItem", position: 3, name: "Calculadora de Rescisão", item: canonical }] },
+    { "@context": "https://schema.org", "@type": "HowTo", name: "Como usar a calculadora de rescisão CLT", inLanguage: "pt-BR", step: howToSteps.map(([name, text], index) => ({ "@type": "HowToStep", position: index + 1, name, text })) },
     { "@context": "https://schema.org", "@type": "FAQPage", inLanguage: "pt-BR", mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) },
   ];
 
@@ -431,9 +446,21 @@ export default function PortugueseTerminationCalculator() {
           </section>
         ) : null}
 
-        <section className="mt-8 grid gap-6 lg:grid-cols-2">
+        <section className="mt-8 grid min-w-0 gap-6 lg:grid-cols-2 [&>article]:min-w-0">
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Como calcular rescisão CLT</h2><p className="mt-4 leading-8 text-muted-foreground">O cálculo começa pela base remuneratória: salário bruto, adicionais habituais e médias de verbas variáveis quando elas integram a remuneração. Depois entram saldo de salário, aviso prévio quando devido, 13º proporcional, férias vencidas ou proporcionais com o terço constitucional e eventuais verbas indenizatórias.</p><p className="mt-3 leading-8 text-muted-foreground">O motivo do desligamento altera o pacote de direitos. A dispensa sem justa causa é a situação mais ampla. Pedido de demissão remove a multa do FGTS e pode gerar desconto de aviso. Acordo trabalhista reduz aviso indenizado e multa. Justa causa é mais limitada.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">INSS, IRRF e FGTS</h2><p className="mt-4 leading-8 text-muted-foreground">INSS e IRRF são estimados em bases separadas para verbas mensais e 13º. A tabela de IRRF aplica dedução por dependente e a redução mensal de 2026. Férias indenizadas e aviso indenizado podem ter tratamentos específicos conforme entendimento, sistema de folha e natureza da verba; por isso a página é uma estimativa.</p><p className="mt-3 leading-8 text-muted-foreground">A multa do FGTS depende da base histórica de depósitos do contrato. Ela não deve ser confundida com o saldo líquido pago pela empresa no termo de rescisão.</p></article>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">Como usar a calculadora</h2>
+          <ol className="mt-5 grid gap-4 md:grid-cols-2">
+            {howToSteps.map(([title, text]) => (
+              <li key={title} className="rounded-xl border border-border bg-background p-4">
+                <h3 className="font-black">{title}</h3>
+                <p className="mt-2 leading-7 text-muted-foreground">{text}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-card p-6">
@@ -445,6 +472,17 @@ export default function PortugueseTerminationCalculator() {
           <h2 className="text-2xl font-black">Fontes, atualização e limites</h2>
           <p className="mt-4 leading-8 text-muted-foreground">Regras configuradas em {laborConfig.lastVerified}. A ferramenta segue a estrutura geral da CLT, a regra de aviso prévio proporcional da Lei 12.506/2011, parâmetros de IRRF 2026 da Receita Federal e percentuais usuais de multa do FGTS para rescisões sem justa causa e acordo trabalhista.</p>
           <p className="mt-3 leading-8 text-muted-foreground">Não substitui cálculo oficial do RH, contador, advogado trabalhista ou sindicato. Convenção coletiva, estabilidade, adicionais, faltas, afastamentos, férias gozadas, rubricas de folha e decisões judiciais podem mudar o valor final. Para férias tiradas durante contrato ativo, use a <Link href="/calculo-ferias" className="font-bold text-primary underline">calculadora de férias</Link>.</p>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">Ferramentas relacionadas</h2>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {relatedTools.map((tool) => (
+              <Link key={tool.href} href={tool.href} className="rounded-xl border border-border bg-background p-4 font-bold text-primary underline-offset-4 hover:underline">
+                {tool.label}
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-card p-6">

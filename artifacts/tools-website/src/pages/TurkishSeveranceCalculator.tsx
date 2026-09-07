@@ -49,6 +49,20 @@ const faqs = [
   ["Verilerim kaydediliyor mu?", "Hayır. Hesaplama tarayıcınızda yapılır; T.C. kimlik numarası, işveren adı, e-posta veya telefon istenmez."],
 ];
 
+const howToSteps = [
+  ["Fesih nedenini seçin", "Kıdem hakkı doğuran bir sona erme nedeni olup olmadığını ve ayrılış nedenini seçin."],
+  ["Ücret ve tarihleri girin", "Son çıplak brüt ücreti, işe giriş tarihini ve işten ayrılış/fesih tarihini yazın."],
+  ["Yan hakları ekleyin", "Düzenli yol, yemek, aylık yan hak ve yıllık düzenli ikramiye gibi giydirilmiş ücrete girebilecek tutarları ekleyin."],
+  ["Tavan ve hizmet süresini kontrol edin", "Fesih tarihine göre seçilen kıdem tavanını, hizmet gününü ve kıdeme esas 30 günlük ücreti inceleyin."],
+  ["Net tahmini okuyun", "Brüt kıdem, damga vergisi ve net kıdem sonucunu hesaptaki uyarılarla birlikte değerlendirin."],
+];
+
+const relatedTools = [
+  { href: "/kdv-hesaplama", label: "KDV hesaplama" },
+  { href: "/yuzde-hesaplama", label: "Yüzde hesaplama" },
+  { href: "/category/finance", label: "Finans araçları" },
+];
+
 const money = (value: number) => `₺${value.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const numberFmt = (value: number) => value.toLocaleString("tr-TR", { maximumFractionDigits: 2 });
 
@@ -237,6 +251,7 @@ export default function TurkishSeveranceCalculator() {
     { "@context": "https://schema.org", "@type": "WebApplication", name: "Kıdem Tazminatı Hesaplama", url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", inLanguage: "tr", description: "Türkiye için kıdem tazminatı hesaplama aracı; giydirilmiş brüt, tarih bazlı tavan, damga vergisi ve net tahmin." },
     { "@context": "https://schema.org", "@type": "WebPage", name: "Kıdem Tazminatı Hesaplama 2026", url: canonical, inLanguage: "tr", dateModified: "2026-09-06", isAccessibleForFree: true },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Ana Sayfa", item: "https://usonlinetools.com/" }, { "@type": "ListItem", position: 2, name: "Finans", item: "https://usonlinetools.com/category/finance" }, { "@type": "ListItem", position: 3, name: "Kıdem Tazminatı Hesaplama", item: canonical }] },
+    { "@context": "https://schema.org", "@type": "HowTo", name: "Kıdem tazminatı hesaplama aracı nasıl kullanılır", inLanguage: "tr", step: howToSteps.map(([name, text], index) => ({ "@type": "HowToStep", position: index + 1, name, text })) },
     { "@context": "https://schema.org", "@type": "FAQPage", inLanguage: "tr", mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) },
   ];
 
@@ -306,14 +321,37 @@ export default function TurkishSeveranceCalculator() {
           <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead><tr className="border-b border-border text-muted-foreground"><th className="py-3 pr-4">Adım</th><th className="py-3 pr-4">Tutar / değer</th><th className="py-3">Açıklama</th></tr></thead><tbody>{rows.map(([label, value, note]) => <tr key={label} className="border-b border-border/60"><td className="py-3 pr-4 font-bold">{label}</td><td className="py-3 pr-4">{value}</td><td className="py-3 text-muted-foreground">{note}</td></tr>)}</tbody></table></div>
         </section>
 
-        <section className="mt-8 grid gap-6 lg:grid-cols-2">
+        <section className="mt-8 grid min-w-0 gap-6 lg:grid-cols-2 [&>article]:min-w-0">
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Kıdem tazminatı formülü</h2><p className="mt-4 leading-8 text-muted-foreground">Brüt kıdem = min(giydirilmiş brüt ücret, fesih tarihindeki kıdem tavanı) × toplam kıdem günü ÷ 365. Bu araç başlangıç ve fesih gününü takvim günlerine dahil eder; somut bordro yöntemlerinde bir günlük fark oluşabilir.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Tavan toplam tutarı sınırlamaz</h2><p className="mt-4 leading-8 text-muted-foreground">Kıdem tavanı, her hizmet yılı için kullanılan 30 günlük ücret esasını sınırlar. Örneğin 10 yıllık bir çalışan için toplam brüt kıdem, fesih tarihindeki yıllık tavanın 10 katına yaklaşabilir.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Dahil ve hariç ödemeler</h2><p className="mt-4 leading-8 text-muted-foreground">Düzenli yol, yemek, yakacak, konut, aile/çocuk yardımı veya süreklilik gösteren prim gibi para ile ölçülebilen ödemeler uygun koşullarda dahil edilebilir. Yıllık izin ücreti, evlenme yardımı, hastalık yardımı, doğum/ölüm yardımı, fazla çalışma, harcırah ve tek seferlik ödemeleri düzenli yan hak alanına eklemeyin.</p></article>
           <article className="rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Vergi ve kesinti</h2><p className="mt-4 leading-8 text-muted-foreground">Standart kanuni kıdem tazminatından yalnız damga vergisi kesintisi gösterilir. Gelir vergisi, SGK primi ve işsizlik sigortası primi 0 TL kabul edilir. Kanuni kıdem dışında yapılan ek ödemelerin vergilendirilmesi farklı olabilir.</p></article>
         </section>
 
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">Nasıl kullanılır?</h2>
+          <ol className="mt-5 grid gap-4 md:grid-cols-2">
+            {howToSteps.map(([title, text]) => (
+              <li key={title} className="rounded-xl border border-border bg-background p-4">
+                <h3 className="font-black">{title}</h3>
+                <p className="mt-2 leading-7 text-muted-foreground">{text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
         <section className="mt-8 rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Önemli bilgilendirme</h2><p className="mt-4 leading-8 text-muted-foreground">Bu araç 1475 sayılı İş Kanunu m.14 kapsamındaki standart kıdem tazminatı hesabını, girdiğiniz veriler ve doğrulanmış tavan/oranlar üzerinden tahmini olarak gösterir. Fesih nedeni, hizmet süresine dahil edilmeyen dönemler, toplu iş sözleşmesi, işyeri devri, özel kanunlar ve uyuşmazlıklar gerçek sonucu değiştirebilir. Resmî veya hukuki işlem öncesinde bordro kayıtlarınızı ve güncel mevzuatı kontrol edin.</p><p className="mt-3 leading-8 text-muted-foreground">Son doğrulama: {turkeySeveranceData.lastVerified}. Sonuçlar kuruşa yuvarlanır.</p></section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="text-2xl font-black">İlgili araçlar</h2>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {relatedTools.map((tool) => (
+              <Link key={tool.href} href={tool.href} className="rounded-xl border border-border bg-background p-4 font-bold text-primary underline-offset-4 hover:underline">
+                {tool.label}
+              </Link>
+            ))}
+          </div>
+        </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-card p-6"><h2 className="text-2xl font-black">Sık sorulan sorular</h2><div className="mt-5 space-y-5">{faqs.map(([question, answer]) => <div key={question}><h3 className="font-black">{question}</h3><p className="mt-1 leading-8 text-muted-foreground">{answer}</p></div>)}</div></section>
       </main>

@@ -368,6 +368,7 @@ export default function ArabicAgeCalculator() {
     },
     {
       "@type": "FAQPage",
+      inLanguage: "ar",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
@@ -382,6 +383,7 @@ export default function ArabicAgeCalculator() {
         title="حساب العمر بالهجري والميلادي – حاسبة العمر الدقيقة | US Online Tools"
         description="احسب عمرك بالسنوات والشهور والأيام بالتقويمين الميلادي والهجري، واعرف إجمالي الأيام والأسابيع وموعد عيد ميلادك القادم مجانًا."
         canonical={canonical}
+        ogLocale="ar_AR"
         schema={schema}
       />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8" dir="rtl" lang="ar">
@@ -536,7 +538,7 @@ export default function ArabicAgeCalculator() {
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6">
+        <section className="mt-10 grid min-w-0 gap-6 [&>article]:min-w-0">
           <article className="rounded-lg border border-border bg-card p-6">
             <h2 className="text-2xl font-black">كيف يتم حساب العمر؟</h2>
             <p className="mt-4 leading-8 text-muted-foreground">
@@ -642,9 +644,14 @@ export default function ArabicAgeCalculator() {
 
           <article className="rounded-lg border border-border bg-card p-6">
             <h2 className="text-2xl font-black">أدوات مرتبطة</h2>
-            <Link href="/ar/tahweel-altareekh" className="mt-4 inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
-              تحويل التاريخ الهجري والميلادي
-            </Link>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/ar/tahweel-altareekh" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                تحويل التاريخ الهجري والميلادي
+              </Link>
+              <Link href="/category/time-date" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                أدوات الوقت والتاريخ
+              </Link>
+            </div>
           </article>
 
           <article className="rounded-lg border border-border bg-card p-6">

@@ -369,6 +369,7 @@ export default function PortugueseCompoundInterestCalculator() {
     },
     {
       "@type": "FAQPage",
+      inLanguage: "pt-BR",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
@@ -383,6 +384,7 @@ export default function PortugueseCompoundInterestCalculator() {
         title="Calculadora de Juros Compostos com Aportes | US Online Tools"
         description="Calcule juros compostos com valor inicial, aportes mensais, taxa mensal ou anual e prazo. Veja patrimônio final, total investido e juros acumulados."
         canonical={canonical}
+        ogLocale="pt_BR"
         schema={schema}
       />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8" lang="pt-BR">
@@ -529,7 +531,7 @@ export default function PortugueseCompoundInterestCalculator() {
           </section>
         ) : null}
 
-        <section className="mt-10 grid gap-6">
+        <section className="mt-10 grid min-w-0 gap-6 [&>article]:min-w-0">
           <article className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-6">
             <h2 className="text-2xl font-black">Importante</h2>
             <p className="mt-4 leading-8 text-muted-foreground">
@@ -633,6 +635,24 @@ export default function PortugueseCompoundInterestCalculator() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </article>
+
+          <article className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-black">Ferramentas relacionadas</h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/finance/savings-calculator" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Calculadora de poupança
+              </Link>
+              <Link href="/finance/savings-goal-calculator" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Calculadora de meta de economia
+              </Link>
+              <Link href="/finance/online-roi-calculator" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Calculadora de retorno sobre investimento
+              </Link>
+              <Link href="/category/finance" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                Ferramentas financeiras
+              </Link>
             </div>
           </article>
 

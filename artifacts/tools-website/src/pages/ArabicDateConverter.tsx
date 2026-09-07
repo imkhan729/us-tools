@@ -374,6 +374,7 @@ export default function ArabicDateConverter() {
     },
     {
       "@type": "FAQPage",
+      inLanguage: "ar",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
@@ -388,6 +389,7 @@ export default function ArabicDateConverter() {
         title="تحويل التاريخ الهجري والميلادي – محول أم القرى | US Online Tools"
         description="حوّل التاريخ من هجري إلى ميلادي أو من ميلادي إلى هجري بسهولة، مع يوم الأسبوع والصيغة الرقمية والنصية وفق تقويم أم القرى."
         canonical={canonical}
+        ogLocale="ar_AR"
         schema={schema}
       />
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8" dir="rtl" lang="ar">
@@ -539,7 +541,7 @@ export default function ArabicDateConverter() {
           </section>
         ) : null}
 
-        <section className="mt-10 grid gap-6">
+        <section className="mt-10 grid min-w-0 gap-6 [&>article]:min-w-0">
           <article className="rounded-lg border border-border bg-card p-6">
             <h2 className="text-2xl font-black">دقة التحويل</h2>
             <p className="mt-4 leading-8 text-muted-foreground">
@@ -593,6 +595,18 @@ export default function ArabicDateConverter() {
             <p className="mt-4 leading-8 text-muted-foreground">
               يمكن استخدام محول التاريخ لمعرفة التاريخ الميلادي الموافق لتاريخ ميلاد مكتوب بالهجري، أو معرفة التاريخ الهجري المقابل لتاريخ ميلاد مكتوب بالميلادي. إذا كنت تريد معرفة العمر بعد تحويل تاريخ ميلادك، استخدم <Link href="/ar/hesab-alomr" className="font-bold text-primary hover:underline">حساب العمر بالهجري والميلادي</Link>.
             </p>
+          </article>
+
+          <article className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-black">أدوات مرتبطة</h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/ar/hesab-alomr" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                حساب العمر بالهجري والميلادي
+              </Link>
+              <Link href="/category/time-date" className="inline-flex rounded-lg border border-border px-4 py-3 font-bold text-primary hover:bg-muted">
+                أدوات الوقت والتاريخ
+              </Link>
+            </div>
           </article>
 
           <article className="rounded-lg border border-border bg-card p-6">

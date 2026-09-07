@@ -41,6 +41,20 @@ const faqs = [
   { q: "Czy wpisane kwoty są zapisywane?", a: "Nie. Obliczenia są wykonywane w przeglądarce i podane kwoty nie muszą być wysyłane na serwer." },
 ];
 
+const howToSteps = [
+  { name: "Wybierz kierunek obliczenia", text: "Ustal, czy przeliczasz netto na brutto, brutto na netto, czy samą kwotę VAT na podstawę i brutto." },
+  { name: "Wpisz kwotę", text: "Podaj kwotę netto, brutto albo VAT, używając polskiego przecinka dziesiętnego, jeśli potrzebujesz groszy." },
+  { name: "Wybierz stawkę VAT", text: "Zaznacz 23%, 8%, 5%, 0%, ZW albo własną stawkę do czysto matematycznego przeliczenia." },
+  { name: "Sprawdź netto, VAT i brutto", text: "Porównaj wynik, zastosowany wzór i zaokrąglenie do grosza z fakturą albo własnymi danymi." },
+  { name: "Zweryfikuj stawkę podatkową", text: "Przed rozliczeniem sprawdź, czy wybrana stawka lub zwolnienie pasuje do konkretnego towaru, usługi i daty transakcji." },
+];
+
+const relatedTools = [
+  { label: "Kalkulator KDV (VAT w Turcji)", href: "/kdv-hesaplama" },
+  { label: "Kalkulator procentów", href: "/yuzde-hesaplama" },
+  { label: "Narzędzia finansowe", href: "/category/finance" },
+];
+
 function parsePolishNumber(value: string) {
   const cleaned = value.trim().replace(/[złPLNpln]/g, "").replace(/\s/g, "");
   if (!cleaned) return NaN;
@@ -265,6 +279,17 @@ export default function PolishVatCalculator() {
       ],
     },
     {
+      "@type": "HowTo",
+      name: "Jak używać kalkulatora VAT",
+      description: "Kroki obliczania netto, VAT i brutto w polskim kalkulatorze VAT.",
+      inLanguage: "pl",
+      step: howToSteps.map((step) => ({
+        "@type": "HowToStep",
+        name: step.name,
+        text: step.text,
+      })),
+    },
+    {
       "@type": "FAQPage",
       mainEntity: faqs.map((faq) => ({
         "@type": "Question",
@@ -302,7 +327,7 @@ export default function PolishVatCalculator() {
           </p>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <section className="grid min-w-0 gap-6 lg:grid-cols-[1fr_1fr] [&>div]:min-w-0">
           <div className="rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
             <h2 className="text-2xl font-black">Oblicz VAT</h2>
             <div className="mt-5 grid gap-2 rounded-lg bg-muted p-1 sm:grid-cols-3" role="tablist" aria-label="Tryb kalkulatora VAT">
@@ -506,6 +531,29 @@ export default function PolishVatCalculator() {
           <article className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-6">
             <h2 className="text-2xl font-black">Ważna informacja</h2>
             <p className="mt-4 leading-8 text-muted-foreground">Kalkulator wykonuje obliczenia matematyczne na podstawie wybranej stawki VAT. Nie ustala, jaka stawka lub zwolnienie jest prawidłowe dla konkretnego towaru, usługi albo transakcji. W przypadku rozliczeń podatkowych sprawdź aktualne przepisy i informacje Ministerstwa Finansów.</p>
+          </article>
+
+          <article className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-black">Jak używać tego narzędzia</h2>
+            <ol className="mt-5 grid gap-4">
+              {howToSteps.map((step, index) => (
+                <li key={step.name} className="rounded-lg bg-muted/40 p-4">
+                  <p className="font-black">{index + 1}. {step.name}</p>
+                  <p className="mt-2 leading-7 text-muted-foreground">{step.text}</p>
+                </li>
+              ))}
+            </ol>
+          </article>
+
+          <article className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-black">Powiązane narzędzia</h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {relatedTools.map((tool) => (
+                <Link key={tool.href} href={tool.href} className="rounded-lg border border-border px-4 py-2 text-sm font-bold hover:bg-muted">
+                  {tool.label}
+                </Link>
+              ))}
+            </div>
           </article>
 
           <article className="rounded-lg border border-border bg-card p-6">
