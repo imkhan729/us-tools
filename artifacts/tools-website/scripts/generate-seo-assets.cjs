@@ -189,8 +189,8 @@ function main() {
 
   const sitemapPaths = ["/sitemap-pages.xml"];
   fs.writeFileSync(path.join(publicDir, "sitemap-pages.xml"), buildUrlSet(staticAndCategoryRoutes));
-  sitemapPaths.push("/sitemap-tools-new.xml");
-  fs.writeFileSync(path.join(publicDir, "sitemap-tools-new.xml"), buildUrlSet(newLocalizedToolRoutes));
+  sitemapPaths.push("/sitemap-new-tools.xml");
+  fs.writeFileSync(path.join(publicDir, "sitemap-new-tools.xml"), buildUrlSet(newLocalizedToolRoutes));
 
   for (const [categoryId, routes] of toolRoutesByCategory.entries()) {
     if (!routes.size) {
