@@ -101,15 +101,7 @@ function buildHtaccess(redirects) {
 function main() {
   const tools = loadToolsModule();
   const exactRoutes = extractExactRoutes();
-  const canonicalRoutes = new Set([
-    "/",
-    "/about",
-    "/privacy-policy",
-    "/terms-of-service",
-    ...tools.DISPLAY_TOOL_CATEGORIES.map((category) => `/category/${category.id}`),
-    ...tools.DISPLAY_ALL_TOOLS
-      .filter((tool) => tool.implemented !== false)
-      .map((tool) => tools.getCanonicalToolPath(tool.slug)),
+  const newLocalizedToolRoutes = [
     "/yuzde-hesaplama",
     "/ar/hesab-alomr",
     "/ar/tahweel-altareekh",
@@ -120,6 +112,17 @@ function main() {
     "/calculo-ferias",
     "/kidem-tazminati-hesaplama",
     "/kalkulator-vat",
+  ];
+  const canonicalRoutes = new Set([
+    "/",
+    "/about",
+    "/privacy-policy",
+    "/terms-of-service",
+    ...tools.DISPLAY_TOOL_CATEGORIES.map((category) => `/category/${category.id}`),
+    ...tools.DISPLAY_ALL_TOOLS
+      .filter((tool) => tool.implemented !== false)
+      .map((tool) => tools.getCanonicalToolPath(tool.slug)),
+    ...newLocalizedToolRoutes,
   ]);
   const staticAndCategoryRoutes = new Set([
     "/",
@@ -140,18 +143,6 @@ function main() {
     }
     toolRoutesByCategory.get(categoryId).add(canonicalPath);
   }
-
-  // Localized landing page maintained outside the English tool registry.
-  toolRoutesByCategory.get("math").add("/yuzde-hesaplama");
-  toolRoutesByCategory.get("time-date").add("/ar/hesab-alomr");
-  toolRoutesByCategory.get("time-date").add("/ar/tahweel-altareekh");
-  toolRoutesByCategory.get("time-date").add("/kalkulator-umur");
-  toolRoutesByCategory.get("finance").add("/calculadora-juros-compostos");
-  toolRoutesByCategory.get("finance").add("/kdv-hesaplama");
-  toolRoutesByCategory.get("finance").add("/calculo-rescisao");
-  toolRoutesByCategory.get("finance").add("/calculo-ferias");
-  toolRoutesByCategory.get("finance").add("/kidem-tazminati-hesaplama");
-  toolRoutesByCategory.get("finance").add("/kalkulator-vat");
 
   const redirects = new Map();
 
@@ -198,6 +189,8 @@ function main() {
 
   const sitemapPaths = ["/sitemap-pages.xml"];
   fs.writeFileSync(path.join(publicDir, "sitemap-pages.xml"), buildUrlSet(staticAndCategoryRoutes));
+  sitemapPaths.push("/sitemap-tools-new.xml");
+  fs.writeFileSync(path.join(publicDir, "sitemap-tools-new.xml"), buildUrlSet(newLocalizedToolRoutes));
 
   for (const [categoryId, routes] of toolRoutesByCategory.entries()) {
     if (!routes.size) {
