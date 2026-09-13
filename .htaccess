@@ -22,6 +22,9 @@ ErrorDocument 404 /404.html
 
 RewriteEngine On
 
+# Explicitly serve the document root for Hostinger configurations that do not apply DirectoryIndex consistently when rewrite rules are present.
+RewriteRule ^$ index.html [L]
+
 # Force HTTPS and the non-www canonical host.
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^www\.usonlinetools\.com$ [NC]

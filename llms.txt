@@ -1,0 +1,32 @@
+# US Online Tools
+> Free browser-based online tools, calculators, converters, generators, and productivity utilities.
+
+US Online Tools provides 400+ fast, client-side tools across 16 core categories. All operations execute locally in the browser runtime without requiring accounts, signups, or transmitting user data to remote servers.
+
+## Core Categories
+- [Math & Calculators Tools](https://usonlinetools.com/category/math): Essential math tools for everyday and advanced calculations
+- [Finance & Cost Tools](https://usonlinetools.com/category/finance): Money calculators for loans, interest, budgeting and more
+- [Conversion Tools](https://usonlinetools.com/category/conversion): Convert between any units of measurement instantly
+- [Time & Date Tools](https://usonlinetools.com/category/time-date): Date calculators, countdowns, and time tools
+- [Health & Fitness Tools](https://usonlinetools.com/category/health): Health calculators for BMI, calories, fitness and more
+- [Construction & DIY Tools](https://usonlinetools.com/category/construction): Calculators for building, materials, and home projects
+- [Productivity & Text Tools](https://usonlinetools.com/category/productivity): Text tools, generators, and everyday productivity utilities
+- [Student & Education Tools](https://usonlinetools.com/category/education): Grade calculators, GPA tools, and study helpers
+- [Gaming Calculators Tools](https://usonlinetools.com/category/gaming): Game-specific tools for popular titles and platforms
+- [Image Tools](https://usonlinetools.com/category/image): Resize, compress, convert, and edit images right in your browser
+- [PDF Tools](https://usonlinetools.com/category/pdf): Merge, split, compress, and convert PDF files in your browser
+- [Developer Tools](https://usonlinetools.com/category/developer): JSON formatters, code minifiers, regex testers, and encoding utilities
+- [CSS & Design Tools](https://usonlinetools.com/category/css-design): Gradient generators, box shadow builders, and visual CSS utilities
+- [SEO Tools](https://usonlinetools.com/category/seo): Meta tag generators, keyword tools, and search engine optimization utilities
+- [Security & Encryption Tools](https://usonlinetools.com/category/security): Password generators, hash tools, and encryption utilities
+- [Social Media Tools](https://usonlinetools.com/category/social-media): Character counters, image resizers, and content tools for social platforms
+
+## Trust & Technical Architecture
+- Local Execution: Calculations and file operations run in-browser using standard Web APIs. Zero user data is stored or logged.
+- Accuracy Standards: Formulas adhere to verified scientific, SI/NIST unit standards, financial amortization models, and official technical RFC specifications.
+- Methodology: Learn about our technical implementation and calculation verification at https://usonlinetools.com/about.
+- Privacy: Full zero-logging policy documented at https://usonlinetools.com/privacy-policy.
+
+## Full Catalog
+For the complete inventory of all 400+ tools with canonical links and descriptions, see:
+https://usonlinetools.com/llms-full.txt
