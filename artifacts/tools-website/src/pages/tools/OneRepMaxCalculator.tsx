@@ -78,8 +78,8 @@ export default function OneRepMaxCalculator() {
   return (
     <Layout>
       <SEO
-        title="One Rep Max Calculator – Estimate Your 1RM Strength"
-        description="Calculate your one rep max (1RM) for any lift using 5 proven formulas. Get a full rep-percentage table to plan your training loads."
+        title="One Rep Max Calculator — 1RM Strength & Percentages"
+        description="Calculate your one-rep max (1RM) for bench press, squat, and deadlift using Brzycki and Epley formulas. View target percentage charts for strength lifts."
       />
 
       {/* Breadcrumb */}

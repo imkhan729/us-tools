@@ -81,8 +81,8 @@ export default function BacCalculator() {
   return (
     <Layout>
       <SEO
-        title="BAC Calculator – Blood Alcohol Content Estimator | US Online Tools"
-        description="Free blood alcohol content (BAC) calculator. Estimate your BAC based on drinks consumed, body weight, time elapsed, and biological sex. For educational purposes only."
+        title="BAC Calculator — Blood Alcohol Content & Sober Time"
+        description="Estimate blood alcohol content (BAC) and sober timeline based on drinks, body weight, gender, and elapsed time. Free educational BAC calculator tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -102,8 +102,8 @@ export default function CubeRootCalculator() {
   return (
     <Layout>
       <SEO
-        title="Cube Root Calculator – Find ∛n Instantly, Free | US Online Tools"
-        description="Free online cube root calculator. Enter any number — positive, negative, or decimal — and instantly get its cube root accurate to 8 decimal places. Shows perfect cube check, square root, and n³. No signup needed."
+        title="Cube Root Calculator — Calculate ∛x Radical Online"
+        description="Calculate cube roots of positive, negative, and decimal numbers with high precision. Check perfect cubes and radical formulas with step-by-step math."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

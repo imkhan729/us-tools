@@ -128,8 +128,8 @@ export default function TimeAdditionCalculator() {
   return (
     <Layout>
       <SEO
-        title="Time Addition Calculator – Add Hours, Minutes, and Seconds"
-        description="Free online Time Addition Calculator. Easily add various lengths of hours, minutes, and seconds together. No signup required."
+        title="Time Addition Calculator — Add Hours, Minutes & Seconds"
+        description="Add multiple time durations in hours, minutes, and seconds with automatic carryover calculations and decimal time summaries. Free online time adder."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

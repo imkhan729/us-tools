@@ -150,8 +150,8 @@ export default function LumberCalculator() {
   return (
     <Layout>
       <SEO
-        title="Lumber Calculator - Board Feet and Volume Estimator"
-        description="Free lumber calculator for board feet, cubic feet, and cubic meters. Estimate rough lumber quantity from thickness, width, length, quantity, and waste."
+        title="Lumber Calculator — Board Feet & Wood Volume Estimator"
+        description="Calculate board feet, cubic feet, and cubic meters for rough lumber with thickness, width, length, and waste allowances. Free wood volume estimator."
         canonical="https://usonlinetools.com/construction/lumber-calculator"
         schema={{
           "@context": "https://schema.org",

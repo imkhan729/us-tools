@@ -102,8 +102,8 @@ export default function ColorPickerTool() {
   return (
     <UtilityToolPageShell
       title="Color Picker Tool"
-      seoTitle="Color Picker Tool"
-      seoDescription="Pick colors, inspect HEX RGB HSL values, and copy matching palette variants instantly with this free browser-based color picker."
+      seoTitle="Color Picker Tool — HEX, RGB & HSL EyeDropper Online"
+      seoDescription="Pick, inspect, and convert color codes in HEX, RGB, HSL, and CMYK formats. Free online color picker tool with palette variations and quick CSS copying."
       canonical={`https://usonlinetools.com${getCanonicalToolPath("color-picker")}`}
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

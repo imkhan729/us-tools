@@ -120,8 +120,8 @@ export default function ModuloCalculator() {
   return (
     <Layout>
       <SEO
-        title="Modulo Calculator - Find Division Remainder"
-        description="Free online modulo calculator. Compute a mod b instantly and view quotient plus remainder with clean math output."
+        title="Modulo Calculator — Find Remainder & Mod Operations"
+        description="Compute modular arithmetic (a mod b), integer division quotients, and remainders instantly with step-by-step formulas. Free online math modulo tool."
         canonical="https://usonlinetools.com/math/modulo-calculator"
         schema={schema}
       />

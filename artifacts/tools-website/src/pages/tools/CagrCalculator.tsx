@@ -26,8 +26,8 @@ export default function CagrCalculator() {
   return (
     <UtilityToolPageShell
       title="CAGR Calculator"
-      seoTitle="CAGR Calculator - Compound Annual Growth Rate"
-      seoDescription="Free online CAGR calculator. Calculate compound annual growth rate from starting value, ending value, and time period."
+      seoTitle="CAGR Calculator — Compound Annual Growth Rate Estimator"
+      seoDescription="Calculate compound annual growth rate (CAGR) accurately from initial and final values over any time period. Measure annualized investment and revenue returns."
       canonical="https://usonlinetools.com/finance/online-cagr-calculator"
       categoryName="Finance & Cost"
       categoryHref="/category/finance"

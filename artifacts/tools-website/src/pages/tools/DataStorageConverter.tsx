@@ -74,8 +74,8 @@ export default function DataStorageConverter() {
   return (
     <div style={{ "--calc-hue": "220" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Data Storage Converter — Convert Bytes, KB, MB, GB, TB Instantly"
-        description="Convert between bits, bytes, KB, MB, GB, TB and binary IEC units (KiB, MiB, GiB). Free online data storage converter with complete reference table."
+        title="Data Storage Converter — Bytes, KB, MB, GB & TB Tool"
+        description="Convert between bits, bytes, kilobytes, megabytes, gigabytes, and terabytes with decimal and binary (KiB, MiB, GiB) support. Free online storage calculator."
       />
 
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">

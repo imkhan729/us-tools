@@ -114,8 +114,8 @@ export default function CurrencyExchangeCalculator() {
   return (
     <div style={{ "--calc-hue": "210" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Currency Exchange Calculator — Convert Any Currency Instantly"
-        description="Convert between 30+ world currencies with our free currency exchange calculator. See live reference rates, cross-currency conversions, and travel money tips."
+        title="Currency Exchange Calculator — Live FX Rates Converter"
+        description="Convert between 30+ world currencies with instant foreign exchange calculations. View live FX rates, currency symbols, and international travel money tips."
       />
 
       {/* Breadcrumb */}

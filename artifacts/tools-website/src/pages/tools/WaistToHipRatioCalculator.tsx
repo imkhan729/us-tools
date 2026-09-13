@@ -84,8 +84,8 @@ export default function WaistToHipRatioCalculator() {
   return (
     <Layout>
       <SEO
-        title="Waist to Hip Ratio Calculator – WHR & Health Risk Assessment | US Online Tools"
-        description="Free waist-to-hip ratio calculator. Calculate your WHR and assess cardiovascular risk using WHO standards. Supports metric and imperial measurements. Instant results, no login."
+        title="Waist to Hip Ratio Calculator — WHR Body Shape Tool"
+        description="Calculate your waist-to-hip ratio (WHR) and evaluate cardiovascular body fat distribution risks using WHO health standards. Free body shape estimator."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

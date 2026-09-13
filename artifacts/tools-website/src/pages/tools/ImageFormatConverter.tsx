@@ -87,8 +87,8 @@ export default function ImageFormatConverter() {
   return (
     <ImageToolPageShell
       title="Image Format Converter"
-      seoTitle="Image Format Converter - Convert PNG, JPG, And WebP"
-      seoDescription="Convert images between PNG, JPG, and WebP formats in your browser. Free image format converter with preview and instant download."
+      seoTitle="Image Format Converter — Convert PNG, JPG & WebP"
+      seoDescription="Convert images between PNG, JPG, WebP, GIF, and SVG formats directly in your browser. Fast, free image converter with quality controls and no file limits."
       canonical="https://usonlinetools.com/image/image-format-converter"
       heroDescription="Convert images between PNG, JPG, and WebP when a platform, workflow, or design requirement calls for a different file type. This tool is built for practical conversion tasks such as web optimization, upload compatibility, photo export, and quick browser-side format cleanup."
       heroIcon={<ImageIcon className="w-3.5 h-3.5" />}

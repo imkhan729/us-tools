@@ -35,8 +35,8 @@ export default function GradeImprovementCalculator() {
   return (
     <StudentToolPageShell
       title="Grade Improvement Calculator"
-      seoTitle="Grade Improvement Calculator - GPA Improvement Planning Tool"
-      seoDescription="Calculate the future GPA needed to raise your current GPA to a target. Free grade improvement calculator for students planning semester recovery and long-term GPA goals."
+      seoTitle="Grade Improvement Calculator — GPA Target Planner"
+      seoDescription="Calculate the future semester grades and credit GPA needed to raise your cumulative GPA to a target goal. Free academic recovery planning tool."
       canonical="https://usonlinetools.com/education/grade-improvement-calculator"
       heroDescription="Work backward from your current GPA, completed credits, and target GPA to estimate the semester average you need next and see whether the target is realistically achievable."
       heroIcon={<GraduationCap className="w-3.5 h-3.5" />}

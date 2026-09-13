@@ -93,8 +93,8 @@ export default function TextToBinaryConverter() {
   return (
     <Layout>
       <SEO
-        title="Text to Binary Converter – Convert Text to Binary Code Free | US Online Tools"
-        description="Free text to binary converter. Convert text to binary (0s and 1s), hexadecimal, decimal, and ASCII codes instantly. Also converts binary code back to readable text. No signup required."
+        title="Text to Binary Converter — ASCII Text to Binary Code"
+        description="Convert plain ASCII text to 8-bit binary code strings (0s and 1s), hexadecimal, and decimal numbers with live reverse decoding. Free developer tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

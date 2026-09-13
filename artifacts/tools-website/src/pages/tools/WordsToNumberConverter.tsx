@@ -384,8 +384,8 @@ export default function WordsToNumberConverter() {
   return (
     <Layout>
       <SEO
-        title="Words to Number Converter - English Number Words to Digits"
-        description="Free Words to Number Converter. Turn English number words like 'two thousand forty-six' into digits instantly. Supports negatives, decimals after point, and large short-scale numbers."
+        title="Words to Number Converter — English Words to Digits"
+        description="Convert English spelled-out number words and check amount text into standard numerical digits and currency values. Free online number translation tool."
         canonical="https://usonlinetools.com/conversion/words-to-number-converter"
         schema={{
           "@context": "https://schema.org",

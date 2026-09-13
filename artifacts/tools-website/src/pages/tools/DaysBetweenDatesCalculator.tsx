@@ -107,8 +107,8 @@ export default function DaysBetweenDatesCalculator() {
   return (
     <Layout>
       <SEO
-        title="Days Between Dates Calculator – Count Days Exactly"
-        description="Calculate the total number of days between two dates instantly. Simple, accurate day counter for planning and tracking time spans."
+        title="Days Between Dates Calculator — Exact Day & Week Counter"
+        description="Calculate the exact total number of days and weeks between two dates. Includes optional end-date inclusion for project planning and milestones."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

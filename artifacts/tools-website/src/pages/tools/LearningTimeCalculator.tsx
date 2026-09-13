@@ -42,8 +42,8 @@ export default function LearningTimeCalculator() {
   return (
     <StudentToolPageShell
       title="Learning Time Calculator"
-      seoTitle="Learning Time Calculator - Estimate How Long A Skill Will Take"
-      seoDescription="Estimate how many weeks, months, and study sessions it will take to learn a new skill with this free online learning time calculator."
+      seoTitle="Learning Time Calculator — Skill Study Hours & Weeks"
+      seoDescription="Estimate study hours, daily practice sessions, and weeks needed to master a new skill or language based on complexity and focus time. Free learning planner."
       canonical="https://usonlinetools.com/education/learning-time-calculator"
       heroDescription="Estimate how long a new skill, course, or subject will take based on the total learning hours required and the time you can consistently invest each week."
       heroIcon={<BookOpen className="w-3.5 h-3.5" />}

@@ -112,8 +112,8 @@ export default function VO2MaxCalculator() {
   return (
     <Layout>
       <SEO
-        title="VO2 Max Calculator – Aerobic Fitness & Peak Capacity | US Online Tools"
-        description="Estimate your VO2 Max using the Rockport Fitness Walking Test. Calculate your peak oxygen uptake and aerobic power accurately with our free online fitness tool."
+        title="VO2 Max Calculator — Aerobic Fitness & Heart Health"
+        description="Calculate your VO2 max score and cardiovascular aerobic capacity using the Rockport 1-mile walking test and heart rate metrics. Free fitness tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

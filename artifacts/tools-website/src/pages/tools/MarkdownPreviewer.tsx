@@ -155,8 +155,8 @@ export default function MarkdownPreviewer() {
   return (
     <UtilityToolPageShell
       title="Markdown Previewer"
-      seoTitle="Online Markdown Previewer"
-      seoDescription="Write Markdown and preview the rendered output in real time with headings, lists, quotes, code blocks, and links."
+      seoTitle="Markdown Previewer — Live GitHub Flavored Editor"
+      seoDescription="Write, edit, and preview GitHub Flavored Markdown (GFM) in real time with side-by-side HTML rendering, syntax highlighting, and one-click export."
       canonical="https://usonlinetools.com/developer/online-markdown-previewer"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

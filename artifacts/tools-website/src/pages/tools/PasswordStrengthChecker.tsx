@@ -79,8 +79,8 @@ export default function PasswordStrengthChecker() {
   return (
     <Layout>
       <SEO
-        title="Password Strength Checker – Test Your Password Security | US Online Tools"
-        description="Free password strength checker. Test how secure your password is against cracking, check for common vulnerabilities, and learn how to improve password security offline."
+        title="Password Strength Checker — Test Entropy & Crack Time"
+        description="Evaluate password strength, character entropy, and brute-force cracking resistance completely client-side in your browser. Free cybersecurity tester."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

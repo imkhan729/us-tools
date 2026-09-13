@@ -157,8 +157,8 @@ export default function JsonToXmlConverter() {
   return (
     <UtilityToolPageShell
       title="JSON to XML Converter"
-      seoTitle="JSON to XML Converter - Convert JSON to XML Online"
-      seoDescription="Free JSON to XML converter with root and item tag controls, XML declaration toggle, CDATA option, and validated pretty output."
+      seoTitle="JSON to XML Converter — Transform JSON to XML Online"
+      seoDescription="Convert JSON data into well-formed XML documents with custom root tags, attribute mapping, and CDATA blocks. Free online JSON to XML transformer."
       canonical="https://usonlinetools.com/developer/json-to-xml"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

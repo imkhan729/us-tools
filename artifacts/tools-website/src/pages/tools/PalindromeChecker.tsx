@@ -101,8 +101,8 @@ export default function PalindromeChecker() {
   return (
     <Layout>
       <SEO
-        title="Palindrome Checker - Check Words and Phrases Online"
-        description="Free online palindrome checker. Test whether a word or phrase reads the same forwards and backwards after removing spaces and punctuation."
+        title="Palindrome Checker — Test Words, Sentences & Numbers"
+        description="Test if any word, sentence, phrase, or number is a palindrome after stripping punctuation and whitespace. Free online wordplay and text analysis tool."
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

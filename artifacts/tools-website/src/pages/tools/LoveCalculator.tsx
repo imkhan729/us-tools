@@ -86,8 +86,8 @@ export default function LoveCalculator() {
   return (
     <UtilityToolPageShell
       title="Love Calculator"
-      seoTitle="Love Calculator - Name Compatibility Score"
-      seoDescription="Free online love calculator. Enter two names to get a fun compatibility score, match band, and ship name instantly."
+      seoTitle="Love Calculator — Name Compatibility & Match Score"
+      seoDescription="Test relationship compatibility and romantic match percentages by name with our fun love test calculator. Get instant match bands and cute ship names."
       canonical="https://usonlinetools.com/productivity/love-calculator"
       categoryName="Productivity & Text"
       categoryHref="/category/productivity"

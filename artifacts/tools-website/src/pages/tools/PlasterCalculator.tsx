@@ -121,7 +121,8 @@ export default function PlasterCalculator() {
 
   return (
     <Layout>
-      <SEO title="Plaster Calculator - Estimate Plaster Volume and Bags" description="Free plaster calculator for wall area, plaster thickness, dry-mix volume, waste allowance, and bag count. Estimate plastering materials in feet or meters." />
+      <SEO title="Plaster Calculator — Wall Area, Dry Mix Volume & Bags"
+        description="Calculate plaster dry-mix volume, premix bag counts, and sand-cement ratios by wall square footage and coat thickness. Free masonry material estimator." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

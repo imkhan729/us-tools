@@ -127,8 +127,8 @@ export default function HalfBirthdayCalculator() {
   return (
     <Layout>
       <SEO
-        title="Half Birthday Calculator – Instantly Find Your 6-Month Mark"
-        description="Find out your exact half birthday in seconds. Enter your birth date to automatically get your half birthday date and a countdown of days left. Free and instant."
+        title="Half Birthday Calculator — Find Exact 6-Month Milestone"
+        description="Calculate your exact half-birthday date and live countdown timer from your birth date. Discover the precise 6-month halfway mark with free calendar tools."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

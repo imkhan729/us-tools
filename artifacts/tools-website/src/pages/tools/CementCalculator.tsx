@@ -124,8 +124,8 @@ export default function CementCalculator() {
   return (
     <Layout>
       <SEO
-        title="Cement Calculator – Concrete Mix Ratio Estimator, Free Online Tool | US Online Tools"
-        description="Free online cement calculator. Estimate cement bags, sand, and gravel needed for any concrete mix ratio. Supports M15, M20, M25 mixes. Instant results with waste factor. No signup required."
+        title="Cement Calculator — Mix Ratio & Bag Estimator for Concrete"
+        description="Estimate cement bags, sand, and gravel required for M15, M20, and M25 mix ratios. Includes customizable waste factor and dry volume multipliers."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

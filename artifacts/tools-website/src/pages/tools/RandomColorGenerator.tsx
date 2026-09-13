@@ -71,7 +71,7 @@ export default function RandomColorGenerator() {
 
   return (
     <Layout>
-      <SEO title="Random Color Generator – HEX, RGB & HSL Colors Free | US Online Tools" description="Free random color generator. Generate unique colors in HEX, RGB, and HSL formats for design, UI development, and creative projects. Bulk generation. No signup." />
+      <SEO title="Random Color Generator — HEX, RGB & HSL Color Palettes" description="Generate random colors and harmonious palettes in HEX, RGB, and HSL formats with one-click copy and contrast ratios. Free online web design color tool." />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

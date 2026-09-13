@@ -412,8 +412,8 @@ export default function EsportsEarningsCalculator() {
   return (
     <UtilityToolPageShell
       title="Esports Earnings Calculator"
-      seoTitle="Online Esports Earnings Calculator - Prize Split, Salary, and Season Income"
-      seoDescription="Free online esports earnings calculator. Estimate tournament prize splits, player net earnings, season income, and average winnings needed to hit an annual target."
+      seoTitle="Esports Earnings Calculator — Tournament Prize Splits"
+      seoDescription="Calculate esports tournament prize payouts, team roster splits, org cuts, and annual earnings goals. Free prize money calculator for competitive gaming."
       canonical="https://usonlinetools.com/gaming/esports-earnings-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

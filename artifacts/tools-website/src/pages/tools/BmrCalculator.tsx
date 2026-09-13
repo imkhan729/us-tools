@@ -116,8 +116,8 @@ export default function BmrCalculator() {
   return (
     <Layout>
       <SEO
-        title="BMR Calculator (Basal Metabolic Rate) – Mifflin-St Jeor Equation"
-        description="Free BMR calculator using the Mifflin-St Jeor equation. Estimate your basal metabolic rate (calories burned at rest) and use it to plan maintenance, cut, or bulk calorie targets."
+        title="BMR Calculator — Basal Metabolic Rate & Calorie Needs"
+        description="Calculate your basal metabolic rate (BMR) using Mifflin-St Jeor and Harris-Benedict formulas. Estimate calories burned at rest for cut, bulk, or maintain."
         canonical={canonical}
         schema={schema}
       />

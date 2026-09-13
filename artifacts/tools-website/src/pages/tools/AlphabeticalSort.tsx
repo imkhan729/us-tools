@@ -85,8 +85,8 @@ export default function AlphabeticalSort() {
   return (
     <Layout>
       <SEO
-        title="Alphabetical Sort – Sort Lists A-Z or Z-A Online Free | US Online Tools"
-        description="Free online alphabetical sort tool. Sort any list of words, names, or lines in ascending (A-Z) or descending (Z-A) order instantly. Trim whitespace, remove empty lines, and control case sensitivity. No signup."
+        title="Alphabetical Sort — Alphabetize Lists A-Z & Z-A Online"
+        description="Alphabetize text and word lists in ascending A-Z or descending Z-A order. Free online list sorter with deduplication, case options, and instant copying."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -155,8 +155,8 @@ export default function CalorieCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Calorie Calculator – Daily Calorie Needs & TDEE Free"
-        description="Free online calorie calculator. Calculate your daily calorie needs (TDEE) based on BMR, activity level, and weight goal using Mifflin-St Jeor or Harris-Benedict formula. Instant results, no signup needed."
+        title="Calorie Calculator — Daily Calorie Needs & TDEE Estimator"
+        description="Calculate your daily calorie needs and TDEE with Mifflin-St Jeor and Harris-Benedict formulas. Get custom targets for weight loss, maintenance, or muscle gain."
         canonical="https://usonlinetools.com/health/calorie-calculator"
         schema={schema}
       />

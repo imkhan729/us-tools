@@ -100,8 +100,8 @@ export default function InflationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Inflation Calculator - Calculate Purchasing Power & Cost of Living | Free Tool"
-        description="Free inflation calculator. See how inflation erodes purchasing power over time. Calculate the real value of money from any year using custom or historical inflation rates."
+        title="Inflation Calculator — Purchasing Power & Value Over Time"
+        description="Calculate the impact of inflation on purchasing power across years. Compare historical money values and project future costs with custom or average rates."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

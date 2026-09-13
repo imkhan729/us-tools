@@ -110,8 +110,8 @@ export default function HourlyTimeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Hourly Time Calculator – Calculate Wage & Work Hours"
-        description="Track your worked hours and total pay instantly. Add multiple days, deduct breaks, and see your gross earnings with our professional hourly wage calculator."
+        title="Hourly Time Calculator — Work Hours & Pay Estimator"
+        description="Calculate total worked shift hours, break deductions, and gross pay earnings across multiple days and pay rates. Free online employee timesheet tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

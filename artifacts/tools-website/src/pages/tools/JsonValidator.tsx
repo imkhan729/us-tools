@@ -148,8 +148,8 @@ export default function JsonValidator() {
   return (
     <UtilityToolPageShell
       title="JSON Validator"
-      seoTitle="JSON Validator - Validate JSON Syntax Online"
-      seoDescription="Free JSON validator with live syntax checks, error feedback, root-type and node stats, formatted output, and minified JSON copy helpers."
+      seoTitle="JSON Validator — Check & Fix Syntax Errors Online"
+      seoDescription="Validate JSON syntax with line-by-line error highlighting, schema checks, and automatic formatting fixes. Free developer tool for clean API payloads."
       canonical="https://usonlinetools.com/developer/json-validator"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

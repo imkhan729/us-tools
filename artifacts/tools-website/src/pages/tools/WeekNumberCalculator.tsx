@@ -151,8 +151,8 @@ export default function WeekNumberCalculator() {
   return (
     <Layout>
       <SEO
-        title="Week Number Calculator – Find Which Week It Is Instantly"
-        description="Find exactly what week number any date falls on. Easily track ISO-8601 week numbers for project management, payroll, and academic schedules."
+        title="Week Number Calculator — ISO-8601 Calendar Week Tool"
+        description="Find the ISO-8601 calendar week number for any date, view remaining weeks in the year, and calculate week date ranges. Free online calendar utility."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

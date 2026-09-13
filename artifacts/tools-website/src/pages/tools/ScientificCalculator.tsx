@@ -623,8 +623,8 @@ export default function ScientificCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Scientific Calculator - Standard, Programmer, Matrix, and Calculus Modes"
-        description="Free online scientific calculator with arithmetic, trigonometry, logarithms, fractions, equations, matrices, programmer conversions, and basic calculus tools in one page."
+        title="Scientific Calculator — Free Online Multi-Mode Math Tool"
+        description="Free online scientific calculator with arithmetic, trigonometry, fractions, matrices, programmer math, and calculus. Fast, accurate, and 100% private."
         canonical={canonical}
       />
 

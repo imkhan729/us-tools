@@ -188,8 +188,8 @@ export default function NeumorphismGenerator() {
   return (
     <UtilityToolPageShell
       title="Neumorphism Generator"
-      seoTitle="Neumorphism Generator - Free Soft UI CSS Shadow Builder"
-      seoDescription="Free neumorphism generator with live preview, raised and inset modes, dual-shadow controls, light-source tuning, and copyable CSS output."
+      seoTitle="Neumorphism Generator — Soft UI CSS & Shadow Builder"
+      seoDescription="Create modern soft UI neumorphic designs with dual-shadow elevations, inset shapes, and light source sliders. Export clean CSS and Tailwind shadow code."
       canonical="https://usonlinetools.com/css-design/neumorphism-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

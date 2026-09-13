@@ -150,8 +150,8 @@ export default function RunningPaceCalculator() {
   return (
     <Layout>
       <SEO
-        title="Running Pace Calculator – Calculate Pace, Time & Distance | Free"
-        description="Calculate your running pace, projected finish time, or total distance. Supports miles and km with a built-in race time predictor for 5K, 10K, half marathon, and marathon. Free, no signup."
+        title="Running Pace Calculator — Splits & Race Time Predictor"
+        description="Calculate your running pace, splits, and finish times for 5K, 10K, half marathon, and full marathon in min/mile or min/km. Free with zero signup."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

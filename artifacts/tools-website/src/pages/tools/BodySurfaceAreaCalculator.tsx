@@ -22,8 +22,8 @@ export default function BodySurfaceAreaCalculator() {
   return (
     <UtilityToolPageShell
       title="Body Surface Area Calculator"
-      seoTitle="Body Surface Area Calculator - BSA"
-      seoDescription="Free online body surface area calculator using height and weight. Estimate BSA quickly with Mosteller formula."
+      seoTitle="Body Surface Area Calculator — Mosteller & Du Bois"
+      seoDescription="Calculate body surface area (BSA) in square meters using Mosteller and Du Bois formulas. Free medical calculator for clinical dosage and physiology."
       canonical="https://usonlinetools.com/health/online-body-surface-area-calculator"
       categoryName="Health & Fitness"
       categoryHref="/category/health"

@@ -154,8 +154,8 @@ export default function TileCalculator() {
   return (
     <Layout>
       <SEO
-        title="Tile Calculator – How Many Tiles Do I Need? Free Online Tool | US Online Tools"
-        description="Free online tile calculator. Figure out exactly how many floor, wall, or bathroom tiles you need. Calculate boxes and include a standard waste allowance effortlessly."
+        title="Tile Calculator — Floor, Wall & Box Estimator with Waste"
+        description="Calculate exactly how many floor or wall tiles and boxes you need for any room. Includes customizable grout gaps and cutting waste buffer percentages."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

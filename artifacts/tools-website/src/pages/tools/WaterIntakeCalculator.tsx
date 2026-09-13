@@ -124,8 +124,8 @@ export default function WaterIntakeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Water Intake Calculator – How Much Water Should You Drink Per Day?"
-        description="Calculate your recommended daily water intake based on weight, activity level, and climate. Get results in liters, oz, cups, and glasses. Free, instant, no signup required."
+        title="Water Intake Calculator — Daily Hydration & Cups Estimator"
+        description="Calculate your recommended daily water intake based on body weight, exercise, and climate. Get results in liters, fluid ounces, cups, and bottles instantly."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

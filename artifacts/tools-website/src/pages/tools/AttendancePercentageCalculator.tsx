@@ -49,8 +49,8 @@ export default function AttendancePercentageCalculator() {
   return (
     <StudentToolPageShell
       title="Attendance Percentage Calculator"
-      seoTitle="Attendance Percentage Calculator - Free Class Attendance Tracker"
-      seoDescription="Calculate attendance percentage, absences, and the classes you need to attend to reach a target attendance rate. Free online attendance percentage calculator for students."
+      seoTitle="Attendance Percentage Calculator — Class & School Tracker"
+      seoDescription="Calculate student attendance percentage and classes needed to reach target attendance goals. Free online attendance tracker for schools and colleges."
       canonical="https://usonlinetools.com/education/attendance-percentage-calculator"
       heroDescription="Calculate your class attendance percentage instantly, see how many classes you have missed, and plan how many upcoming classes you need to attend to hit your target attendance."
       heroIcon={<BookOpen className="w-3.5 h-3.5" />}

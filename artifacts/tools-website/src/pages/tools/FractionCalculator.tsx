@@ -93,8 +93,8 @@ export default function FractionCalculator() {
   return (
     <UtilityToolPageShell
       title="Fraction Calculator"
-      seoTitle="Fraction Calculator - Simplify and Calculate Fractions"
-      seoDescription="Free online fraction calculator. Simplify fractions and perform fraction addition, subtraction, multiplication, and division instantly."
+      seoTitle="Fraction Calculator — Add, Subtract, Multiply & Divide"
+      seoDescription="Perform fraction arithmetic with addition, subtraction, multiplication, and division. Free fraction calculator with step-by-step simplifying and LCD."
       canonical="https://usonlinetools.com/math/fraction-calculator"
       categoryName="Math & Calculators"
       categoryHref="/category/math"

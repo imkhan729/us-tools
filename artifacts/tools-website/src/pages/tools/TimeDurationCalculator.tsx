@@ -125,8 +125,8 @@ export default function TimeDurationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Time Duration Calculator – Calculate Hours & Minutes Between Times"
-        description="Calculate the time duration between two times. Find exactly how many hours and minutes have passed. Free online time duration calculator with decimal hours."
+        title="Time Duration Calculator — Hours & Minutes Between Times"
+        description="Calculate the duration between two times in hours, minutes, and decimal hours. Supports overnight spans crossing midnight with instant accurate results."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

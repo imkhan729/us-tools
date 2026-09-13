@@ -93,8 +93,8 @@ export default function FlashcardTimerTool() {
   return (
     <StudentToolPageShell
       title="Flashcard Timer Tool"
-      seoTitle="Flashcard Timer Tool - Time Flashcard Study Sessions"
-      seoDescription="Run timed flashcard study rounds with built-in break intervals and total session planning using this free flashcard timer tool."
+      seoTitle="Flashcard Timer Tool — Study Intervals & Pacing Clock"
+      seoDescription="Time flashcard study sessions with customizable per-card timers, review intervals, and Pomodoro break pacing. Free online focus timer for students."
       canonical="https://usonlinetools.com/education/flashcard-timer-tool"
       heroDescription="Time focused flashcard sessions without guessing when to stop or break. Set study rounds, break lengths, and total cycles so revision feels more deliberate and less exhausting."
       heroIcon={<Timer className="w-3.5 h-3.5" />}

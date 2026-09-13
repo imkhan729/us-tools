@@ -124,8 +124,8 @@ export default function CronExpressionGenerator() {
   return (
     <UtilityToolPageShell
       title="Cron Expression Generator"
-      seoTitle="Cron Expression Generator - Build 5-Field Cron Schedules Online"
-      seoDescription="Free cron expression generator for building 5-field cron schedules visually. Create minute, hourly, daily, weekly, and monthly cron strings with plain-English explanations and copy-ready snippets."
+      seoTitle="Cron Expression Generator — Schedule Builder & Crontab"
+      seoDescription="Build and validate 5-field crontab expressions visually with real-time schedule descriptions, next execution times, and copyable crontab syntax."
       canonical="https://usonlinetools.com/developer/cron-expression-generator"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

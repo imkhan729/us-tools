@@ -94,8 +94,8 @@ export default function CarLoanCalculator() {
   return (
     <Layout>
       <SEO
-        title="Car Loan Calculator - Monthly Auto Loan Payment Estimator | Free Tool"
-        description="Free car loan calculator. Estimate monthly auto loan payments, total interest, and total cost. Enter vehicle price, down payment, interest rate, and loan term."
+        title="Car Loan Calculator — Auto Payment & Interest Estimator"
+        description="Calculate monthly car loan payments, total interest, and amortized auto costs. Factor in vehicle price, down payment, trade-in value, and interest rates."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

@@ -141,8 +141,8 @@ export default function SpeedConverter() {
   return (
     <Layout>
       <SEO
-        title="Speed Converter - Convert mph, km/h, m/s, knots, Mach"
-        description="Free online speed converter. Convert mph, km/h, m/s, knots, Mach, feet per second, and more with live results and practical benchmark examples."
+        title="Speed Converter — mph, km/h, m/s, Knots & Mach Units"
+        description="Convert speed and velocity units between mph, km/h, m/s, knots, Mach, and ft/s with real-time conversion formulas. Free physics and automotive converter."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

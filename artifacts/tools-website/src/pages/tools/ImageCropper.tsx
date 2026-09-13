@@ -136,8 +136,8 @@ export default function ImageCropper() {
   return (
     <ImageToolPageShell
       title="Image Cropper"
-      seoTitle="Image Cropper - Crop Images To Custom Dimensions Or Ratios"
-      seoDescription="Crop images in your browser using custom crop dimensions or common aspect ratios. Free image cropper with preview and instant download."
+      seoTitle="Image Cropper — Crop JPG, PNG & WebP Photos Online"
+      seoDescription="Crop images and photos online with custom aspect ratio presets (16:9, 1:1, 4:5). Free browser-side image cropper with high-resolution export."
       canonical="https://usonlinetools.com/image/image-cropper"
       heroDescription="Crop images to the exact frame you need using manual pixel coordinates or quick presets like square, 4:3, and 16:9. This tool is built for real-world jobs such as profile photos, marketplace thumbnails, banner images, product closeups, and cleaner content framing."
       heroIcon={<ImageIcon className="w-3.5 h-3.5" />}

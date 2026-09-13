@@ -315,8 +315,8 @@ export default function HmacGenerator() {
   return (
     <UtilityToolPageShell
       title="HMAC Generator"
-      seoTitle="HMAC Generator - Create SHA-Based HMAC Signatures Online"
-      seoDescription="Free HMAC generator for SHA-1, SHA-256, SHA-384, and SHA-512 with browser-side signing, comparison mode, and copy-ready output."
+      seoTitle="HMAC Generator — Hash-Based Message Auth Codes"
+      seoDescription="Generate secure HMAC authentication signatures using SHA-256, SHA-512, and SHA-384 with custom secret keys. Free developer API signature generator."
       canonical="https://usonlinetools.com/security/hmac-generator"
       categoryName="Security & Encryption"
       categoryHref="/category/security"

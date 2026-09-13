@@ -87,8 +87,8 @@ export default function KetoCalculator() {
   return (
     <Layout>
       <SEO
-        title="Keto Calculator – Calculate Your Ketogenic Macros for Fat Loss | US Online Tools"
-        description="Free keto macro calculator. Enter your weight, body fat, and activity level to get your ideal fat, protein, and net carb targets for ketosis. Instant results, no signup."
+        title="Keto Calculator — Ketogenic Diet Macros & Net Carbs"
+        description="Calculate personalized ketogenic macro targets for fat, protein, and net carbs based on your body weight and fat loss goals. Free keto diet calculator."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -145,8 +145,8 @@ export default function TorqueConverter() {
   return (
     <Layout>
       <SEO
-        title="Torque Converter - Convert N-m, ft-lbf, in-lbf, kgf-m"
-        description="Free online torque converter. Convert Newton-meters, foot-pound force, inch-pound force, kilogram-force meter, and more with live results and practical reference examples."
+        title="Torque Converter — N·m, ft-lb, in-lb & kgf·m Units"
+        description="Convert torque values between Newton-meters (N·m), foot-pounds (ft-lb), inch-pounds, and kilogram-force meters. Free engineering & automotive converter."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

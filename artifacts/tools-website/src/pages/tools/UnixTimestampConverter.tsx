@@ -162,8 +162,8 @@ export default function UnixTimestampConverter() {
   return (
     <Layout>
       <SEO
-        title="Online Unix Timestamp Converter – Epoch to Human Readable Date"
-        description="Convert Unix epoch timestamps to human-readable dates, or translate a calendar date back into seconds instantly. Free Unix time calculator."
+        title="Unix Timestamp Converter — Epoch to Human Date Tool"
+        description="Convert Unix epoch timestamps in seconds and milliseconds to human-readable UTC and local dates, or generate current epoch time. Free developer tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

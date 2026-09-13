@@ -174,8 +174,8 @@ export default function CssFormatter() {
   return (
     <UtilityToolPageShell
       title="CSS Formatter & Beautifier"
-      seoTitle="CSS Formatter & Beautifier - Format and Minify CSS Online"
-      seoDescription="Free CSS formatter and beautifier with minify mode, indentation controls, comment handling, and copy-ready output for cleaner stylesheets and faster front-end workflow."
+      seoTitle="CSS Formatter — Beautify & Minify Stylesheets Online"
+      seoDescription="Format, beautify, indent, and minify CSS stylesheets instantly. Clean up messy CSS code with configurable indentation and syntax error detection."
       canonical="https://usonlinetools.com/developer/css-formatter"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

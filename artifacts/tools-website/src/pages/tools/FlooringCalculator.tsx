@@ -133,8 +133,8 @@ export default function FlooringCalculator() {
   return (
     <Layout>
       <SEO
-        title="Flooring Calculator – Laminate, Hardwood & Vinyl Estimates | US Online Tools"
-        description="Free online flooring calculator. Estimate the exact number of boxes, square footage, wood or vinyl planks required, factoring in waste percentages securely."
+        title="Flooring Calculator — Square Footage & Box Estimator"
+        description="Calculate square footage, planks, and boxes needed for hardwood, laminate, or vinyl flooring. Includes cutting waste percentages and material cost totals."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

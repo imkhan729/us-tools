@@ -510,8 +510,8 @@ export default function BloxFruitsTradeCalculator() {
   return (
     <UtilityToolPageShell
       title="Blox Fruits Trade Calculator"
-      seoTitle="Blox Fruits Trade Calculator - Fairness, Overpay, and Demand Check"
-      seoDescription="Free Blox Fruits trade calculator with editable fruit values, overpay targets, demand-weighted scoring, and copy-ready trade summaries."
+      seoTitle="Blox Fruits Trade Calculator — Fair Value & Overpay Win"
+      seoDescription="Evaluate Blox Fruits trades with real-time fruit values, demand multipliers, and win/loss fairness scoring. Get copy-ready Roblox trade breakdown summaries."
       canonical="https://usonlinetools.com/gaming/blox-fruits-trade-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

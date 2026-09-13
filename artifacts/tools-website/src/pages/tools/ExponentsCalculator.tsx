@@ -128,8 +128,8 @@ export default function ExponentsCalculator() {
   return (
     <Layout>
       <SEO
-        title="Exponents Calculator - Raise Any Number to Any Power"
-        description="Free online exponents calculator. Compute base^exponent instantly, including negative and fractional exponents with real-number checks."
+        title="Exponents Calculator — Power, Base & Root Solver"
+        description="Calculate powers of positive, negative, and fractional numbers instantly. Free online exponent calculator with step-by-step exponential math rules."
         canonical="https://usonlinetools.com/math/exponents-calculator"
         schema={schema}
       />

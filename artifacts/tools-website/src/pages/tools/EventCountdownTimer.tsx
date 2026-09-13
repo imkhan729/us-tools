@@ -111,8 +111,8 @@ export default function EventCountdownTimer() {
   return (
     <Layout>
       <SEO
-        title="Event Countdown Timer - Free Online Countdown Clock"
-        description="Create a free online event countdown timer for weddings, birthdays, launches, exams, trips, holidays, and deadlines. Build a live countdown clock and share the link with no signup."
+        title="Event Countdown Timer — Live Clock & Shareable Link"
+        description="Create custom countdown clocks for weddings, birthdays, product launches, and holidays. Share live ticking countdown links with friends and followers."
         canonical="https://usonlinetools.com/time-date/event-countdown-timer"
       />
 

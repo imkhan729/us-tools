@@ -33,8 +33,8 @@ export default function Base64ToImage() {
   return (
     <ImageToolPageShell
       title="Base64 to Image Converter"
-      seoTitle="Base64 To Image Converter - Decode Base64 Strings To Images"
-      seoDescription="Decode Base64 strings into previewable and downloadable images in your browser. Free Base64 to image converter with Data URL support."
+      seoTitle="Base64 to Image Converter — Decode PNG, JPG & WebP"
+      seoDescription="Convert Base64 strings and Data URLs into downloadable PNG, JPG, and SVG images directly in your browser. Fast, free, and completely client-side."
       canonical="https://usonlinetools.com/image/base64-to-image"
       heroDescription="Convert Base64 text back into a previewable, downloadable image when your data arrives as a string instead of a normal file. This page is built for developer, API, debugging, and content-migration workflows where you need to inspect, validate, or recover an image from encoded text."
       heroIcon={<ImageIcon className="w-3.5 h-3.5" />}

@@ -137,8 +137,8 @@ export default function TimeSubtractionCalculator() {
   return (
     <Layout>
       <SEO
-        title="Time Subtraction Calculator – Subtract Clock Durations"
-        description="Free online Time Subtraction Calculator. Instantly subtract values of hours, minutes, and seconds from one another without hassle."
+        title="Time Subtraction Calculator — Subtract Hours & Minutes"
+        description="Subtract time values and durations in hours, minutes, and seconds with negative interval support and elapsed time breakdowns. Free clock calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -192,7 +192,7 @@ Health calculators for BMI, calories, fitness and more
 ## Construction & DIY (https://usonlinetools.com/category/construction)
 Calculators for building, materials, and home projects
 
-- [Concrete Volume Calculator](https://usonlinetools.com/construction/concrete-calculator): Calculate the volume of concrete needed for any project.
+- [Concrete Calculator](https://usonlinetools.com/construction/concrete-calculator): Calculate concrete volume in cubic yards, cubic meters, and premix bag counts (60 lb / 80 lb) for slabs, footings, and cylindrical columns.
 - [Cement Calculator](https://usonlinetools.com/construction/cement-calculator): Estimate cement bags needed for slabs, walls, and columns.
 - [Brick Calculator](https://usonlinetools.com/construction/brick-calculator): Estimate how many bricks you need for walls or projects.
 - [Steel Weight Calculator](https://usonlinetools.com/construction/steel-weight-calculator): Calculate the weight of steel bars and rods by dimensions.

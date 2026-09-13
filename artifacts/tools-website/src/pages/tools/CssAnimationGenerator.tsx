@@ -135,8 +135,8 @@ export default function CssAnimationGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Animation Generator"
-      seoTitle="CSS Animation Generator - Free Keyframe CSS Builder"
-      seoDescription="Free CSS animation generator with live preview, keyframe presets, timing controls, and copyable CSS output. Build motion for cards, buttons, badges, and interface components instantly."
+      seoTitle="CSS Animation Generator — Keyframes & Motion Preview"
+      seoDescription="Generate CSS @keyframes animations visually with live previews, timing controls, and easing curves. Export clean, production-ready CSS animation code."
       canonical="https://usonlinetools.com/css-design/css-animation-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

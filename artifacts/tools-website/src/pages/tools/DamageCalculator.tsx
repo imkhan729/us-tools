@@ -372,8 +372,8 @@ export default function DamageCalculator() {
   return (
     <UtilityToolPageShell
       title="Damage Calculator"
-      seoTitle="Online Damage Calculator - DPS, Crit Damage, Burst Combo, and TTK"
-      seoDescription="Free online damage calculator. Calculate average hit damage, DPS, crit scaling, burst combo damage, and time to kill using attack, defense, resistance, and buff inputs."
+      seoTitle="Damage Calculator — DPS, Hit & Critical Strike Tool"
+      seoDescription="Calculate average hit damage, DPS, critical strikes, and time-to-kill across levels. Free RPG combat damage calculator with attack and defense buffs."
       canonical="https://usonlinetools.com/gaming/damage-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

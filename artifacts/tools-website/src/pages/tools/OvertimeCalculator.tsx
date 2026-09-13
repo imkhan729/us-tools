@@ -129,8 +129,8 @@ export default function OvertimeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Overtime Pay Calculator – Calculate Regular and Overtime Wages"
-        description="Free online overtime calculator. Quickly calculate time-and-a-half or double-time overtime pay, total gross wages, and work hours."
+        title="Overtime Pay Calculator — Time-and-a-Half Wage Tool"
+        description="Calculate regular and overtime wages with 1.5x time-and-a-half or 2.0x double-time pay rates. Free paycheck earnings estimator for hourly work weeks."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

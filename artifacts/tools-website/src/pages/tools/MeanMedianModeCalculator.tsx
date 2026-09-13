@@ -154,8 +154,8 @@ export default function MeanMedianModeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Mean Median Mode Calculator - Free Statistics Tool"
-        description="Free online mean median mode calculator. Enter a dataset to instantly compute mean, median, mode, range, and count."
+        title="Mean Median Mode Calculator — Statistics & Range Tool"
+        description="Calculate mean, median, mode, range, and standard deviation for any dataset. Free online statistics calculator with step-by-step summary distribution."
         canonical="https://usonlinetools.com/math/mean-median-mode-calculator"
         schema={schema}
       />

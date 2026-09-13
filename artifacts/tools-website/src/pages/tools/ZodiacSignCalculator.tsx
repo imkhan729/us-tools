@@ -87,8 +87,8 @@ export default function ZodiacSignCalculator() {
   return (
     <Layout>
       <SEO
-        title="Zodiac Sign Calculator – Find Your Sun Sign"
-        description="Discover your zodiac sign based on your birth date. Free online tool with personality traits, elements, and symbols for all 12 star signs."
+        title="Zodiac Sign Calculator — Sun Sign, Element & Dates"
+        description="Find your astrological zodiac sign, cusp dates, element, and personality traits by entering your birthday. Free online horoscope and astrology tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

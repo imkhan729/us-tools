@@ -335,8 +335,8 @@ export default function HashGenerator() {
   return (
     <UtilityToolPageShell
       title="Hash Generator (MD5, SHA)"
-      seoTitle="Hash Generator (MD5, SHA-1, SHA-256, SHA-512) Online"
-      seoDescription="Free hash generator for MD5, SHA-1, SHA-256, and SHA-512 with real-time output, hex or Base64 format, salt fields, and hash verification."
+      seoTitle="Hash Generator — MD5, SHA-256 & SHA-512 Checksum"
+      seoDescription="Generate cryptographic hashes including MD5, SHA-1, SHA-256, and SHA-512 with optional salt and hex or Base64 encoding. Free online hash checksum tool."
       canonical="https://usonlinetools.com/developer/hash-generator"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

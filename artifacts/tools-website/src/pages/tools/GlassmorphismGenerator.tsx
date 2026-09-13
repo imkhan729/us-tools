@@ -190,8 +190,8 @@ export default function GlassmorphismGenerator() {
   return (
     <UtilityToolPageShell
       title="Glassmorphism Generator"
-      seoTitle="Glassmorphism Generator - Free Frosted Glass CSS Builder"
-      seoDescription="Free glassmorphism generator with live preview, blur controls, transparency tuning, border styling, shadow depth, and copyable CSS output."
+      seoTitle="Glassmorphism Generator — Frosted Glass CSS & Tailwind"
+      seoDescription="Create modern frosted glass UI cards with backdrop-filter blur, border highlights, transparency, and shadow controls. Export CSS and Tailwind classes."
       canonical="https://usonlinetools.com/css-design/glassmorphism-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

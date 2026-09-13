@@ -123,8 +123,8 @@ export default function MeetingTimeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Meeting Time Calculator – Find Best Time Across Time Zones"
-        description="Plan international meetings effortlessly. Compare multiple time zones in a visual grid to find the perfect overlap for global teams."
+        title="Meeting Time Calculator — World Time Zones Planner"
+        description="Find the best meeting times across multiple time zones with interactive visual overlap grids. Perfect for distributed teams and international calls."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

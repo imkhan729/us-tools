@@ -148,8 +148,8 @@ export default function RoiCalculator() {
   return (
     <Layout>
       <SEO
-        title="ROI Calculator - Free Return on Investment Calculator | Calculate ROI Percentage"
-        description="Free online ROI calculator. Calculate return on investment, net profit, and annualized ROI instantly. Easy-to-use investment return calculator with no signup required."
+        title="ROI Calculator — Return on Investment & Annualized Gain"
+        description="Calculate total return on investment percentage, net profit, and annualized ROI across multi-year holding periods. Free financial investment calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

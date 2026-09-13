@@ -164,8 +164,8 @@ export default function GoogleSerpPreview() {
   return (
     <Layout>
       <SEO
-        title="Google SERP Preview Tool - Preview Title and Meta Description | US Online Tools"
-        description="Free Google SERP preview tool. Test your page title, meta description, and URL before publishing. Instant browser-based preview with copyable markup."
+        title="Google SERP Preview — Search Snippet & Meta Tag Tool"
+        description="Preview Google search result snippets for desktop and mobile in real time. Optimize page titles, meta descriptions, and rich snippet schemas for high CTR."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

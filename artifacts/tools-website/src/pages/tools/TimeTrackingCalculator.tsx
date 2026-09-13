@@ -184,8 +184,8 @@ export default function TimeTrackingCalculator() {
   return (
     <Layout>
       <SEO
-        title="Time Tracking Calculator - Track Task Hours Online, Free | US Online Tools"
-        description="Free online time tracking calculator. Log start and end times for multiple tasks, total worked hours instantly, and handle overnight entries automatically. No signup required."
+        title="Time Tracking Calculator — Task Hours & Timesheet Tool"
+        description="Log start and end times across multiple project tasks, compute total worked billable hours, and export payroll timesheet summaries. Free online tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

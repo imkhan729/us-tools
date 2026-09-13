@@ -184,8 +184,8 @@ export default function CssGridGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Grid Generator"
-      seoTitle="CSS Grid Generator - Free Visual CSS Grid Layout Builder"
-      seoDescription="Free CSS Grid generator with live preview, grid presets, span controls, and copyable CSS output. Build CSS Grid layouts visually and export production-ready code instantly."
+      seoTitle="CSS Grid Generator — Visual Grid Layout & Template Code"
+      seoDescription="Create CSS grid layouts visually by defining rows, columns, gaps, and item span areas. Generate responsive CSS grid templates with instant code export."
       canonical="https://usonlinetools.com/css-design/css-grid-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

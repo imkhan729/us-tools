@@ -120,8 +120,8 @@ export default function RandomNumberGenerator() {
   return (
     <Layout>
       <SEO
-        title="Random Number Generator – Generate 1 to 1,000 Random Numbers Free | US Online Tools"
-        description="Free random number generator. Generate one or multiple random numbers in any range. Enable unique mode for no duplicates. Perfect for raffles, games, sampling, and decisions."
+        title="Random Number Generator — Pick Numbers in Any Range"
+        description="Generate truly random integers and non-repeating number sequences in custom ranges with list sorting and lottery presets. Free online randomizer tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

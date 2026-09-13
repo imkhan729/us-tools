@@ -141,8 +141,8 @@ export default function WeightConverter() {
   return (
     <Layout>
       <SEO
-        title="Weight Converter - Convert kg, lb, oz, g, stone, tons"
-        description="Free online weight converter. Convert kilograms, pounds, ounces, grams, stone, metric tons, and US tons with live results and practical reference examples."
+        title="Weight Converter — kg, lbs, oz, Grams, Stone & Tons"
+        description="Convert weight and mass units across kilograms, pounds, ounces, grams, stones, and metric tons with instant precision. Free online conversion tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

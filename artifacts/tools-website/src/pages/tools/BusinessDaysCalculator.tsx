@@ -138,8 +138,8 @@ export default function BusinessDaysCalculator() {
   return (
     <Layout>
       <SEO
-        title="Business Days Calculator – Count Working Days Between Dates, Free | US Online Tools"
-        description="Free business days calculator. Count working days between two dates, excluding weekends and US federal holidays. Or add business days to any start date. Instant results, no signup required."
+        title="Business Days Calculator — Working Days Between Dates"
+        description="Calculate exact business days and working hours between two dates, excluding weekends and holidays. Add or subtract business days for project planning."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

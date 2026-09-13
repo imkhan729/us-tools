@@ -106,8 +106,8 @@ export default function UsernameGenerator() {
   return (
     <Layout>
       <SEO
-        title="Username Generator – Random Cool Username Ideas | US Online Tools"
-        description="Free username generator. Instantly create unique, random usernames in multiple styles — classic, number, underscore, dot, and TitleCase. Perfect for gaming, social media, and accounts. No signup."
+        title="Username Generator — Cool Gamer, Social & App Handles"
+        description="Generate unique, catchy usernames and gamer tags in multiple styles including aesthetic, underscores, dots, and TitleCase. Free online name creator."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

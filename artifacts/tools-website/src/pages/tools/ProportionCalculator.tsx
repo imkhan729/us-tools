@@ -150,8 +150,8 @@ export default function ProportionCalculator() {
   return (
     <Layout>
       <SEO
-        title="Proportion Calculator - Solve a/b = c/d"
-        description="Free online proportion calculator. Solve for any missing value in a proportion equation and verify ratio equality instantly."
+        title="Proportion Calculator — Solve Missing Terms (a/b = c/d)"
+        description="Solve for unknown values in direct and inverse proportion equations with cross-multiplication steps and ratio equality checks. Free online algebra tool."
         canonical="https://usonlinetools.com/math/proportion-calculator"
         schema={schema}
       />

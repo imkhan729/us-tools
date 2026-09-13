@@ -77,8 +77,8 @@ export default function JsonFormatter() {
   return (
     <Layout>
       <SEO
-        title="JSON Formatter & Beautifier – Validate and Format JSON Online | US Online Tools"
-        description="Free online JSON formatter, validator, and beautifier. Format messy JSON strings into readable indented code, validate syntax, and minify JSON data instantly."
+        title="JSON Formatter — Beautify & Validate JSON Online"
+        description="Format, beautify, and validate JSON code online with configurable indentation and syntax error detection. Free developer JSON cleaner with one-click copy."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

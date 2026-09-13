@@ -657,8 +657,8 @@ export default function BloxFruitsCalculator() {
   return (
     <UtilityToolPageShell
       title="Blox Fruits Calculator"
-      seoTitle="Blox Fruits Calculator - Trade Value, Fragments, and Build Planner"
-      seoDescription="Free Blox Fruits calculator with editable trade values, fairness scoring, fragments planning, and stat build allocation for Roblox players."
+      seoTitle="Blox Fruits Calculator — Value, Trade & Stat Planner"
+      seoDescription="Calculate Blox Fruits trade values, stat build points, fragments, and masteries accurately. Free Roblox Blox Fruits calculator with live value charts."
       canonical="https://usonlinetools.com/gaming/blox-fruits-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

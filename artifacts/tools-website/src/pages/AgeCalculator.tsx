@@ -24,7 +24,7 @@ import { getCanonicalToolPath } from "@/data/tools";
 
 const CANONICAL_URL = "https://usonlinetools.com/time-date/online-age-calculator";
 const META_DESCRIPTION =
-  "Use this free age calculator to calculate exact age from date of birth in years, months, days, total days, and next birthday.";
+  "Calculate your exact age in years, months, days, hours, and minutes from date of birth with next birthday countdowns. Free online chronological age tool.";
 
 type AgeResult = {
   years: number;
@@ -192,7 +192,7 @@ export default function AgeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Age Calculator - Calculate Exact Age from Date of Birth"
+        title="Age Calculator — Calculate Exact Age in Years & Days"
         description={META_DESCRIPTION}
         canonical={CANONICAL_URL}
         schema={schema}

@@ -124,8 +124,8 @@ export default function ElectricalLoadCalculator() {
   return (
     <ConstructionToolPageShell
       title="Electrical Load Calculator"
-      seoTitle="Electrical Load Calculator - Estimate Circuit And Panel Load"
-      seoDescription="Calculate connected electrical load, demand-adjusted load, current draw, and recommended breaker size. Free electrical load calculator for basic circuit and panel planning."
+      seoTitle="Electrical Load Calculator — Panel & Breaker Sizing"
+      seoDescription="Calculate total connected electrical load, amps draw, demand factor, and recommended circuit breaker sizing. Free electrical panel calculation tool."
       canonical="https://usonlinetools.com/construction/electrical-load-calculator"
       heroDescription="Estimate electrical load from appliances and equipment, apply demand and safety factors, and convert the result into an expected current draw and suggested breaker size."
       heroIcon={<Bolt className="w-3.5 h-3.5" />}

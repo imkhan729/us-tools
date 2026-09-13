@@ -136,8 +136,8 @@ export default function ForceConverter() {
   return (
     <Layout>
       <SEO
-        title="Force Converter - Convert Newtons, Pound-force, Kilogram-force"
-        description="Free online force converter. Convert Newtons, kilonewtons, pound-force, kilogram-force, dynes, tonne-force, and more with live results and real-world force references."
+        title="Force Converter — Newtons, lbf, kgf & Dynes Tool"
+        description="Convert force units between Newtons (N), kilonewtons (kN), pound-force (lbf), and kilogram-force (kgf). Free online physics and engineering calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

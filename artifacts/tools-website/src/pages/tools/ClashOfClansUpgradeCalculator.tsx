@@ -374,9 +374,9 @@ export default function ClashOfClansUpgradeCalculator() {
 
   return (
     <UtilityToolPageShell
-      title="Clash of Clans Upgrade Calculator"
+      title="Clash of Clans Upgrade Calculator — Builder & Gold Time"
       seoTitle="Online Clash of Clans Upgrade Calculator - Cost, Time, and Builder Planning"
-      seoDescription="Free online Clash of Clans upgrade calculator. Estimate total upgrade cost, total time, builder parallel days, and farming pressure from one CoC-style upgrade planner."
+      seoDescription="Plan Clash of Clans building and lab upgrades, gold and elixir costs, and builder time. Optimize your village progression with smart upgrade planning."
       canonical="https://usonlinetools.com/gaming/clash-of-clans-upgrade-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

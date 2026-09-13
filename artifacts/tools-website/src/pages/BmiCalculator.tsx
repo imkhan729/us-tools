@@ -16,7 +16,7 @@ import { getCanonicalToolPath } from "@/data/tools";
 
 const CANONICAL_URL = "https://usonlinetools.com/health/online-bmi-calculator";
 const META_DESCRIPTION =
-  "Use this free BMI calculator to calculate body mass index with metric or imperial units and see adult BMI categories.";
+  "Calculate your body mass index (BMI), healthy target weight range, and WHO weight classifications using metric or imperial units. Free health calculator.";
 
 type UnitSystem = "metric" | "imperial";
 
@@ -237,7 +237,7 @@ export default function BmiCalculator() {
   return (
     <Layout>
       <SEO
-        title="BMI Calculator - Calculate Body Mass Index"
+        title="BMI Calculator — Body Mass Index & Healthy Weight"
         description={META_DESCRIPTION}
         canonical={CANONICAL_URL}
         schema={schema}

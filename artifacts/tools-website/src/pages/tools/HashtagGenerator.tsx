@@ -87,8 +87,8 @@ export default function HashtagGenerator() {
   return (
     <UtilityToolPageShell
       title="Hashtag Generator Tool"
-      seoTitle="Hashtag Generator Tool"
-      seoDescription="Generate relevant hashtags for Instagram, TikTok, and Twitter. Create clean hashtag lists from keywords or phrases instantly."
+      seoTitle="Hashtag Generator — Tags for Instagram & TikTok"
+      seoDescription="Generate trending, relevant hashtags for Instagram, TikTok, and YouTube videos. Boost social media engagement and reach with instant copyable tag lists."
       canonical="https://usonlinetools.com/productivity/hashtag-generator"
       categoryName="Productivity & Text"
       categoryHref="/category/productivity"

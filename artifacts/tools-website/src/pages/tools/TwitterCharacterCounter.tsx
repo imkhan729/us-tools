@@ -81,8 +81,8 @@ export default function TwitterCharacterCounter() {
   return (
     <Layout>
       <SEO
-        title="Twitter/X Character Counter – Check 280 Limit | US Online Tools"
-        description="Free online Twitter/X character counter. Check your tweet length, calculate remaining characters for the 280 limit, and optimize your tweets with built-in URL logic."
+        title="Twitter Character Counter — 280 X Limit & Emojis"
+        description="Count tweet characters against the 280 X limit with accurate weighted counting for URLs, emojis, @mentions, and hashtags. Free social post optimizer."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

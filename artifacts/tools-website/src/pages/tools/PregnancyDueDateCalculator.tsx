@@ -181,8 +181,8 @@ export default function PregnancyDueDateCalculator() {
   return (
     <Layout>
       <SEO
-        title="Pregnancy Due Date Calculator – Find Your Expected Due Date"
-        description="Calculate your pregnancy due date from last menstrual period, conception date, or IVF transfer date. Get your full pregnancy week-by-week timeline."
+        title="Pregnancy Due Date Calculator — Week-by-Week Timeline"
+        description="Calculate your estimated baby due date, conception date, and week-by-week trimester milestones from your last menstrual period. Free pregnancy calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -300,8 +300,8 @@ export default function TikTokCaptionCounter() {
   return (
     <UtilityToolPageShell
       title="TikTok Caption Counter"
-      seoTitle="TikTok Caption Counter - Track Characters, Hashtags, and Hook Length"
-      seoDescription="Free TikTok caption counter with live character count, hashtag tracking, and hook-first preview guidance for short-form posts."
+      seoTitle="TikTok Character Counter — Caption & Hashtag Limit Checker"
+      seoDescription="Check TikTok caption character count, hook length, and hashtag density. Free online counter with live preview for short-form creators."
       canonical="https://usonlinetools.com/social-media/tiktok-character-counter"
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"

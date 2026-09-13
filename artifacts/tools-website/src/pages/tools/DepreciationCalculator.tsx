@@ -95,8 +95,8 @@ export default function DepreciationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Depreciation Calculator — Straight-Line, Declining Balance & SYD Methods"
-        description="Calculate asset depreciation using straight-line, double declining balance, or sum-of-years-digits methods. Free depreciation calculator with full year-by-year schedule."
+        title="Depreciation Calculator — Straight Line, MACRS & DDB"
+        description="Calculate asset depreciation using straight-line, double declining balance (DDB), and sum-of-years-digits (SYD). Includes full year-by-year schedules."
       />
       <div style={{ "--calc-hue": "220" } as React.CSSProperties} className="max-w-7xl mx-auto px-4 py-8">
         <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">

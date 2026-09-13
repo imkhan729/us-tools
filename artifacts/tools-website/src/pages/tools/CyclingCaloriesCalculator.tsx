@@ -124,8 +124,8 @@ export default function CyclingCaloriesCalculator() {
   return (
     <Layout>
       <SEO
-        title="Cycling Calories Calculator – How Many Calories Does Cycling Burn?"
-        description="Calculate calories burned while cycling based on your weight, speed, and duration. Covers outdoor, indoor, and mountain biking using validated MET values."
+        title="Cycling Calories Calculator — Bike Ride Burn Estimator"
+        description="Calculate calories burned while cycling based on body weight, average speed, and ride duration. Covers road, mountain, and stationary spin bike workouts."
       />
 
       {/* Breadcrumb */}

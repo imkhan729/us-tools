@@ -161,8 +161,8 @@ export default function PowerCalculator() {
   return (
     <Layout>
       <SEO
-        title="Power Calculator - Exponents, Roots, and Solve for x"
-        description="Free online power calculator. Compute x^y, nth roots, and solve b^x = y instantly with real-time results."
+        title="Power Calculator — Exponents, Powers & Scientific Math"
+        description="Calculate base numbers raised to exponents, fractional powers, nth roots, and inverse powers with step-by-step math explanations. Free online calculator."
         canonical="https://usonlinetools.com/math/power-calculator"
         schema={schema}
       />

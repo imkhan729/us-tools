@@ -125,8 +125,8 @@ export default function BrickCalculator() {
   return (
     <Layout>
       <SEO
-        title="Brick Calculator – How Many Bricks Do I Need? Free Online Tool | US Online Tools"
-        description="Free online brick calculator. Estimate how many bricks you need for any wall based on dimensions, brick size, and mortar joint thickness. Instant results with waste factor. No signup required."
+        title="Brick Calculator — Wall Estimator & Mortar Joint Counter"
+        description="Calculate how many bricks and mortar bags you need for single and double-wythe walls. Includes customizable joint sizes and cutting waste allowances."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

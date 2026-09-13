@@ -182,8 +182,8 @@ export default function SteelWeightCalculator() {
   return (
     <Layout>
       <SEO
-        title="Steel Weight Calculator – Free Online Tool | US Online Tools"
-        description="Calculate the weight of steel bars, rods, and beams. Supports round, square, flat, and hexagonal shapes. Instant precise results in kg and lbs with no signup needed."
+        title="Steel Weight Calculator — Plates, Bars, Pipes & Beams"
+        description="Calculate structural steel weight in kg and lbs for sheet plates, round bars, square tubing, and beams with custom metal density. Free metal estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

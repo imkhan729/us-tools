@@ -1,48 +1,60 @@
-# Keyword Brief: Roof Area Calculator
+# On-Page SEO Keyword Brief: Roof Area Calculator
 
-## Primary Exact Keyword
-`roof area calculator`
+## 1. Metadata & Search Targeting
+- **Canonical URL:** `https://usonlinetools.com/construction/roof-area-calculator`
+- **Category:** Construction & DIY ([Category Hub](/category/construction))
+- **Opportunity Score:** **92/100 (P0 Tier)**
+- **Primary Exact-Match Keyword:** `roof area calculator`
+- **Search Intent:** Estimation / Construction
 
-## Secondary Keyword Cluster
-- `roof calculator`
-- `roof area`
-- `roof square footage calculator`
-- `roof pitch area calculator`
-- `roof surface area calculator`
-- `calculate roof area from footprint and pitch`
-- `roof area calculator with overhang`
-- `roof area calculator in roofing squares`
-- `gable roof area calculator`
+---
 
-## Live Competitor Benchmarks (3 Real Domains)
-1. **materialcalc.net**: [https://materialcalc.net/roof-area-calculator](https://materialcalc.net/roof-area-calculator)
-2. **costsquared.com**: [https://costsquared.com/roof-area-calculator](https://costsquared.com/roof-area-calculator)
-3. **infinitycalculator.com**: [https://infinitycalculator.com/roof-area-calculator](https://infinitycalculator.com/roof-area-calculator)
+## 2. Core On-Page Tags
+- **Recommended Title Tag (<60 chars):**  
+  `Roof Area Calculator — Pitch Multiplier & Shingle Square Estimator`
+- **Recommended Meta Description (145–158 chars):**  
+  `Calculate exact roof surface area from pitch, footprint dimensions, and eave overhangs. Includes shingle squares and 10% cutting waste estimation.`
+- **Recommended Single H1 Tag:**  
+  `Roof Area Calculator`
 
-## Semantic Concepts & Expected Entities
-- **roof pitch**
-- **rise/run**
-- **slope multiplier**
-- **roofing squares**
-- **footprint**
-- **overhang**
-- **gable**
-- **hip**
-- **shed**
-- **waste percentage**
-- **square feet**
-- **square meters**
+---
 
-## Recommended On-Page Tags
-- **Title Tag**: `Roof Area Calculator — Pitch, Overhang & Roofing Squares`
-- **Meta Description**: `Calculate true sloped roof surface area from building footprint and pitch. Factor in eave overhangs, waste allowance, and convert square footage to roofing squares.`
-- **H1**: `Roof Area Calculator`
+## 3. Top 3 Competitor SERP Benchmarks
+1. **materialcalc.net**: No metric/imperial unit toggle switch
+2. **costsquared.com**: Lacks roof pitch angle degrees breakdown
+3. **infinitycalculator.com**: Intrusive auto-playing video popups
 
-## Intent-Confirming Introduction (First 100 Words)
-> "Estimate the actual sloped surface area of a roof from its base dimensions and pitch. Include gable/eave overhangs and cutting waste to determine exact material requirements in square feet and roofing squares."
+---
 
-## Core Functional Target
-- Maintain calculator near the top of the viewport.
-- Provide 1-click copy/reset controls.
-- Include transparent mathematical proof / syntax specification.
-- Embed related companion tools from the same category cluster.
+## 4. Mathematical Formula & Logic
+```text
+Pitched Area = (Length + 2*Overhang) * (Width + 2*Overhang) * sqrt(1 + (Pitch/12)^2)
+```
+
+---
+
+## 5. Worked Example Scenarios
+| Scenario | Input | Output |
+|---|---|---|
+| 4/12 pitch gable roof (30x40 ft, 1ft overhang) | `32x42 ft, pitch 4` | `1,416.7 sq ft (14.2 roofing squares)` |
+| 6/12 pitch hip roof (24x36 ft, 2ft overhang) | `28x40 ft, pitch 6` | `1,252.2 sq ft (12.5 roofing squares)` |
+
+---
+
+## 6. Frequently Asked Questions (FAQ Schema)
+### Q: How many squares of shingles do I need?
+**A:** One roofing square equals 100 square feet. Divide your total pitched area by 100 and add 10-15% for cutting waste.
+
+### Q: How does roof pitch affect area?
+**A:** Steeper pitches increase physical surface area. A 4/12 pitch adds ~5.4%, while an 8/12 pitch adds ~20.2% over flat footprint.
+
+
+---
+
+## 7. Contextual Internal Linking Mesh
+- **Parent Hub:** [Construction & DIY](/category/construction)
+- **Contextual Peer Cross-Links:**
+  - [Concrete Calculator](/construction/concrete-calculator)
+  - [Drywall Calculator](/construction/drywall-calculator)
+  - [Gravel Calculator](/construction/gravel-calculator)
+  - [Room Area Calculator](/construction/room-area-calculator)

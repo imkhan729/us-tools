@@ -88,8 +88,8 @@ export default function ProteinIntakeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Protein Intake Calculator — How Much Protein Do I Need Per Day?"
-        description="Calculate your ideal daily protein intake based on body weight and fitness goal. Science-backed protein targets for fat loss, muscle building, athletes, and seniors."
+        title="Protein Intake Calculator — Daily Grams & Meal Breakdown"
+        description="Calculate your daily protein intake based on body weight and goals. Science-backed targets for muscle gain, cutting, athletes, and per-meal distributions."
       />
 
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground px-4 md:px-8 pt-4 max-w-7xl mx-auto">

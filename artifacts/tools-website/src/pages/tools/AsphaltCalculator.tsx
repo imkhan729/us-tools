@@ -148,8 +148,8 @@ export default function AsphaltCalculator() {
   return (
     <Layout>
       <SEO
-        title="Asphalt Calculator – Hot Mix Tons & Bulk Driveway Delivery | US Online Tools"
-        description="Estimate exactly how many tons of hot mix asphalt your driveway repair specifically needs dynamically. Easily evaluate thickness depths scaling with pure density ratios."
+        title="Asphalt Calculator — Hot Mix Tons & Driveway Volume"
+        description="Calculate asphalt tons and cubic yards needed for driveways, parking lots, and roads. Factor in length, width, thickness, and hot mix density ratios."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

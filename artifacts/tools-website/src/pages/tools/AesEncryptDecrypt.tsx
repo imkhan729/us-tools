@@ -318,9 +318,9 @@ export default function AesEncryptDecrypt() {
 
   return (
     <UtilityToolPageShell
-      title="Online AES Encrypt & Decrypt"
-      seoTitle="Online AES Encrypt & Decrypt - Browser-Side AES-256 Tool"
-      seoDescription="Free AES encryption tool with browser-side AES-GCM encryption, PBKDF2 key derivation, bundle export, and manual IV or salt handling."
+      title="AES Encrypt & Decrypt — Secure Browser AES-GCM Tool"
+      seoTitle="AES Encrypt & Decrypt — Secure Browser AES-GCM Tool"
+      seoDescription="Encrypt and decrypt text using client-side AES-GCM encryption and PBKDF2 key derivation. Export secure ciphertext bundles with custom IV and salt."
       canonical="https://usonlinetools.com/security/online-aes-encrypt-decrypt"
       categoryName="Security & Encryption"
       categoryHref="/category/security"

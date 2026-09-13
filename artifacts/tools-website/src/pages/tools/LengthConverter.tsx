@@ -176,8 +176,8 @@ export default function LengthConverter() {
   return (
     <Layout>
       <SEO
-        title="Length Converter - Free Online Unit Converter | Feet to Meters, Inches to CM"
-        description="Free online length converter. Convert between metric and imperial units instantly: feet to meters, inches to cm, km to miles, and more. No signup required."
+        title="Length Converter — Feet to Meters, Inches & Miles"
+        description="Convert length measurements between feet, meters, inches, centimeters, yards, kilometers, and miles. Free online metric and imperial unit converter."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

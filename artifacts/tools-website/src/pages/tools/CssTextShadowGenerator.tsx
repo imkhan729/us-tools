@@ -182,8 +182,8 @@ export default function CssTextShadowGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Text Shadow Generator"
-      seoTitle="CSS Text Shadow Generator - Free Visual text-shadow Builder"
-      seoDescription="Free CSS text shadow generator with live preview, presets, typography controls, and copyable CSS output. Build subtle depth, directional drop shadows, and glow effects visually."
+      seoTitle="CSS Text Shadow Generator — Glow & 3D Typography"
+      seoDescription="Generate CSS text-shadow effects with live preview, multi-layer glows, vintage 3D styling, and blur controls. Export clean typography CSS code instantly."
       canonical="https://usonlinetools.com/css-design/css-text-shadow-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

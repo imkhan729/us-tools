@@ -83,8 +83,8 @@ export default function SimpleInterestCalculator() {
   return (
     <Layout>
       <SEO
-        title="Simple Interest Calculator - Free Online Tool | Calculate Interest Instantly"
-        description="Free simple interest calculator online. Calculate interest on loans, deposits, and investments instantly. Formula: SI = P × R × T / 100. No signup required."
+        title="Simple Interest Calculator — Quick Loan & Savings Formula"
+        description="Calculate simple interest on loans, savings, and investments with the SI = P × R × T formula. Accurate, instant results with zero signup required."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

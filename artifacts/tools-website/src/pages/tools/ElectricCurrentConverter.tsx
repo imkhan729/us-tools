@@ -57,8 +57,8 @@ export default function ElectricCurrentConverter() {
   return (
     <div style={{ "--calc-hue": "195" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Electric Current Converter — Convert Amperes, mA, μA and More"
-        description="Convert between amperes, milliamperes, microamperes, nanoamperes, kiloamperes, and more. Free online electric current unit converter with practical reference."
+        title="Electric Current Converter — Amps, mA, μA & kA Units"
+        description="Convert electrical current units between amperes (A), milliamperes (mA), microamperes (μA), and kiloamperes (kA). Free online electrical unit converter."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

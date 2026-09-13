@@ -167,8 +167,8 @@ export default function QuadraticEquationSolver() {
   return (
     <Layout>
       <SEO
-        title="Online Quadratic Equation Solver - Find Real and Complex Roots"
-        description="Free online quadratic equation solver. Solve ax^2 + bx + c = 0, get discriminant, roots, and vertex details instantly."
+        title="Quadratic Equation Solver — Real & Complex Root Steps"
+        description="Solve quadratic equations (ax² + bx + c = 0) with step-by-step discriminant formulas, vertex coordinates, and real or complex roots. Free math solver."
         canonical="https://usonlinetools.com/math/online-quadratic-equation-solver"
         schema={schema}
       />

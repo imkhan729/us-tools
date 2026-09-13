@@ -133,8 +133,8 @@ export default function EnergyConverter() {
   return (
     <Layout>
       <SEO
-        title="Energy Converter - Convert Joules, kWh, Calories, BTU"
-        description="Free online energy converter. Convert joules, kilojoules, calories, kilowatt-hours, BTU, therms, electronvolts, and more with live results and practical reference content."
+        title="Energy Converter — Joules, kWh, BTU & Calories Tool"
+        description="Convert energy units between joules, kilowatt-hours (kWh), calories, kilocalories, BTUs, and foot-pounds. Free online energy calculator with formulas."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

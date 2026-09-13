@@ -361,8 +361,8 @@ export default function JsonPathTester() {
   return (
     <UtilityToolPageShell
       title="Online JSONPath Tester"
-      seoTitle="Online JSONPath Tester - Query JSON Data Online"
-      seoDescription="Free JSONPath tester with live JSON parsing, path evaluation, matched paths, matched values, and quick examples for JSON query debugging."
+      seoTitle="JSONPath Tester — Evaluate & Debug JSONPath Online"
+      seoDescription="Test and debug JSONPath query expressions against JSON data in real time. Inspect matched elements, filter paths, and export structured query results."
       canonical="https://usonlinetools.com/developer/online-json-path-tester"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

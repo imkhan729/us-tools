@@ -85,8 +85,8 @@ export default function CostSplitCalculator() {
   return (
     <Layout>
       <SEO
-        title="Cost Split Calculator — Split Bills and Expenses Between People"
-        description="Split any cost evenly, by percentage, or by custom amounts with our free Cost Split Calculator. Perfect for splitting rent, bills, trips, and group expenses."
+        title="Cost Split Calculator — Split Bills, Rent & Trips"
+        description="Split shared expenses, apartment rent, group dinners, and vacation costs evenly or by custom amounts. Free bill splitting calculator with instant totals."
       />
       <div style={{ "--calc-hue": "25" } as React.CSSProperties} className="max-w-7xl mx-auto px-4 py-8">
         <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">

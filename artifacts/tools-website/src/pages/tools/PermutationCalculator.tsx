@@ -112,8 +112,8 @@ export default function PermutationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Permutation Calculator - Compute nPr Instantly"
-        description="Free online permutation calculator. Calculate nPr with exact large-integer output where order matters."
+        title="Permutation Calculator — nPr Formulas & Combinatorics"
+        description="Calculate permutations (nPr) where order matters with exact large integer precision and step-by-step factorial breakdowns. Free online math calculator."
         canonical="https://usonlinetools.com/math/permutation-calculator"
         schema={schema}
       />

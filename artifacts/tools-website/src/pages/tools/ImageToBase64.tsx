@@ -31,8 +31,8 @@ export default function ImageToBase64() {
   return (
     <ImageToolPageShell
       title="Image to Base64 Converter"
-      seoTitle="Image To Base64 Converter - Encode Images In The Browser"
-      seoDescription="Convert images to Base64 strings in your browser. Free image to Base64 converter with Data URL and raw Base64 output."
+      seoTitle="Image to Base64 Converter — Encode PNG & JPG Online"
+      seoDescription="Convert image files into Base64 strings and HTML Data URLs instantly. Fast, 100% private browser image encoder with copy-ready CSS and HTML tags."
       canonical="https://usonlinetools.com/image/image-to-base64"
       heroDescription="Convert an uploaded image into Base64 text for inline HTML, CSS, email markup, JSON payloads, or developer workflows that need image data as a string. This page gives you both the full Data URL and the raw Base64 output so you can copy the exact version your implementation expects."
       heroIcon={<ImageIcon className="w-3.5 h-3.5" />}

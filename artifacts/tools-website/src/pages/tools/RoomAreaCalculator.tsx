@@ -129,8 +129,8 @@ export default function RoomAreaCalculator() {
   return (
     <Layout>
       <SEO
-        title="Room Area Calculator – Square Footage & Meters | US Online Tools"
-        description="Calculate the exact square footage or square meters of any room. Supports L-shaped and multi-section rooms for precise painting, flooring, and HVAC estimates."
+        title="Room Area Calculator — Square Footage & L-Shape Rooms"
+        description="Calculate square footage and square meters for rectangular, L-shaped, and multi-section rooms with wall perimeter measurements. Free flooring & paint tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

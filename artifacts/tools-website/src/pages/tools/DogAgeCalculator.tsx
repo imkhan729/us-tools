@@ -138,8 +138,8 @@ export default function DogAgeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Dog Age Calculator – Convert Dog Years to Human Years | US Online Tools"
-        description="Free dog age calculator. Convert your dog's age to human years based on size (small, medium, large, giant). Instant results with life stage, expected lifespan, and a full comparison table."
+        title="Dog Age Calculator — Dog Years to Human Years by Breed"
+        description="Convert your dog's age to human years accurately based on breed size (small, medium, large, giant). View canine life stages and longevity guidelines."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

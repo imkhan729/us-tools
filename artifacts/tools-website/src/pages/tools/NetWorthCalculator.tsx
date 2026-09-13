@@ -109,8 +109,8 @@ export default function NetWorthCalculator() {
   return (
     <Layout>
       <SEO
-        title="Net Worth Calculator — Calculate Your Total Net Worth Online"
-        description="Calculate your personal net worth by entering assets and liabilities. Free online Net Worth Calculator — see your financial position instantly with no signup required."
+        title="Net Worth Calculator — Track Assets & Liabilities"
+        description="Calculate your personal net worth by summing cash, investments, real estate, and subtracting all liabilities and debts. Free financial health tracker."
       />
       <div style={{ "--calc-hue": "45" } as React.CSSProperties} className="max-w-7xl mx-auto px-4 py-8">
         <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6">

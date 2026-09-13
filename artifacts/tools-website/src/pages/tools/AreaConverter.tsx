@@ -107,8 +107,8 @@ export default function AreaConverter() {
   return (
     <Layout>
       <SEO
-        title="Area Converter - Square Meters to Square Feet, Acres to Hectares | Free Tool"
-        description="Free online area converter. Convert square meters to square feet, acres to hectares, and more. Supports 9 area units with instant results and a reference table."
+        title="Area Converter — Sq Meters, Sq Feet, Acres & Hectares"
+        description="Convert area measurements between square feet, square meters, acres, hectares, and square yards. Free online area calculator with instant unit conversions."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

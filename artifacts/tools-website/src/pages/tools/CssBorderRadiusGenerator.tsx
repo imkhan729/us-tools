@@ -127,8 +127,8 @@ export default function CssBorderRadiusGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Border Radius Generator"
-      seoTitle="CSS Border Radius Generator - Free Rounded Corner CSS Builder"
-      seoDescription="Free CSS border radius generator with live preview, per-corner controls, presets, and copyable CSS shorthand. Build rounded corners for cards, buttons, inputs, and UI components instantly."
+      seoTitle="CSS Border Radius Generator — 8-Point Corner Styler"
+      seoDescription="Design custom rounded corners with individual corner radii and 8-point border radius controls. Preview shapes live and copy ready-to-use CSS rules."
       canonical="https://usonlinetools.com/css-design/css-border-radius-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

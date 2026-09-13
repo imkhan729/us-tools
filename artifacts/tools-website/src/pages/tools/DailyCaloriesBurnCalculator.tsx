@@ -151,8 +151,8 @@ export default function DailyCaloriesBurnCalculator() {
   return (
     <Layout>
       <SEO
-        title="Daily Calories Burn Calculator – How Many Calories Do You Burn Per Day?"
-        description="Calculate total daily calories burned including BMR, exercise, NEAT, and digestion. Uses Mifflin-St Jeor formula with full TDEE component breakdown."
+        title="Daily Calories Burn Calculator — TDEE & Activity Burn"
+        description="Calculate total daily calories burned from basal metabolic rate, daily steps, and workouts. Plan calorie deficits or surpluses with exact TDEE breakdowns."
       />
 
       {/* Breadcrumb */}

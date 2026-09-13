@@ -124,8 +124,8 @@ export default function RoundingNumbersCalculator() {
   return (
     <Layout>
       <SEO
-        title="Rounding Numbers Calculator - Decimals, Sig Figs, Multiples"
-        description="Free online rounding calculator. Round to decimal places, significant figures, and nearest multiples instantly."
+        title="Rounding Calculator — Decimals, Sig Figs & Multiples"
+        description="Round numbers to nearest whole integers, decimal places, significant figures, fractions, and multiples with standard math rules. Free online calculator."
         canonical="https://usonlinetools.com/math/rounding-numbers-calculator"
         schema={schema}
       />

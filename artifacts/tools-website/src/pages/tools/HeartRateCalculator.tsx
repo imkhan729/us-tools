@@ -72,8 +72,8 @@ export default function HeartRateCalculator() {
   return (
     <Layout>
       <SEO
-        title="Heart Rate Calculator — Max HR & Training Zones | Free Tool"
-        description="Calculate your maximum heart rate and all 5 training zones. Uses Fox, Tanaka, and Gulati formulas. Includes Karvonen heart rate reserve method. Free online tool."
+        title="Heart Rate Calculator — Max HR & Target Cardio Zones"
+        description="Calculate your maximum heart rate (Max HR) and 5 target cardio training zones using Tanaka and Karvonen formulas. Free aerobic fitness calculator."
       />
 
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground px-4 md:px-8 pt-4 max-w-7xl mx-auto">

@@ -111,8 +111,8 @@ export default function FactorialCalculator() {
   return (
     <Layout>
       <SEO
-        title="Factorial Calculator - Exact n! Values"
-        description="Free online factorial calculator. Compute exact n! values with digit count and trailing zeros."
+        title="Factorial Calculator — Compute Exact n! Values Online"
+        description="Calculate exact factorials (n!) of large integers with trailing zeros count, digit length, and step-by-step multiplication formulas. Free math tool."
         canonical="https://usonlinetools.com/math/factorial-calculator"
         schema={schema}
       />

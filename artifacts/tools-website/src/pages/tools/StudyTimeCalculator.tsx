@@ -147,8 +147,8 @@ export default function StudyTimeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Study Time Calculator – Plan Your Exam Preparation Schedule"
-        description="Optimize your study sessions. Calculate exactly how many hours to spend on each subject based on your exam date and difficulty levels."
+        title="Study Time Calculator — Exam Prep & Revision Schedule"
+        description="Plan total study hours and daily revision schedules across course subjects, difficulty ratings, and target exam dates. Free student study planner."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

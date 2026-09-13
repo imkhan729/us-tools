@@ -91,8 +91,8 @@ export default function LoanInterestCalculator() {
   return (
     <Layout>
       <SEO
-        title="Loan Interest Calculator - Free Interest Rate and Payment Calculator"
-        description="Free loan interest calculator and interest rate calculator. Estimate monthly payment, total interest, total repayment, interest share, and borrowing cost for personal, car, mortgage, student, and business loans."
+        title="Loan Interest Calculator — Monthly Payments & Total Cost"
+        description="Calculate monthly loan payments, total interest paid, and APR breakdown. Compare amortized and simple interest loans for auto, personal, or mortgages."
         canonical="https://usonlinetools.com/finance/loan-interest-calculator"
       />
       <div style={{ "--calc-hue": "210" } as React.CSSProperties} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

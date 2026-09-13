@@ -82,8 +82,8 @@ export default function TipCalculator() {
   return (
     <Layout>
       <SEO
-        title="Tip Calculator – How Much to Tip & Split the Bill | US Online Tools"
-        description="Free tip calculator. Calculate tip amount, total bill, and per-person cost for any group size. Choose from preset tip percentages or enter a custom amount. Instant results, no signup."
+        title="Tip Calculator — Quick Bill Split & Gratuity Estimator"
+        description="Calculate restaurant tips, total bill amounts, and per-person split costs instantly. Enter bill amount and tip percentage for fast, accurate gratuity."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

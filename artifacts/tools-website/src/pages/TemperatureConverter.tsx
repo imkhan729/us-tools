@@ -111,8 +111,8 @@ export default function TemperatureConverter() {
   return (
     <Layout>
       <SEO
-        title="Temperature Converter – Celsius, Fahrenheit, Kelvin & Rankine | US Online Tools"
-        description="Free temperature converter. Convert between Celsius, Fahrenheit, Kelvin, and Rankine instantly. Includes formula reference and common temperature chart. No signup required."
+        title="Temperature Converter — Celsius, Fahrenheit & Kelvin"
+        description="Convert temperature values between Celsius (°C), Fahrenheit (°F), Kelvin (K), and Rankine (°R) with step-by-step conversion formulas. Free physics tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

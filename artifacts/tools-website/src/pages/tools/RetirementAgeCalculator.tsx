@@ -70,8 +70,8 @@ export default function RetirementAgeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Retirement Age Calculator – Plan Your Future"
-        description="Calculate how many years, months, and weeks until your retirement. Free online tool for future planning and goal setting."
+        title="Retirement Age Calculator — Years & Countdown to Pension"
+        description="Calculate exact years, months, and days until full retirement age with pension milestones and social security timelines. Free retirement planning tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

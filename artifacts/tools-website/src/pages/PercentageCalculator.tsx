@@ -22,9 +22,9 @@ import {
 type ChangeMode = "change" | "increase" | "decrease" | "difference";
 
 const CANONICAL_URL = "https://usonlinetools.com/math/online-percentage-calculator";
-const SEO_TITLE = "Percentage Calculator - Percent Increase, Decrease and Difference";
+const SEO_TITLE = "Percentage Calculator — Percent Increase, Decrease & Difference";
 const SEO_DESCRIPTION =
-  "Use this free percentage calculator to calculate percent of a number, percentage increase, percentage decrease, and percent difference.";
+  "Free online percentage calculator. Calculate percent of a number, percentage increase, percentage decrease, percentage change, and percent difference with steps.";
 
 const FAQS = [
   {

@@ -87,8 +87,8 @@ export default function WorkoutDurationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Workout Duration Calculator – Optimal Session Length for Your Goals"
-        description="Determine how long your workouts should be based on your fitness level, intensity, and specific goals like strength, hypertrophy, or weight loss."
+        title="Workout Duration Calculator — Optimal Training Length"
+        description="Determine optimal workout session duration based on training style, intensity, exercise volume, and recovery goals. Free fitness planning calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

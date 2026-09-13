@@ -3,6 +3,7 @@
 # compiled output
 dist
 hostinger-public
+deploy-worktree
 .deploy-hostinger
 tmp
 out-tsc

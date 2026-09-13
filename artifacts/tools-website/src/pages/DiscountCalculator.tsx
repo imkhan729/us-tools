@@ -96,8 +96,8 @@ export default function DiscountCalculator() {
   return (
     <Layout>
       <SEO
-        title="Discount Calculator – Calculate Savings, Final Price & Discount % Instantly | US Online Tools"
-        description="Free online discount calculator. Find the final price after a discount, calculate how much you save, or discover the discount percentage. Works three ways — instant results."
+        title="Discount Calculator — Sale Price, Savings & Percent Off"
+        description="Calculate final sale prices, total dollar savings, and percentage discounts with sales tax and stacked coupon options. Free shopping discount calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

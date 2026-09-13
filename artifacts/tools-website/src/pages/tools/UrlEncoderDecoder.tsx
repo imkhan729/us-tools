@@ -75,8 +75,8 @@ export default function UrlEncoderDecoder() {
   return (
     <Layout>
       <SEO
-        title="URL Encoder Decoder – Encode & Decode URLs Online Free | US Online Tools"
-        description="Free URL encoder and decoder. Encode or decode percent-encoded URLs and URI components instantly. Supports encodeURIComponent, decodeURIComponent, encodeURI, and decodeURI. No signup required."
+        title="URL Encoder Decoder — Percent-Encode & Decode URLs"
+        description="Encode or decode URLs and URI query parameters with encodeURI and encodeURIComponent formats. Free online developer tool for web link formatting."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -144,8 +144,8 @@ export default function MatrixCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Matrix Calculator - Add, Multiply, Determinant, and Inverse"
-        description="Free online matrix calculator for 2x2 matrices. Compute A+B, A x B, determinant, and inverse instantly."
+        title="Matrix Calculator — Add, Multiply, Determinant & Inverse"
+        description="Perform matrix operations including addition, subtraction, multiplication, determinants, and inverses with step-by-step math. Free algebra matrix tool."
         canonical="https://usonlinetools.com/math/online-matrix-calculator"
         schema={schema}
       />

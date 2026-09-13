@@ -164,8 +164,8 @@ export default function TaxCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Tax Calculator 2026 - Estimate Federal Income Tax | Free US Tax Estimator"
-        description="Free 2026 US income tax calculator. Estimate federal tax, FICA, state tax, effective tax rate, and take-home pay using 2026 IRS brackets and deductions."
+        title="Tax Calculator — Federal Income Tax & Take-Home Estimator"
+        description="Free 2026 US income tax calculator. Estimate federal tax, FICA, state tax, effective rate, and net take-home pay using current IRS brackets and deductions."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

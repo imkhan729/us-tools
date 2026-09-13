@@ -115,8 +115,8 @@ export default function PipeVolumeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Pipe Volume Calculator - Calculate Liquid Capacity Inside a Pipe"
-        description="Free online pipe volume calculator. Enter internal diameter, pipe length, and fill percentage to calculate cubic volume, liters, gallons, and approximate liquid weight."
+        title="Pipe Volume Calculator — Liquid Capacity & Pipe Gallons"
+        description="Calculate liquid capacity and volume inside pipes in gallons, liters, and cubic feet using pipe diameter, length, and fill levels. Free plumbing tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

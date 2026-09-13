@@ -63,8 +63,8 @@ export default function BinaryToHexConverter() {
   return (
     <div style={{ "--calc-hue": "245" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Binary to Hex Converter — Convert Binary to Hexadecimal Instantly"
-        description="Convert binary to hexadecimal or hex to binary with a nibble-by-nibble breakdown. Free online binary to hex converter with complete reference table."
+        title="Binary to Hex Converter — Binary to Hexadecimal Tool"
+        description="Convert binary to hexadecimal and hex to binary with 4-bit nibble breakdowns. Free online number converter with complete hexadecimal reference tables."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

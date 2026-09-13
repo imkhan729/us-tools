@@ -201,8 +201,8 @@ export default function HexToRgbConverter() {
   return (
     <Layout>
       <SEO
-        title="HEX to RGB Converter - Free Online Color Converter | HEX RGB HSL"
-        description="Free online HEX to RGB converter. Convert hex color codes to RGB and HSL values instantly. Bidirectional conversion, color preview, copy CSS values. No signup required."
+        title="HEX to RGB Converter — Hex Color to RGB & HSL Tool"
+        description="Convert HEX color codes to RGB and HSL color spaces with live color previews and alpha transparency sliders. Copy CSS code snippets with one click."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -102,8 +102,8 @@ export default function CanonicalTagGenerator() {
   return (
     <Layout>
       <SEO
-        title="Canonical Tag Generator - Create rel=canonical Tags | US Online Tools"
-        description="Free canonical tag generator. Create self-referencing or consolidated canonical link tags with instant output and practical SEO guidance."
+        title="Canonical Tag Generator — Create rel=canonical HTML"
+        description="Generate accurate rel=canonical HTML link tags to prevent duplicate content issues. Free SEO tool with self-referencing and cross-domain URL support."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

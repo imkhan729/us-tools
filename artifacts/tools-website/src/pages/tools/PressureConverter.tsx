@@ -142,8 +142,8 @@ export default function PressureConverter() {
   return (
     <Layout>
       <SEO
-        title="Pressure Converter - Convert PSI, Bar, kPa, atm, Torr"
-        description="Free online pressure converter. Convert PSI, bar, pascals, kilopascals, atmospheres, Torr, inches of mercury, and more with live results and practical reference examples."
+        title="Pressure Converter — PSI, Bar, kPa & Pascal Units"
+        description="Convert pressure units between PSI, bar, pascals, kilopascals, atmospheres, Torr, and inches of mercury. Free online engineering and physics converter tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

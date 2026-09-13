@@ -708,8 +708,8 @@ export default function SchemaMarkupGenerator() {
   return (
     <Layout>
       <SEO
-        title="Schema Markup Generator - Create JSON-LD Structured Data | US Online Tools"
-        description="Free schema markup generator. Build Article, FAQPage, LocalBusiness, and Product JSON-LD with instant browser-side output and copy-ready script tags."
+        title="Schema Markup Generator — JSON-LD Structured Data Tool"
+        description="Generate valid JSON-LD structured data for Articles, FAQPages, LocalBusinesses, Organizations, and Products. Free Google Rich Snippet SEO markup tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

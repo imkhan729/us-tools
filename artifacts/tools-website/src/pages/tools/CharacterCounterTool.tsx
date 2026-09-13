@@ -102,8 +102,8 @@ export default function CharacterCounterTool() {
   return (
     <Layout>
       <SEO
-        title="Character Counter Tool - Count Characters, Words, and Limits"
-        description="Free online character counter tool. Count characters with and without spaces, words, sentences, lines, and custom limit remaining."
+        title="Character Counter — Count Characters, Words & Spaces"
+        description="Count characters with and without spaces, total words, sentences, paragraphs, and reading time. Free online text analyzer with social media limits."
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

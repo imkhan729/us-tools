@@ -159,8 +159,8 @@ export default function TimeZoneConverter() {
   return (
     <Layout>
       <SEO
-        title="Time Zone Converter – Convert Times Between Any Two Locations"
-        description="Free online Time Zone Converter. Easily convert times between different cities and time zones worldwide. Supports Daylight Saving Time."
+        title="Time Zone Converter — World Time & Meeting Planner"
+        description="Convert local times across global time zones and international cities with Daylight Saving Time adjustments and meeting overlap grids. Free world clock."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

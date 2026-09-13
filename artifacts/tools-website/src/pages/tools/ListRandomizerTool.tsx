@@ -49,8 +49,8 @@ export default function ListRandomizerTool() {
   return (
     <UtilityToolPageShell
       title="List Randomizer Tool"
-      seoTitle="List Randomizer Tool"
-      seoDescription="Shuffle the order of any line-based list with optional duplicate removal and blank-line cleanup using this free list randomizer."
+      seoTitle="List Randomizer Tool — Shuffle Lists & Lines Online"
+      seoDescription="Randomly shuffle items, names, and lines in any list with duplicate filtering and blank line removal. Free online random list sorting and drawing tool."
       canonical="https://usonlinetools.com/productivity/list-randomizer-tool"
       categoryName="Productivity & Text"
       categoryHref="/category/productivity"

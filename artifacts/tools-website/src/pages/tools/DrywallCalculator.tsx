@@ -76,8 +76,8 @@ export default function DrywallCalculator() {
   return (
     <ConstructionToolPageShell
       title="Drywall Calculator"
-      seoTitle="Drywall Calculator - Estimate Sheets for Walls and Ceilings"
-      seoDescription="Estimate drywall sheets needed for walls and ceilings with waste allowance. Free drywall calculator for room size, sheet size, and openings."
+      seoTitle="Drywall Calculator — Sheet Estimator for Walls & Ceiling"
+      seoDescription="Calculate drywall sheets needed for room walls and ceilings with waste factor and opening deductions. Supports 4x8, 4x10, and 4x12 sheet dimensions."
       canonical="https://usonlinetools.com/construction/drywall-calculator"
       heroDescription="Estimate how many drywall sheets a room needs by combining wall area, optional ceiling area, sheet size, door and window openings, and a practical waste allowance."
       heroIcon={<Construction className="w-3.5 h-3.5" />}

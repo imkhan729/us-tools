@@ -132,7 +132,7 @@ export default function StairCalculator() {
 
   return (
     <Layout>
-      <SEO title="Stair Calculator - Rise, Run, Treads, and Stringer Length" description="Free stair calculator for rise, run, tread count, stair angle, and stringer length. Plan straight stairs in inches or centimeters with instant results." />
+      <SEO title="Stair Calculator — Rise, Run, Stringer & Tread Count" description="Calculate stair rise, run, total steps, stringer length, and incline angles adhering to residential building codes. Free carpentry stair layout tool." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

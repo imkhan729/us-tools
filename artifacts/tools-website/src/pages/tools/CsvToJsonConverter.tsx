@@ -128,8 +128,8 @@ export default function CsvToJsonConverter() {
   return (
     <Layout>
       <SEO
-        title="CSV to JSON Converter – Parse Excel Data to Objects"
-        description="Free online CSV to JSON converter. Convert Comma Separated Values or Excel spreadsheet exports directly into structured JSON arrays for API requests and databases."
+        title="CSV to JSON Converter — Parse Excel & CSV to JSON"
+        description="Convert CSV spreadsheets and Excel data into formatted JSON objects and arrays. Free online CSV parser with delimiter detection and copy-ready JSON output."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

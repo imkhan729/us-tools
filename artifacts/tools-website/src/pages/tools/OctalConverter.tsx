@@ -61,8 +61,8 @@ export default function OctalConverter() {
   return (
     <div style={{ "--calc-hue": "160" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Octal Converter — Convert Octal, Decimal, Binary, Hex"
-        description="Convert between octal, decimal, binary, and hexadecimal. Free online octal converter with a full reference chart, Unix permission guide, and step-by-step examples."
+        title="Octal Converter — Octal to Decimal, Binary & Hex Tool"
+        description="Convert octal numbers to decimal, binary, and hexadecimal formats with step-by-step math breakdowns and Unix file permission charts. Free programmer tool."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

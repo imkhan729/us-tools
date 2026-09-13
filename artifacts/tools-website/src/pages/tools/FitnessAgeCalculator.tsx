@@ -93,8 +93,8 @@ export default function FitnessAgeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Fitness Age Calculator – Find Out How Fit You Really Are"
-        description="Discover your fitness age based on heart rate, activity, and measurements. A free online tool for understanding your biological fitness level."
+        title="Fitness Age Calculator — Test Biological Fitness Level"
+        description="Calculate your biological fitness age based on resting heart rate, VO2 max estimates, BMI, and weekly exercise routines. Free health & fitness tester."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

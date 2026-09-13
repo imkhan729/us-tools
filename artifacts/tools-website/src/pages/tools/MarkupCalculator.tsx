@@ -116,8 +116,8 @@ export default function MarkupCalculator() {
   return (
     <Layout>
       <SEO
-        title="Markup Calculator - Cost to Selling Price"
-        description="Free online markup calculator. Enter cost and markup percent to get selling price, markup amount, and margin percentage."
+        title="Markup Calculator — Cost, Selling Price & Margins"
+        description="Calculate selling price, gross profit markup amount, and profit margin percentages from cost. Free pricing calculator for retail and ecommerce sellers."
         canonical="https://usonlinetools.com/finance/markup-calculator"
         schema={schema}
       />

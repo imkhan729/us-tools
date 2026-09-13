@@ -84,8 +84,8 @@ export default function SlugGenerator() {
   return (
     <Layout>
       <SEO
-        title="URL Slug Generator – Create SEO Friendly Permalinks | US Online Tools"
-        description="Free URL slug generator. Convert any string or title into a clean, SEO-friendly, readable URL slug instantly. Built for writers, marketers, and developers."
+        title="URL Slug Generator — SEO Friendly Permalink Builder"
+        description="Convert article titles and text strings into clean, hyphenated, SEO-friendly URL slugs with custom delimiter and lowercase rules. Free webmaster tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

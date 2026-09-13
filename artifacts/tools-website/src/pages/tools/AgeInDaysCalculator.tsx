@@ -142,8 +142,8 @@ export default function AgeInDaysCalculator() {
   return (
     <Layout>
       <SEO
-        title="Age in Days Calculator – Discover Your Exact Lifetime"
-        description="Free online Age in Days calculator. Find out exactly how many days, hours, and minutes you have been alive on planet Earth effortlessly."
+        title="Age in Days Calculator — Calculate Exact Days Alive Online"
+        description="Calculate your exact age in total days, hours, minutes, and seconds alive from your birthdate. Fun, accurate milestone tracker with zero signup required."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

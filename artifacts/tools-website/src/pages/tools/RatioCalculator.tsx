@@ -181,8 +181,8 @@ export default function RatioCalculator() {
   return (
     <Layout>
       <SEO
-        title="Ratio Calculator – Simplify, Solve & Scale Ratios | US Online Tools"
-        description="Free online ratio calculator. Simplify ratios, find equivalent ratios, solve proportions (A:B = C:?), and scale ratios up or down. Perfect for math, cooking, and engineering."
+        title="Ratio Calculator — Simplify, Scale & Solve Proportions"
+        description="Simplify mathematical ratios to lowest terms, solve missing proportion values, and scale recipe or blueprint quantities. Free online aspect ratio tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

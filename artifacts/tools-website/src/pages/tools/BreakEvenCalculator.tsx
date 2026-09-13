@@ -134,8 +134,8 @@ export default function BreakEvenCalculator() {
   return (
     <Layout>
       <SEO
-        title="Break Even Calculator – Find Your Break-Even Point Instantly, Free | US Online Tools"
-        description="Free online break-even calculator. Enter fixed costs, price per unit, and variable cost per unit to find break-even units, revenue, and contribution margin. Instant results, no signup required."
+        title="Break Even Calculator — Units, Revenue & Margin Point"
+        description="Calculate your break-even point in units and sales revenue. Enter fixed costs, selling price, and variable costs to determine contribution margin easily."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

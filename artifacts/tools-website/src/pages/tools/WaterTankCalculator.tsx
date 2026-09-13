@@ -138,8 +138,8 @@ export default function WaterTankCalculator() {
   return (
     <Layout>
       <SEO
-        title="Water Tank Capacity Calculator – Liters & Gallons | US Online Tools"
-        description="Calculate water tank dimensions instantly. Convert physical tank lengths or cylinder radius cleanly into total gross water capacity, Liters, and fluid UK/US Gallons."
+        title="Water Tank Calculator — Gallons & Liters Capacity Tool"
+        description="Calculate water tank capacity in gallons and liters for rectangular, cylindrical, and oval tanks from physical dimensions. Free tank volume estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

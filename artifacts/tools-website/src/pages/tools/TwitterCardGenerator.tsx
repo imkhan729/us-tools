@@ -133,8 +133,8 @@ export default function TwitterCardGenerator() {
   return (
     <Layout>
       <SEO
-        title="Twitter Card Generator - Create X Meta Tags | US Online Tools"
-        description="Free Twitter Card generator. Create X card tags with title, description, image, and profile handles. Includes live preview and copyable markup."
+        title="Twitter Card Generator — X Meta Tags & Card Previews"
+        description="Generate Twitter Card (X) meta tags including Summary, Summary Large Image, and Player cards with real-time social media share previews. Free SEO tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

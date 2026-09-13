@@ -153,7 +153,7 @@ export default function SandCalculator() {
 
   return (
     <Layout>
-      <SEO title="Sand Calculator - Estimate Sand Volume, Tons, and Bags" description="Free sand calculator for patios, leveling beds, concrete bases, and landscaping projects. Estimate sand volume, tons, and bag counts with rectangular or circular area inputs." />
+      <SEO title="Sand Calculator — Cubic Yards, Tons & Bag Estimator for Landscaping" description="Calculate sand volume in cubic yards, tons, and bags for patios, bedding, and leveling. Includes rectangular and circular area modes with waste factor." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

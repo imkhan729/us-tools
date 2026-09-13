@@ -66,8 +66,8 @@ export default function PaverCalculator() {
   return (
     <ConstructionToolPageShell
       title="Paver Calculator"
-      seoTitle="Paver Calculator - Estimate Patio And Driveway Pavers"
-      seoDescription="Calculate how many pavers you need for patios, walkways, and driveways. Free paver calculator with area, waste, and count estimates."
+      seoTitle="Paver Calculator — Patio, Walkway & Driveway Stones"
+      seoDescription="Calculate patio and walkway pavers needed by square footage with sand base depth and waste percentage estimates. Free landscape stone volume estimator."
       canonical="https://usonlinetools.com/construction/paver-calculator"
       heroDescription="Estimate pavers for patios, driveways, and walkways in seconds. This paver calculator compares project area with individual paver size and adds waste for cuts, edges, and breakage."
       heroIcon={<Construction className="w-3.5 h-3.5" />}

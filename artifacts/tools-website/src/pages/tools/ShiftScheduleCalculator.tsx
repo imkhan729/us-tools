@@ -117,8 +117,8 @@ export default function ShiftScheduleCalculator() {
   return (
     <Layout>
       <SEO
-        title="Shift Schedule Calculator – Plan Rotating Work Cycles"
-        description="Plan your work life with our rotating shift schedule calculator. Visualize 4-on/2-off, 2-2-3, or any custom cycle on a clean calendar."
+        title="Shift Schedule Calculator — Rotating Work Patterns"
+        description="Generate and visualize rotating shift schedules, including 4-on/4-off, 2-2-3 DuPont, and custom team rotation patterns on an interactive calendar. Free tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

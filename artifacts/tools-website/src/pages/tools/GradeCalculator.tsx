@@ -161,8 +161,8 @@ export default function GradeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Grade Calculator – Calculate Your Grade & GPA Instantly, Free | US Online Tools"
-        description="Free online grade calculator. Calculate your current grade from weighted or point-based assignments. Find the exam score you need to hit your target grade. Includes letter grade and GPA conversion. No signup required."
+        title="Grade Calculator — Current Class & Final Exam Score"
+        description="Calculate current course grades from weighted assignments and determine the final exam score needed to pass or achieve your target class grade."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

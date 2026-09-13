@@ -304,8 +304,8 @@ export default function Home() {
   return (
     <Layout>
       <SEO
-        title="Free Online Tools - US Online Tools"
-        description={`${displayCount} free online tools including calculators, converters, generators, and utilities. No signup required. 100% free at usonlinetools.com.`}
+        title="US Online Tools — 400+ Free Online Calculators & Converters"
+        description="Access 400+ free online calculators, unit converters, code formatters, and developer utilities. Fast, responsive, and 100% free with no registration."
         schema={homeSchema}
       />
 

@@ -24,8 +24,8 @@ export default function LoanToValueCalculator() {
   return (
     <UtilityToolPageShell
       title="Loan-to-Value Calculator"
-      seoTitle="Loan-to-Value Calculator - LTV Ratio"
-      seoDescription="Free online loan-to-value calculator. Calculate LTV ratio and equity from loan amount and property value."
+      seoTitle="Loan-to-Value Calculator — LTV Ratio & Home Equity"
+      seoDescription="Calculate your loan-to-value (LTV) ratio and home equity percentage from property value and mortgage balance. Check PMI removal thresholds easily."
       canonical="https://usonlinetools.com/finance/online-loan-to-value-calculator"
       categoryName="Finance & Cost"
       categoryHref="/category/finance"

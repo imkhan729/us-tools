@@ -75,8 +75,8 @@ export default function PercentageErrorCalculator() {
   return (
     <Layout>
       <SEO
-        title="Percentage Error Calculator – Find % Error Formula Online Free | US Online Tools"
-        description="Free percentage error calculator. Calculate percent error between experimental and theoretical values using the standard formula. Instant results for science, lab reports, and engineering. No signup."
+        title="Percentage Error Calculator — Experimental vs True Value"
+        description="Calculate percentage error between experimental test results and theoretical accepted values with step-by-step formulas. Free science and lab calculator."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

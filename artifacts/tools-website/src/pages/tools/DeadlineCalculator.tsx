@@ -126,8 +126,8 @@ export default function DeadlineCalculator() {
   return (
     <Layout>
       <SEO
-        title="Deadline Calculator – Calculate Project End Dates Instantly"
-        description="Plan your projects with precision. Add days, weeks, or months to any start date to find your final deadline. Supports skipping weekends."
+        title="Deadline Calculator — Project Target & Finish Date"
+        description="Calculate project end dates, task milestones, and sprint deadlines by adding working days, weeks, or months to any start date. Skip weekends automatically."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

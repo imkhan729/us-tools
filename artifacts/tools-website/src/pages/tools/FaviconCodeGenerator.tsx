@@ -323,8 +323,8 @@ export default function FaviconCodeGenerator() {
   return (
     <UtilityToolPageShell
       title="Favicon Code Generator"
-      seoTitle="Favicon Code Generator - HTML Head Tags and Manifest Builder"
-      seoDescription="Free favicon code generator. Create HTML head tags and web manifest JSON for modern favicon support across browsers and devices."
+      seoTitle="Favicon Code Generator — HTML Head & Manifest Tags"
+      seoDescription="Generate complete HTML link tags and web app manifest snippets for favicons across iOS, Android, and desktop browsers. Free web developer SEO tool."
       canonical="https://usonlinetools.com/seo/favicon-checker"
       categoryName="SEO Tools"
       categoryHref="/category/seo"

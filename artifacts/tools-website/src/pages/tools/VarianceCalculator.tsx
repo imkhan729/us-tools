@@ -152,8 +152,8 @@ export default function VarianceCalculator() {
   return (
     <Layout>
       <SEO
-        title="Variance Calculator - Population and Sample Variance"
-        description="Free online variance calculator. Compute population or sample variance, standard deviation, mean, and range for any dataset."
+        title="Variance Calculator — Sample & Population Variance"
+        description="Calculate sample variance (s²), population variance (σ²), standard deviation, and mean with step-by-step statistical formulas. Free online math tool."
         canonical="https://usonlinetools.com/math/variance-calculator"
         schema={schema}
       />

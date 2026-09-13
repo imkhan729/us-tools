@@ -113,8 +113,8 @@ export default function CountdownTimer() {
   return (
     <Layout>
       <SEO
-        title="Countdown Timer – Free Online Timer with Presets, Pomodoro Ready | US Online Tools"
-        description="Free online countdown timer. Set any duration from seconds to hours. Includes Pomodoro 25-min preset, pause/resume, reset, and custom time input. No signup required, works on any device."
+        title="Countdown Timer — Online Clock with Alarm & Pomodoro"
+        description="Free online countdown timer with alarms, Pomodoro focus mode, stopwatch controls, and interval presets. Set custom timers for work, study, and workouts."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

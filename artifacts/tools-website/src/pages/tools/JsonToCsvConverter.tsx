@@ -168,8 +168,8 @@ export default function JsonToCsvConverter() {
   return (
     <UtilityToolPageShell
       title="Online JSON to CSV Converter"
-      seoTitle="Online JSON to CSV Converter - Convert JSON Arrays to CSV Online"
-      seoDescription="Free JSON to CSV converter with header control, nested-object flattening, delimiter options, live preview, and spreadsheet-ready output."
+      seoTitle="JSON to CSV Converter — Flatten & Export Excel Data"
+      seoDescription="Convert JSON arrays and nested objects into clean CSV or Excel spreadsheet tables. Free online JSON parser with delimiter and nested flattening options."
       canonical="https://usonlinetools.com/developer/online-json-to-csv"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

@@ -102,8 +102,8 @@ export default function ReadingTimeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Reading Time Calculator – Estimate Content Duration Instantly"
-        description="Calculate how long it takes to read any text. Accurate WPM estimates for blogs, scripts, and books. Perfect for content creators and students."
+        title="Reading Time Calculator — Estimate Words & Speaking Pace"
+        description="Calculate exact reading time, speech duration, and word counts across custom WPM speeds for essays, blog posts, and scripts. Free text estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

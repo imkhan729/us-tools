@@ -167,7 +167,7 @@ export default function ExcavationCalculator() {
 
   return (
     <Layout>
-      <SEO title="Excavation Calculator - Estimate Dig Volume and Truck Loads" description="Free excavation calculator for pits, trenches, and circular holes. Estimate in-place excavation volume, loose spoil volume, and approximate truck loads instantly." />
+      <SEO title="Excavation Calculator — Dirt Volume & Truck Loads" description="Calculate dirt excavation volume, loose swell factor, and dump truck loads needed for trenches, basements, and pools. Free earthwork volume estimator." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

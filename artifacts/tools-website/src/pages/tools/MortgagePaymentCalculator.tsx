@@ -134,8 +134,8 @@ export default function MortgagePaymentCalculator() {
   return (
     <Layout>
       <SEO
-        title="Mortgage Payment Calculator - Free Online Home Loan Calculator | Monthly Payment Estimator"
-        description="Free online mortgage payment calculator. Calculate your monthly mortgage payment, total interest, and total cost of your home loan. Instant results, no signup required."
+        title="Mortgage Payment Calculator — Monthly Loan & Interest Tool"
+        description="Calculate your monthly mortgage payment, total loan interest, and principal amortization. Free, instant home loan payment estimates with no signup required."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

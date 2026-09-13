@@ -156,8 +156,8 @@ export default function SalaryCalculator() {
   return (
     <Layout>
       <SEO
-        title="Salary Calculator - Free Hourly to Annual Pay Converter | Wage Calculator"
-        description="Free online salary calculator. Convert hourly to annual salary, weekly to monthly pay, and more. Instant results for any pay period — no signup required."
+        title="Salary Calculator — Hourly to Annual Wage & Pay Converter"
+        description="Calculate and convert hourly wages, biweekly pay, monthly earnings, and annual salary. Customize hours per week and weeks per year with instant breakdowns."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

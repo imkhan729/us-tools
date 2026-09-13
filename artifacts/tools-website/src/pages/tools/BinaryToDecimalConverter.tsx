@@ -131,8 +131,8 @@ export default function BinaryToDecimalConverter() {
   return (
     <Layout>
       <SEO
-        title="Binary to Decimal Converter - Binary, Hex, Octal Number Converter | Free Tool"
-        description="Free online binary to decimal converter. Convert between binary, decimal, hexadecimal, and octal instantly. Includes conversion table and step-by-step explanation."
+        title="Binary to Decimal Converter — Hex & Octal Base Tool"
+        description="Convert numbers between binary, decimal, hexadecimal, and octal instantly. Free online number base converter with step-by-step conversion tables."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

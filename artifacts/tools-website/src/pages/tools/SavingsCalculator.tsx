@@ -105,8 +105,8 @@ export default function SavingsCalculator() {
   return (
     <Layout>
       <SEO
-        title="Savings Calculator - Calculate Savings Growth with Compound Interest | Free Tool"
-        description="Free savings calculator. See how your savings grow with compound interest. Enter initial savings, monthly contributions, interest rate, and years to project your balance."
+        title="Savings Calculator — Compound Growth & Deposits"
+        description="Project your savings growth over time with monthly deposits, annual interest rates, and compounding frequency charts. Free personal finance calculator."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

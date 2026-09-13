@@ -94,8 +94,8 @@ export default function StepCounterEstimator() {
   return (
     <Layout>
       <SEO
-        title="Step Counter Estimator – Calories & Distance From Steps | US Online Tools"
-        description="Free step counter calculator. Convert steps to distance (km/miles) and calories burned. Adjust for walking pace, body weight, and height. Instant results, no signup."
+        title="Step Counter Calculator — Steps to Distance & Calories"
+        description="Convert daily walking steps to miles, kilometers, and active calories burned based on stride length, height, and body weight. Free fitness estimator."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -143,8 +143,8 @@ export default function DuplicateLineRemover() {
   return (
     <Layout>
       <SEO
-        title="Duplicate Line Remover – Remove Repeated Lines Online Free | US Online Tools"
-        description="Free online duplicate line remover. Instantly remove duplicate lines from any list, text, or code. Control case sensitivity and whitespace trimming. Real-time results. No signup."
+        title="Duplicate Line Remover — Deduplicate Text Lists Online"
+        description="Remove duplicate lines, repeated entries, and blank lines from text or code lists. Free online deduplication tool with case sensitivity and trim options."
         canonical={DUPLICATE_LINE_CANONICAL}
         schema={schema}
       />

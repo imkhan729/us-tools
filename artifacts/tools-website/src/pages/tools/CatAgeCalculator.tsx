@@ -161,8 +161,8 @@ export default function CatAgeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Cat Age Calculator – Convert Cat Years to Human Years | US Online Tools"
-        description="Free cat age calculator. Convert your cat's age to human years using the International Cat Care method. Find your cat's life stage: kitten, junior, prime, mature, senior, or super senior."
+        title="Cat Age Calculator — Cat Years to Human Years Chart"
+        description="Convert your cat's age into human years accurately using veterinary life stage guidelines. Discover health milestones from kitten to senior years."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

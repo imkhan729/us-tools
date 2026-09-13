@@ -58,8 +58,8 @@ export default function JsonMinifier() {
   return (
     <UtilityToolPageShell
       title="JSON Minifier"
-      seoTitle="JSON Minifier - Compress JSON Online"
-      seoDescription="Free JSON minifier with instant validation, size savings stats, and compact output for APIs, configs, fixtures, and transport payloads."
+      seoTitle="JSON Minifier — Compress & Minify JSON Payloads"
+      seoDescription="Minify and compress JSON strings by stripping whitespace and newlines for faster API responses and reduced payload sizes. Free online JSON compressor."
       canonical="https://usonlinetools.com/developer/json-minifier"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

@@ -76,8 +76,8 @@ export default function ChineseZodiacCalculator() {
   return (
     <Layout>
       <SEO
-        title="Chinese Zodiac Calculator – Find Your Lunar Year Animal"
-        description="Discover your Chinese zodiac animal and elemental traits. Free online tool based on the 12-year lunar cycle and ancient eastern wisdom."
+        title="Chinese Zodiac Calculator — Find Your Animal & Element"
+        description="Find your Chinese zodiac animal sign and element based on your birth date. Discover personality traits, lucky numbers, and compatibility insights."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

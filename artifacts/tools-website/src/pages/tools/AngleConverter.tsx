@@ -58,8 +58,8 @@ export default function AngleConverter() {
   return (
     <div style={{ "--calc-hue": "320" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Angle Converter — Convert Degrees, Radians, Gradians Instantly"
-        description="Convert between degrees, radians, gradians, turns, arcminutes, and arcseconds. Free online angle converter with trigonometry reference and visual diagram."
+        title="Angle Converter — Degrees, Radians & Gradians Tool"
+        description="Convert between degrees, radians, gradians, turns, arcminutes, and arcseconds. Free online angle converter with formulas, diagrams, and instant results."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

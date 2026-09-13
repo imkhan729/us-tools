@@ -171,8 +171,8 @@ export default function ConcreteCalculator() {
   return (
     <Layout>
       <SEO
-        title="Concrete Calculator – How Much Concrete Do I Need? Free Online Tool | US Online Tools"
-        description="Free online concrete calculator. Calculate cubic yards, cubic meters, and pre-mixed bags needed for slabs, columns, and tubes. Instant results with waste factor. No signup required."
+        title="Concrete Calculator — Slabs, Footings & Bags Estimator"
+        description="Calculate concrete volume in cubic yards and pre-mix bag counts (60 lb and 80 lb) for slabs, footings, and post holes. Free instant concrete estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

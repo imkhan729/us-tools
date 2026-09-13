@@ -141,8 +141,8 @@ export default function WallAreaCalculator() {
   return (
     <Layout>
       <SEO
-        title="Wall Area Calculator - Measure Paintable Wall Surface Online"
-        description="Free wall area calculator for paint, wallpaper, tile, and drywall planning. Measure gross wall area, deduct doors and windows, and get net wall coverage instantly."
+        title="Wall Area Calculator — Measure Paintable Wall Surface"
+        description="Calculate gross wall surface area, subtract windows and doors, and estimate paint coverage in square feet and square meters. Free room paint estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -140,8 +140,8 @@ export default function SquareRootCalculator() {
   return (
     <Layout>
       <SEO
-        title="Square Root Calculator – Find √n Instantly, Free | US Online Tools"
-        description="Free online square root calculator. Enter any positive number and instantly get its square root accurate to 8 decimal places. Also shows perfect square check, cube root, and nearest perfect squares. No signup needed."
+        title="Square Root Calculator — Exact Radical & Root Values"
+        description="Calculate exact square roots, radical simplifications, and nearest perfect square checks with step-by-step math breakdowns. Free online math calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

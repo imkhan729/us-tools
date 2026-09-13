@@ -115,8 +115,8 @@ export default function CombinationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Combination Calculator - Compute nCr Instantly"
-        description="Free online combination calculator. Calculate nCr with exact large-integer output when order does not matter."
+        title="Combination Calculator — nCr Combinations Formula"
+        description="Calculate combinations (n choose r) instantly with exact large integer precision and step-by-step factorial formulas. Free math nCr probability tool."
         canonical="https://usonlinetools.com/math/combination-calculator"
         schema={schema}
       />

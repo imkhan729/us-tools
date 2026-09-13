@@ -101,8 +101,8 @@ export default function WalkingCaloriesCalculator() {
   return (
     <Layout>
       <SEO
-        title="Walking Calories Calculator – How Many Calories Does Walking Burn?"
-        description="Calculate exactly how many calories you burn walking based on your weight, speed, and duration. Uses MET values from Ainsworth's Compendium of Physical Activities. Free, instant, no signup."
+        title="Walking Calories Calculator — Distance & Speed Burn"
+        description="Calculate calories burned walking by body weight, walking pace (mph/kmh), incline, and duration using clinical MET formulas. Free fitness calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

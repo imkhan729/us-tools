@@ -126,8 +126,8 @@ export default function LcmCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online LCM Calculator - Least Common Multiple"
-        description="Free online LCM calculator. Find the least common multiple of two or more integers instantly."
+        title="LCM Calculator — Least Common Multiple with Steps"
+        description="Find the least common multiple (LCM) of two or more integers using prime factorization and division methods. Free math tool with step-by-step solutions."
         canonical="https://usonlinetools.com/math/online-lcm-calculator"
         schema={schema}
       />

@@ -81,8 +81,8 @@ export default function IntermittentFastingCalculator() {
   return (
     <Layout>
       <SEO
-        title="Intermittent Fasting Calculator – Schedule Your 16:8, 18:6, OMAD Windows | US Online Tools"
-        description="Free intermittent fasting calculator. Find your ideal eating and fasting windows for 16:8, 18:6, 20:4, and OMAD protocols based on your last meal time. Instant, no signup."
+        title="Intermittent Fasting Calculator — 16:8 & OMAD Times"
+        description="Calculate intermittent fasting schedules for 16:8, 18:6, 20:4, and OMAD fasting windows based on your last meal time. Free daily fasting clock."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

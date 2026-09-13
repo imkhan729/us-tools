@@ -214,8 +214,8 @@ export default function StandardDeviationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Standard Deviation Calculator - Population and Sample Statistics"
-        description="Free online standard deviation calculator. Calculate population or sample standard deviation, variance, mean, median, range, coefficient of variation, and standard error."
+        title="Standard Deviation Calculator — Sample & Population SD"
+        description="Calculate sample and population standard deviation, variance, mean, and standard error with step-by-step math tables. Free statistical calculator."
         canonical={canonical}
       />
 

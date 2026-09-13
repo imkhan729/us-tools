@@ -187,8 +187,8 @@ export default function FractionToDecimalCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online Fraction to Decimal Calculator – Convert Fractions & Decimals Free"
-        description="Free online fraction to decimal calculator. Convert any fraction to decimal or decimal to fraction instantly. Shows simplified form, percentage, and repeating decimal detection. No signup required."
+        title="Fraction to Decimal Calculator — Simplified Percentages"
+        description="Convert fractions to decimals and decimals to fractions with repeating detection, simplified terms, and percentages. Free online math conversion tool."
         canonical="https://usonlinetools.com/math/fraction-to-decimal-calculator"
         schema={schema}
       />

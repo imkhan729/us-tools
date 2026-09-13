@@ -92,8 +92,8 @@ export default function CreditCardPayoffCalculator() {
   return (
     <Layout>
       <SEO
-        title="Credit Card Payoff Calculator – Calculate Debt Free Timeline"
-        description="Free online Credit Card Payoff Calculator. See exactly how many months it will take to eliminate your credit card debt based on your interest rate."
+        title="Credit Card Payoff Calculator — Debt-Free Timeline Tool"
+        description="Calculate how long it takes to pay off credit card debt based on monthly payment and APR. See total interest saved and create a debt-free payoff plan."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

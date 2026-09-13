@@ -123,8 +123,8 @@ export default function GcdCalculator() {
   return (
     <Layout>
       <SEO
-        title="Online GCD Calculator - Greatest Common Divisor"
-        description="Free online GCD calculator. Find the greatest common divisor (HCF) of two or more integers instantly."
+        title="GCD Calculator — Greatest Common Divisor & HCF Tool"
+        description="Find the greatest common divisor (GCD) and highest common factor (HCF) of two or more numbers using Euclidean division. Free online math calculator."
         canonical="https://usonlinetools.com/math/online-gcd-calculator"
         schema={schema}
       />

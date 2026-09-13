@@ -153,8 +153,8 @@ export default function RoofAreaCalculator() {
   return (
     <Layout>
       <SEO
-        title="Roof Area Calculator – Square Footage & Pitch | US Online Tools"
-        description="Calculate total roof area based on pitch, length, and width overhangs. Perfect for estimating shingles, metal sheets, and underlayment requirements."
+        title="Roof Area Calculator — Pitch Factor & Shingle Squares"
+        description="Calculate true roof square footage, slope pitch multipliers, and roofing shingle bundles with eaves and gable overhangs. Free roofing cost estimator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

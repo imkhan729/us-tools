@@ -100,8 +100,8 @@ export default function LoremIpsumGenerator() {
   return (
     <Layout>
       <SEO
-        title="Online Lorem Ipsum Generator – Dummy Text Placeholder Tool"
-        description="Free online Lorem Ipsum Generator. Create placeholder text for prototypes, wireframes, and design mockups via custom paragraphs, sentences, or word counts."
+        title="Lorem Ipsum Generator — Dummy Text & Placeholder Tool"
+        description="Generate custom placeholder dummy text by paragraphs, sentences, or words with HTML markup tags for web design and mockup layouts. Free developer tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

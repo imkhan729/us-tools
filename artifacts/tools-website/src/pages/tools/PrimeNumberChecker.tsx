@@ -135,8 +135,8 @@ export default function PrimeNumberChecker() {
   return (
     <Layout>
       <SEO
-        title="Prime Number Checker - Prime vs Composite"
-        description="Free online prime number checker. Instantly test if a number is prime or composite, with divisor details."
+        title="Prime Number Checker — Prime vs Composite Divisors"
+        description="Test whether any integer is a prime or composite number with instant primality testing, prime factors, and complete divisor lists. Free online math tool."
         canonical="https://usonlinetools.com/math/prime-number-checker"
         schema={schema}
       />

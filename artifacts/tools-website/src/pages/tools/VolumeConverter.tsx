@@ -146,8 +146,8 @@ export default function VolumeConverter() {
   return (
     <Layout>
       <SEO
-        title="Volume Converter - Convert liters, gallons, cups, fl oz"
-        description="Free online volume converter. Convert liters, milliliters, gallons, quarts, cups, fluid ounces, cubic meters, and more with live results and practical reference examples."
+        title="Volume Converter — Gallons, Liters, Cups & Fluid Ounces"
+        description="Convert volume units between gallons, liters, milliliters, fluid ounces, quarts, pints, and cubic meters. Free online kitchen and science converter."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

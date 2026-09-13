@@ -102,8 +102,8 @@ export default function PowerConverter() {
   return (
     <Layout>
       <SEO
-        title="Power Converter - Convert Watts, Kilowatts, Horsepower, BTU/hr"
-        description="Free online power converter. Convert watts, kilowatts, megawatts, horsepower, BTU/hr, calories per second, and more with live results and practical reference examples."
+        title="Power Converter — Watts, Kilowatts & Horsepower Units"
+        description="Convert watts, kilowatts, megawatts, horsepower, and BTU/hr with instant real-time calculations and engineering conversion formulas. Free online physics tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

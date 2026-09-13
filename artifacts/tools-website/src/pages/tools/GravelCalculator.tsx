@@ -214,8 +214,8 @@ export default function GravelCalculator() {
   return (
     <Layout>
       <SEO
-        title="Gravel Calculator - Estimate Gravel Volume and Tons"
-        description="Free gravel calculator for driveways, paths, beds, and drainage projects. Estimate cubic yards, cubic meters, tons, and bulk bags with rectangular or circular area inputs."
+        title="Gravel Calculator — Cubic Yards & Tons for Driveways"
+        description="Calculate gravel volume in cubic yards, tons, and bags for driveways, patios, walkways, and drainage projects. Free aggregate material estimator."
         canonical="https://usonlinetools.com/construction/gravel-calculator"
         schema={{
           "@context": "https://schema.org",

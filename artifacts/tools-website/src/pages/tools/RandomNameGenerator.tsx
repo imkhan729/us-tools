@@ -153,8 +153,8 @@ export default function RandomNameGenerator() {
   return (
     <Layout>
       <SEO
-        title="Random Name Generator – Generate Fake Names for Any Purpose | Free"
-        description="Free random name generator. Generate realistic American male, female, or mixed names for fiction, testing, design, gaming, or any creative project. No signup required."
+        title="Random Name Generator — Male, Female & Full Fake Names"
+        description="Generate realistic first names, last names, and full character identities with gender filters and origin presets for mock data and fiction. Free name tool."
         canonical={RANDOM_NAME_CANONICAL}
         schema={schema}
       />

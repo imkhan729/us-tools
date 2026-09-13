@@ -62,8 +62,8 @@ export default function EmojiPickerTool() {
   return (
     <UtilityToolPageShell
       title="Emoji Picker Tool"
-      seoTitle="Emoji Picker Tool"
-      seoDescription="Browse, search, and copy useful emojis by category with this free browser-based emoji picker."
+      seoTitle="Emoji Picker Tool — Search & Copy Emojis Online"
+      seoDescription="Search, browse, and copy emojis by category, skin tone, and keyword instantly. Free online emoji picker with one-click copy for social media and text."
       canonical={`https://usonlinetools.com${getCanonicalToolPath("emoji-picker")}`}
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"

@@ -136,8 +136,8 @@ export default function OpenGraphGenerator() {
   return (
     <Layout>
       <SEO
-        title="Open Graph Tag Generator - Create OG Meta Tags | US Online Tools"
-        description="Free Open Graph tag generator. Create Facebook and LinkedIn sharing tags instantly with browser-based preview and copyable code."
+        title="Open Graph Generator — Facebook & LinkedIn Meta Tags"
+        description="Generate Open Graph (og:) meta tags and Twitter card markup with live social media share previews. Free developer SEO tool for social link optimization."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

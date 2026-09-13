@@ -143,8 +143,8 @@ export default function AverageCalculator() {
   return (
     <Layout>
       <SEO
-        title="Average Calculator - Mean, Median, Mode & Range | Free Online Statistics Tool"
-        description="Free online average calculator. Instantly find the mean, median, mode, range, min, max, and standard deviation of any set of numbers. Perfect for statistics, grades, and data analysis."
+        title="Average Calculator — Mean, Median, Mode & Range Tool"
+        description="Calculate the mean, median, mode, range, and standard deviation of any numbers. Free online statistics calculator with step-by-step summary breakdowns."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

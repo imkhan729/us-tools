@@ -103,8 +103,8 @@ export default function ProfitMarginCalculator() {
   return (
     <Layout>
       <SEO
-        title="Profit Margin Calculator - Gross Margin, Markup & Revenue | Free Business Tool"
-        description="Free profit margin calculator. Calculate gross profit margin, markup percentage, and revenue from cost. Essential for pricing products and analyzing business profitability."
+        title="Profit Margin Calculator — Gross Margin & Markup Tool"
+        description="Calculate gross profit margin percentage, markup percentage, and selling price revenue from product cost. Free business pricing and profitability calculator."
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",

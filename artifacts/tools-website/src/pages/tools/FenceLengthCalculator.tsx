@@ -147,8 +147,8 @@ export default function FenceLengthCalculator() {
   return (
     <Layout>
       <SEO
-        title="Fence Length Calculator - Perimeter, Panels, and Posts"
-        description="Free fence length calculator. Estimate total fence run, gate openings, and post count from lot dimensions and post spacing for residential fence planning."
+        title="Fence Calculator — Estimate Perimeter, Panels & Posts"
+        description="Calculate total fence run, post count, rails, pickets, and panel requirements with custom gate openings and post spacing. Free yard project estimator."
         canonical="https://usonlinetools.com/construction/fence-length-calculator"
         schema={{
           "@context": "https://schema.org",

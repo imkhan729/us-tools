@@ -74,8 +74,8 @@ export default function ShiftHoursCalculator() {
   return (
     <Layout>
       <SEO
-        title="Shift Hours Calculator – Calculate Your Work Day Duration"
-        description="Quickly calculate the total hours and minutes of your work shift. Supports overnight shifts and unpaid breaks. Professional decimal hour conversion."
+        title="Shift Hours Calculator — Work Duration & Decimal Hours"
+        description="Calculate total worked shift duration, overnight hours, and unpaid meal breaks with decimal hour conversion for payroll timesheets. Free online tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

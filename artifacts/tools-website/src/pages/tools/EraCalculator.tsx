@@ -76,8 +76,8 @@ export default function EraCalculator() {
   return (
     <Layout>
       <SEO
-        title="Era Calculator – Convert Between Calendar Systems & Epochs"
-        description="Convert Gregorian dates to Holocene, Hijri, and Buddhist eras. Free online tool for historical research and calendar synchronization."
+        title="Era Calculator — Calendar Systems & Historical Epochs"
+        description="Convert dates across Gregorian, Julian, Islamic Hijri, Hebrew, and Buddhist calendar systems. Free online historical era and calendar synchronization tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

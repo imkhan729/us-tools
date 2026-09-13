@@ -23,9 +23,9 @@ import {
 } from "lucide-react";
 
 const CANONICAL_URL = "https://usonlinetools.com/security/online-password-generator";
-const SEO_TITLE = "Password Generator - Free Secure Random Password Generator";
+const SEO_TITLE = "Password Generator — Strong, Secure & Random Password Creator";
 const SEO_DESCRIPTION =
-  "Use this free password generator to create strong, secure random passwords with numbers, symbols, uppercase, and lowercase letters. No signup.";
+  "Generate strong, cryptographically secure random passwords instantly. Customize length, symbols, numbers, and avoid ambiguous characters locally in browser.";
 
 const SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 

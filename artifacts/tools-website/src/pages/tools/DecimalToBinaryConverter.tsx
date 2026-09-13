@@ -127,8 +127,8 @@ export default function DecimalToBinaryConverter() {
   return (
     <div style={{ "--calc-hue": "230" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Decimal to Binary Converter — Convert Numbers to Binary Instantly"
-        description="Convert decimal numbers to binary, hex, and octal. See step-by-step division method. Free online decimal to binary converter with full number base reference."
+        title="Decimal to Binary Converter — Decimal to Binary & Hex"
+        description="Convert decimal numbers to binary, hex, and octal with step-by-step division methods. Free online number base converter with power-of-2 reference charts."
       />
 
       {/* Breadcrumb */}

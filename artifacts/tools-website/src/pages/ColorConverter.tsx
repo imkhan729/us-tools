@@ -170,8 +170,8 @@ export default function ColorConverter() {
   return (
     <Layout>
       <SEO
-        title="Color Converter – HEX to RGB to HSL Converter Free Online | US Online Tools"
-        description="Free color converter. Convert colors between HEX, RGB, and HSL instantly. Enter any HEX code and get all three formats with one-click copy. Essential for web designers and developers."
+        title="Color Converter — HEX, RGB, HSL & CMYK Code Tool"
+        description="Convert color codes between HEX, RGB, HSL, CMYK, and HSV with live palette preview, contrast checks, and one-click copying. Free online color converter."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

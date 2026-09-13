@@ -81,8 +81,8 @@ export default function MetaTagGenerator() {
   return (
     <Layout>
       <SEO
-        title="Meta Tag Generator – Create SEO HTML Tags Instantly"
-        description="Free online Meta Tag Generator. Provide a title, description, and keywords to quickly construct valid HTML <head> meta tags fully optimized for Google indexing."
+        title="Meta Tag Generator — HTML SEO Tags & Social Metadata"
+        description="Generate search-engine-ready HTML title, description, robot directives, and Open Graph meta tags for website header optimization. Free developer SEO tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

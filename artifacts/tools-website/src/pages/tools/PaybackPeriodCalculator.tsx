@@ -115,8 +115,8 @@ export default function PaybackPeriodCalculator() {
   return (
     <Layout>
       <SEO
-        title="Payback Period Calculator — Free Online Investment Recovery Tool"
-        description="Calculate how long it takes to recover your investment with our free Payback Period Calculator. Get results in years and months instantly. No signup required."
+        title="Payback Period Calculator — Investment Break-Even Tool"
+        description="Calculate the exact payback period in years and months to recover initial capital investments from annual cash flows. Free business finance calculator."
       />
       <div style={{ "--calc-hue": "270" } as React.CSSProperties} className="max-w-7xl mx-auto px-4 py-8">
 

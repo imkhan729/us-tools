@@ -69,8 +69,8 @@ export default function FuelEfficiencyConverter() {
   return (
     <div style={{ "--calc-hue": "105" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Fuel Efficiency Converter — Convert MPG, km/L, L/100km Instantly"
-        description="Convert between MPG (US/UK), km/L, L/100km, and more. Includes annual fuel cost calculator. Free online fuel efficiency converter."
+        title="Fuel Efficiency Converter — MPG to L/100km & km/L"
+        description="Convert vehicle gas mileage between MPG (US/UK), liters per 100km (L/100km), and km/L. Free online fuel consumption and annual cost comparison tool."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

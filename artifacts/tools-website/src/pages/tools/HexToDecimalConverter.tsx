@@ -59,8 +59,8 @@ export default function HexToDecimalConverter() {
   return (
     <div style={{ "--calc-hue": "280" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Hex to Decimal Converter — Convert Hexadecimal to Decimal Numbers"
-        description="Convert hexadecimal to decimal, binary, and octal instantly. Free online hex to decimal converter with full number base reference and step-by-step explanations."
+        title="Hex to Decimal Converter — Hexadecimal to Base 10"
+        description="Convert hexadecimal values to decimal numbers, binary strings, and octal format instantly. Free online programmer converter with step-by-step math."
       />
 
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">

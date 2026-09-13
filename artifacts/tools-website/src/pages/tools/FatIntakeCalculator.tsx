@@ -73,8 +73,8 @@ export default function FatIntakeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Fat Intake Calculator – Calculate Daily Fat Needs in Grams"
-        description="Determine your ideal daily fat intake based on your calorie goals and activity level. Free online tool for macro balancing and nutrition planning."
+        title="Fat Intake Calculator — Daily Healthy Fat Needs in Grams"
+        description="Calculate your recommended daily dietary fat intake in grams and calories based on your body weight and fitness goals. Free macro nutrition calculator."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

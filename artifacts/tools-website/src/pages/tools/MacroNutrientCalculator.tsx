@@ -145,8 +145,8 @@ export default function MacroNutrientCalculator() {
   return (
     <Layout>
       <SEO
-        title="Macro Calculator — Calculate Your Daily Macronutrients | Free Tool"
-        description="Calculate your daily protein, carbs, and fat targets based on your weight, height, activity level, and goal. Free IIFYM macro calculator with full breakdown."
+        title="Macro Calculator — Daily Protein, Carb & Fat Targets"
+        description="Calculate daily macronutrient targets (protein, carbs, fats) for fat loss, muscle building, or maintenance using IIFYM flexible dieting guidelines."
       />
 
       {/* Breadcrumb */}

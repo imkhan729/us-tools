@@ -87,8 +87,8 @@ export default function MilitaryTimeConverter() {
   return (
     <Layout>
       <SEO
-        title="Military Time Converter – 12-Hour to 24-Hour Clock"
-        description="Convert standard AM/PM time to military (24-hour) format instantly. Free online tool for medical, aviation, and military time synchronization."
+        title="Military Time Converter — 24-Hour & 12-Hour Clock Tool"
+        description="Convert 12-hour AM/PM time to 24-hour military time format with timezone offsets, pronunciation guide, and reference tables. Free online clock tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -94,8 +94,8 @@ export default function ColorContrastChecker() {
   return (
     <Layout>
       <SEO
-        title="Color Contrast Checker – WCAG Accessibility Validator, Free Online Tool | US Online Tools"
-        description="Free online color contrast checker. Test WCAG 2.1 AA and AAA accessibility compliance with any foreground and background hex color combination. Instant ratio scoring, no signup required."
+        title="Color Contrast Checker — WCAG AA & AAA Ratio Tool"
+        description="Test color contrast ratios for WCAG 2.1 AA and AAA accessibility compliance. Compare text and background colors with live preview and compliance scoring."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

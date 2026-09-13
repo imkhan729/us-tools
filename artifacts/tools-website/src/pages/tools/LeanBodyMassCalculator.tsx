@@ -105,8 +105,8 @@ export default function LeanBodyMassCalculator() {
   return (
     <Layout>
       <SEO
-        title="Lean Body Mass Calculator – Calculate Your LBM"
-        description="Calculate your Lean Body Mass (LBM) using Boer, James, and Hume formulas. Understand your body composition and ideal protein intake based on your lean mass."
+        title="Lean Body Mass Calculator — Boer, James & Hume Formulas"
+        description="Calculate your lean body mass (LBM) and fat-free body weight using Boer, James, and Hume comparison formulas. Free body composition & fitness calculator."
       />
 
       <nav className="text-sm text-gray-500 mb-4 px-4 lg:px-0" aria-label="Breadcrumb">

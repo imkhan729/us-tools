@@ -21,9 +21,9 @@ import {
 } from "lucide-react";
 
 const CANONICAL_URL = "https://usonlinetools.com/productivity/online-word-counter";
-const SEO_TITLE = "Word Counter - Free Word and Character Counter";
+const SEO_TITLE = "Word Counter — Count Words, Characters & Sentences";
 const SEO_DESCRIPTION =
-  "Use this free word counter to count words, characters, sentences, paragraphs, and reading time online. Paste text and get instant results.";
+  "Count words, characters, sentences, paragraphs, and estimated reading time with live readability analysis. Free online word counter and text statistics.";
 
 const RELATED_TOOLS = [
   { title: "Character Counter Tool", slug: "character-counter-tool", text: "Count characters with and without spaces." },

@@ -420,8 +420,8 @@ export default function LinkedinPostFormatter() {
   return (
     <UtilityToolPageShell
       title="Online LinkedIn Post Formatter"
-      seoTitle="Online LinkedIn Post Formatter - Format Posts for Readability"
-      seoDescription="Free online LinkedIn post formatter with hook styling, paragraph spacing, CTA insertion, live preview, and copy-ready output."
+      seoTitle="LinkedIn Post Formatter — Bold Text, Hooks & Spacing"
+      seoDescription="Format LinkedIn posts with bold and italic unicode fonts, clean line spacing, bullet points, and CTA layouts for higher organic reach and engagement."
       canonical="https://usonlinetools.com/social-media/online-linkedin-post-formatter"
       categoryName="Social Media Tools"
       categoryHref="/category/social-media"

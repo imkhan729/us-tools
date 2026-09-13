@@ -194,8 +194,8 @@ export default function BodyFatCalculator() {
   return (
     <Layout>
       <SEO
-        title="Body Fat Calculator - Free US Navy Method Tool | Body Fat Percentage"
-        description="Free online body fat calculator using the US Navy method. Calculate your body fat percentage, fat mass, and lean mass instantly. No signup required."
+        title="Body Fat Calculator — US Navy Method & Body Composition"
+        description="Calculate your body fat percentage, lean mass, and fat mass using the US Navy tape method. Instant, accurate body composition results with zero signup."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

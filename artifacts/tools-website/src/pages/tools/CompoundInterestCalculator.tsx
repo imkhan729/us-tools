@@ -222,8 +222,8 @@ export default function CompoundInterestCalculator() {
   return (
     <Layout>
       <SEO
-        title="Compound Interest Calculator - Future Value, Interest Earned & Monthly Contributions | US Online Tools"
-        description="Free compound interest calculator with monthly contributions. Estimate future value, total invested amount, and interest earned with annual, quarterly, monthly, or daily compounding."
+        title="Compound Interest Calculator — Investment Growth Estimator"
+        description="Calculate investment growth with compound interest and regular contributions. Compare daily, monthly, and annual compounding schedules instantly."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

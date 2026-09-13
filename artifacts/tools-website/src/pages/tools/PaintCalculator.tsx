@@ -117,8 +117,8 @@ export default function PaintCalculator() {
   return (
     <Layout>
       <SEO
-        title="Paint Calculator – How Much Paint Do I Need? Free Online Tool | US Online Tools"
-        description="Free online paint calculator. Estimate exactly how many liters or gallons of paint you need for any room. Accounts for doors, windows, and number of coats. Instant results, no signup required."
+        title="Paint Calculator — Gallons, Coverage & Wall Estimator"
+        description="Calculate how much paint you need in gallons and liters for walls, ceilings, and trim. Deducts doors and windows for accurate multi-coat coverage estimates."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

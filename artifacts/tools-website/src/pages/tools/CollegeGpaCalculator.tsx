@@ -72,9 +72,9 @@ export default function CollegeGpaCalculator() {
 
   return (
     <StudentToolPageShell
-      title="College GPA Calculator"
+      title="College GPA Calculator — Semester & Cumulative Grades"
       seoTitle="College GPA Calculator - Calculate Semester GPA And Project Cumulative GPA"
-      seoDescription="Calculate college GPA with weighted credits, current semester courses, and projected cumulative GPA using this free college GPA calculator."
+      seoDescription="Calculate your college semester and cumulative GPA with credit weights and grading scales. Plan target grades to achieve honors and dean's list status."
       canonical="https://usonlinetools.com/education/college-gpa-calculator"
       heroDescription="Calculate a weighted college GPA for the current term and see how it could change your cumulative GPA. Add courses, letter grades, and credits to get a more realistic academic forecast."
       heroIcon={<GraduationCap className="w-3.5 h-3.5" />}

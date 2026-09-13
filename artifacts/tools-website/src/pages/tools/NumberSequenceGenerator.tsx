@@ -141,8 +141,8 @@ export default function NumberSequenceGenerator() {
   return (
     <Layout>
       <SEO
-        title="Number Sequence Generator - Arithmetic and Geometric"
-        description="Free online number sequence generator. Create arithmetic and geometric sequences, then compute nth term and sequence sum instantly."
+        title="Number Sequence Generator — Arithmetic & Geometric Sums"
+        description="Generate arithmetic, geometric, and Fibonacci number sequences with nth-term calculations and total sequence sum formulas. Free online math sequence tool."
         canonical="https://usonlinetools.com/math/number-sequence-generator"
         schema={schema}
       />

@@ -21,8 +21,8 @@ export default function LineCounterTool() {
   return (
     <UtilityToolPageShell
       title="Line Counter Tool"
-      seoTitle="Line Counter Tool"
-      seoDescription="Count total lines, non-empty lines, empty lines, and line-length statistics instantly for any text or code block."
+      seoTitle="Line Counter Tool — Count Lines, Words & Characters"
+      seoDescription="Count total lines, empty lines, non-blank lines, word counts, and average line lengths for text and code files. Free online developer line counter."
       canonical="https://usonlinetools.com/productivity/line-counter-tool"
       categoryName="Productivity & Text"
       categoryHref="/category/productivity"

@@ -374,8 +374,8 @@ export default function GameCurrencyConverter() {
   return (
     <UtilityToolPageShell
       title="Online Game Currency Converter"
-      seoTitle="Online Game Currency Converter - Compare Packs, Item Cost, and Value"
-      seoDescription="Free online game currency converter. Compare in-game currency pack value, calculate target item costs, and estimate grind days versus spending for any game shop."
+      seoTitle="Game Currency Converter — Pack Value & Grind Calculator"
+      seoDescription="Calculate in-game currency value, microtransaction pack savings, item costs, and grind days vs spending. Free gaming shop and currency value tool."
       canonical="https://usonlinetools.com/gaming/game-currency-converter"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

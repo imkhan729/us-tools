@@ -143,8 +143,8 @@ export default function LogarithmCalculator() {
   return (
     <Layout>
       <SEO
-        title="Logarithm Calculator - log10, ln, and log base n"
-        description="Free online logarithm calculator. Compute common log, natural log, and custom-base logarithms instantly."
+        title="Logarithm Calculator — log10, ln & Custom Base Log"
+        description="Calculate common logarithm (log10), natural log (ln), and custom base logarithms instantly. Free online math calculator with logarithmic rules."
         canonical="https://usonlinetools.com/math/logarithm-calculator"
         schema={schema}
       />

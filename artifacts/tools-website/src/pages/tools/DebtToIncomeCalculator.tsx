@@ -25,8 +25,8 @@ export default function DebtToIncomeCalculator() {
   return (
     <UtilityToolPageShell
       title="Debt-to-Income Calculator"
-      seoTitle="Debt-to-Income Calculator - DTI Ratio"
-      seoDescription="Free online debt-to-income calculator. Calculate DTI ratio from monthly debt payments and gross monthly income."
+      seoTitle="Debt-to-Income Calculator — DTI Ratio & Loan Approval"
+      seoDescription="Calculate your debt-to-income (DTI) ratio from monthly debts and gross income. Check mortgage, auto loan, and personal financing qualification thresholds."
       canonical="https://usonlinetools.com/finance/online-debt-to-income-calculator"
       categoryName="Finance & Cost"
       categoryHref="/category/finance"

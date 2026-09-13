@@ -59,8 +59,8 @@ export default function FrequencyConverter() {
   return (
     <div style={{ "--calc-hue": "260" } as React.CSSProperties} className="min-h-screen bg-background">
       <SEO
-        title="Frequency Converter — Convert Hz, kHz, MHz, GHz, RPM Instantly"
-        description="Convert between hertz, kilohertz, megahertz, gigahertz, RPM, and radians per second. Free online frequency converter with complete reference and applications guide."
+        title="Frequency Converter — Hz, kHz, MHz, GHz & RPM Tool"
+        description="Convert frequency units between hertz (Hz), kilohertz (kHz), megahertz (MHz), gigahertz (GHz), and RPM. Free online frequency converter with formulas."
       />
       <nav className="max-w-6xl mx-auto px-4 pt-4 pb-0 text-sm text-muted-foreground flex gap-1.5 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">Home</Link><span>/</span>

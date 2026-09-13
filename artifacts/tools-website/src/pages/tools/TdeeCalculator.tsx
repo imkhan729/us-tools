@@ -130,8 +130,8 @@ export default function TdeeCalculator() {
   return (
     <Layout>
       <SEO
-        title="TDEE Calculator – Total Daily Energy Expenditure | Free Online Tool"
-        description="Calculate your Total Daily Energy Expenditure (TDEE) using the Mifflin-St Jeor equation. Get personalized calorie targets for weight loss, maintenance, or muscle gain. Free, no signup."
+        title="TDEE Calculator — Total Daily Energy Expenditure & Calories"
+        description="Calculate your Total Daily Energy Expenditure (TDEE) and BMR with Mifflin-St Jeor. Get personalized calorie goals for fat loss, maintenance, or muscle gain."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

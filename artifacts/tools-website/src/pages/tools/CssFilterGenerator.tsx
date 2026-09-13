@@ -182,8 +182,8 @@ export default function CssFilterGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Filter Generator"
-      seoTitle="CSS Filter Generator - Free Visual CSS Filter Builder"
-      seoDescription="Free CSS filter generator with live preview, presets, sliders, and copyable CSS output. Tune blur, brightness, contrast, saturation, hue rotation, grayscale, sepia, invert, and opacity visually."
+      seoTitle="CSS Filter Generator — Blur, Contrast, Saturation & Hue"
+      seoDescription="Apply CSS filters visually with blur, brightness, contrast, grayscale, hue-rotate, invert, and sepia controls. Preview images and copy CSS filter code."
       canonical="https://usonlinetools.com/css-design/css-filter-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

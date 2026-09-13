@@ -41,8 +41,8 @@ export default function CookingConverter() {
   return (
     <Layout>
       <SEO
-        title="Cooking Converter"
-        description="Free cooking converter. Convert cups, tablespoons, teaspoons, milliliters, liters, and fluid ounces for recipes."
+        title="Cooking Converter — Cups, Grams, Tbsp & Ounces Tool"
+        description="Convert cooking and baking ingredients between cups, tablespoons, teaspoons, grams, ounces, and milliliters. Free kitchen recipe unit converter tool."
         canonical="https://usonlinetools.com/conversion/cooking-converter"
       />
 

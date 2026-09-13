@@ -89,8 +89,8 @@ export default function StopwatchTool() {
   return (
     <Layout>
       <SEO
-        title="Online Stopwatch – Accurate Digital Timer with Lap Times"
-        description="Free online digital stopwatch. Track elapsed time with precision, record lap splits, and manage intervals for sports, work, or study."
+        title="Online Stopwatch — Millisecond Precision & Lap Splits"
+        description="Track elapsed time with millisecond precision, record unlimited lap splits, and export timer intervals for sports and workouts. Free digital stopwatch."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -252,8 +252,8 @@ export default function ColorPaletteGenerator() {
   return (
     <UtilityToolPageShell
       title="Color Palette Generator"
-      seoTitle="Color Palette Generator - Free Online Color Scheme Creator"
-      seoDescription="Free color palette generator for websites, branding, and UI design. Create monochrome, analogous, complementary, triadic, and split-complementary color schemes instantly."
+      seoTitle="Color Palette Generator — Harmonic Schemes & Palettes"
+      seoDescription="Generate complementary, analogous, triadic, and monochromatic color schemes. Free online color palette generator with hex export and CSS copy tools."
       canonical="https://usonlinetools.com/css-design/color-palette-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

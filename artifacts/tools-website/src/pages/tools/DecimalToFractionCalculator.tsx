@@ -129,8 +129,8 @@ export default function DecimalToFractionCalculator() {
   return (
     <Layout>
       <SEO
-        title="Decimal to Fraction Calculator – Quick & Accurate Conversions | US Online Tools"
-        description="Free online decimal to fraction calculator. Convert any decimal number to a simplified fraction and mixed number instantly. No signup required."
+        title="Decimal to Fraction Calculator — Simplified Fractions"
+        description="Convert repeating and terminating decimals into simplified fractions and mixed numbers. Free online decimal to fraction calculator with step-by-step steps."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

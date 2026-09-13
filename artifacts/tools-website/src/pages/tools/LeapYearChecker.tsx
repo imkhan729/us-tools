@@ -91,8 +91,8 @@ export default function LeapYearChecker() {
   return (
     <Layout>
       <SEO
-        title="Leap Year Checker — Is Any Year a Leap Year? | Free Tool"
-        description="Instantly check if any year is a leap year. Understand the 4/100/400 rule, find next and previous leap years, and list all leap years in any range."
+        title="Leap Year Checker — Is Any Year a Leap Year Online"
+        description="Check if any calendar year is a leap year instantly. Learn the 4, 100, and 400 leap year rules and view upcoming and historical leap year schedules."
       />
 
       {/* Breadcrumb */}

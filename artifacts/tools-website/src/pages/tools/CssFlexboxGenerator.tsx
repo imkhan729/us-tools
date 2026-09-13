@@ -181,8 +181,8 @@ export default function CssFlexboxGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Flexbox Generator"
-      seoTitle="CSS Flexbox Generator - Free Visual Flex Layout Builder"
-      seoDescription="Free CSS flexbox generator with live preview, layout presets, control panels, and copyable CSS output. Build flex layouts visually and export production-ready code instantly."
+      seoTitle="CSS Flexbox Generator — Visual Flex Layout Builder"
+      seoDescription="Build responsive CSS flexbox layouts visually with direction, alignment, wrap, and gap controls. Test container layouts and copy production-ready CSS."
       canonical="https://usonlinetools.com/css-design/css-flexbox-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

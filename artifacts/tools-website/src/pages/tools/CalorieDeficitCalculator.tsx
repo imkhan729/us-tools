@@ -151,8 +151,8 @@ export default function CalorieDeficitCalculator() {
   return (
     <Layout>
       <SEO
-        title="Calorie Deficit Calculator – Find Your Weight Loss Calories"
-        description="Calculate the exact calorie deficit needed to lose weight at your chosen pace. Uses Mifflin-St Jeor formula for accurate TDEE and daily calorie targets."
+        title="Calorie Deficit Calculator — Weight Loss Calorie Target"
+        description="Calculate the daily calorie deficit needed to lose weight safely at your target pace using the Mifflin-St Jeor formula. Free online nutrition calculator."
       />
 
       {/* Breadcrumb */}

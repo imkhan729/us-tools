@@ -132,8 +132,8 @@ export default function IdealWeightCalculator() {
   return (
     <Layout>
       <SEO
-        title="Ideal Weight Calculator – Find Your Healthy Target Weight by Height"
-        description="Calculate your ideal body weight using 4 medical formulas: Robinson, Miller, Devine, and Hamwi. Get results in kg and lbs. Plus healthy BMI weight range. Free, no signup."
+        title="Ideal Weight Calculator — Healthy Weight by Height & Age"
+        description="Calculate your ideal body weight using Robinson, Miller, Devine, and Hamwi formulas. Includes healthy BMI weight ranges in lbs and kg with instant results."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

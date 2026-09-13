@@ -118,8 +118,8 @@ export default function WorkingDaysCalculator() {
   return (
     <Layout>
       <SEO
-        title="Working Days Calculator – Count Business Days Between Dates"
-        description="Calculate the exact number of working days between any two dates. Exclude weekends and custom holidays for project planning and payroll."
+        title="Working Days Calculator — Business Days Between Dates"
+        description="Calculate the exact number of business working days between two dates, excluding weekends and custom public holidays. Free project timeline planner."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -77,8 +77,8 @@ export default function Base64EncoderDecoder() {
   return (
     <Layout>
       <SEO
-        title="Base64 Encoder & Decoder – Convert Text and Data Online"
-        description="Free online Base64 Encoder and Decoder. Instantly convert ASCII text to Base64 hashes, or decode Base64 back into human-readable strings."
+        title="Base64 Encode & Decode — UTF-8 Text Converter Online"
+        description="Encode and decode Base64 text online with full UTF-8 and Unicode character support. Fast, 100% private client-side converter with one-click copy."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

@@ -338,8 +338,8 @@ export default function GamingFpsCalculator() {
   return (
     <UtilityToolPageShell
       title="Gaming FPS Calculator"
-      seoTitle="Online Gaming FPS Calculator - Estimate FPS, Frame Time, and Refresh Match"
-      seoDescription="Free online gaming FPS calculator. Estimate FPS from a 1080p baseline, scale to new resolutions and presets, and calculate frame time, 1% lows, and monitor refresh coverage."
+      seoTitle="Gaming FPS Calculator — Resolution Scaling & 1% Lows"
+      seoDescription="Estimate PC gaming FPS across 1080p, 1440p, and 4K resolutions with preset scaling, frame times, and 1% low averages. Free gaming performance tool."
       canonical="https://usonlinetools.com/gaming/gaming-fps-calculator"
       categoryName="Gaming Calculators"
       categoryHref="/category/gaming"

@@ -226,8 +226,8 @@ export default function CssTriangleGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Triangle Generator"
-      seoTitle="CSS Triangle Generator - Free Border Triangle and Tooltip Arrow Builder"
-      seoDescription="Free CSS triangle generator with live preview, direction controls, size presets, Tailwind-style hints, and copyable border triangle CSS for tooltip arrows, chevrons, ribbons, speech bubbles, and UI pointers."
+      seoTitle="CSS Triangle Generator — Pure CSS Arrow & Border Shape Generator"
+      seoDescription="Generate pure CSS triangles and tooltip arrows with live preview. Copy border-based CSS, Tailwind hints, and custom direction presets in one click."
       canonical="https://usonlinetools.com/css-design/css-triangle-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

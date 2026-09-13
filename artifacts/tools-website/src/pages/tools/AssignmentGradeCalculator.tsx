@@ -39,8 +39,8 @@ export default function AssignmentGradeCalculator() {
   return (
     <StudentToolPageShell
       title="Assignment Grade Calculator"
-      seoTitle="Assignment Grade Calculator - Calculate Assignment Percentage and Weight"
-      seoDescription="Calculate assignment grade percentage, weighted course contribution, and target points needed. Free assignment grade calculator for homework, projects, and coursework."
+      seoTitle="Assignment Grade Calculator — Course Weight & Scores"
+      seoDescription="Calculate assignment percentage grades, weighted course contributions, and target scores needed. Free grade estimator for school and college homework."
       canonical="https://usonlinetools.com/education/assignment-grade-calculator"
       heroDescription="Calculate an assignment percentage from earned points, estimate how much that assignment contributes to the overall course grade, and see the points needed for a target assignment score."
       heroIcon={<BookOpen className="w-3.5 h-3.5" />}

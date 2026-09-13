@@ -74,8 +74,8 @@ export default function UuidGenerator() {
   return (
     <Layout>
       <SEO
-        title="Online UUID Generator (v4) – Generate Unique Identifiers Instantly"
-        description="Free online random UUID / GUID generator. Instantly create RFC 4122 compliant version 4 Universally Unique Identifiers for your app databases or software architecture."
+        title="UUID Generator — Bulk v4 GUIDs & Unique Identifiers"
+        description="Generate RFC 4122 compliant version-4 UUIDs and GUIDs in bulk with uppercase, lowercase, and hyphen format options. Free developer identifier tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

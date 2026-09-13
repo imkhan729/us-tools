@@ -102,8 +102,8 @@ export default function TextReverser() {
   return (
     <Layout>
       <SEO
-        title="Text Reverser – Reverse Any String, Words, Lines, or Sentences Online"
-        description="Free online text reverser. Reverse characters, word order, line order, or sentence order in any text. Instant results with palindrome detection. No signup required."
+        title="Text Reverser — Reverse Words, Letters & Line Order"
+        description="Reverse text characters, flip word orders, invert paragraph lines, and detect mirror palindromes with one click. Free online text manipulation tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -127,8 +127,8 @@ export default function WorkHoursCalculator() {
   return (
     <Layout>
       <SEO
-        title="Work Hours Calculator – Calculate Hours Worked & Weekly Pay"
-        description="Free work hours calculator. Enter start time, end time, and break for each day. Get total weekly hours worked and optional earnings with hourly rate. No signup required."
+        title="Work Hours Calculator — Timesheet & Weekly Pay Estimator"
+        description="Calculate daily and weekly work hours, break deductions, and gross paycheck earnings. Free timesheet calculator with instant PDF or copy-ready results."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -131,8 +131,8 @@ export default function SleepCalculator() {
   return (
     <Layout>
       <SEO
-        title="Sleep Calculator – Best Bedtime & Wake-Up Times Based on Sleep Cycles"
-        description="Calculate the best time to go to sleep or wake up based on 90-minute sleep cycles. Avoid waking mid-cycle and feel refreshed. Free online sleep calculator, no signup required."
+        title="Sleep Calculator — Best Bedtime & 90-Min Sleep Cycles"
+        description="Calculate the optimal bedtime or wake-up time based on natural 90-minute sleep cycles to wake up energized without grogginess. Free sleep planner tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

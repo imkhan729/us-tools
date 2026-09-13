@@ -169,8 +169,8 @@ export default function DateDifferenceCalculator() {
   return (
     <Layout>
       <SEO
-        title="Date Difference Calculator - Free Online Days Between Dates Tool"
-        description="Free online date difference calculator. Calculate the number of days, weeks, months, and years between two dates. Includes business days, hours, and minutes. Instant results, no signup required."
+        title="Date Difference Calculator — Days Between Dates Tool"
+        description="Calculate the exact number of days, weeks, months, years, and business days between any two dates. Fast, accurate, and 100% free with no signup needed."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

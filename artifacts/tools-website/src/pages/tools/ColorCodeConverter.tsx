@@ -253,8 +253,8 @@ export default function ColorCodeConverter() {
   return (
     <UtilityToolPageShell
       title="Color Code Converter"
-      seoTitle="Color Code Converter - Convert HEX, RGB, HSL, and CMYK Online"
-      seoDescription="Free color code converter for HEX, RGB, HSL, and CMYK. Convert color values instantly, preview the result live, and copy developer-ready CSS and design-token snippets."
+      seoTitle="Color Code Converter — HEX, RGB, HSL & CMYK Tool"
+      seoDescription="Convert colors between HEX, RGB, HSL, HSV, and CMYK formats instantly. Free online color code converter with live preview and copyable CSS tokens."
       canonical="https://usonlinetools.com/developer/color-code-converter"
       categoryName="Developer Tools"
       categoryHref="/category/developer"

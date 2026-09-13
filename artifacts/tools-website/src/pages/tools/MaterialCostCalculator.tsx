@@ -124,7 +124,8 @@ export default function MaterialCostCalculator() {
 
   return (
     <Layout>
-      <SEO title="Material Cost Calculator - Estimate Project Material Pricing" description="Free material cost calculator for construction and DIY projects. Add waste, labor, delivery, and tax to estimate the real total project cost." />
+      <SEO title="Material Cost Calculator — Construction Project Pricing"
+        description="Estimate total construction material costs with waste margins, labor rates, delivery charges, and sales tax. Free contractor and DIY project pricing tool." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

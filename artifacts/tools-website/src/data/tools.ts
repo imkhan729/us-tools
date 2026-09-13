@@ -237,7 +237,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     color: "bg-yellow-500",
     bgColor: "from-yellow-500 to-amber-500",
     tools: [
-      { slug: "concrete-calculator", title: "Concrete Volume Calculator", description: "Calculate the volume of concrete needed for any project.", metaDescription: "Calculate concrete volume in cubic yards or meters. Free concrete calculator.", category: "Construction & DIY", implemented: true },
+      { slug: "concrete-calculator", title: "Concrete Calculator", description: "Calculate concrete volume in cubic yards, cubic meters, and premix bag counts (60 lb / 80 lb) for slabs, footings, and cylindrical columns.", metaDescription: "Calculate concrete volume in cubic yards, cubic meters, and premix bag counts (60 lb / 80 lb) for slabs, footings, and cylindrical columns.", category: "Construction & DIY", implemented: true },
       { slug: "cement-calculator", title: "Cement Calculator", description: "Estimate cement bags needed for slabs, walls, and columns.", metaDescription: "Calculate cement quantity for construction. Free online cement calculator.", category: "Construction & DIY", implemented: true },
       { slug: "brick-calculator", title: "Brick Calculator", description: "Estimate how many bricks you need for walls or projects.", metaDescription: "Calculate number of bricks needed for any wall. Free brick calculator for construction.", category: "Construction & DIY", implemented: true },
       { slug: "steel-weight-calculator", title: "Steel Weight Calculator", description: "Calculate the weight of steel bars and rods by dimensions.", metaDescription: "Calculate steel bar weight. Free online steel weight calculator for construction.", category: "Construction & DIY", implemented: true },

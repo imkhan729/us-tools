@@ -118,7 +118,7 @@ export default function DeckAreaCalculator() {
 
   return (
     <Layout>
-      <SEO title="Deck Area Calculator - Estimate Deck Size and Boards" description="Free deck area calculator for deck size, perimeter, waste allowance, and estimated board count. Plan decking materials in feet or meters." />
+      <SEO title="Deck Area Calculator — Square Footage & Deck Boards" description="Calculate deck square footage, board counts, waste allowance, and framing materials in feet or meters. Free online DIY patio and deck planning tool." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <nav className="flex items-center text-sm font-bold uppercase tracking-wider mb-8">

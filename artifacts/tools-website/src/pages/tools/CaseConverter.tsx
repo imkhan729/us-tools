@@ -99,8 +99,8 @@ export default function CaseConverter() {
   return (
     <Layout>
       <SEO
-        title="Case Converter – UPPERCASE, lowercase, Title Case & More | US Online Tools"
-        description="Free online case converter. Convert text to uppercase, lowercase, title case, sentence case, camelCase, or snake_case instantly. No signup required."
+        title="Case Converter — UPPERCASE, lowercase & Title Case"
+        description="Convert text between uppercase, lowercase, title case, sentence case, camelCase, PascalCase, and snake_case instantly. Free online text formatter."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

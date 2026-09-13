@@ -149,8 +149,8 @@ export default function CalorieIntakeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Calorie Intake Calculator – How Many Calories Should I Eat?"
-        description="Find your ideal daily calorie intake for weight loss, maintenance, or muscle gain. Personalized results using the Mifflin-St Jeor formula with macro breakdown."
+        title="Calorie Intake Calculator — Daily Calorie & Macro Target"
+        description="Calculate your ideal daily calorie intake for weight loss, maintenance, or muscle gain with macro breakdowns using Mifflin-St Jeor. Free nutrition tool."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

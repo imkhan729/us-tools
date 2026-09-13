@@ -72,8 +72,8 @@ export default function CssGradientGenerator() {
   return (
     <Layout>
       <SEO
-        title="CSS Gradient Generator – Create Beautiful Blends Visually"
-        description="Free online CSS Gradient Generator. Create, optimize, and preview beautiful linear and radial CSS backgrounds visually and copy the clean CSS output code."
+        title="CSS Gradient Generator — Linear & Radial Color Blends"
+        description="Create, customize, and preview linear, radial, and conic CSS gradients with multiple color stops and angle controls. Export clean CSS and Tailwind code."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

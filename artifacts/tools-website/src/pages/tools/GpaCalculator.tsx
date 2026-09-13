@@ -88,8 +88,8 @@ export default function GpaCalculator() {
   return (
     <Layout>
       <SEO
-        title="GPA Calculator – Calculate Your Grade Point Average Free | US Online Tools"
-        description="Free GPA calculator. Add your courses, grades, and credit hours to calculate your GPA on a 4.0 scale. Supports A-F grades and weighted credit hours. Instant results. No signup."
+        title="GPA Calculator — Grade Point Average on 4.0 Scale"
+        description="Calculate your semester and cumulative GPA on a standard 4.0 scale with weighted course credits and letter grades. Free online student GPA planner."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

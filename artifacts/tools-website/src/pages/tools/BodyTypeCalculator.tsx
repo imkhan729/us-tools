@@ -257,8 +257,8 @@ export default function BodyTypeCalculator() {
   return (
     <Layout>
       <SEO
-        title="Body Type Calculator – Find Your Somatotype (Ectomorph, Mesomorph, Endomorph)"
-        description="Determine your body type (ectomorph, mesomorph, or endomorph) based on physical measurements. Understand how your somatotype affects training and nutrition."
+        title="Body Type Calculator — Ectomorph, Mesomorph, Endomorph"
+        description="Determine your somatotype body type—ectomorph, mesomorph, or endomorph. Discover tailored diet, workout, and metabolism insights from your measurements."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">

@@ -135,8 +135,8 @@ export default function DivisibilityChecker() {
   return (
     <Layout>
       <SEO
-        title="Divisibility Checker - Check if a Number Is Divisible"
-        description="Free online divisibility checker. Test if a number is divisible by another number and get quotient, remainder, and quick divisor insights."
+        title="Divisibility Checker — Test Divisibility Rules Online"
+        description="Test if any integer is divisible by numbers from 2 to 100 with quotient, remainder, and step-by-step divisibility rules. Free online math helper."
         canonical="https://usonlinetools.com/math/divisibility-checker"
         schema={schema}
       />

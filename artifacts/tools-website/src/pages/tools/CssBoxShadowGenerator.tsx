@@ -205,8 +205,8 @@ export default function CssBoxShadowGenerator() {
   return (
     <UtilityToolPageShell
       title="CSS Box Shadow Generator"
-      seoTitle="CSS Box Shadow Generator - Free Visual box-shadow Builder"
-      seoDescription="Free CSS box shadow generator with live preview, presets, inset controls, color tuning, and copyable CSS output. Create softer cards, floating buttons, and elevated UI surfaces instantly."
+      seoTitle="CSS Box Shadow Generator — Multi-Layer Glow & Inset"
+      seoDescription="Create layered CSS box shadows, glow effects, and inset drop shadows with live preview sliders. Copy cross-browser CSS and Tailwind shadow utility classes."
       canonical="https://usonlinetools.com/css-design/css-box-shadow-generator"
       categoryName="CSS & Design Tools"
       categoryHref="/category/css-design"

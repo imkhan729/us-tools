@@ -86,8 +86,8 @@ export default function LoanEmiCalculator() {
   return (
     <Layout>
       <SEO
-        title="Loan EMI Calculator – Car, Personal & Education Loans | US Online Tools"
-        description="Free online Loan EMI Calculator. Quickly calculate your monthly Equal Monthly Installment (EMI), total interest, and total payable amount for any custom loan."
+        title="Loan EMI Calculator — Monthly Payments & Interest"
+        description="Calculate monthly loan EMI payments, total interest payable, and loan payoff schedules for car, personal, and education loans. Free online EMI tool."
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 

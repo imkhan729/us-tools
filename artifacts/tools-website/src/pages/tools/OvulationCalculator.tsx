@@ -32,7 +32,7 @@ type CycleResult = {
 
 const CANONICAL_URL = "https://usonlinetools.com/calculators/ovulation-calculator/";
 const META_DESCRIPTION =
-  "Use this free ovulation calculator to estimate your ovulation date, fertile window, and best days to try to conceive based on your cycle.";
+  "Calculate your most fertile days, ovulation dates, and next menstrual cycle milestones using luteal phase cycle tracking. Free online fertility planner.";
 
 const FAQ_ITEMS = [
   {
@@ -337,7 +337,7 @@ export default function OvulationCalculator() {
   return (
     <Layout>
       <SEO
-        title="Ovulation Calculator - Estimate Your Fertile Window"
+        title="Ovulation Calculator — Fertile Window & Conception Days"
         description={META_DESCRIPTION}
         canonical={CANONICAL_URL}
         schema={schema}

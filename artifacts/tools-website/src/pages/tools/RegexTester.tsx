@@ -157,8 +157,8 @@ export default function RegexTester() {
   return (
     <UtilityToolPageShell
       title="Regex Tester"
-      seoTitle="Regex Tester - Test Regular Expressions Online"
-      seoDescription="Free regex tester with live pattern matching, flag controls, highlighted matches, capture-group inspection, and replacement preview."
+      seoTitle="Regex Tester — Regular Expression Tester & Match Debugger"
+      seoDescription="Test and debug JavaScript regular expressions online with live match highlighting, capture group inspection, and replacement preview."
       canonical="https://usonlinetools.com/developer/regex-tester"
       categoryName="Developer Tools"
       categoryHref="/category/developer"
