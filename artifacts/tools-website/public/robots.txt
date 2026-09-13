@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://usonlinetools.com/sitemap.xml
+Sitemap: https://usonlinetools.com/sitemap-index.xml

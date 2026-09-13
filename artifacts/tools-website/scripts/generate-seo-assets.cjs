@@ -63,10 +63,31 @@ function escapeXml(value) {
     .replace(/'/g, "&apos;");
 }
 
-function buildUrlSet(routes) {
+function buildUrlSet(routes, defaultPriority = "0.8", changefreq = "weekly") {
   const urls = Array.from(routes)
     .sort((a, b) => a.localeCompare(b))
-    .map((pathname) => `  <url><loc>${escapeXml(toUrl(pathname))}</loc><lastmod>${today}</lastmod></url>`)
+    .map((pathname) => {
+      let priority = defaultPriority;
+      let freq = changefreq;
+      if (pathname === "/") {
+        priority = "1.0";
+        freq = "daily";
+      } else if (pathname.startsWith("/category/")) {
+        priority = "0.9";
+        freq = "daily";
+      } else if (
+        pathname.includes("percentage-calculator") ||
+        pathname.includes("loan-calculator") ||
+        pathname.includes("concrete-calculator") ||
+        pathname.includes("compound-interest") ||
+        pathname.includes("bmi-calculator") ||
+        pathname.includes("json-formatter")
+      ) {
+        priority = "0.9";
+        freq = "weekly";
+      }
+      return `  <url>\n    <loc>${escapeXml(toUrl(pathname))}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+    })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
@@ -75,7 +96,7 @@ function buildUrlSet(routes) {
 function buildSitemapIndex(sitemaps) {
   const entries = sitemaps
     .sort((a, b) => a.localeCompare(b))
-    .map((pathname) => `  <sitemap><loc>${escapeXml(toUrl(pathname))}</loc><lastmod>${today}</lastmod></sitemap>`)
+    .map((pathname) => `  <sitemap>\n    <loc>${escapeXml(toUrl(pathname))}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`)
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</sitemapindex>\n`;
@@ -130,7 +151,7 @@ function buildLlmsFullTxt(tools) {
 }
 
 function buildRobots() {
-  return `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
+  return `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\nSitemap: ${siteUrl}/sitemap-index.xml\n`;
 }
 
 function buildHtaccess(redirects) {
@@ -143,7 +164,7 @@ function buildHtaccess(redirects) {
     })
     .join("\n");
 
-  return `Options -Indexes\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap(?:-[a-z0-9-]+)?\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^(?:index|404)\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Force HTTPS and the non-www canonical host.\nRewriteCond %{HTTPS} !=on [OR]\nRewriteCond %{HTTP_HOST} ^www\\.usonlinetools\\.com$ [NC]\nRewriteRule ^ https://usonlinetools.com%{REQUEST_URI} [L,R=301]\n\n# Use one canonical URL format for indexed pages.\n# Most canonical tags use no trailing slash, except selected slash-canonical pages.\nRewriteCond %{REQUEST_URI} !^/calculators/ovulation-calculator/$ [NC]\nRewriteCond %{REQUEST_URI} .+/$\nRewriteRule ^(.+)/$ /$1 [R=301,L]\n\n# Canonical page redirects\n${redirectRules}\n\n# Serve prerendered clean URLs without requiring Apache's directory slash redirect.\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.+)$ $1/index.html [L]\n\n# Serve existing files directly\nRewriteCond %{REQUEST_FILENAME} -f\nRewriteRule ^ - [L]\n\n# Return a real 404 for unknown paths instead of a soft-404 SPA fallback\nRewriteRule ^ - [R=404,L]\n`;
+  return `Options -Indexes\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(?:css|js|mjs)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:woff2?|ttf|otf|eot)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">\n    Header set Cache-Control "public, max-age=2592000"\n  </FilesMatch>\n  <FilesMatch "^(?:robots\\.txt|sitemap(?:-[a-z0-9-]+)?\\.xml)$">\n    Header set Cache-Control "public, max-age=3600"\n  </FilesMatch>\n  <FilesMatch "^(?:index|404)\\.html$">\n    Header set Cache-Control "no-cache, must-revalidate"\n  </FilesMatch>\n</IfModule>\n\nRewriteEngine On\n\n# Explicitly serve the document root for Hostinger configurations that do not apply DirectoryIndex consistently when rewrite rules are present.\nRewriteRule ^$ index.html [L]\n\n# Force HTTPS and the non-www canonical host.\nRewriteCond %{HTTPS} !=on [OR]\nRewriteCond %{HTTP_HOST} ^www\\.usonlinetools\\.com$ [NC]\nRewriteRule ^ https://usonlinetools.com%{REQUEST_URI} [L,R=301]\n\n# Use one canonical URL format for indexed pages.\n# Most canonical tags use no trailing slash, except selected slash-canonical pages.\nRewriteCond %{REQUEST_URI} !^/calculators/ovulation-calculator/$ [NC]\nRewriteCond %{REQUEST_URI} .+/$\nRewriteRule ^(.+)/$ /$1 [R=301,L]\n\n# Canonical page redirects\n${redirectRules}\n\n# Serve prerendered clean URLs without requiring Apache's directory slash redirect.\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.+)$ $1/index.html [L]\n\n# Serve existing files directly\nRewriteCond %{REQUEST_FILENAME} -f\nRewriteRule ^ - [L]\n\n# Return a real 404 for unknown paths instead of a soft-404 SPA fallback\nRewriteRule ^ - [R=404,L]\n`;
 }
 
 function main() {
@@ -235,10 +256,16 @@ function main() {
     }
   }
 
+  // 1. Generate Sub-sitemaps
   const sitemapPaths = ["/sitemap-pages.xml"];
   fs.writeFileSync(path.join(publicDir, "sitemap-pages.xml"), buildUrlSet(staticAndCategoryRoutes));
+  
   sitemapPaths.push("/sitemap-new-tools.xml");
-  fs.writeFileSync(path.join(publicDir, "sitemap-new-tools.xml"), buildUrlSet(newLocalizedToolRoutes));
+  const newToolsXml = buildUrlSet(newLocalizedToolRoutes);
+  fs.writeFileSync(path.join(publicDir, "sitemap-new-tools.xml"), newToolsXml);
+  // Also provide sitemap-tools-new.xml as alias for legacy GSC submissions
+  sitemapPaths.push("/sitemap-tools-new.xml");
+  fs.writeFileSync(path.join(publicDir, "sitemap-tools-new.xml"), newToolsXml);
 
   for (const [categoryId, routes] of toolRoutesByCategory.entries()) {
     if (!routes.size) {
@@ -250,16 +277,22 @@ function main() {
     fs.writeFileSync(path.join(publicDir, filename), buildUrlSet(routes));
   }
 
-  fs.writeFileSync(path.join(publicDir, "sitemap.xml"), buildSitemapIndex(sitemapPaths));
+  // 2. Master sitemap.xml: DIRECT URLSET OF ALL 430 CANONICAL PAGES (for instant GSC discovery of 430 pages)
+  fs.writeFileSync(path.join(publicDir, "sitemap.xml"), buildUrlSet(canonicalRoutes));
+  console.log(`[generate-seo-assets] sitemap.xml generated with all ${canonicalRoutes.size} canonical URLs directly in urlset.`);
+
+  // 3. Sitemap Index sitemap-index.xml: Standard sitemapindex listing all sub-sitemaps
+  fs.writeFileSync(path.join(publicDir, "sitemap-index.xml"), buildSitemapIndex(sitemapPaths));
+
+  // 4. Other core assets
   fs.writeFileSync(path.join(publicDir, "robots.txt"), buildRobots());
   fs.writeFileSync(path.join(publicDir, "llms.txt"), buildLlmsTxt(tools));
   fs.writeFileSync(path.join(publicDir, "llms-full.txt"), buildLlmsFullTxt(tools));
-  const htaccess = buildHtaccess(redirects).replace(
-    "RewriteEngine On\n",
-    "RewriteEngine On\n\n# Explicitly serve the document root for Hostinger configurations that do not apply DirectoryIndex consistently when rewrite rules are present.\nRewriteRule ^$ index.html [L]\n",
-  );
+  
+  const htaccess = buildHtaccess(redirects);
   fs.writeFileSync(path.join(publicDir, ".htaccess"), htaccess);
 
+  // Copy to dist/public if it exists
   const distPublicDir = path.join(rootDir, "dist", "public");
   if (fs.existsSync(distPublicDir)) {
     for (const file of fs.readdirSync(publicDir)) {
