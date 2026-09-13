@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { BarChart3, Hash, Search, Smile, Type } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 const EMOJIS = [
   { char: "\u{1F600}", label: "grinning face", category: "Smileys" },
   { char: "\u{1F602}", label: "tears of joy", category: "Smileys" },

@@ -81,6 +81,54 @@ function buildSitemapIndex(sitemaps) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</sitemapindex>\n`;
 }
 
+function buildLlmsTxt(tools) {
+  const categoryList = tools.DISPLAY_TOOL_CATEGORIES.map(
+    (c) => `- [${c.name.replace(/\s*Tools$/i, "")} Tools](${siteUrl}/category/${c.id}): ${c.description}`
+  ).join("\n");
+
+  return `# US Online Tools
+> Free browser-based online tools, calculators, converters, generators, and productivity utilities.
+
+US Online Tools provides 400+ fast, client-side tools across 16 core categories. All operations execute locally in the browser runtime without requiring accounts, signups, or transmitting user data to remote servers.
+
+## Core Categories
+${categoryList}
+
+## Trust & Technical Architecture
+- Local Execution: Calculations and file operations run in-browser using standard Web APIs. Zero user data is stored or logged.
+- Accuracy Standards: Formulas adhere to verified scientific, SI/NIST unit standards, financial amortization models, and official technical RFC specifications.
+- Methodology: Learn about our technical implementation and calculation verification at ${siteUrl}/about.
+- Privacy: Full zero-logging policy documented at ${siteUrl}/privacy-policy.
+
+## Full Catalog
+For the complete inventory of all 400+ tools with canonical links and descriptions, see:
+${siteUrl}/llms-full.txt
+`;
+}
+
+function buildLlmsFullTxt(tools) {
+  let output = `# US Online Tools — Complete Catalog
+> Comprehensive index of 400+ browser-based tools, calculators, and converters.
+
+`;
+
+  for (const category of tools.DISPLAY_TOOL_CATEGORIES) {
+    output += `## ${category.name} (${siteUrl}/category/${category.id})\n`;
+    output += `${category.description}\n\n`;
+
+    const categoryTools = tools.DISPLAY_ALL_TOOLS
+      .filter((t) => t.implemented !== false && tools.getCategoryIdBySlug(t.slug) === category.id);
+
+    for (const tool of categoryTools) {
+      const canonicalPath = tools.getCanonicalToolPath(tool.slug);
+      output += `- [${tool.title}](${siteUrl}${canonicalPath}): ${tool.description}\n`;
+    }
+    output += "\n";
+  }
+
+  return output;
+}
+
 function buildRobots() {
   return `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
 }
@@ -204,7 +252,23 @@ function main() {
 
   fs.writeFileSync(path.join(publicDir, "sitemap.xml"), buildSitemapIndex(sitemapPaths));
   fs.writeFileSync(path.join(publicDir, "robots.txt"), buildRobots());
-  fs.writeFileSync(path.join(publicDir, ".htaccess"), buildHtaccess(redirects));
+  fs.writeFileSync(path.join(publicDir, "llms.txt"), buildLlmsTxt(tools));
+  fs.writeFileSync(path.join(publicDir, "llms-full.txt"), buildLlmsFullTxt(tools));
+  const htaccess = buildHtaccess(redirects).replace(
+    "RewriteEngine On\n",
+    "RewriteEngine On\n\n# Explicitly serve the document root for Hostinger configurations that do not apply DirectoryIndex consistently when rewrite rules are present.\nRewriteRule ^$ index.html [L]\n",
+  );
+  fs.writeFileSync(path.join(publicDir, ".htaccess"), htaccess);
+
+  const distPublicDir = path.join(rootDir, "dist", "public");
+  if (fs.existsSync(distPublicDir)) {
+    for (const file of fs.readdirSync(publicDir)) {
+      const src = path.join(publicDir, file);
+      if (fs.statSync(src).isFile()) {
+        fs.copyFileSync(src, path.join(distPublicDir, file));
+      }
+    }
+  }
 }
 
 main();

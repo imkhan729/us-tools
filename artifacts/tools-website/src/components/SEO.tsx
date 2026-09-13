@@ -262,7 +262,7 @@ export function SEO({ title, description, canonical, schema, noindex = false, og
       <meta name="theme-color" content="#ff6b35" />
       <meta name="color-scheme" content="light dark" />
       <link rel="icon" type="image/svg+xml" href={SITE_LOGO} />
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      {canonicalUrl && !noindex && <link rel="canonical" href={canonicalUrl} />}
       {alternates.map((alternate) => <link key={alternate.language} rel="alternate" hrefLang={alternate.language} href={toAbsoluteUrl(alternate.href)} />)}
     </Helmet>
   );

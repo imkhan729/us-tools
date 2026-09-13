@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { SeoRichContent } from "@/components/SeoRichContent";
@@ -506,7 +507,7 @@ export default function CubeRootCalculator() {
                 <h3 className="text-sm font-black text-foreground tracking-tight mb-3 uppercase">Related Tools</h3>
                 <div className="space-y-0.5">
                   {RELATED_TOOLS.map(tool => (
-                    <Link key={tool.slug} href={`/tools/${tool.slug}`}
+                    <Link key={tool.slug} href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all">
                       <div className="w-7 h-7 rounded-md flex items-center justify-center text-white flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5"
                         style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>

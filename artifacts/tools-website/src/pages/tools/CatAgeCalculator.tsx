@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
@@ -538,7 +539,7 @@ export default function CatAgeCalculator() {
                   {RELATED_TOOLS.map((tool) => (
                     <Link
                       key={tool.slug}
-                      href={`/tools/${tool.slug}`}
+                      href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-muted transition-all"
                     >
                       <div

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
@@ -800,7 +801,7 @@ export default function BodyTypeCalculator() {
                   {RELATED_TOOLS.map((t, i) => (
                     <Link
                       key={i}
-                      href={`/tools/${t.slug}`}
+                      href={getCanonicalToolPath(t.slug)}
                       className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all border border-transparent hover:border-border"
                     >
                       <div

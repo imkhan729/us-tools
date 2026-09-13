@@ -1,7 +1,7 @@
 import { useMemo, useState, type CSSProperties } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { getCanonicalToolPath } from "@/data/tools";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {

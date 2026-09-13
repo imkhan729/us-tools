@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
@@ -580,7 +581,7 @@ export default function BreakEvenCalculator() {
                 <h3 className="text-lg font-black text-foreground tracking-tight mb-4">Related Tools</h3>
                 <div className="space-y-2">
                   {RELATED_TOOLS.map((tool) => (
-                    <Link key={tool.slug} href={`/tools/${tool.slug}`}
+                    <Link key={tool.slug} href={getCanonicalToolPath(tool.slug)}
                       className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all">
                       <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white flex-shrink-0"
                         style={{ background: `linear-gradient(135deg, hsl(${tool.color} 70% 55%), hsl(${tool.color} 75% 42%))` }}>

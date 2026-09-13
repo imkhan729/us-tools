@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { BadgeCheck, Copy, Instagram, Linkedin, MessageCircleMore, Sparkles, Wand2 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 type Platform = "instagram" | "tiktok" | "twitter" | "discord";
 type Intensity = "light" | "balanced" | "bold";
 

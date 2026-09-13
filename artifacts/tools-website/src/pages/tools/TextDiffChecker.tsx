@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Copy, FileCode2, ListTree, RefreshCw, ScanSearch, SplitSquareVertical, Wand2 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 type DiffKind = "same" | "removed" | "added";
 type DiffRow = {
   kind: DiffKind;

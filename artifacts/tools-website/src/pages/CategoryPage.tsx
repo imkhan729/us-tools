@@ -3,7 +3,7 @@ import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { DISPLAY_TOOL_CATEGORIES, type Tool } from "@/data/tools";
+import { DISPLAY_TOOL_CATEGORIES, getCanonicalToolPath, type Tool } from "@/data/tools";
 import {
   SITE_URL,
   createBreadcrumbSchema,
@@ -492,7 +492,7 @@ function ToolCard({ tool, colorIndex, categoryId }: { tool: Tool; colorIndex: nu
       className="h-full"
     >
       <Link
-        href={`/${categoryId}/${tool.slug}`}
+        href={getCanonicalToolPath(tool.slug)}
         className="tool-card-active group"
         style={{ "--card-hue": hue } as React.CSSProperties}
       >

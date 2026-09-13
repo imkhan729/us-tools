@@ -43,6 +43,38 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("wouter") ||
+              id.includes("react-helmet-async")
+            ) {
+              return "vendor-react";
+            }
+            if (id.includes("framer-motion")) {
+              return "vendor-framer";
+            }
+            if (id.includes("lucide-react") || id.includes("react-icons")) {
+              return "vendor-icons";
+            }
+            if (id.includes("recharts") || id.includes("d3-")) {
+              return "vendor-charts";
+            }
+            if (id.includes("pdf-lib")) {
+              return "vendor-pdf";
+            }
+            if (id.includes("date-fns")) {
+              return "vendor-date";
+            }
+          }
+        },
+      },
+    },
   },
   server: {
     port,

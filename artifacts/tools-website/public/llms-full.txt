@@ -1,0 +1,467 @@
+# US Online Tools — Complete Catalog
+> Comprehensive index of 400+ browser-based tools, calculators, and converters.
+
+## Math & Calculators (https://usonlinetools.com/category/math)
+Essential math tools for everyday and advanced calculations
+
+- [Percentage Calculator](https://usonlinetools.com/math/online-percentage-calculator): Calculate percent of a number, percentage increase, percentage decrease, percentage change, and percent difference.
+- [Fraction to Decimal Calculator](https://usonlinetools.com/math/fraction-to-decimal-calculator): Convert any fraction to its decimal equivalent instantly.
+- [Decimal to Fraction Calculator](https://usonlinetools.com/math/decimal-to-fraction-calculator): Convert decimals to simplified fractions in one click.
+- [Ratio Calculator](https://usonlinetools.com/math/ratio-calculator): Simplify ratios and solve ratio proportions easily.
+- [Average Calculator](https://usonlinetools.com/math/average-calculator): Find the mean, median, and mode of any set of numbers.
+- [Scientific Calculator](https://usonlinetools.com/math/online-scientific-calculator): Advanced scientific calculator with trigonometry and exponents.
+- [Standard Deviation Calculator](https://usonlinetools.com/math/online-standard-deviation-calculator): Calculate standard deviation and variance for datasets.
+- [Square Root Calculator](https://usonlinetools.com/math/square-root-calculator): Find the square root of any number instantly.
+- [Cube Root Calculator](https://usonlinetools.com/math/cube-root-calculator): Compute the cube root of any positive or negative number.
+- [Power Calculator](https://usonlinetools.com/math/power-calculator): Calculate any base raised to any exponent (power).
+- [Logarithm Calculator](https://usonlinetools.com/math/logarithm-calculator): Compute log, ln, and log base n for any value.
+- [Factorial Calculator](https://usonlinetools.com/math/factorial-calculator): Calculate the factorial of any non-negative integer.
+- [Prime Number Checker](https://usonlinetools.com/math/prime-number-checker): Check if a number is prime or composite instantly.
+- [LCM Calculator](https://usonlinetools.com/math/online-lcm-calculator): Find the Least Common Multiple of two or more numbers.
+- [GCD Calculator](https://usonlinetools.com/math/online-gcd-calculator): Find the Greatest Common Divisor of any set of numbers.
+- [Random Number Generator](https://usonlinetools.com/math/random-number-generator): Generate random numbers within any range you specify.
+- [Mean Median Mode Calculator](https://usonlinetools.com/math/mean-median-mode-calculator): Calculate mean, median, and mode of any dataset.
+- [Rounding Numbers Calculator](https://usonlinetools.com/math/rounding-numbers-calculator): Round numbers to any decimal place or significant figures.
+- [Exponents Calculator](https://usonlinetools.com/math/exponents-calculator): Calculate any base raised to any exponent quickly.
+- [Variance Calculator](https://usonlinetools.com/math/variance-calculator): Calculate variance for any dataset of numbers.
+- [Number Sequence Generator](https://usonlinetools.com/math/number-sequence-generator): Generate arithmetic, geometric, or custom sequences.
+- [Divisibility Checker](https://usonlinetools.com/math/divisibility-checker): Check if a number is divisible by another number.
+- [Matrix Calculator](https://usonlinetools.com/math/online-matrix-calculator): Perform matrix operations including addition, multiplication, and inverse.
+- [Quadratic Equation Solver](https://usonlinetools.com/math/online-quadratic-equation-solver): Solve any quadratic equation and find roots instantly.
+- [Permutation Calculator](https://usonlinetools.com/math/permutation-calculator): Calculate permutations for any set of objects.
+- [Combination Calculator](https://usonlinetools.com/math/combination-calculator): Calculate combinations for any set of objects.
+- [Modulo Calculator](https://usonlinetools.com/math/modulo-calculator): Calculate the remainder of division between two numbers.
+- [Proportion Calculator](https://usonlinetools.com/math/proportion-calculator): Solve proportions and find the missing value.
+- [Percentage Error Calculator](https://usonlinetools.com/math/percentage-error-calculator): Calculate the percentage error between observed and true values.
+- [Fraction Calculator](https://usonlinetools.com/math/fraction-calculator): Simplify, compare, and calculate with fractions instantly.
+
+## Finance & Cost (https://usonlinetools.com/category/finance)
+Money calculators for loans, interest, budgeting and more
+
+- [Simple Interest Calculator](https://usonlinetools.com/finance/online-simple-interest-calculator): Calculate simple interest on any principal amount.
+- [Compound Interest Calculator](https://usonlinetools.com/finance/online-compound-interest-calculator): Find compound interest with any compounding frequency.
+- [Loan EMI Calculator](https://usonlinetools.com/finance/online-loan-emi-calculator): Calculate monthly EMI for any loan amount and tenure.
+- [Discount Calculator](https://usonlinetools.com/finance/discount-calculator): Calculate the final price after any percentage discount.
+- [Profit Margin Calculator](https://usonlinetools.com/finance/profit-margin-calculator): Calculate gross, net, and operating profit margins.
+- [Markup Calculator](https://usonlinetools.com/finance/markup-calculator): Calculate selling price from cost and markup percentage.
+- [Break Even Calculator](https://usonlinetools.com/finance/break-even-calculator): Find the break-even point for your business or product.
+- [ROI Calculator](https://usonlinetools.com/finance/online-roi-calculator): Calculate return on investment for any amount.
+- [Savings Calculator](https://usonlinetools.com/finance/savings-calculator): Project your savings growth with interest over time.
+- [CAGR Calculator](https://usonlinetools.com/finance/online-cagr-calculator): Calculate compound annual growth rate from start value, end value, and years.
+- [Debt-to-Income Calculator](https://usonlinetools.com/finance/online-debt-to-income-calculator): Calculate debt-to-income ratio using monthly debt and gross income.
+- [Loan-to-Value Calculator](https://usonlinetools.com/finance/online-loan-to-value-calculator): Calculate loan-to-value ratio and equity from loan amount and property value.
+- [Tip Calculator](https://usonlinetools.com/finance/tip-calculator): Calculate the right tip amount and split bills easily.
+- [Salary Calculator](https://usonlinetools.com/finance/online-salary-calculator): Convert between hourly, monthly, and annual salary.
+- [Tax Calculator](https://usonlinetools.com/finance/online-tax-calculator): Estimate income tax based on earnings and deductions.
+- [Mortgage Payment Calculator](https://usonlinetools.com/finance/online-mortgage-payment-calculator): Estimate your monthly mortgage payment and amortization.
+- [GST Calculator](https://usonlinetools.com/finance/online-gst-calculator): Add or remove GST from any price amount quickly.
+- [Inflation Calculator](https://usonlinetools.com/finance/online-inflation-calculator): Calculate the impact of inflation on purchasing power.
+- [Commission Calculator](https://usonlinetools.com/finance/commission-calculator): Calculate sales commission based on rate and earnings.
+- [Investment Growth Calculator](https://usonlinetools.com/finance/online-investment-growth-calculator): Project how your investments will grow over time.
+- [Budget Calculator](https://usonlinetools.com/finance/online-budget-calculator): Plan and track your monthly budget and expenses.
+- [Expense Calculator](https://usonlinetools.com/finance/expense-calculator): Track and calculate total expenses by category.
+- [Cost Per Unit Calculator](https://usonlinetools.com/finance/cost-per-unit-calculator): Calculate the cost per unit for any quantity.
+- [Price Per Unit Calculator](https://usonlinetools.com/finance/price-per-unit-calculator): Compare prices per unit across different products.
+- [Payback Period Calculator](https://usonlinetools.com/finance/payback-period-calculator): Calculate how long it takes to recoup an investment.
+- [Loan Interest Calculator](https://usonlinetools.com/finance/loan-interest-calculator): Calculate loan interest, monthly payment, APR-style borrowing cost, and total repayment.
+- [Savings Goal Calculator](https://usonlinetools.com/finance/savings-goal-calculator): Plan savings needed to reach a financial goal.
+- [Revenue Calculator](https://usonlinetools.com/finance/revenue-calculator): Estimate total revenue from price and volume.
+- [Cost Split Calculator](https://usonlinetools.com/finance/cost-split-calculator): Split costs evenly or proportionally among people.
+- [Depreciation Calculator](https://usonlinetools.com/finance/depreciation-calculator): Calculate asset depreciation using various methods.
+- [Net Worth Calculator](https://usonlinetools.com/finance/net-worth-calculator): Calculate your total net worth from assets and liabilities.
+- [Retirement Calculator](https://usonlinetools.com/finance/online-retirement-calculator): Plan your retirement savings and estimate future income.
+- [Car Loan Calculator](https://usonlinetools.com/finance/online-car-loan-calculator): Calculate monthly payments for auto loans.
+- [Credit Card Payoff Calculator](https://usonlinetools.com/finance/credit-card-payoff-calculator): Calculate how long to pay off credit card debt.
+- [Down Payment Calculator](https://usonlinetools.com/finance/down-payment-calculator): Calculate the down payment needed for any purchase.
+- [Amortization Calculator](https://usonlinetools.com/finance/online-amortization-calculator): Generate a full amortization schedule for any loan.
+- [Stock Profit Calculator](https://usonlinetools.com/finance/stock-profit-calculator): Calculate profit or loss from stock trades.
+- [Dividend Calculator](https://usonlinetools.com/finance/dividend-calculator): Calculate dividend income from your stock investments.
+- [Currency Exchange Calculator](https://usonlinetools.com/finance/online-currency-exchange-calculator): Convert between world currencies with live rates.
+- [Hourly to Salary Calculator](https://usonlinetools.com/finance/hourly-to-salary-calculator): Convert hourly wage to annual salary and vice versa.
+
+## Conversion Tools (https://usonlinetools.com/category/conversion)
+Convert between any units of measurement instantly
+
+- [Length Converter](https://usonlinetools.com/conversion/online-length-converter): Convert between meters, feet, inches, kilometers, and more.
+- [Weight Converter](https://usonlinetools.com/conversion/online-weight-converter): Convert between kilograms, pounds, ounces, grams, and more.
+- [Temperature Converter](https://usonlinetools.com/conversion/online-temperature-converter): Convert between Celsius, Fahrenheit, and Kelvin.
+- [Area Converter](https://usonlinetools.com/conversion/online-area-converter): Convert between square meters, acres, hectares, and more.
+- [Volume Converter](https://usonlinetools.com/conversion/online-volume-converter): Convert liters, gallons, milliliters, and fluid ounces.
+- [Speed Converter](https://usonlinetools.com/conversion/online-speed-converter): Convert between mph, km/h, m/s, knots, and more.
+- [Color Converter](https://usonlinetools.com/conversion/color-converter): Convert colors between HEX, RGB, HSL, and CMYK.
+- [Binary to Decimal Converter](https://usonlinetools.com/conversion/online-binary-to-decimal-converter): Convert binary numbers to decimal format instantly.
+- [Decimal to Binary Converter](https://usonlinetools.com/conversion/decimal-to-binary-converter): Convert decimal numbers to binary representation.
+- [Hex to Decimal Converter](https://usonlinetools.com/conversion/hex-to-decimal-converter): Convert hexadecimal values to decimal numbers.
+- [Roman Numeral Converter](https://usonlinetools.com/conversion/online-roman-numeral-converter): Convert numbers to Roman numerals and vice versa.
+- [Data Storage Converter](https://usonlinetools.com/conversion/data-storage-converter): Convert between bytes, KB, MB, GB, TB, and more.
+- [Energy Converter](https://usonlinetools.com/conversion/energy-converter): Convert joules, calories, watts, kWh, and other energy units.
+- [Pressure Converter](https://usonlinetools.com/conversion/pressure-converter): Convert between PSI, bar, pascal, atmosphere, and more.
+- [Time Converter](https://usonlinetools.com/conversion/time-converter): Convert between seconds, minutes, hours, and days.
+- [Angle Converter](https://usonlinetools.com/conversion/angle-converter): Convert between degrees, radians, and gradians.
+- [Frequency Converter](https://usonlinetools.com/conversion/frequency-converter): Convert between Hz, kHz, MHz, GHz, and RPM.
+- [Fuel Efficiency Converter](https://usonlinetools.com/conversion/fuel-efficiency-converter): Convert between MPG, km/L, and L/100km.
+- [Number to Words Converter](https://usonlinetools.com/conversion/number-to-words-converter): Convert any number into its word representation.
+- [Words to Number Converter](https://usonlinetools.com/conversion/words-to-number-converter): Convert number words back to numeric digits.
+- [Base Converter](https://usonlinetools.com/conversion/base-converter): Convert numbers between any bases (2-36).
+- [Binary to Hex Converter](https://usonlinetools.com/conversion/binary-to-hex-converter): Convert binary numbers to hexadecimal format.
+- [Hex to Binary Converter](https://usonlinetools.com/conversion/hex-to-binary-converter): Convert hexadecimal numbers to binary format.
+- [Octal Converter](https://usonlinetools.com/conversion/octal-converter): Convert between octal, decimal, and other bases.
+- [Unit Price Converter](https://usonlinetools.com/conversion/unit-price-converter): Compare unit prices across different package sizes.
+- [Density Converter](https://usonlinetools.com/conversion/density-converter): Convert between density units like kg/m³ and lb/ft³.
+- [Power Converter](https://usonlinetools.com/conversion/power-converter): Convert between watts, kilowatts, horsepower, and BTU/hr.
+- [Torque Converter](https://usonlinetools.com/conversion/torque-converter): Convert between Newton-meters, foot-pounds, and more.
+- [Force Converter](https://usonlinetools.com/conversion/force-converter): Convert between Newtons, pounds-force, and dynes.
+- [Electric Current Converter](https://usonlinetools.com/conversion/electric-current-converter): Convert between amperes, milliamperes, and microamperes.
+- [Shoe Size Converter](https://usonlinetools.com/conversion/online-shoe-size-converter): Convert shoe sizes between US, UK, EU, and CM.
+- [Cooking Converter](https://usonlinetools.com/conversion/online-cooking-converter): Convert between cups, tablespoons, teaspoons, and ml.
+
+## Time & Date (https://usonlinetools.com/category/time-date)
+Date calculators, countdowns, and time tools
+
+- [Age Calculator](https://usonlinetools.com/time-date/online-age-calculator): Calculate exact age from date of birth in years, months, days, total days, and next birthday.
+- [Date Difference Calculator](https://usonlinetools.com/time-date/date-difference-calculator): Find the exact number of days between any two dates.
+- [Countdown Timer](https://usonlinetools.com/time-date/online-countdown-timer): Set a countdown to any event, deadline, or date.
+- [Time Duration Calculator](https://usonlinetools.com/time-date/time-duration-calculator): Calculate the duration between two times of day.
+- [Work Hours Calculator](https://usonlinetools.com/time-date/work-hours-calculator): Track and sum up work hours across the week.
+- [Business Days Calculator](https://usonlinetools.com/time-date/business-days-calculator): Count working/business days between two dates.
+- [Leap Year Checker](https://usonlinetools.com/time-date/leap-year-checker): Check if any year is a leap year instantly.
+- [Time Zone Converter](https://usonlinetools.com/time-date/online-time-zone-converter): Convert times between different time zones worldwide.
+- [Stopwatch Tool](https://usonlinetools.com/time-date/online-stopwatch): Online stopwatch with lap times and pause/resume.
+- [Half Birthday Calculator](https://usonlinetools.com/time-date/half-birthday-calculator): Find the exact date of your half birthday.
+- [Week Number Calculator](https://usonlinetools.com/time-date/week-number-calculator): Find the week number for any date of the year.
+- [Overtime Calculator](https://usonlinetools.com/time-date/overtime-calculator): Calculate overtime pay based on hours and rate.
+- [Days Between Dates Calculator](https://usonlinetools.com/time-date/days-between-dates-calculator): Count the exact days between any two dates.
+- [Working Days Calculator](https://usonlinetools.com/time-date/working-days-calculator): Calculate working days excluding weekends and holidays.
+- [Time Addition Calculator](https://usonlinetools.com/time-date/time-addition-calculator): Add hours, minutes, and seconds together easily.
+- [Time Subtraction Calculator](https://usonlinetools.com/time-date/time-subtraction-calculator): Subtract time values from each other.
+- [Meeting Time Calculator](https://usonlinetools.com/time-date/meeting-time-calculator): Find the best meeting time across time zones.
+- [Shift Schedule Calculator](https://usonlinetools.com/time-date/shift-schedule-calculator): Plan and calculate rotating shift schedules.
+- [Deadline Calculator](https://usonlinetools.com/time-date/deadline-calculator): Calculate deadlines based on start date and duration.
+- [Study Time Calculator](https://usonlinetools.com/time-date/study-time-calculator): Plan study sessions based on exam dates and topics.
+- [Reading Time Calculator](https://usonlinetools.com/time-date/reading-time-calculator): Estimate how long it takes to read any text.
+- [Event Countdown Timer](https://usonlinetools.com/time-date/event-countdown-timer): Create a free online countdown timer for events, launches, weddings, birthdays, and deadlines.
+- [Hourly Time Calculator](https://usonlinetools.com/time-date/hourly-time-calculator): Calculate pay and hours on an hourly basis.
+- [Shift Hours Calculator](https://usonlinetools.com/time-date/shift-hours-calculator): Calculate total hours worked across shifts.
+- [Time Tracking Calculator](https://usonlinetools.com/time-date/time-tracking-calculator): Track time spent on tasks and projects.
+- [Time Calculator](https://usonlinetools.com/time-date/time-calculator): Calculate time differences, add or subtract hours, and convert decimal hours.
+- [Military Time Converter](https://usonlinetools.com/time-date/online-military-time-converter): Convert between 12-hour and 24-hour time formats.
+- [Era Calculator](https://usonlinetools.com/time-date/era-calculator): Convert dates between different calendar eras and epochs.
+- [Zodiac Sign Calculator](https://usonlinetools.com/time-date/zodiac-sign-calculator): Find your zodiac sign based on your birth date.
+- [Chinese Zodiac Calculator](https://usonlinetools.com/time-date/chinese-zodiac-calculator): Find your Chinese zodiac animal from your birth year.
+- [Age in Days Calculator](https://usonlinetools.com/time-date/age-in-days-calculator): Calculate your exact age in days, hours, and minutes.
+- [Retirement Age Calculator](https://usonlinetools.com/time-date/retirement-age-calculator): Calculate how many years until your retirement date.
+
+## Health & Fitness (https://usonlinetools.com/category/health)
+Health calculators for BMI, calories, fitness and more
+
+- [BMI Calculator](https://usonlinetools.com/health/online-bmi-calculator): Calculate body mass index from height and weight with metric or imperial units and adult BMI categories.
+- [BMR Calculator](https://usonlinetools.com/health/online-bmr-calculator): Find your Basal Metabolic Rate (calories at rest).
+- [Body Surface Area Calculator](https://usonlinetools.com/health/online-body-surface-area-calculator): Estimate body surface area (BSA) using height and weight.
+- [TDEE Calculator](https://usonlinetools.com/health/online-tdee-calculator): Calculate Total Daily Energy Expenditure for your body.
+- [Calorie Intake Calculator](https://usonlinetools.com/health/calorie-intake-calculator): Find your daily calorie needs based on goals.
+- [Water Intake Calculator](https://usonlinetools.com/health/water-intake-calculator): Find out how much water you should drink daily.
+- [Ideal Weight Calculator](https://usonlinetools.com/health/ideal-weight-calculator): Find your ideal body weight based on height and gender.
+- [Body Fat Calculator](https://usonlinetools.com/health/body-fat-calculator): Estimate your body fat percentage using measurements.
+- [Protein Intake Calculator](https://usonlinetools.com/health/protein-intake-calculator): Calculate daily protein requirements for your fitness goals.
+- [Running Pace Calculator](https://usonlinetools.com/health/running-pace-calculator): Calculate your running pace, speed, and finish time.
+- [Heart Rate Calculator](https://usonlinetools.com/health/heart-rate-calculator): Find your target heart rate zones for exercise.
+- [Sleep Calculator](https://usonlinetools.com/health/sleep-calculator): Find the best bedtime or wake-up time for good sleep.
+- [Pregnancy Due Date Calculator](https://usonlinetools.com/health/pregnancy-due-date-calculator): Calculate your expected due date from the last period.
+- [Ovulation Calculator](https://usonlinetools.com/calculators/ovulation-calculator/): Estimate your ovulation date, fertile window, and best days to try to conceive based on last period date and cycle length.
+- [Calorie Deficit Calculator](https://usonlinetools.com/health/calorie-deficit-calculator): Calculate the calorie deficit needed to lose weight.
+- [Cat Age Calculator](https://usonlinetools.com/health/cat-age-calculator): Convert your cat's age to human years equivalently.
+- [Dog Age Calculator](https://usonlinetools.com/health/dog-age-calculator): Convert your dog's age to equivalent human years.
+- [Lean Body Mass Calculator](https://usonlinetools.com/health/lean-body-mass-calculator): Calculate your lean body mass from body fat.
+- [Daily Calories Burn Calculator](https://usonlinetools.com/health/daily-calories-burn-calculator): Estimate total calories burned in a day.
+- [One Rep Max Calculator](https://usonlinetools.com/health/one-rep-max-calculator): Calculate your one rep max for any exercise.
+- [Body Type Calculator](https://usonlinetools.com/health/body-type-calculator): Determine your body type: ectomorph, mesomorph, or endomorph.
+- [Fitness Age Calculator](https://usonlinetools.com/health/fitness-age-calculator): Calculate your fitness age based on health metrics.
+- [Walking Calories Calculator](https://usonlinetools.com/health/walking-calories-calculator): Estimate calories burned while walking.
+- [Cycling Calories Calculator](https://usonlinetools.com/health/cycling-calories-calculator): Estimate calories burned while cycling.
+- [Macro Nutrient Calculator](https://usonlinetools.com/health/macro-nutrient-calculator): Calculate your ideal macro ratios for any diet.
+- [Fat Intake Calculator](https://usonlinetools.com/health/fat-intake-calculator): Calculate recommended daily fat intake in grams.
+- [Workout Duration Calculator](https://usonlinetools.com/health/workout-duration-calculator): Plan workout duration based on fitness goals.
+- [Step Counter Estimator](https://usonlinetools.com/health/step-counter-estimator): Estimate steps from distance, time, or activity.
+- [Calorie Calculator](https://usonlinetools.com/health/calorie-calculator): Calculate daily calories needed based on age, weight, and activity.
+- [BAC Calculator](https://usonlinetools.com/health/bac-calculator): Estimate blood alcohol concentration based on drinks consumed.
+- [Waist to Hip Ratio Calculator](https://usonlinetools.com/health/waist-to-hip-ratio-calculator): Calculate your waist-to-hip ratio for health assessment.
+- [Keto Calculator](https://usonlinetools.com/health/keto-calculator): Calculate ideal macros for a ketogenic diet plan.
+- [Intermittent Fasting Calculator](https://usonlinetools.com/health/intermittent-fasting-calculator): Plan your fasting and eating windows for IF diets.
+- [VO2 Max Calculator](https://usonlinetools.com/health/vo2-max-calculator): Estimate your VO2 max fitness level from exercise data.
+
+## Construction & DIY (https://usonlinetools.com/category/construction)
+Calculators for building, materials, and home projects
+
+- [Concrete Volume Calculator](https://usonlinetools.com/construction/concrete-calculator): Calculate the volume of concrete needed for any project.
+- [Cement Calculator](https://usonlinetools.com/construction/cement-calculator): Estimate cement bags needed for slabs, walls, and columns.
+- [Brick Calculator](https://usonlinetools.com/construction/brick-calculator): Estimate how many bricks you need for walls or projects.
+- [Steel Weight Calculator](https://usonlinetools.com/construction/steel-weight-calculator): Calculate the weight of steel bars and rods by dimensions.
+- [Paint Calculator](https://usonlinetools.com/construction/paint-calculator): Estimate liters of paint needed to cover a surface.
+- [Tile Calculator](https://usonlinetools.com/construction/tile-calculator): Calculate tiles needed for floors or walls by area.
+- [Flooring Calculator](https://usonlinetools.com/construction/flooring-calculator): Estimate flooring materials needed for any room size.
+- [Room Area Calculator](https://usonlinetools.com/construction/room-area-calculator): Calculate the total area of any room or space.
+- [Roof Area Calculator](https://usonlinetools.com/construction/roof-area-calculator): Estimate the total surface area of a roof by dimensions.
+- [Water Tank Capacity Calculator](https://usonlinetools.com/construction/water-tank-calculator): Calculate water tank volume in liters or gallons.
+- [Asphalt Calculator](https://usonlinetools.com/construction/asphalt-calculator): Estimate tons of asphalt needed for driveways or roads.
+- [Gravel Calculator](https://usonlinetools.com/construction/gravel-calculator): Estimate gravel or crushed stone needed by volume.
+- [Fence Length Calculator](https://usonlinetools.com/construction/fence-length-calculator): Calculate total fence length and posts needed.
+- [Lumber Calculator](https://usonlinetools.com/construction/lumber-calculator): Estimate board feet of lumber for any building project.
+- [Wall Area Calculator](https://usonlinetools.com/construction/wall-area-calculator): Calculate the total area of walls for painting or tiling.
+- [Pipe Volume Calculator](https://usonlinetools.com/construction/pipe-volume-calculator): Calculate the volume of liquid inside a pipe.
+- [Sand Calculator](https://usonlinetools.com/construction/sand-calculator): Estimate sand needed for any construction project.
+- [Excavation Calculator](https://usonlinetools.com/construction/excavation-calculator): Calculate excavation volume for any site.
+- [Stair Calculator](https://usonlinetools.com/construction/stair-calculator): Design stairs with proper rise, run, and dimensions.
+- [Material Cost Calculator](https://usonlinetools.com/construction/material-cost-calculator): Estimate total material costs for any project.
+- [Deck Area Calculator](https://usonlinetools.com/construction/deck-area-calculator): Calculate deck area and materials needed.
+- [Plaster Calculator](https://usonlinetools.com/construction/plaster-calculator): Estimate plaster or drywall needed for walls.
+- [Insulation Calculator](https://usonlinetools.com/construction/insulation-calculator): Estimate insulation coverage, waste, and the number of packs needed for walls, attics, floors, and ceilings.
+- [Concrete Block Calculator](https://usonlinetools.com/construction/concrete-block-calculator): Calculate how many concrete blocks are needed for a wall based on wall size, block dimensions, and waste.
+- [Paver Calculator](https://usonlinetools.com/construction/paver-calculator): Estimate pavers for patios, walkways, and driveways using project area, paver size, and waste.
+- [Bitumen Calculator](https://usonlinetools.com/construction/bitumen-calculator): Estimate bitumen quantity from project area, application rate, and number of coats.
+- [Pool Salt Calculator](https://usonlinetools.com/construction/pool-salt-calculator): Calculate how much salt to add to a saltwater pool from pool size and current versus target ppm.
+- [Rebar Calculator](https://usonlinetools.com/construction/rebar-calculator): Calculate rebar quantity and spacing for concrete projects.
+- [Drywall Calculator](https://usonlinetools.com/construction/drywall-calculator): Estimate drywall sheets needed for walls and ceilings.
+- [Wallpaper Calculator](https://usonlinetools.com/construction/wallpaper-calculator): Calculate wallpaper rolls needed for any room.
+- [Mulch Calculator](https://usonlinetools.com/construction/mulch-calculator): Estimate mulch volume needed for garden beds.
+- [Soil Calculator](https://usonlinetools.com/construction/soil-calculator): Calculate soil volume needed for raised beds or gardens.
+- [Solar Panel Calculator](https://usonlinetools.com/construction/solar-panel-calculator): Estimate solar panel count, system size, and roof area from monthly electricity usage.
+- [Electrical Load Calculator](https://usonlinetools.com/construction/electrical-load-calculator): Calculate connected electrical load, current draw, and breaker size from a simple load schedule.
+
+## Productivity & Text (https://usonlinetools.com/category/productivity)
+Text tools, generators, and everyday productivity utilities
+
+- [Word Counter](https://usonlinetools.com/productivity/online-word-counter): Count words, characters, sentences, paragraphs, lines, reading time, and speaking time in pasted text.
+- [Random Name Generator](https://usonlinetools.com/productivity/random-name-generator): Generate random first, last, or full names for any use.
+- [Username Generator](https://usonlinetools.com/productivity/username-generator): Create unique, catchy usernames for any platform.
+- [Dice Roller](https://usonlinetools.com/productivity/dice-roller): Roll one or multiple dice with any number of sides.
+- [Coin Flip Tool](https://usonlinetools.com/productivity/coin-flip): Flip a virtual coin to get heads or tails.
+- [Random Color Generator](https://usonlinetools.com/productivity/random-color-generator): Generate random colors with HEX and RGB values.
+- [Case Converter](https://usonlinetools.com/productivity/case-converter): Convert text to uppercase, lowercase, title case, and more.
+- [Text Reverser Tool](https://usonlinetools.com/productivity/text-reverser): Reverse any string, sentence, or block of text.
+- [Duplicate Line Remover](https://usonlinetools.com/productivity/duplicate-line-remover): Remove duplicate lines from any block of text.
+- [Alphabetical Sort Tool](https://usonlinetools.com/productivity/alphabetical-sort): Sort a list of words or lines in alphabetical order.
+- [Palindrome Checker](https://usonlinetools.com/productivity/palindrome-checker): Check if a word or phrase is a palindrome.
+- [Hashtag Generator Tool](https://usonlinetools.com/productivity/hashtag-generator): Generate relevant hashtags for social media posts.
+- [Word Frequency Counter](https://usonlinetools.com/productivity/word-frequency-counter): Analyze how often each word appears in a text.
+- [Random Letter Generator](https://usonlinetools.com/productivity/random-letter-generator): Generate random letters for games or codes.
+- [Random Picker Tool](https://usonlinetools.com/productivity/random-picker-tool): Pick random items from any custom list.
+- [Spin Wheel Generator](https://usonlinetools.com/productivity/spin-wheel-generator): Create a custom spin wheel for random selection.
+- [Character Counter Tool](https://usonlinetools.com/productivity/character-counter-tool): Count characters with and without spaces in text.
+- [Line Counter Tool](https://usonlinetools.com/productivity/line-counter-tool): Count the number of lines in any text or code.
+- [Remove Extra Spaces Tool](https://usonlinetools.com/productivity/remove-extra-spaces-tool): Clean up extra whitespace from any text.
+- [Sort Text Lines Tool](https://usonlinetools.com/productivity/sort-text-lines-tool): Sort lines of text alphabetically or numerically.
+- [List Randomizer Tool](https://usonlinetools.com/productivity/list-randomizer-tool): Randomize the order of items in any list.
+- [Text Formatter Tool](https://usonlinetools.com/productivity/text-formatter-tool): Format and beautify text with various options.
+- [JSON Formatter](https://usonlinetools.com/productivity/json-formatter): Format, validate, and beautify JSON data instantly.
+- [Base64 Encoder Decoder](https://usonlinetools.com/productivity/base64-encoder-decoder): Encode or decode text and data using Base64.
+- [Love Calculator](https://usonlinetools.com/productivity/love-calculator): Generate a fun compatibility score and ship name from two names.
+
+## Student & Education (https://usonlinetools.com/category/education)
+Grade calculators, GPA tools, and study helpers
+
+- [GPA Calculator](https://usonlinetools.com/education/online-gpa-calculator): Calculate your GPA based on grades and credit hours.
+- [Grade Calculator](https://usonlinetools.com/education/grade-calculator): Calculate your current grade based on assignments.
+- [Weighted Grade Calculator](https://usonlinetools.com/education/weighted-grade-calculator): Calculate course grades from quizzes, homework, projects, and exams with custom weights.
+- [Final Grade Calculator](https://usonlinetools.com/education/final-grade-calculator): Find the final exam score needed to reach your target course grade.
+- [Percentage Grade Calculator](https://usonlinetools.com/education/percentage-grade-calculator): Convert scores to percentage grades, letter grades, and GPA values instantly.
+- [Attendance Percentage Calculator](https://usonlinetools.com/education/attendance-percentage-calculator): Calculate class attendance percentage and plan how many classes you need to attend next.
+- [Reading Speed Calculator](https://usonlinetools.com/education/reading-speed-calculator): Measure your reading speed in words per minute and estimate reading time for longer passages.
+- [Marks Percentage Calculator](https://usonlinetools.com/education/marks-percentage-calculator): Convert obtained marks to percentage and estimate marks needed for a target percentage.
+- [Marks to GPA Converter](https://usonlinetools.com/education/marks-to-gpa-converter): Convert percentage marks to GPA on any scale.
+- [Class Average Calculator](https://usonlinetools.com/education/class-average-calculator): Calculate the average score, highest score, lowest score, and pass rate for a class or group.
+- [Score Calculator](https://usonlinetools.com/education/score-calculator): Calculate total earned points, total possible points, and overall percentage across assessments.
+- [Study Planner Calculator](https://usonlinetools.com/education/study-planner-calculator): Plan daily study schedules from your remaining topics, time, and sessions per day.
+- [Homework Time Calculator](https://usonlinetools.com/education/homework-time-calculator): Estimate total homework time, break time, and finish time for your daily task list.
+- [Exam Countdown Timer](https://usonlinetools.com/education/exam-countdown-timer): Track days remaining until exam dates.
+- [Assignment Grade Calculator](https://usonlinetools.com/education/assignment-grade-calculator): Calculate grades for weighted assignments.
+- [Semester Planner Tool](https://usonlinetools.com/education/semester-planner-tool): Plan courses and credits for the semester.
+- [Quiz Score Calculator](https://usonlinetools.com/education/quiz-score-calculator): Calculate quiz scores and averages.
+- [Flashcard Timer Tool](https://usonlinetools.com/education/flashcard-timer-tool): Time your flashcard study sessions.
+- [Exam Score Predictor](https://usonlinetools.com/education/exam-score-predictor): Predict exam scores based on study patterns.
+- [Study Hours Tracker](https://usonlinetools.com/education/study-hours-tracker): Track and analyze study hours over time.
+- [Grade Improvement Calculator](https://usonlinetools.com/education/grade-improvement-calculator): Calculate what grades you need to improve GPA.
+- [Test Score Analyzer](https://usonlinetools.com/education/test-score-analyzer): Analyze test scores with statistics and trends.
+- [Learning Time Calculator](https://usonlinetools.com/education/learning-time-calculator): Estimate time needed to learn a new skill.
+- [School Schedule Planner](https://usonlinetools.com/education/school-schedule-planner): Create and manage weekly school schedules.
+- [Revision Planner Tool](https://usonlinetools.com/education/revision-planner-tool): Plan revision sessions before exams.
+- [CGPA Calculator](https://usonlinetools.com/education/cgpa-calculator): Calculate Cumulative GPA across multiple semesters.
+- [SAT Score Calculator](https://usonlinetools.com/education/sat-score-calculator): Estimate your SAT score and percentile ranking.
+- [Typing Speed Test](https://usonlinetools.com/education/typing-speed-test): Test your typing speed in words per minute.
+- [Scholarship Calculator](https://usonlinetools.com/education/scholarship-calculator): Calculate potential scholarship savings for college.
+- [College GPA Calculator](https://usonlinetools.com/education/college-gpa-calculator): Calculate your college GPA with weighted credits.
+- [Snow Day Calculator](https://usonlinetools.com/education/snow-day-calculator): Estimate the chance of a snow day from weather and road conditions.
+
+## Gaming Calculators (https://usonlinetools.com/category/gaming)
+Game-specific tools for popular titles and platforms
+
+- [Blox Fruits Calculator](https://usonlinetools.com/gaming/blox-fruits-calculator): Calculate Blox Fruits values, trades, and upgrades.
+- [Blox Fruits Trade Calculator](https://usonlinetools.com/gaming/blox-fruits-trade-calculator): Check if a Blox Fruits trade is fair or overpaying.
+- [Roblox Tax Calculator](https://usonlinetools.com/gaming/roblox-tax-calculator): Calculate how much Robux you receive after the 30% tax.
+- [Minecraft Circle Calculator](https://usonlinetools.com/gaming/minecraft-circle-calculator): Generate pixel-perfect circles for Minecraft builds.
+- [Valorant Sensitivity Calculator](https://usonlinetools.com/gaming/valorant-sensitivity-calculator): Convert your mouse sensitivity between FPS games.
+- [Fortnite DPI Calculator](https://usonlinetools.com/gaming/fortnite-dpi-calculator): Calculate your effective DPI for Fortnite and other games.
+- [XP Level Calculator](https://usonlinetools.com/gaming/xp-level-calculator): Calculate XP needed to reach the next level in any game.
+- [Clash of Clans Upgrade Calculator](https://usonlinetools.com/gaming/clash-of-clans-upgrade-calculator): Plan your CoC upgrades with cost and time estimates.
+- [Damage Calculator](https://usonlinetools.com/gaming/damage-calculator): Calculate damage output based on stats and modifiers.
+- [Game Currency Converter](https://usonlinetools.com/gaming/game-currency-converter): Convert real money to in-game currency for popular games.
+- [Genshin Impact Calculator](https://usonlinetools.com/gaming/genshin-impact-calculator): Calculate damage, artifacts, and builds for Genshin Impact.
+- [CS2 Sensitivity Calculator](https://usonlinetools.com/gaming/cs2-sensitivity-calculator): Convert mouse sensitivity between CS2 and other FPS games.
+- [Pokemon IV Calculator](https://usonlinetools.com/gaming/pokemon-iv-calculator): Calculate Individual Values for your Pokemon stats.
+- [D&D Dice Roller](https://usonlinetools.com/gaming/dnd-dice-roller): Roll any combination of dice for tabletop RPG games.
+- [Gaming FPS Calculator](https://usonlinetools.com/gaming/gaming-fps-calculator): Calculate expected FPS based on your hardware specs.
+- [Esports Earnings Calculator](https://usonlinetools.com/gaming/esports-earnings-calculator): Track and calculate esports tournament prize earnings.
+
+## Image Tools (https://usonlinetools.com/category/image)
+Resize, compress, convert, and edit images right in your browser
+
+- [Image Resizer](https://usonlinetools.com/image/online-image-resizer): Resize images by exact pixel dimensions or percentage with live preview and browser-side export.
+- [Image Compressor](https://usonlinetools.com/image/online-image-compressor): Compress image files with quality and width controls to reduce upload size and improve delivery speed.
+- [Image Cropper](https://usonlinetools.com/image/online-image-cropper): Crop images to custom rectangles or common aspect ratios like square, 4:3, and 16:9.
+- [Image Format Converter](https://usonlinetools.com/image/online-image-format-converter): Convert images between PNG, JPG, and WebP formats with client-side preview and export.
+- [Image to Base64 Converter](https://usonlinetools.com/image/online-image-to-base64): Encode image files as Data URLs or raw Base64 strings for embedding and API workflows.
+- [Base64 to Image Converter](https://usonlinetools.com/image/online-base64-to-image): Decode Base64 image strings into previewable and downloadable image files in the browser.
+- [Image Rotate & Flip](https://usonlinetools.com/image/online-image-rotate-flip): Rotate images by any angle or flip horizontally and vertically.
+- [Image Color Picker](https://usonlinetools.com/image/online-image-color-picker): Pick any color from an uploaded image and get HEX, RGB, HSL values.
+- [Image Watermark Tool](https://usonlinetools.com/image/online-image-watermark-tool): Add text or image watermarks to your photos.
+- [Image Filter Editor](https://usonlinetools.com/image/online-image-filter-editor): Apply photo filters online with live preview, presets, CSS filter output, and browser-side export.
+- [Image to PNG Converter](https://usonlinetools.com/image/online-image-to-png): Convert any image format to PNG with transparency support.
+- [Image to JPG Converter](https://usonlinetools.com/image/online-image-to-jpg): Convert any image format to JPG with quality control.
+- [PNG to WebP Converter](https://usonlinetools.com/image/online-png-to-webp): Convert PNG images to modern WebP format for smaller files.
+- [SVG to PNG Converter](https://usonlinetools.com/image/online-svg-to-png): Convert SVG vector graphics to PNG raster images.
+- [Background Remover](https://usonlinetools.com/image/online-image-background-remover): Remove simple image backgrounds in your browser with live preview and transparent PNG export.
+- [Image Collage Maker](https://usonlinetools.com/image/online-image-collage-maker): Build image collages with layout presets, spacing controls, and browser-side PNG export.
+- [QR Code Generator](https://usonlinetools.com/image/online-qr-code-generator): Create QR codes for URLs, text, WiFi, email, and contact cards with live preview plus PNG and SVG downloads.
+- [Meme Generator](https://usonlinetools.com/image/online-meme-generator): Add text captions to images to create memes.
+- [Favicon Generator](https://usonlinetools.com/image/online-favicon-generator): Generate favicons in multiple sizes from any image.
+- [Image Pixel Counter](https://usonlinetools.com/image/online-image-pixel-counter): Inspect exact image dimensions, total pixels, megapixels, and aspect ratio in your browser.
+
+## PDF Tools (https://usonlinetools.com/category/pdf)
+Merge, split, compress, and convert PDF files in your browser
+
+- [PDF Merge](https://usonlinetools.com/pdf/online-pdf-merge): Combine multiple PDF files into a single document.
+- [PDF Split](https://usonlinetools.com/pdf/online-pdf-split): Split a PDF into separate files by page ranges.
+- [PDF Compressor](https://usonlinetools.com/pdf/online-pdf-compress): Reduce PDF file size while maintaining document quality.
+- [Image to PDF Converter](https://usonlinetools.com/pdf/online-image-to-pdf): Convert one or multiple images into a PDF document.
+- [PDF to Image Converter](https://usonlinetools.com/pdf/online-pdf-to-image): Convert PDF pages to JPG or PNG images.
+- [PDF Page Rotator](https://usonlinetools.com/pdf/online-pdf-rotate): Rotate individual pages or all pages in a PDF.
+- [PDF Page Remover](https://usonlinetools.com/pdf/online-pdf-page-remover): Remove specific pages from a PDF document.
+- [PDF Page Reorder](https://usonlinetools.com/pdf/online-pdf-page-reorder): Rearrange the order of pages in your PDF with drag and drop.
+- [PDF Watermark Tool](https://usonlinetools.com/pdf/online-pdf-watermark): Add text or image watermarks to PDF documents.
+- [PDF Password Protector](https://usonlinetools.com/pdf/online-pdf-password-protect): Add password encryption to protect your PDF files.
+- [PDF Unlock Tool](https://usonlinetools.com/pdf/online-pdf-unlock): Remove password protection from PDF files.
+- [PDF to Text Extractor](https://usonlinetools.com/pdf/online-pdf-to-text): Extract all text content from PDF documents.
+- [PDF Page Number Adder](https://usonlinetools.com/pdf/online-pdf-page-number): Add page numbers to any position in your PDF.
+- [PDF Header & Footer](https://usonlinetools.com/pdf/online-pdf-header-footer): Add custom headers and footers to PDF documents.
+- [JPG to PDF Converter](https://usonlinetools.com/pdf/online-jpg-to-pdf): Convert JPG images into a multi-page PDF document.
+- [PDF Signature Tool](https://usonlinetools.com/pdf/online-pdf-sign): Draw or upload your signature and place it on PDF documents.
+
+## Developer Tools (https://usonlinetools.com/category/developer)
+JSON formatters, code minifiers, regex testers, and encoding utilities
+
+- [JSON Formatter & Beautifier](https://usonlinetools.com/developer/online-json-formatter): Format, beautify, and validate JSON data with syntax highlighting.
+- [JSON Validator](https://usonlinetools.com/developer/online-json-validator): Validate JSON syntax and find errors with line numbers.
+- [JSON to CSV Converter](https://usonlinetools.com/developer/online-json-to-csv): Convert JSON arrays to CSV format for spreadsheets.
+- [CSV to JSON Converter](https://usonlinetools.com/developer/csv-to-json-converter): Convert CSV data to JSON format instantly.
+- [JSON Minifier](https://usonlinetools.com/developer/json-minifier): Minify JSON by removing whitespace and reducing file size.
+- [HTML Formatter & Beautifier](https://usonlinetools.com/developer/online-html-formatter): Format and beautify messy HTML code with proper indentation.
+- [HTML Minifier](https://usonlinetools.com/developer/online-html-minifier): Minify HTML code to reduce page load size.
+- [CSS Minifier](https://usonlinetools.com/developer/online-css-minifier): Minify CSS to reduce stylesheet file size.
+- [CSS Formatter & Beautifier](https://usonlinetools.com/developer/online-css-formatter): Format and beautify minified CSS with proper indentation.
+- [JavaScript Minifier](https://usonlinetools.com/developer/online-javascript-minifier): Minify JavaScript code to reduce file size.
+- [JavaScript Formatter](https://usonlinetools.com/developer/online-javascript-formatter): Format and beautify JavaScript code with proper styling.
+- [Regex Tester](https://usonlinetools.com/developer/online-regex-tester): Test regular expressions with real-time matching and explanation.
+- [URL Encoder & Decoder](https://usonlinetools.com/developer/url-encoder-decoder): Encode or decode URLs and query string parameters.
+- [HTML Entity Encoder & Decoder](https://usonlinetools.com/developer/html-entity-encoder): Convert special characters to HTML entities and back.
+- [JWT Decoder](https://usonlinetools.com/developer/online-jwt-decoder): Decode and inspect JSON Web Tokens without verification.
+- [XML Formatter & Beautifier](https://usonlinetools.com/developer/xml-formatter): Format and beautify XML data with proper indentation.
+- [SQL Formatter](https://usonlinetools.com/developer/online-sql-formatter): Format and beautify SQL queries with syntax highlighting.
+- [Markdown Previewer](https://usonlinetools.com/developer/online-markdown-previewer): Write Markdown and preview the rendered output in real-time.
+- [Text Diff Checker](https://usonlinetools.com/developer/text-diff-checker): Compare two texts and highlight the differences side by side.
+- [URL Slug Generator](https://usonlinetools.com/developer/url-slug-generator): Convert any text into a URL-friendly slug.
+- [Cron Expression Generator](https://usonlinetools.com/developer/cron-expression-generator): Build and validate cron schedule expressions visually.
+- [Online Unix Timestamp Converter](https://usonlinetools.com/developer/online-unix-timestamp-converter): Convert Unix timestamps to human-readable dates and back.
+- [Online UUID Generator](https://usonlinetools.com/developer/online-uuid-generator): Generate random UUIDs (v4) for databases and applications.
+- [Online Lorem Ipsum Generator](https://usonlinetools.com/developer/online-lorem-ipsum-generator): Generate placeholder text for prototypes, mockups, and UI layouts.
+- [Color Code Converter](https://usonlinetools.com/developer/color-code-converter): Convert between HEX, RGB, HSL, and CMYK color formats.
+- [Hash Generator (MD5, SHA)](https://usonlinetools.com/developer/online-hash-generator): Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text.
+- [HTML to Markdown Converter](https://usonlinetools.com/developer/html-to-markdown): Convert HTML code to Markdown format.
+- [Markdown to HTML Converter](https://usonlinetools.com/developer/markdown-to-html): Convert Markdown text to HTML code.
+- [JSON to XML Converter](https://usonlinetools.com/developer/json-to-xml): Convert JSON data to XML format.
+- [YAML to JSON Converter](https://usonlinetools.com/developer/yaml-to-json): Convert YAML data to JSON format and vice versa.
+- [String Escape & Unescape](https://usonlinetools.com/developer/string-escape-unescape): Escape or unescape special characters in strings.
+- [JSONPath Tester](https://usonlinetools.com/developer/online-json-path-tester): Test JSONPath expressions against JSON data.
+- [Text to Binary Converter](https://usonlinetools.com/developer/text-to-binary-converter): Convert text to binary arrays and vice versa.
+
+## CSS & Design Tools (https://usonlinetools.com/category/css-design)
+Gradient generators, box shadow builders, and visual CSS utilities
+
+- [CSS Gradient Generator](https://usonlinetools.com/css-design/css-gradient-generator): Create beautiful linear and radial CSS gradients visually.
+- [CSS Box Shadow Generator](https://usonlinetools.com/css-design/css-box-shadow-generator): Generate CSS box-shadow values with visual controls.
+- [CSS Text Shadow Generator](https://usonlinetools.com/css-design/css-text-shadow-generator): Create CSS text-shadow effects with visual controls.
+- [CSS Border Radius Generator](https://usonlinetools.com/css-design/css-border-radius-generator): Generate CSS border-radius values with visual preview.
+- [CSS Flexbox Generator](https://usonlinetools.com/css-design/css-flexbox-generator): Build flexbox layouts visually and copy the CSS code.
+- [CSS Grid Generator](https://usonlinetools.com/css-design/css-grid-generator): Build CSS Grid layouts visually with rows and columns.
+- [CSS Animation Generator](https://usonlinetools.com/css-design/css-animation-generator): Create CSS keyframe animations with visual timeline.
+- [CSS Clip-Path Generator](https://usonlinetools.com/css-design/css-clip-path-generator): Create CSS clip-path shapes like circles, polygons, and more.
+- [CSS Filter Generator](https://usonlinetools.com/css-design/css-filter-generator): Generate CSS filter effects like blur, brightness, contrast.
+- [Color Palette Generator](https://usonlinetools.com/css-design/color-palette-generator): Generate beautiful color palettes and harmonies from any color.
+- [Color Contrast Checker](https://usonlinetools.com/css-design/color-contrast-checker): Check color contrast ratios for WCAG accessibility compliance.
+- [Color Picker](https://usonlinetools.com/css-design/color-picker-tool): Pick colors and get HEX, RGB, HSL values with visual color wheel.
+- [HEX to RGB Converter](https://usonlinetools.com/css-design/hex-to-rgb-converter): Convert HEX color codes to RGB values.
+- [RGB to HEX Converter](https://usonlinetools.com/css-design/rgb-to-hex-converter): Convert RGB color values to HEX codes.
+- [Tailwind CSS Color Generator](https://usonlinetools.com/css-design/tailwind-color-generator): Generate custom Tailwind CSS color shade scales.
+- [Glassmorphism Generator](https://usonlinetools.com/css-design/glassmorphism-generator): Create frosted glass CSS effects with visual controls.
+- [Neumorphism Generator](https://usonlinetools.com/css-design/neumorphism-generator): Generate soft UI (neumorphic) CSS shadow effects.
+- [CSS Triangle Generator](https://usonlinetools.com/css-design/css-triangle-generator): Generate CSS triangles, tooltip arrows, chevrons, ribbon points, and border-based triangle code.
+
+## SEO Tools (https://usonlinetools.com/category/seo)
+Meta tag generators, keyword tools, and search engine optimization utilities
+
+- [Meta Tag Generator](https://usonlinetools.com/seo/meta-tag-generator): Generate HTML meta tags for SEO including title, description, and keywords.
+- [Open Graph Tag Generator](https://usonlinetools.com/seo/open-graph-generator): Generate Open Graph meta tags for rich social media previews.
+- [Twitter Card Generator](https://usonlinetools.com/seo/twitter-card-generator): Generate Twitter Card meta tags for rich tweet previews.
+- [Robots.txt Generator](https://usonlinetools.com/seo/online-robots-txt-generator): Generate robots.txt files to control search engine crawling.
+- [XML Sitemap Generator](https://usonlinetools.com/seo/online-sitemap-generator): Generate XML sitemaps for better search engine indexing.
+- [Keyword Density Checker](https://usonlinetools.com/seo/online-keyword-density-checker): Analyze keyword density and frequency in your content.
+- [Google SERP Preview](https://usonlinetools.com/seo/serp-preview-tool): Preview how your page will appear in Google search results.
+- [Schema Markup Generator](https://usonlinetools.com/seo/schema-markup-generator): Generate JSON-LD structured data for rich search results.
+- [Canonical Tag Generator](https://usonlinetools.com/seo/canonical-tag-generator): Generate canonical link tags to prevent duplicate content issues.
+- [.htaccess Redirect Generator](https://usonlinetools.com/seo/htaccess-redirect-generator): Generate Apache .htaccess redirect rules for page moves and section migrations.
+- [Readability Score Checker](https://usonlinetools.com/seo/online-readability-checker): Check Flesch-Kincaid readability score and grade level of your content.
+- [HTML Heading Tag Checker](https://usonlinetools.com/seo/online-heading-tag-checker): Paste HTML and check heading tag hierarchy for SEO issues.
+- [Favicon Code Generator](https://usonlinetools.com/seo/favicon-checker): Generate favicon HTML tags and manifest code for modern browser support.
+
+## Security & Encryption (https://usonlinetools.com/category/security)
+Password generators, hash tools, and encryption utilities
+
+- [Password Generator](https://usonlinetools.com/security/online-password-generator): Create strong random passwords with custom length, uppercase letters, lowercase letters, numbers, and symbols.
+- [Password Strength Checker](https://usonlinetools.com/security/password-strength-checker): Check how strong your password is and get improvement suggestions.
+- [MD5 Hash Generator](https://usonlinetools.com/security/md5-hash-generator): Generate MD5 hashes from any text input.
+- [SHA-256 Hash Generator](https://usonlinetools.com/security/sha256-hash-generator): Generate SHA-256 hashes from any text input.
+- [SHA-1 Hash Generator](https://usonlinetools.com/security/sha1-hash-generator): Generate SHA-1 hashes from text for checksums and verification.
+- [SHA-512 Hash Generator](https://usonlinetools.com/security/sha512-hash-generator): Generate SHA-512 hashes for maximum security hashing.
+- [Bcrypt Hash Generator](https://usonlinetools.com/security/online-bcrypt-hash-generator): Generate bcrypt password hashes with custom salt rounds.
+- [AES Encrypt & Decrypt](https://usonlinetools.com/security/online-aes-encrypt-decrypt): Encrypt and decrypt text using AES-256 encryption.
+- [RSA Key Pair Generator](https://usonlinetools.com/security/rsa-key-generator): Generate RSA public and private key pairs.
+- [HMAC Generator](https://usonlinetools.com/security/hmac-generator): Generate HMAC authentication codes with various hash algorithms.
+- [Random String Generator](https://usonlinetools.com/security/random-string-generator): Generate random strings with custom characters and length.
+- [Caesar Cipher Tool](https://usonlinetools.com/security/encryption-decoder): Encrypt and decrypt text using Caesar cipher with custom shift.
+- [Binary to Text Converter](https://usonlinetools.com/security/binary-to-text): Convert binary code to readable text and vice versa.
+- [Hex to Text Converter](https://usonlinetools.com/security/hex-to-text): Convert hexadecimal strings to readable text and back.
+- [Morse Code Translator](https://usonlinetools.com/security/online-morse-code-translator): Convert text to Morse code and Morse code to text.
+
+## Social Media Tools (https://usonlinetools.com/category/social-media)
+Character counters, image resizers, and content tools for social platforms
+
+- [Twitter/X Character Counter](https://usonlinetools.com/social-media/twitter-character-counter): Count characters for tweets with real-time limit tracking.
+- [Instagram Caption Counter](https://usonlinetools.com/social-media/online-instagram-caption-counter): Count characters and hashtags for Instagram captions.
+- [Social Media Image Resizer](https://usonlinetools.com/social-media/online-social-media-image-resizer): Resize images to exact dimensions for each social media platform.
+- [YouTube Thumbnail Checker](https://usonlinetools.com/social-media/youtube-thumbnail-checker): Check how your YouTube thumbnail reads in smaller search, mobile, and suggested-video layouts.
+- [Emoji Picker & Copier](https://usonlinetools.com/social-media/emoji-picker-and-copier): Browse and copy emojis by category with one click.
+- [Text to Emoji Converter](https://usonlinetools.com/social-media/text-to-emoji-converter): Convert regular text into emoji-enhanced social copy variations.
+- [LinkedIn Post Formatter](https://usonlinetools.com/social-media/online-linkedin-post-formatter): Format LinkedIn posts with bold, italic, and special characters.
+- [Social Media Bio Generator](https://usonlinetools.com/social-media/social-media-bio-generator): Generate short profile bios for Instagram, LinkedIn, and TikTok with platform-aware limits.
+- [Unicode Text Converter](https://usonlinetools.com/social-media/unicode-text-converter): Convert text to bold, italic, strikethrough, and other Unicode styles.
+- [TikTok Caption Counter](https://usonlinetools.com/social-media/tiktok-character-counter): Count characters for TikTok captions with limit tracking.
+- [Social Post Planner](https://usonlinetools.com/social-media/online-social-post-scheduler-planner): Plan and organize your social media posting schedule.
+

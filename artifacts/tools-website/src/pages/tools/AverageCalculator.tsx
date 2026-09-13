@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
@@ -454,7 +455,7 @@ export default function AverageCalculator() {
               <h3 className="text-lg font-bold text-foreground mb-4">Related Tools</h3>
               <div className="space-y-3">
                 {RELATED_TOOLS.map((tool, i) => (
-                  <Link key={i} href={`/tools/${tool.slug}`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors group">
+                  <Link key={i} href={getCanonicalToolPath(tool.slug)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors group">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0`} style={{ backgroundColor: `hsl(${tool.color}, 70%, 20%)` }}>
                       {tool.icon}
                     </div>

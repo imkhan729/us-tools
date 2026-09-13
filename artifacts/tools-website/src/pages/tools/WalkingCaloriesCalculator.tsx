@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
 import { Link } from "wouter";
@@ -421,7 +422,7 @@ export default function WalkingCaloriesCalculator() {
                 Ready to move faster? Calculate your running pace, projected race finish times, and training zones with the Running Pace Calculator.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
-                <Link href="/tools/running-pace-calculator"
+                <Link href="/fitness/running-pace-calculator"
                   className="inline-flex items-center gap-2 bg-lime-500 hover:bg-lime-600 text-white font-bold px-6 py-3 rounded-xl transition-colors">
                   Running Pace Calculator <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -443,7 +444,7 @@ export default function WalkingCaloriesCalculator() {
                 <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Related Tools</p>
                 <div className="space-y-2">
                   {RELATED_TOOLS.map((t, i) => (
-                    <Link key={i} href={`/tools/${t.slug}`}
+                    <Link key={i} href={getCanonicalToolPath(t.slug)}
                       className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all border border-transparent hover:border-border">
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: `hsl(${t.color} 80% 50% / 0.1)`, color: `hsl(${t.color} 70% 45%)` }}>

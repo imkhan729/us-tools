@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { motion } from "framer-motion";
 import {
   BarChart3,
@@ -8,8 +9,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 type FlipResult = "heads" | "tails";
 
 function useCoinFlip() {

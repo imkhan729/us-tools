@@ -46,7 +46,7 @@ const RELATED_TOOLS = [
   { title: "Schema Markup Generator", href: "/seo/schema-markup-generator", benefit: "Add structured data after canonical cleanup.", color: 152, icon: <Tags className="w-4 h-4" /> },
   { title: "Open Graph Generator", href: "/seo/open-graph-generator", benefit: "Keep sharing tags aligned with the same final URL.", color: 217, icon: <Link2 className="w-4 h-4" /> },
   { title: "Robots.txt Generator", href: "/seo/robots-txt-generator", benefit: "Pair crawl rules with canonical handling.", color: 45, icon: <Search className="w-4 h-4" /> },
-  { title: "Google SERP Preview", href: "/tools/serp-preview-tool", benefit: "Review title and description output for the final URL.", color: 275, icon: <Tags className="w-4 h-4" /> },
+  { title: "Google SERP Preview", href: "/seo/serp-preview-tool", benefit: "Review title and description output for the final URL.", color: 275, icon: <Tags className="w-4 h-4" /> },
 ];
 
 export default function CanonicalTagGenerator() {

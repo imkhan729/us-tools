@@ -1,8 +1,7 @@
 import { useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { BarChart3, Palette, Pipette, Type } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 function normalizeHex(value: string) {
   const trimmed = value.trim().replace(/^#/, "");
   if (/^[0-9a-fA-F]{3}$/.test(trimmed)) {

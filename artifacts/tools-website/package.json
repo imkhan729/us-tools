@@ -8,6 +8,12 @@
     "generate:seo": "node ./scripts/generate-seo-assets.cjs",
     "build": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts && node ./scripts/build-static-seo-pages.cjs",
     "build:hostinger": "node ./scripts/generate-seo-assets.cjs && vite build --config vite.config.ts && node ./scripts/build-static-seo-pages.cjs && node ./scripts/export-static-for-hostinger.cjs",
+    "seo:audit": "node ./scripts/seo-audit.cjs",
+    "seo:links": "node ./scripts/seo-links.cjs",
+    "seo:sitemap": "node ./scripts/seo-sitemap.cjs",
+    "seo:metadata": "node ./scripts/seo-metadata.cjs",
+    "seo:hreflang": "node ./scripts/seo-hreflang.cjs",
+    "seo:schema": "node ./scripts/seo-schema.cjs",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

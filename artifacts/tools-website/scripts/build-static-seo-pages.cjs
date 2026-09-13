@@ -19,6 +19,47 @@ const SITE_TWITTER_HANDLE = "@usonlinetools";
 const DEFAULT_ROBOTS =
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 
+const HREFLANG_MAP = {
+    "/math/online-percentage-calculator": [
+        { language: "en", href: `${SITE_URL}/math/online-percentage-calculator` },
+        { language: "tr", href: `${SITE_URL}/yuzde-hesaplama` },
+        { language: "x-default", href: `${SITE_URL}/math/online-percentage-calculator` },
+    ],
+    "/yuzde-hesaplama": [
+        { language: "en", href: `${SITE_URL}/math/online-percentage-calculator` },
+        { language: "tr", href: `${SITE_URL}/yuzde-hesaplama` },
+        { language: "x-default", href: `${SITE_URL}/math/online-percentage-calculator` },
+    ],
+    "/finance/online-compound-interest-calculator": [
+        { language: "en", href: `${SITE_URL}/finance/online-compound-interest-calculator` },
+        { language: "pt-BR", href: `${SITE_URL}/calculadora-juros-compostos` },
+        { language: "x-default", href: `${SITE_URL}/finance/online-compound-interest-calculator` },
+    ],
+    "/calculadora-juros-compostos": [
+        { language: "en", href: `${SITE_URL}/finance/online-compound-interest-calculator` },
+        { language: "pt-BR", href: `${SITE_URL}/calculadora-juros-compostos` },
+        { language: "x-default", href: `${SITE_URL}/finance/online-compound-interest-calculator` },
+    ],
+    "/time-date/online-age-calculator": [
+        { language: "en", href: `${SITE_URL}/time-date/online-age-calculator` },
+        { language: "ar", href: `${SITE_URL}/ar/hesab-alomr` },
+        { language: "id", href: `${SITE_URL}/kalkulator-umur` },
+        { language: "x-default", href: `${SITE_URL}/time-date/online-age-calculator` },
+    ],
+    "/ar/hesab-alomr": [
+        { language: "en", href: `${SITE_URL}/time-date/online-age-calculator` },
+        { language: "ar", href: `${SITE_URL}/ar/hesab-alomr` },
+        { language: "id", href: `${SITE_URL}/kalkulator-umur` },
+        { language: "x-default", href: `${SITE_URL}/time-date/online-age-calculator` },
+    ],
+    "/kalkulator-umur": [
+        { language: "en", href: `${SITE_URL}/time-date/online-age-calculator` },
+        { language: "ar", href: `${SITE_URL}/ar/hesab-alomr` },
+        { language: "id", href: `${SITE_URL}/kalkulator-umur` },
+        { language: "x-default", href: `${SITE_URL}/time-date/online-age-calculator` },
+    ],
+};
+
 const TOOL_STATIC_OVERRIDES = {
     "ovulation-calculator": {
         heading: "Ovulation Calculator",
@@ -872,7 +913,7 @@ function renderHtml({
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:locale" content="${ogLocale}" />
-    <meta property="og:url" content="${canonicalUrl}" />
+    ${canonicalUrl ? `<meta property="og:url" content="${canonicalUrl}" />` : ""}
     <meta property="og:image" content="${SITE_OG_IMAGE}" />
     <meta property="og:image:secure_url" content="${SITE_OG_IMAGE}" />
     <meta property="og:image:width" content="1200" />
@@ -885,8 +926,8 @@ function renderHtml({
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${SITE_OG_IMAGE}" />
     <meta name="twitter:image:alt" content="${SITE_NAME} preview image" />
-    <meta name="twitter:url" content="${canonicalUrl}" />
-    <link rel="canonical" href="${canonicalUrl}" />
+    ${canonicalUrl ? `<meta name="twitter:url" content="${canonicalUrl}" />` : ""}
+    ${canonicalUrl && !robots.includes("noindex") ? `<link rel="canonical" href="${canonicalUrl}" />` : ""}
     ${alternateTags}
     <link rel="icon" type="image/svg+xml" href="${SITE_LOGO}" />
     <script type="application/ld+json" data-schema-graph="primary">${serializedSchema}</script>
@@ -1178,12 +1219,12 @@ function buildRoutes(tools) {
             description: "Learn what US Online Tools is, how the site works, and why the calculators, converters, and generators are built for fast browser-based use.",
             staticHtml: buildInfoPageStaticHtml({
                 heading: `About ${SITE_NAME}`,
-                intro: "US Online Tools is a free online tools website with calculators, converters, generators, image tools, PDF tools, developer utilities, and productivity helpers.",
-                explainer: "The site is organized around task-focused pages with descriptive URLs, self-referencing canonical tags, static crawlable HTML, JSON-LD structured data, sitemap coverage, and internal links from category hubs. Most tools are designed for quick browser-based workflows with no signup requirement.",
+                intro: "US Online Tools is a free online tools website with 400+ calculators, converters, generators, image tools, PDF tools, developer utilities, and productivity helpers across 16 categories.",
+                explainer: "US Online Tools is engineered around high accuracy, fast client-side execution, and total user privacy. All calculations, format conversions, and text transformations execute directly within your browser runtime using modern Web APIs without storing or transmitting personal data to remote servers. Mathematical and scientific utilities adhere to standard SI/NIST unit standards, official RFC specifications, and standard financial amortization models with boundary validation.",
                 steps: [
-                    { title: "Choose a category", text: "Start from a calculator, converter, image, PDF, developer, security, SEO, or productivity category." },
-                    { title: "Open the exact tool", text: "Use standard links to reach a focused page for one task." },
-                    { title: "Complete the task", text: "Enter the required information and use the result directly in your browser." },
+                    { title: "Select a tool or category", text: "Browse 16 core categories including math, finance, unit conversion, construction, developer utilities, security, and health." },
+                    { title: "Execute locally in browser", text: "Enter inputs, adjust parameters, or upload files for instant, client-side processing with zero server logging." },
+                    { title: "Copy, download, or continue", text: "Export verified results, download processed files, or navigate to related tools across our interconnected category hubs." },
                 ],
                 links: [
                     { label: "All Tool Categories", href: "/" },
@@ -1818,6 +1859,7 @@ function main() {
             bodyContent: routeBodyContent,
             robots: route.robots,
             language: route.language,
+            alternates: HREFLANG_MAP[route.path] ?? [],
         });
 
         writeRouteHtml(route.path, html);

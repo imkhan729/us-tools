@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { BadgeCheck, Copy, Instagram, Linkedin, Sparkles, Type, UserRound } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 type Platform = "instagram" | "linkedin" | "tiktok";
 type Tone = "professional" | "friendly" | "bold";
 

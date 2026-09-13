@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { getCanonicalToolPath } from "@/data/tools";
 import { motion } from "framer-motion";
 import {
   BarChart3,
@@ -10,8 +11,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import UtilityToolPageShell from "./UtilityToolPageShell";
-import { getCanonicalToolPath } from "@/data/tools";
-
 type DiceType = 4 | 6 | 8 | 10 | 12 | 20 | 100;
 const DICE_TYPES: DiceType[] = [4, 6, 8, 10, 12, 20, 100];
 
